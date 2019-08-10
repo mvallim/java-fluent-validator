@@ -2,10 +2,12 @@ package br.com.fluentvalidator.test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -17,8 +19,8 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.ValidationResult;
+import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.model.Child;
 import br.com.fluentvalidator.model.Parent;
 import br.com.fluentvalidator.validator.ValidatorParent;
@@ -27,7 +29,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationMustBeSuccess() {
-		final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		final Validator<Parent> validatorParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -36,7 +38,7 @@ public class ValidatorTest {
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
 		parent.setChildren(Arrays.asList(new Child("John", 5)));
 
-		final ValidationResult result = validationParent.validate(parent);
+		final ValidationResult result = validatorParent.validate(parent);
 
 		assertTrue(result.isValid());
 		assertThat(result.getErrors(), empty());
@@ -44,7 +46,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationMustBeFailWhenFieldOfParentAreInvalid() {
-		final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		final Validator<Parent> validatorParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -53,7 +55,7 @@ public class ValidatorTest {
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
 		parent.setChildren(Arrays.asList(new Child("John", 5)));
 
-		final ValidationResult result = validationParent.validate(parent);
+		final ValidationResult result = validatorParent.validate(parent);
 
 		assertFalse(result.isValid());
 		assertThat(result.getErrors(), not(empty()));
@@ -74,7 +76,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationTwiceDiferentParentMustBeSuccess() {
-		final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		final Validator<Parent> validatorParent = new ValidatorParent();
 
 		final Parent parent1 = new Parent();
 
@@ -90,10 +92,10 @@ public class ValidatorTest {
 		parent2.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
 		parent2.setChildren(Arrays.asList(new Child("John", 5)));
 
-		validationParent.validate(parent2);
+		validatorParent.validate(parent2);
 
-		final ValidationResult result1 = validationParent.validate(parent1);
-		final ValidationResult result2 = validationParent.validate(parent2);
+		final ValidationResult result1 = validatorParent.validate(parent1);
+		final ValidationResult result2 = validatorParent.validate(parent2);
 
 		assertTrue(result1.isValid());
 		assertThat(result1.getErrors(), empty());
@@ -117,7 +119,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationCollectionParentMustBeSuccess() {
-		final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		final Validator<Parent> validatorParent = new ValidatorParent();
 
 		final Parent parent1 = new Parent();
 
@@ -133,7 +135,7 @@ public class ValidatorTest {
 		parent2.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
 		parent2.setChildren(Arrays.asList(new Child("John", 5)));
 
-		final List<ValidationResult> result = validationParent.validate(Arrays.asList(parent1, parent2));
+		final List<ValidationResult> result = validatorParent.validate(Arrays.asList(parent1, parent2));
 
 		assertTrue(result.get(0).isValid());
 		assertThat(result.get(0).getErrors(), empty());
@@ -157,7 +159,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationMustBeFalseWhenChildrenIsNull() {
-		final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		final Validator<Parent> validatorParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -165,7 +167,7 @@ public class ValidatorTest {
 		parent.setName("John Gow");
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
 
-		final ValidationResult result = validationParent.validate(parent);
+		final ValidationResult result = validatorParent.validate(parent);
 
 		assertFalse(result.isValid());
 		assertThat(result.getErrors(), not(empty()));
@@ -178,7 +180,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationMustBeFalseWhenChildrenIsEmpty() {
-		final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		final Validator<Parent> validatorParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -187,7 +189,7 @@ public class ValidatorTest {
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
 		parent.setChildren(new ArrayList<>());
 
-		final ValidationResult result = validationParent.validate(parent);
+		final ValidationResult result = validatorParent.validate(parent);
 		
 		assertFalse(result.isValid());
 		assertThat(result.getErrors(), not(empty()));
@@ -200,7 +202,7 @@ public class ValidatorTest {
 	
 	@Test
 	public void validationMustBeFalseWhenChildrenIsInvalid() {
-		final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		final Validator<Parent> validatorParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -209,7 +211,7 @@ public class ValidatorTest {
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
 		parent.setChildren(Arrays.asList(new Child("Ana", 4)));
 
-		final ValidationResult result = validationParent.validate(parent);
+		final ValidationResult result = validatorParent.validate(parent);
 		
 		assertFalse(result.isValid());
 		assertThat(result.getErrors(), not(empty()));
@@ -226,7 +228,7 @@ public class ValidatorTest {
 	
 	@Test
 	public void validationMustBeFalseWhenParentAndChildrenIsInvalid() {
-		final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		final Validator<Parent> validatorParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -235,7 +237,7 @@ public class ValidatorTest {
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
 		parent.setChildren(Arrays.asList(new Child("Ana", 4)));
 
-		final ValidationResult result = validationParent.validate(parent);
+		final ValidationResult result = validatorParent.validate(parent);
 		
 		assertFalse(result.isValid());
 		assertThat(result.getErrors(), not(empty()));
@@ -317,7 +319,7 @@ public class ValidatorTest {
 
 	class ThreadLocalTest implements Runnable {
 
-		private final AbstractValidator<Parent> validationParent = new ValidatorParent();
+		private final Validator<Parent> validatorParent = new ValidatorParent();
 
 		private final Parent parent;
 
@@ -332,7 +334,7 @@ public class ValidatorTest {
 			try {
 				final Random rand = new Random();
 				Thread.sleep(rand.nextInt(100));
-				this.results = this.validationParent.validate(this.parent);
+				this.results = this.validatorParent.validate(this.parent);
 			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
