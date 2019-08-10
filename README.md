@@ -2,9 +2,10 @@
 
 [![Build Status](https://travis-ci.org/mvallim/java-fluent-validator.svg?branch=master)](https://travis-ci.org/mvallim/java-fluent-validator)
 [![Coverage Status](https://coveralls.io/repos/github/mvallim/java-fluent-validator/badge.svg?branch=master)](https://coveralls.io/github/mvallim/java-fluent-validator?branch=master)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/br.com.fluentvalidator/java-fluent-validator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/br.com.fluentvalidator/java-fluent-validator)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-(Under construction)
+> **(Documentation is under construction)**
 
 Validating data is a common task that occurs throughout any application, especially the business logic layer. As for some quite complex scenarios, often the same or similar validations are scattered everywhere, thus it is hard to reuse code and break the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule.
 
