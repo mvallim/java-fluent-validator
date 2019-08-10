@@ -20,7 +20,7 @@ In order to use Fluent Validator within a Maven project, simply add the followin
 ```xml
 <dependency>
     <groupId>br.com.fluentvalidator</groupId>
-    <artifactId>fluent-validator</artifactId>
+    <artifactId>java-fluent-validator</artifactId>
     <version>0.0.1</version>
 </dependency>
 ```
