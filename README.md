@@ -11,7 +11,7 @@ Validating data is a common task that occurs throughout any application, especia
 
 ## 1. Quick Start
 
-This chapter will show you how to get started with Fluent Validator.
+This chapter will show you how to get started with Java Fluent Validator.
 
 ### 1.1 Prerequisite
 
