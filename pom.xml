@@ -2,9 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.com.fluentvalidator</groupId>
+	<groupId>com.github.mvallim</groupId>
 	<artifactId>java-fluent-validator</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -19,18 +19,20 @@
 		<tag>HEAD</tag>
 	</scm>
 
+	<name>Java Fluent Validator</name>
+	<description>A Java validation framework leveraging fluent interface style.</description>
 	<url>https://github.com/mvallim/java-fluent-validator</url>
-
 	<inceptionYear>2019</inceptionYear>
+
+	<organization>
+		<name>com.github.mvallim</name>
+		<url>https://github.com/mvallim</url>
+	</organization>
 
 	<developers>
 		<developer>
 			<name>Marcos Tischer Vallim</name>
-			<id>fluentvalidator</id>
 			<email>tischer@gmail.com</email>
-			<roles>
-				<role>Developer</role>
-			</roles>
 			<timezone>-3</timezone>
 		</developer>
 	</developers>
