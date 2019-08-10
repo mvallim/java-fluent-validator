@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.*;
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.model.Parent;
 
-public class ValidationParent extends AbstractValidator<Parent> {
+public class ValidatorParent extends AbstractValidator<Parent> {
 
 	@Override
 	protected void rules() {

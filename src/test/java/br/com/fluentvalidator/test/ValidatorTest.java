@@ -21,13 +21,13 @@ import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.ValidationResult;
 import br.com.fluentvalidator.model.Child;
 import br.com.fluentvalidator.model.Parent;
-import br.com.fluentvalidator.validator.ValidationParent;
+import br.com.fluentvalidator.validator.ValidatorParent;
 
 public class ValidatorTest {
 
 	@Test
 	public void validationMustBeSuccess() {
-		final AbstractValidator<Parent> validationParent = new ValidationParent();
+		final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -44,7 +44,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationMustBeFailWhenFieldOfParentAreInvalid() {
-		final AbstractValidator<Parent> validationParent = new ValidationParent();
+		final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -74,7 +74,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationTwiceDiferentParentMustBeSuccess() {
-		final AbstractValidator<Parent> validationParent = new ValidationParent();
+		final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		final Parent parent1 = new Parent();
 
@@ -117,7 +117,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationCollectionParentMustBeSuccess() {
-		final AbstractValidator<Parent> validationParent = new ValidationParent();
+		final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		final Parent parent1 = new Parent();
 
@@ -157,7 +157,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationMustBeFalseWhenChildrenIsNull() {
-		final AbstractValidator<Parent> validationParent = new ValidationParent();
+		final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -178,7 +178,7 @@ public class ValidatorTest {
 
 	@Test
 	public void validationMustBeFalseWhenChildrenIsEmpty() {
-		final AbstractValidator<Parent> validationParent = new ValidationParent();
+		final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -200,7 +200,7 @@ public class ValidatorTest {
 	
 	@Test
 	public void validationMustBeFalseWhenChildrenIsInvalid() {
-		final AbstractValidator<Parent> validationParent = new ValidationParent();
+		final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -226,7 +226,7 @@ public class ValidatorTest {
 	
 	@Test
 	public void validationMustBeFalseWhenParentAndChildrenIsInvalid() {
-		final AbstractValidator<Parent> validationParent = new ValidationParent();
+		final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		final Parent parent = new Parent();
 
@@ -317,7 +317,7 @@ public class ValidatorTest {
 
 	class ThreadLocalTest implements Runnable {
 
-		private final AbstractValidator<Parent> validationParent = new ValidationParent();
+		private final AbstractValidator<Parent> validationParent = new ValidatorParent();
 
 		private final Parent parent;
 
