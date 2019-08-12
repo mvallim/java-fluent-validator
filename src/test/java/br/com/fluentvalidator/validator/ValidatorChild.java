@@ -8,11 +8,14 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.model.Child;
+import br.com.fluentvalidator.model.Parent;
 
 public class ValidatorChild extends AbstractValidator<Child>{
 
 	@Override
 	protected void rules() {
+		
+		setPropertyOnContext("child");
 		
 		ruleFor(Child::getAge)
 			.when(age -> true)
@@ -21,7 +24,11 @@ public class ValidatorChild extends AbstractValidator<Child>{
 			.withMessage("child age must be not null")
 			.must(age -> greaterThanOrEqualTo(5).matches(age))
 			.withFieldName("age")
-			.withMessage("child age must be greater than or equal to 5");
+			.withMessage("child age must be greater than or equal to 5")
+			.must(this::checkAgeConstraintChild)
+			.withFieldName("age")
+			.withMessage("child age must be less than age parent");
+			
 
 		ruleFor(Child::getName)
 			.when(name -> true)
@@ -32,6 +39,10 @@ public class ValidatorChild extends AbstractValidator<Child>{
 			.withFieldName("name")
 			.withMessage("child name must contains key John");
 		
+	}
+	
+	private boolean checkAgeConstraintChild(final Integer age) {
+		return age < getPropertyOnContext("parent", Parent.class).getAge();
 	}
 
 }

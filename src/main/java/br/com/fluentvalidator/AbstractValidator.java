@@ -11,11 +11,21 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 
 	private final List<Rule<T>> rules = new LinkedList<>();
 
+	private String property;
+
 	protected AbstractValidator() {
 		this.rules();
 	}
 
 	protected abstract void rules();
+
+	public void setPropertyOnContext(final String property) {
+		this.property = property;
+	}
+
+	public <P> P getPropertyOnContext(final String property, final Class<P> clazz) {
+		return ValidationContext.get().getProperty(property, clazz);
+	}
 
 	@Override
 	public Collection<Rule<T>> getRules() {
@@ -24,9 +34,13 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 
 	@Override
 	public ValidationResult validate(final T instance) {
+
+		ValidationContext.get().addProperty(this.property, instance);
+
 		for (final Rule<T> rule : this.rules) {
 			rule.apply(instance);
 		}
+
 		return ValidationContext.get().getValidationResult();
 	}
 

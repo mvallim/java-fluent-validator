@@ -16,6 +16,8 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 
 	@Override
 	protected void rules() {
+		
+		setPropertyOnContext("parent");
 
 		ruleFor(Parent::getAge)
 			.when(age -> notNullValue().matches(age))
