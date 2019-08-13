@@ -7,6 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
+import br.com.fluentvalidator.builder.CollectionRule;
+import br.com.fluentvalidator.builder.PropetyRule;
+import br.com.fluentvalidator.builder.Rule;
+import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.builder.RuleCollection;
+import br.com.fluentvalidator.builder.RuleProperty;
+
 public abstract class AbstractValidator<T> implements Validator<T> {
 
 	private final List<Rule<T>> rules = new LinkedList<>();
@@ -34,13 +41,8 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 
 	@Override
 	public ValidationResult validate(final T instance) {
-
 		ValidationContext.get().addProperty(this.property, instance);
-
-		for (final Rule<T> rule : this.rules) {
-			rule.apply(instance);
-		}
-
+		apply(instance);
 		return ValidationContext.get().getValidationResult();
 	}
 
@@ -52,17 +54,24 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 		}
 		return Collections.unmodifiableList(results);
 	}
+	
+	@Override
+	public void apply(final T instance) {
+		for (final Rule<T> rule : this.rules) {
+			rule.apply(instance);
+		}		
+	}
 
 	@Override
-	public <P> WhenProperty<P> ruleFor(final Function<T, P> function) {
+	public <P> RuleProperty<T, P> ruleFor(final Function<T, P> function) {
 		final PropetyRule<T, P> rule = new PropetyRule<>(function);
 		this.rules.add(rule);
 		return rule;
 	}
 
 	@Override
-	public <P> WhenCollection<P> ruleForEach(final Function<T, Collection<P>> function) {
-		final CollectionPropetyRule<T, P> rule = new CollectionPropetyRule<>(function);
+	public <P> RuleCollection<T, P> ruleForEach(final Function<T, Collection<P>> function) {
+		final CollectionRule<T, P> rule = new CollectionRule<>(function);
 		this.rules.add(rule);
 		return rule;
 	}

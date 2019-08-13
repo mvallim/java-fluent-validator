@@ -20,8 +20,9 @@ import java.util.Random;
 import org.junit.Test;
 
 import br.com.fluentvalidator.ValidationResult;
-import br.com.fluentvalidator.Validator;
-import br.com.fluentvalidator.model.Child;
+import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.model.Boy;
+import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
 import br.com.fluentvalidator.validator.ValidatorParent;
 
@@ -36,7 +37,7 @@ public class ValidatorTest {
 		parent.setAge(6);
 		parent.setName("John Gow");
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
-		parent.setChildren(Arrays.asList(new Child("John", 5)));
+		parent.setChildren(Arrays.asList(new Boy("John", 5), new Girl("Ana", 5)));
 
 		final ValidationResult result = validatorParent.validate(parent);
 
@@ -53,7 +54,7 @@ public class ValidatorTest {
 		parent.setAge(10);
 		parent.setName("Ana");
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-		parent.setChildren(Arrays.asList(new Child("John", 5)));
+		parent.setChildren(Arrays.asList(new Boy("John", 5)));
 
 		final ValidationResult result = validatorParent.validate(parent);
 
@@ -66,7 +67,7 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
 
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
+		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 		
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
@@ -83,7 +84,7 @@ public class ValidatorTest {
 		parent.setAge(6);
 		parent.setName("John Gow");
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
-		parent.setChildren(Arrays.asList(new Child("John", 6)));
+		parent.setChildren(Arrays.asList(new Boy("John", 6)));
 
 		final ValidationResult result = validatorParent.validate(parent);
 
@@ -105,14 +106,14 @@ public class ValidatorTest {
 		parent1.setAge(6);
 		parent1.setName("John Gow");
 		parent1.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
-		parent1.setChildren(Arrays.asList(new Child("John", 5)));
+		parent1.setChildren(Arrays.asList(new Boy("John", 5)));
 
 		final Parent parent2 = new Parent();
 
 		parent2.setAge(10);
 		parent2.setName("Ana");
 		parent2.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-		parent2.setChildren(Arrays.asList(new Child("John", 5)));
+		parent2.setChildren(Arrays.asList(new Boy("John", 5)));
 
 		validatorParent.validate(parent2);
 
@@ -131,7 +132,7 @@ public class ValidatorTest {
 		assertThat(result2.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
 
 		assertThat(result2.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-		assertThat(result2.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
+		assertThat(result2.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent2.getCities()))));
 		assertThat(result2.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 		
 		assertThat(result2.getErrors(), hasItem(hasProperty("field", containsString("name"))));
@@ -148,14 +149,14 @@ public class ValidatorTest {
 		parent1.setAge(6);
 		parent1.setName("John Gow");
 		parent1.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
-		parent1.setChildren(Arrays.asList(new Child("John", 5)));
+		parent1.setChildren(Arrays.asList(new Boy("John", 5)));
 
 		final Parent parent2 = new Parent();
 
 		parent2.setAge(10);
 		parent2.setName("Ana");
 		parent2.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-		parent2.setChildren(Arrays.asList(new Child("John", 5)));
+		parent2.setChildren(Arrays.asList(new Boy("John", 5)));
 
 		final List<ValidationResult> result = validatorParent.validate(Arrays.asList(parent1, parent2));
 
@@ -171,7 +172,7 @@ public class ValidatorTest {
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
 
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-		assertThat(result.get(1).getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
+		assertThat(result.get(1).getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent2.getCities()))));
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 		
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("field", containsString("name"))));
@@ -231,7 +232,7 @@ public class ValidatorTest {
 		parent.setAge(6);
 		parent.setName("John Gow");
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
-		parent.setChildren(Arrays.asList(new Child("Ana", 4)));
+		parent.setChildren(Arrays.asList(new Girl("Barbara", 4)));
 
 		final ValidationResult result = validatorParent.validate(parent);
 		
@@ -240,8 +241,8 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasSize(2));
 
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
+		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
+		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key Ana"))));
 
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
 		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(4))));
@@ -257,7 +258,7 @@ public class ValidatorTest {
 		parent.setAge(10);
 		parent.setName("Ana");
 		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-		parent.setChildren(Arrays.asList(new Child("Ana", 4)));
+		parent.setChildren(Arrays.asList(new Girl("Barbara", 4)));
 
 		final ValidationResult result = validatorParent.validate(parent);
 		
@@ -270,20 +271,20 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
 
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(4))));
-		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child age must be greater than or equal to 5"))));
-
-		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
 		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(10))));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
 
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
+		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
-		
+
+		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
+		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(4))));
+		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child age must be greater than or equal to 5"))));
+
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));	
+		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
+		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child name must contains key Ana"))));	
 	}	
 
 	@Test
@@ -294,7 +295,7 @@ public class ValidatorTest {
 			parentOne.setAge(6);
 			parentOne.setName("John Gow");
 			parentOne.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
-			parentOne.setChildren(Arrays.asList(new Child("John", 5)));
+			parentOne.setChildren(Arrays.asList(new Boy("John", 5)));
 
 			final ThreadLocalTest runnableOne = new ThreadLocalTest(parentOne);
 			final Thread threadOne = new Thread(runnableOne);
@@ -304,7 +305,7 @@ public class ValidatorTest {
 			parentTwo.setAge(10);
 			parentTwo.setName("Ana");
 			parentTwo.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-			parentTwo.setChildren(Arrays.asList(new Child("John", 5)));
+			parentTwo.setChildren(Arrays.asList(new Boy("John", 5)));
 
 			final ThreadLocalTest runnableTwo = new ThreadLocalTest(parentTwo);
 			final Thread threadTwo = new Thread(runnableTwo);
@@ -330,7 +331,7 @@ public class ValidatorTest {
 			assertThat(resultTwo.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
 
 			assertThat(resultTwo.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
+			assertThat(resultTwo.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parentTwo.getCities()))));
 			assertThat(resultTwo.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 			
 			assertThat(resultTwo.getErrors(), hasItem(hasProperty("field", containsString("name"))));

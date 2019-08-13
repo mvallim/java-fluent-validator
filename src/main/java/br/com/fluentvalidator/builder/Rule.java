@@ -1,4 +1,4 @@
-package br.com.fluentvalidator;
+package br.com.fluentvalidator.builder;
 
 public interface Rule<T> {
 
