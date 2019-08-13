@@ -20,7 +20,7 @@ import java.util.Random;
 import org.junit.Test;
 
 import br.com.fluentvalidator.ValidationResult;
-import br.com.fluentvalidator.Validator;
+import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.model.Child;
 import br.com.fluentvalidator.model.Parent;
 import br.com.fluentvalidator.validator.ValidatorParent;

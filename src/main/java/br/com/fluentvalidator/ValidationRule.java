@@ -2,13 +2,15 @@ package br.com.fluentvalidator;
 
 import java.util.function.Predicate;
 
-class ValidationRule<P> implements Validation<P> {
+public class ValidationRule<P> implements Validation<P> {
 
 	private Predicate<P> must;
 
 	private String message;
 
 	private String fieldName;
+	
+	private boolean critical = false;
 
 	public ValidationRule() {
 		super();
@@ -37,6 +39,12 @@ class ValidationRule<P> implements Validation<P> {
 		if (!this.must.test(instance)) {
 			ValidationContext.get().addError(this.fieldName, this.message, instance);
 		}
+	}
+
+	@Override
+	public Validation<P> critical() {
+		this.critical = true;
+		return this;
 	}
 
 }

@@ -19,25 +19,27 @@ public class ValidatorChild extends AbstractValidator<Child>{
 		
 		ruleFor(Child::getAge)
 			.when(age -> true)
-			.must(age -> notNullValue().matches(age))
-			.withFieldName("age")
-			.withMessage("child age must be not null")
-			.must(age -> greaterThanOrEqualTo(5).matches(age))
-			.withFieldName("age")
-			.withMessage("child age must be greater than or equal to 5")
-			.must(this::checkAgeConstraintChild)
-			.withFieldName("age")
-			.withMessage("child age must be less than age parent");
+				.must(age -> notNullValue().matches(age))
+				.withMessage("child age must be not null")
+				.withFieldName("age")
+			.when(age -> true)
+				.must(age -> greaterThanOrEqualTo(5).matches(age))
+				.withMessage("child age must be greater than or equal to 5")
+				.withFieldName("age")
+			.when(age -> true)
+				.must(this::checkAgeConstraintChild)
+				.withMessage("child age must be less than age parent")
+				.withFieldName("age");
 			
-
 		ruleFor(Child::getName)
 			.when(name -> true)
-			.must(name -> not(isEmptyOrNullString()).matches(name))
-			.withFieldName("name")
-			.withMessage("child name must be not null or empty")
-			.must(name -> containsString("John").matches(name))
-			.withFieldName("name")
-			.withMessage("child name must contains key John");
+				.must(name -> not(isEmptyOrNullString()).matches(name))
+				.withMessage("child name must be not null or empty")
+				.withFieldName("name")
+			.when(name -> true)
+				.must(name -> containsString("John").matches(name))
+				.withMessage("child name must contains key John")
+				.withFieldName("name");
 		
 	}
 	

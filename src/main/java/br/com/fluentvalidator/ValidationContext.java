@@ -5,6 +5,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.commons.lang3.StringUtils;
+
 final class ValidationContext {
 
 	private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
@@ -35,7 +37,9 @@ final class ValidationContext {
 		}
 
 		public void addProperty(final String property, final Object value) {
-			this.properties.put(property, value);
+			if (StringUtils.isNotEmpty(property)) {
+				this.properties.put(property, value);
+			}
 		}
 
 		public <P> P getProperty(final String property, final Class<P> clazz) {
