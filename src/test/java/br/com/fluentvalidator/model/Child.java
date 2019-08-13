@@ -1,6 +1,6 @@
 package br.com.fluentvalidator.model;
 
-public class Child {
+public abstract class Child {
 
 	private String name;
 

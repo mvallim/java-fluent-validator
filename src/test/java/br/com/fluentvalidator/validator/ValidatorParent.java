@@ -1,14 +1,23 @@
 package br.com.fluentvalidator.validator;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import br.com.fluentvalidator.AbstractValidator;
+import br.com.fluentvalidator.model.Boy;
+import br.com.fluentvalidator.model.Child;
+import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
 
 public class ValidatorParent extends AbstractValidator<Parent> {
@@ -53,7 +62,31 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 		ruleForEach(Parent::getChildren)
 			.when(children -> notNullValue().matches(children))
 				.withValidator(new ValidatorChild());
+		
+		ruleForEach(parent -> extractGirls(parent.getChildren()))
+			.when(girls -> notNullValue().matches(girls))
+				.withValidator(new ValidatorGirl());
+		
+		ruleForEach(parent -> extractBoys(parent.getChildren()))
+			.when(boys -> notNullValue().matches(boys))
+				.withValidator(new ValidatorBoy());		
 
+	}
+	
+	private Collection<Girl> extractGirls(Collection<Child> children) {
+		return Optional.ofNullable(children).orElseGet(ArrayList::new)
+				.stream()
+				.filter(Girl.class::isInstance)
+				.map(Girl.class::cast)
+				.collect(Collectors.toList());
+	}
+
+	private Collection<Boy> extractBoys(Collection<Child> children) {
+		return Optional.ofNullable(children).orElseGet(ArrayList::new)
+				.stream()
+				.filter(Boy.class::isInstance)
+				.map(Boy.class::cast)
+				.collect(Collectors.toList());
 	}
 
 }

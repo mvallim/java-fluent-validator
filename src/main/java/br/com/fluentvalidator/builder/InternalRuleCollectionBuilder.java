@@ -8,7 +8,7 @@ import br.com.fluentvalidator.ValidationRule;
 
 class InternalRuleCollectionBuilder<T, P> implements WhenCollection<T, P>, Must<T, Collection<P>>, Message<T, Collection<P>>, FieldName<T, Collection<P>>, Critical<T, Collection<P>>, WithValidator<T, Collection<P>> {
 
-	private Predicate<Collection<P>> predicate;
+	private Predicate<Collection<P>> predicate = (p) -> true;
 
 	private final RuleCollection<T, P> ruleBuilder;
 

@@ -1,6 +1,5 @@
 package br.com.fluentvalidator.validator;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
@@ -35,12 +34,8 @@ public class ValidatorChild extends AbstractValidator<Child>{
 			.when(name -> true)
 				.must(name -> not(isEmptyOrNullString()).matches(name))
 				.withMessage("child name must be not null or empty")
-				.withFieldName("name")
-			.when(name -> true)
-				.must(name -> containsString("John").matches(name))
-				.withMessage("child name must contains key John")
 				.withFieldName("name");
-		
+
 	}
 	
 	private boolean checkAgeConstraintChild(final Integer age) {
