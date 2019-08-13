@@ -8,8 +8,6 @@ import br.com.fluentvalidator.ValidationResult;
 
 public interface Validator<T> extends Rule<T> {
 
-	Collection<Rule<T>> getRules();
-
 	ValidationResult validate(final T instance);
 
 	List<ValidationResult> validate(final Collection<T> instances);

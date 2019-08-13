@@ -35,11 +35,6 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	}
 
 	@Override
-	public Collection<Rule<T>> getRules() {
-		return Collections.unmodifiableCollection(this.rules);
-	}
-
-	@Override
 	public ValidationResult validate(final T instance) {
 		ValidationContext.get().addProperty(this.property, instance);
 		apply(instance);
