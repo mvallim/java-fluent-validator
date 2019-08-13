@@ -27,7 +27,7 @@ In order to use Java Fluent Validator within a Maven project, simply add the fol
 
 ### 1.2 Create a domain model
 
-Create a domain model or you can call it entity to be validated on later. For example, a Parent and Child instance is created as below.
+Create a domain model or you can call it entity to be validated on later. For example, a Parent, Child, Boy and Girl instance is created as below.
 
 #### [Parent](src/test/java/br/com/fluentvalidator/model/Parent.java)
 
@@ -80,7 +80,7 @@ public class Parent {
 #### [Child](src/test/java/br/com/fluentvalidator/model/Child.java)
 
 ```java
-public class Child {
+public abstract class Child {
 
     private String name;
 
@@ -110,6 +110,43 @@ public class Child {
 }
 ```
 
+#### [Girl](src/test/java/br/com/fluentvalidator/model/Girl.java)
+
+```java
+public class Girl extends Child {
+
+    private final Gender gender =  Gender.FEMALE;
+
+    public Girl(String name, int age) {
+        super(name, age);
+    }
+
+    public Gender getGender() {
+        return this.gender;
+    }
+
+}
+```
+
+#### [Boy](src/test/java/br/com/fluentvalidator/model/Boy.java)
+
+```java
+public class Boy extends Child {
+
+    private final Gender gender =  Gender.MALE;
+
+    public Boy(String name, int age) {
+        super(name, age);
+    }
+
+    public Gender getGender() {
+        return this.gender;
+    }
+
+}
+```
+
+
 ## 2. Basic validation step by step
 
 Java Fluent Valiator is inspired by [Fluent Interface](https://www.martinfowler.com/bliki/FluentInterface.html) and [.Net FluentValidation](https://fluentvalidation.net/) which defined an inner-DSL within Java language for programmers to use. A fluent interface implies that its primary goal is to make it easy to SPEAK and UNDERSTAND. And that is what Java Fluent Valiator is dedicated to do, to provide more readable code for you.
@@ -124,25 +161,86 @@ public class ValidatorChild extends AbstractValidator<Child>{
     @Override
     protected void rules() {
 
+        setPropertyOnContext("child");
+
         ruleFor(Child::getAge)
             .when(age -> true)
-            .must(age -> notNullValue().matches(age))
-            .withFieldName("age")
-            .withMessage("child age must be not null")
-            .must(age -> greaterThanOrEqualTo(5).matches(age))
-            .withFieldName("age")
-            .withMessage("child age must be greater than or equal to 5");
+                .must(age -> notNullValue().matches(age))
+                .withMessage("child age must be not null")
+                .withFieldName("age")
+            .when(age -> true)
+                .must(age -> greaterThanOrEqualTo(5).matches(age))
+                .withMessage("child age must be greater than or equal to 5")
+                .withFieldName("age")
+            .when(age -> true)
+                .must(this::checkAgeConstraintChild)
+                .withMessage("child age must be less than age parent")
+                .withFieldName("age");
 
         ruleFor(Child::getName)
             .when(name -> true)
-            .must(name -> not(isEmptyOrNullString()).matches(name))
-            .withFieldName("name")
-            .withMessage("child name must be not null or empty")
-            .must(name -> containsString("John").matches(name))
-            .withFieldName("name")
-            .withMessage("child name must contains key John");
+                .must(name -> not(isEmptyOrNullString()).matches(name))
+                .withMessage("child name must be not null or empty")
+                .withFieldName("name");
 
     }
+
+    private boolean checkAgeConstraintChild(final Integer age) {
+        return age < getPropertyOnContext("parent", Parent.class).getAge();
+    }
+
+}
+```
+
+#### [ValidationGirl](src/test/java/br/com/fluentvalidator/validator/ValidatorGirl.java)
+
+```java
+public class ValidatorGirl extends AbstractValidator<Girl>{
+
+    @Override
+    protected void rules() {
+
+        setPropertyOnContext("girl");
+
+        ruleFor(Girl::getGender)
+            .when(gender -> notNullValue().matches(gender))
+                .must(gender -> equalTo(Gender.FEMALE).matches(gender))
+                .withMessage("gender of girl must be FEMALE")
+                .withFieldName("gender");
+
+        ruleFor(Girl::getName)
+            .when(name -> not(isEmptyOrNullString()).matches(name))
+                .must(name -> containsString("Ana").matches(name))
+                .withMessage("child name must contains key Ana")
+                .withFieldName("name");
+    }
+
+}
+```
+
+#### [ValidationBoy](src/test/java/br/com/fluentvalidator/validator/ValidatorBoy.java)
+
+```java
+public class ValidatorBoy extends AbstractValidator<Boy>{
+
+    @Override
+    protected void rules() {
+
+        setPropertyOnContext("boy");
+
+        ruleFor(Boy::getGender)
+            .when(gender -> notNullValue().matches(gender))
+                .must(gender -> equalTo(Gender.MALE).matches(gender))
+                .withMessage("gender of boy must be MALE")
+                .withFieldName("gender");
+
+        ruleFor(Boy::getName)
+            .when(name -> not(isEmptyOrNullString()).matches(name))
+                .must(name -> containsString("John").matches(name))
+                .withMessage("child name must contains key John")
+                .withFieldName("name");
+    }
+
 }
 ```
 
@@ -154,41 +252,70 @@ public class ValidatorParent extends AbstractValidator<Parent> {
     @Override
     protected void rules() {
 
+        setPropertyOnContext("parent");
+
         ruleFor(Parent::getAge)
             .when(age -> notNullValue().matches(age))
-            .must(age -> greaterThanOrEqualTo(5).matches(age))
-            .withFieldName("age")
-            .withMessage("age must be greater than or equal to 10")
-            .must(age -> lessThanOrEqualTo(7).matches(age))
-            .withFieldName("age")
-            .withMessage("age must be less than or equal to 7");
+                .must(age -> greaterThanOrEqualTo(5).matches(age))
+                .withMessage("age must be greater than or equal to 10")
+                .withFieldName("age")
+            .when(age -> notNullValue().matches(age))
+                .must(age -> lessThanOrEqualTo(7).matches(age))
+                .withMessage("age must be less than or equal to 7")
+                .withFieldName("age");
 
         ruleFor(Parent::getCities)
             .when(cities -> notNullValue().matches(cities))
-            .must(cities -> hasSize(10).matches(cities))
-            .withFieldName("cities")
-            .withMessage("cities size must be 10");
+                .must(cities -> hasSize(10).matches(cities))
+                .withMessage("cities size must be 10")
+                .withFieldName("cities");
 
         ruleFor(Parent::getName)
             .when(name -> not(isEmptyOrNullString()).matches(name))
-            .must(name -> containsString("John").matches(name))
-            .withFieldName("name")
-            .withMessage("name must contains key John");
+                .must(name -> containsString("John").matches(name))
+                .withMessage("name must contains key John")
+                .withFieldName("name");
 
         ruleFor(Parent::getChildren)
             .when(children -> true)
-            .must(children -> notNullValue().matches(children))
-            .withFieldName("children")
-            .withMessage("parent's children cannot be null")
-            .must(children -> not(empty()).matches(children))
-            .withFieldName("children")
-            .withMessage("parent must have at least one child");
+                .must(children -> notNullValue().matches(children))
+                .withMessage("parent's children cannot be null")
+                .withFieldName("children")
+            .when(children -> true)
+                .must(children -> not(empty()).matches(children))
+                .withMessage("parent must have at least one child")
+                .withFieldName("children");
 
         ruleForEach(Parent::getChildren)
             .when(children -> notNullValue().matches(children))
-            .withValidator(new ValidatorChild());
+                .withValidator(new ValidatorChild());
+
+        ruleForEach(parent -> extractGirls(parent.getChildren()))
+            .when(girls -> notNullValue().matches(girls))
+                .withValidator(new ValidatorGirl());
+
+        ruleForEach(parent -> extractBoys(parent.getChildren()))
+            .when(boys -> notNullValue().matches(boys))
+                .withValidator(new ValidatorBoy());
 
     }
+
+    private Collection<Girl> extractGirls(Collection<Child> children) {
+        return Optional.ofNullable(children).orElseGet(ArrayList::new)
+                .stream()
+                .filter(Girl.class::isInstance)
+                .map(Girl.class::cast)
+                .collect(Collectors.toList());
+    }
+
+    private Collection<Boy> extractBoys(Collection<Child> children) {
+        return Optional.ofNullable(children).orElseGet(ArrayList::new)
+                .stream()
+                .filter(Boy.class::isInstance)
+                .map(Boy.class::cast)
+                .collect(Collectors.toList());
+    }
+
 }
 ```
 
@@ -204,23 +331,31 @@ public class ValidatorParent extends AbstractValidator<Parent> {
     parent.setAge(10);
     parent.setName("Ana");
     parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-    parent.setChildren(Arrays.asList(new Child("John", 5)));
+    parent.setChildren(Arrays.asList(new Girl("Barbara", 4)));
 
     final ValidationResult result = validatorParent.validate(parent);
 
     assertFalse(result.isValid());
     assertThat(result.getErrors(), not(empty()));
-    assertThat(result.getErrors(), hasSize(3));
+    assertThat(result.getErrors(), hasSize(5));
+
+    assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
     assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(10))));
     assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
     assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 
+    assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(4))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child age must be greater than or equal to 5"))));
+
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
-    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
-    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child name must contains key Ana"))));
 ```

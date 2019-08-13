@@ -9,7 +9,7 @@ public class Parent {
 	private Integer age;
 
 	private List<String> cities;
-	
+
 	private List<Child> children;
 
 	public List<Child> getChildren() {
