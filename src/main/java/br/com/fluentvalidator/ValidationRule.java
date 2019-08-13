@@ -10,6 +10,7 @@ public class ValidationRule<P> implements Validation<P> {
 
 	private String fieldName;
 	
+	@SuppressWarnings("unused")
 	private boolean critical = false;
 
 	public ValidationRule() {
