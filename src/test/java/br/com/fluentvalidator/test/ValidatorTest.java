@@ -14,8 +14,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
@@ -69,12 +74,12 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
 		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
-		
+
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
 		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
 	}
-	
+
 	@Test
 	public void validationMustBeFailWhenChildAgeGreateThanParentAgeInvalid() {
 		final Validator<Parent> validatorParent = new ValidatorParent();
@@ -132,7 +137,7 @@ public class ValidatorTest {
 		assertThat(result2.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
 		assertThat(result2.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent2.getCities()))));
 		assertThat(result2.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
-		
+
 		assertThat(result2.getErrors(), hasItem(hasProperty("field", containsString("name"))));
 		assertThat(result2.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
 		assertThat(result2.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
@@ -172,7 +177,7 @@ public class ValidatorTest {
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("field", containsString("cities"))));
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent2.getCities()))));
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
-		
+
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("field", containsString("name"))));
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
@@ -211,7 +216,7 @@ public class ValidatorTest {
 		parent.setChildren(new ArrayList<>());
 
 		final ValidationResult result = validatorParent.validate(parent);
-		
+
 		assertFalse(result.isValid());
 		assertThat(result.getErrors(), not(empty()));
 		assertThat(result.getErrors(), hasSize(1));
@@ -220,7 +225,7 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", empty())));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("parent must have at least one child"))));
 	}
-	
+
 	@Test
 	public void validationMustBeFalseWhenChildrenIsInvalid() {
 		final Validator<Parent> validatorParent = new ValidatorParent();
@@ -233,7 +238,7 @@ public class ValidatorTest {
 		parent.setChildren(Arrays.asList(new Girl("Barbara", 4)));
 
 		final ValidationResult result = validatorParent.validate(parent);
-		
+
 		assertFalse(result.isValid());
 		assertThat(result.getErrors(), not(empty()));
 		assertThat(result.getErrors(), hasSize(2));
@@ -246,7 +251,7 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(4))));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child age must be greater than or equal to 5"))));
 	}
-	
+
 	@Test
 	public void validationMustBeFalseWhenParentAndChildrenIsInvalid() {
 		final Validator<Parent> validatorParent = new ValidatorParent();
@@ -259,7 +264,7 @@ public class ValidatorTest {
 		parent.setChildren(Arrays.asList(new Girl("Barbara", 4)));
 
 		final ValidationResult result = validatorParent.validate(parent);
-		
+
 		assertFalse(result.isValid());
 		assertThat(result.getErrors(), not(empty()));
 		assertThat(result.getErrors(), hasSize(5));
@@ -282,88 +287,88 @@ public class ValidatorTest {
 
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
 		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child name must contains key Ana"))));	
-	}	
+		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child name must contains key Ana"))));
+	}
 
 	@Test
-	public void validationMultiThreadMustBeTrue() throws InterruptedException {
-		for (int i = 0; i < 10; i++) {
-			final Parent parentOne = new Parent();
+	public void validationMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
 
-			parentOne.setAge(6);
-			parentOne.setName("John Gow");
-			parentOne.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
-			parentOne.setChildren(Arrays.asList(new Boy("John", 5)));
+		final int CONCURRENT_RUNNABLE = 100000;
+		
+		final ExecutorService executor = Executors.newFixedThreadPool(100);
+		
+		final List<String> cities = Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8");
+		
+		final Collection<ValidationResult> resultsOne = new ConcurrentLinkedQueue<>();
+		
+		final Collection<ValidationResult> resultsTwo = new ConcurrentLinkedQueue<>();
 
-			final ThreadLocalTest runnableOne = new ThreadLocalTest(parentOne);
-			final Thread threadOne = new Thread(runnableOne);
+		for (int i = 0; i < CONCURRENT_RUNNABLE; i++) {
 
-			final Parent parentTwo = new Parent();
+			executor.submit(new Runnable() {
+				@Override
+				public void run() {
+					final Validator<Parent> validatorParent = new ValidatorParent();
 
-			parentTwo.setAge(10);
-			parentTwo.setName("Ana");
-			parentTwo.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-			parentTwo.setChildren(Arrays.asList(new Boy("John", 5)));
+					final Parent parent = new Parent();
 
-			final ThreadLocalTest runnableTwo = new ThreadLocalTest(parentTwo);
-			final Thread threadTwo = new Thread(runnableTwo);
+					parent.setAge(6);
+					parent.setName("John Gow");
+					parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
+					parent.setChildren(Arrays.asList(new Boy("John", 5)));
+					
+					resultsOne.add(validatorParent.validate(parent));
+				}
+			});
 
-			threadOne.start();
-			threadTwo.start();
+			executor.submit(new Runnable() {
+				@Override
+				public void run() {
 
-			threadOne.join();
-			threadTwo.join();
+					final Validator<Parent> validatorParent = new ValidatorParent();
 
-			final ValidationResult resultOne = runnableOne.results();
-			final ValidationResult resultTwo = runnableTwo.results();
+					final Parent parent = new Parent();
 
-			assertTrue(resultOne.isValid());
-			assertThat(resultOne.getErrors(), empty());
+					parent.setAge(10);
+					parent.setName("Ana");
+					parent.setCities(cities);
+					parent.setChildren(Arrays.asList(new Boy("John", 5)));
 
-			assertFalse(resultTwo.isValid());
-			assertThat(resultTwo.getErrors(), not(empty()));
-			assertThat(resultTwo.getErrors(), hasSize(3));
-
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(10))));
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
-
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parentTwo.getCities()))));
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
-			
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("field", containsString("name"))));
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
-			assertThat(resultTwo.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));	
+					resultsTwo.add(validatorParent.validate(parent));
+				}
+			});
 		}
+
+		executor.shutdown();
+
+		executor.awaitTermination(5, TimeUnit.SECONDS);		
+		
+		assertThat(resultsOne, hasSize(CONCURRENT_RUNNABLE));
+		assertThat(resultsTwo, hasSize(CONCURRENT_RUNNABLE));
+		
+		for (final ValidationResult result : resultsOne) {
+			assertTrue(result.isValid());
+			assertThat(result.getErrors(), empty());				
+		}
+
+		for (final ValidationResult result : resultsTwo) {
+			assertFalse(result.isValid());
+			assertThat(result.getErrors(), not(empty()));
+			assertThat(result.getErrors(), hasSize(3));
+
+			assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
+			assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(10))));
+			assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
+
+			assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
+			assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(cities))));
+			assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
+
+			assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
+			assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
+			assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));				
+		}
+		
 	}
 
-	class ThreadLocalTest implements Runnable {
-
-		private final Validator<Parent> validatorParent = new ValidatorParent();
-
-		private final Parent parent;
-
-		private ValidationResult results;
-
-		public ThreadLocalTest(Parent parent) {
-			this.parent = parent;
-		}
-
-		@Override
-		public void run() {
-			try {
-				final Random rand = new Random();
-				Thread.sleep(rand.nextInt(100));
-				this.results = this.validatorParent.validate(this.parent);
-			} catch (final InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		public ValidationResult results() {
-			return this.results;
-		}
-
-	}
 }
