@@ -12,9 +12,13 @@ import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.builder.WhenCollection;
 import br.com.fluentvalidator.builder.WithValidator;
 
-class InternalRuleCollectionBuilder<T, P> implements WhenCollection<T, P>, Must<T, Collection<P>, WhenCollection<T, P>>, 
-	Message<T, Collection<P>, WhenCollection<T, P>>, FieldName<T, Collection<P>, WhenCollection<T, P>>, 
-	Critical<T, Collection<P>, WhenCollection<T, P>>, WithValidator<T, Collection<P>, WhenCollection<T, P>> {
+class InternalRuleCollectionBuilder<T, P> implements 
+	WhenCollection<T, P>, 
+	Must<T, Collection<P>, WhenCollection<T, P>>, 
+	Message<T, Collection<P>, WhenCollection<T, P>>, 
+	FieldName<T, Collection<P>, WhenCollection<T, P>>, 
+	Critical<T, Collection<P>, WhenCollection<T, P>>, 
+	WithValidator<T, Collection<P>, WhenCollection<T, P>> {
 
 	private Predicate<Collection<P>> predicate = (p) -> true;
 

@@ -11,8 +11,12 @@ import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.builder.WhenProperty;
 import br.com.fluentvalidator.builder.WithValidator;
 
-class InternalRulePropertyBuilder<T, P> implements WhenProperty<T, P>, Must<T, P, WhenProperty<T, P>>, 
-	Message<T, P, WhenProperty<T, P>>, FieldName<T, P, WhenProperty<T, P>>, Critical<T, P, WhenProperty<T, P>>,
+class InternalRulePropertyBuilder<T, P> implements 
+	WhenProperty<T, P>, 
+	Must<T, P, WhenProperty<T, P>>, 
+	Message<T, P, WhenProperty<T, P>>, 
+	FieldName<T, P, WhenProperty<T, P>>, 
+	Critical<T, P, WhenProperty<T, P>>,
 	WithValidator<T, P, WhenProperty<T, P>> {
 	
 	private Predicate<P> predicate = (p) -> true;;
