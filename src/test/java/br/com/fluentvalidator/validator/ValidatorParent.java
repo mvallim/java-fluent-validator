@@ -61,7 +61,11 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 				
 		ruleForEach(Parent::getChildren)
 			.when(children -> notNullValue().matches(children))
-				.withValidator(new ValidatorChild());
+				.withValidator(new ValidatorChild())
+			.when(children -> notNullValue().matches(children))
+				.must(children -> true)
+				.withMessage("parent's children cannot be null")
+				.withFieldName("children");
 		
 		ruleForEach(parent -> extractGirls(parent.getChildren()))
 			.when(girls -> notNullValue().matches(girls))

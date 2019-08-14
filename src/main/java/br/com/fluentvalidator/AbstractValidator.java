@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
-import br.com.fluentvalidator.builder.CollectionRule;
-import br.com.fluentvalidator.builder.PropetyRule;
 import br.com.fluentvalidator.builder.Rule;
 import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.rule.CollectionRule;
+import br.com.fluentvalidator.rule.PropetyRule;
 import br.com.fluentvalidator.builder.RuleCollection;
 import br.com.fluentvalidator.builder.RuleProperty;
 

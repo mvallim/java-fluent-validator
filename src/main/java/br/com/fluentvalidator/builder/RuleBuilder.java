@@ -4,6 +4,6 @@ import java.util.function.Predicate;
 
 public interface RuleBuilder<T, P> extends Rule<T> {
 	
-	void addRule(final Predicate<P> predicate, final Rule<?> rule);
+	void addRule(final Predicate<P> predicate, final Rule<P> rule);
 	
 }

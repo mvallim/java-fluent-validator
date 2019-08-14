@@ -115,8 +115,6 @@ public class ValidatorTest {
 		parent2.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
 		parent2.setChildren(Arrays.asList(new Boy("John", 5)));
 
-		validatorParent.validate(parent2);
-
 		final ValidationResult result1 = validatorParent.validate(parent1);
 		final ValidationResult result2 = validatorParent.validate(parent2);
 
