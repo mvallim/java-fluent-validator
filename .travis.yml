@@ -1,5 +1,11 @@
 language: java
 
+addons:
+  sonarcloud:
+    organization: "mvallim"
+    token:
+      secure: Pweg7kB6MStW1bgJ1R4dge83/my6etMvFTIVXSrPI2NmYlWt2kwQhoS54gOCkfSmG/axoBfo2AxHaMcgHS0wDeifLWFz1I78S6/oCxo21zO/ivvHAAey7gbCuhV65hk7fC8ghJnWwYmkhMZEiKG0gucxVPhjze6hA2fvTfcsAFrEn7+oHY4Vb+6NTc2j8fCfgzRnWqGzciUEvOfVd34DWQMWAY3XN9923j6Z3LfGFjE3om2cZvT7h+bT8G75Gxl5FTGzt0X63kgVfnQXxg+09pyaIkFE9uY8vtf2pTqo7GLsFgQn1A4c53blAXOJdLS7EoSjLkHzRyZxnfUwH9CnYs1TDb/93m93bpZuUjVnuvju8mBMAWcBuaX8Wr9MZaa3MmJQI/oD6a/vTLYuPLbdSrbELDvggorv+HCHH6XKN/Db5K3IZ/HImmCCSDe0jeVedbbIYx+eug7lPWY15EwpgroXziVViG3QFdK+uDM/gUZARwyhQuHjw/RT0mYhOfNwVGjkHlzUPxTdDC1lpFqoe+/02eK+qK1c7yrPW21jz2kVeUBM/EH+eOSpWB9tOWRmAzd347O0VWl91NMz1saDjMLCFssHsC7dQKC8aE/J+p1fgkBn/OZBVJMtGNFPuoC6qPhdCUEgiM9w9yu5/iJvKCwpWU7KGlFA6uMLCvH94Ic=
+
 after_success:
-  - mvn jacoco:report
-  - bash <(curl -s https://codecov.io/bash)
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=mvallim_java-fluent-validator
+
