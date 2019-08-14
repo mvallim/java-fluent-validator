@@ -341,7 +341,7 @@ public class ValidatorTest {
 
 		executor.shutdown();
 
-		executor.awaitTermination(5, TimeUnit.SECONDS);		
+		executor.awaitTermination(10, TimeUnit.MINUTES);		
 		
 		assertThat(resultsOne, hasSize(CONCURRENT_RUNNABLE));
 		assertThat(resultsTwo, hasSize(CONCURRENT_RUNNABLE));
