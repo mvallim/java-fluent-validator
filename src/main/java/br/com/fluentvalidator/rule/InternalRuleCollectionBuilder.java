@@ -1,10 +1,17 @@
-package br.com.fluentvalidator.builder;
+package br.com.fluentvalidator.rule;
 
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import br.com.fluentvalidator.Validation;
-import br.com.fluentvalidator.ValidationRule;
+import br.com.fluentvalidator.builder.Critical;
+import br.com.fluentvalidator.builder.FieldName;
+import br.com.fluentvalidator.builder.Message;
+import br.com.fluentvalidator.builder.Must;
+import br.com.fluentvalidator.builder.RuleCollection;
+import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.builder.When;
+import br.com.fluentvalidator.builder.WhenCollection;
+import br.com.fluentvalidator.builder.WithValidator;
 
 class InternalRuleCollectionBuilder<T, P> implements WhenCollection<T, P>, Must<T, Collection<P>>, Message<T, Collection<P>>, FieldName<T, Collection<P>>, Critical<T, Collection<P>>, WithValidator<T, Collection<P>> {
 
@@ -12,12 +19,12 @@ class InternalRuleCollectionBuilder<T, P> implements WhenCollection<T, P>, Must<
 
 	private final RuleCollection<T, P> ruleBuilder;
 
-	private Validation<Collection<P>> validation;
+	private Validation<P, Collection<P>> validation;
 
 	public InternalRuleCollectionBuilder(final RuleCollection<T, P> ruleBuilder, final Predicate<Collection<P>> predicate) {
 		this.predicate = predicate;
 		this.ruleBuilder = ruleBuilder;
-		this.validation = new ValidationRule<>();
+		this.validation = new ValidationCollectionRule<>();
 		this.ruleBuilder.addRule(this.predicate, this.validation);
 	}
 
@@ -46,7 +53,7 @@ class InternalRuleCollectionBuilder<T, P> implements WhenCollection<T, P>, Must<
 
 	@Override
 	public WithValidator<T, Collection<P>> withValidator(final Validator<P> validator) {
-		this.ruleBuilder.addRule(this.predicate, validator);
+		this.validation.withValidator(validator);
 		return this;
 	}
 

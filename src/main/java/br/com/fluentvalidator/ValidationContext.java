@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-final class ValidationContext {
+public final class ValidationContext {
 
 	private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
 
@@ -24,7 +24,7 @@ final class ValidationContext {
 		threadLocal.remove();
 	}
 
-	static class Context {
+	public static final class Context {
 
 		private final Map<String, Object> properties = new ConcurrentHashMap<>();
 
