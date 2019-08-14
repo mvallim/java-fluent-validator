@@ -8,11 +8,12 @@ import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
 import br.com.fluentvalidator.builder.RuleProperty;
 import br.com.fluentvalidator.builder.Validator;
-import br.com.fluentvalidator.builder.When;
 import br.com.fluentvalidator.builder.WhenProperty;
 import br.com.fluentvalidator.builder.WithValidator;
 
-class InternalRulePropertyBuilder<T, P> implements WhenProperty<T, P>, Must<T, P>, Message<T, P>, FieldName<T, P>, Critical<T, P>, WithValidator<T, P> {
+class InternalRulePropertyBuilder<T, P> implements WhenProperty<T, P>, Must<T, P, WhenProperty<T, P>>, 
+	Message<T, P, WhenProperty<T, P>>, FieldName<T, P, WhenProperty<T, P>>, Critical<T, P, WhenProperty<T, P>>,
+	WithValidator<T, P, WhenProperty<T, P>> {
 	
 	private Predicate<P> predicate = (p) -> true;;
 	
@@ -28,36 +29,36 @@ class InternalRulePropertyBuilder<T, P> implements WhenProperty<T, P>, Must<T, P
 	}
 	
 	@Override
-	public FieldName<T, P> withFieldName(final String fieldName) {
+	public FieldName<T, P, WhenProperty<T, P>> withFieldName(final String fieldName) {
 		this.validation.withFieldName(fieldName);
 		return this;
 	}
 
 	@Override
-	public When<T, P> when(final Predicate<P> predicate) {
+	public WhenProperty<T, P> when(final Predicate<P> predicate) {
 		return this.ruleBuilder.when(predicate);
 	}
 
 	@Override
-	public Message<T, P> withMessage(final String message) {
+	public Message<T, P, WhenProperty<T, P>> withMessage(final String message) {
 		this.validation.withMessage(message);
 		return this;
 	}
 
 	@Override
-	public Must<T, P> must(final Predicate<P> predicate) {
+	public Must<T, P, WhenProperty<T, P>> must(final Predicate<P> predicate) {
 		this.validation.must(predicate);
 		return this;
 	}
 
 	@Override
-	public WithValidator<T, P> withValidator(final Validator<P> validator) {
+	public WithValidator<T, P, WhenProperty<T, P>> withValidator(final Validator<P> validator) {
 		this.validation.withValidator(validator);
 		return this;
 	}
 
 	@Override
-	public Critical<T, P> critical() {
+	public Critical<T, P, WhenProperty<T, P>> critical() {
 		this.validation.critical();
 		return this;
 	}

@@ -1,7 +1,7 @@
 package br.com.fluentvalidator.builder;
 
-public interface Must<T, P> {
+public interface Must<T, P, W extends When<T, P, W>> {
 	
-	Message<T, P> withMessage(final String message);
+	Message<T, P, W> withMessage(final String message);
 
 }

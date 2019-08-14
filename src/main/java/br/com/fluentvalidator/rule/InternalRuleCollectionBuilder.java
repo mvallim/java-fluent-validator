@@ -9,11 +9,12 @@ import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
 import br.com.fluentvalidator.builder.RuleCollection;
 import br.com.fluentvalidator.builder.Validator;
-import br.com.fluentvalidator.builder.When;
 import br.com.fluentvalidator.builder.WhenCollection;
 import br.com.fluentvalidator.builder.WithValidator;
 
-class InternalRuleCollectionBuilder<T, P> implements WhenCollection<T, P>, Must<T, Collection<P>>, Message<T, Collection<P>>, FieldName<T, Collection<P>>, Critical<T, Collection<P>>, WithValidator<T, Collection<P>> {
+class InternalRuleCollectionBuilder<T, P> implements WhenCollection<T, P>, Must<T, Collection<P>, WhenCollection<T, P>>, 
+	Message<T, Collection<P>, WhenCollection<T, P>>, FieldName<T, Collection<P>, WhenCollection<T, P>>, 
+	Critical<T, Collection<P>, WhenCollection<T, P>>, WithValidator<T, Collection<P>, WhenCollection<T, P>> {
 
 	private Predicate<Collection<P>> predicate = (p) -> true;
 
@@ -29,36 +30,36 @@ class InternalRuleCollectionBuilder<T, P> implements WhenCollection<T, P>, Must<
 	}
 
 	@Override
-	public FieldName<T, Collection<P>> withFieldName(final String fieldName) {
+	public FieldName<T, Collection<P>, WhenCollection<T, P>> withFieldName(final String fieldName) {
 		this.validation.withFieldName(fieldName);
 		return this;
 	}
 
 	@Override
-	public When<T, Collection<P>> when(final Predicate<Collection<P>> predicate) {
+	public WhenCollection<T, P> when(final Predicate<Collection<P>> predicate) {
 		return this.ruleBuilder.when(predicate);
 	}
 
 	@Override
-	public Message<T, Collection<P>> withMessage(final String message) {
+	public Message<T, Collection<P>, WhenCollection<T, P>> withMessage(final String message) {
 		this.validation.withMessage(message);
 		return this;
 	}
 
 	@Override
-	public Must<T, Collection<P>> must(final Predicate<Collection<P>> predicate) {
+	public Must<T, Collection<P>, WhenCollection<T, P>> must(final Predicate<Collection<P>> predicate) {
 		this.validation.must(predicate);
 		return this;
 	}
 
 	@Override
-	public WithValidator<T, Collection<P>> withValidator(final Validator<P> validator) {
+	public WithValidator<T, Collection<P>, WhenCollection<T, P>> withValidator(final Validator<P> validator) {
 		this.validation.withValidator(validator);
 		return this;
 	}
 
 	@Override
-	public Critical<T, Collection<P>> critical() {
+	public Critical<T, Collection<P>, WhenCollection<T, P>> critical() {
 		this.validation.critical();
 		return this;
 	}

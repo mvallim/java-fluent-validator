@@ -2,12 +2,12 @@ package br.com.fluentvalidator.builder;
 
 import java.util.function.Predicate;
 
-public interface Message<T, P> {
+public interface Message<T, P, W extends When<T, P, W>> {
 
-	FieldName<T, P> withFieldName(final String fieldName);
+	FieldName<T, P, W> withFieldName(final String fieldName);
 	
-	Critical<T, P> critical();
+	Critical<T, P, W> critical();
 	
-	When<T, P> when(final Predicate<P> predicate);
+	W when(final Predicate<P> predicate);
 	
 }

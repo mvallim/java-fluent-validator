@@ -2,8 +2,8 @@ package br.com.fluentvalidator.builder;
 
 import java.util.function.Predicate;
 
-public interface Critical<T, P> {
+public interface Critical<T, P, W extends When<T, P, W>> {
 
-	When<T, P> when(final Predicate<P> predicate);
+	W when(final Predicate<P> predicate);
 	
 }
