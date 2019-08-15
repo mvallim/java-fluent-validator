@@ -20,7 +20,7 @@
 		<tag>HEAD</tag>
 	</scm>
 
-	<name>Java Fluent Validator</name>
+	<name>java-fluent-validator</name>
 	<description>A Java validation framework leveraging fluent interface style.</description>
 	<url>https://github.com/mvallim/java-fluent-validator</url>
 	<inceptionYear>2019</inceptionYear>
