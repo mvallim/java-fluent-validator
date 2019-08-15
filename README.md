@@ -1,7 +1,7 @@
 # Java Fluent Validator
 
 [![Build Status](https://travis-ci.org/mvallim/java-fluent-validator.svg?branch=master)](https://travis-ci.org/mvallim/java-fluent-validator)
-[![Coverage Status](https://coveralls.io/repos/github/mvallim/java-fluent-validator/badge.svg?branch=master)](https://coveralls.io/github/mvallim/java-fluent-validator?branch=master)
+[![codecov](https://codecov.io/gh/mvallim/java-fluent-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/mvallim/java-fluent-validator)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/java-fluent-validator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/java-fluent-validator)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
