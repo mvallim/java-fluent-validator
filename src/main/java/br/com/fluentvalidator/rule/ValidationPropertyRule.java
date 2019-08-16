@@ -47,15 +47,29 @@ class ValidationPropertyRule<P> implements Validation<P, P> {
 		this.critical = true;
 	}
 
+	/*
+	 * +----------+-----------+--------+
+	 * | critical | composite | result |
+	 * +----------+-----------+--------|
+	 * | true     | true      | true   |
+	 * | true     | false     | false  |
+	 * | false    | true      | true   |
+	 * | false    | false     | true   |
+	 * +----------+-----------+--------+
+	 */
 	@Override
-	public void apply(final P instance) {
-		if (!this.must.test(instance)) {
+	public boolean apply(final P instance) {
+		boolean apply = true;
+		
+		if (!(apply = this.must.test(instance))) {
 			ValidationContext.get().addError(this.fieldName, this.message, instance);
 		}
 
 		if (Optional.ofNullable(validator).isPresent()) {
-			this.validator.apply(instance);
+			apply = this.validator.apply(instance);
 		}
+		
+		return !(Boolean.TRUE.equals(critical) && Boolean.FALSE.equals(apply));
 	}
 
 }

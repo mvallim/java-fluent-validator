@@ -48,9 +48,22 @@ class ValidationCollectionRule<P> implements Validation<P, Collection<P>> {
 		this.critical = true;
 	}
 
+	/*
+	 * +----------+-----------+--------+
+	 * | critical | composite | result |
+	 * +----------+-----------+--------|
+	 * | true     | true      | true   |
+	 * | true     | false     | false  |
+	 * | false    | true      | true   |
+	 * | false    | false     | true   |
+	 * +----------+-----------+--------+
+	 */
 	@Override
-	public void apply(final Collection<P> instances) {
-		if (!this.must.test(instances)) {
+	public boolean apply(final Collection<P> instances) {
+		
+		boolean apply = true;
+		
+		if (!(apply = this.must.test(instances))) {
 			ValidationContext.get().addError(this.fieldName, this.message, instances);
 		}
 
@@ -59,6 +72,8 @@ class ValidationCollectionRule<P> implements Validation<P, Collection<P>> {
 				this.validator.apply(instance);	
 			}
 		}
+		
+		return !(Boolean.TRUE.equals(critical) && Boolean.FALSE.equals(apply));
 	}
 
 }
