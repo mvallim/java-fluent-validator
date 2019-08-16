@@ -18,6 +18,7 @@ class ValidationPropertyRule<P> extends ValidationRule<P, P> {
 	 */
 	@Override
 	public boolean apply(final P instance) {
+		
 		boolean apply = this.getMust().test(instance);
 		
 		if (Boolean.FALSE.equals(apply)) {

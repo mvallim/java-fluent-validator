@@ -32,15 +32,13 @@ public class PropetyRule<T, P> implements RuleProperty<T, P> {
 
 	@Override
 	public boolean apply(final T instance) {
-		boolean apply = true;
 		final P value = this.propertyFunction.apply(instance);
 		for (final RuleEntry<P, P> ruleEntry : ruleEntries) {
 			if (ruleEntry.getWhen().test(value)) {
-				apply &= ruleEntry.getRule().apply(value);
+				if (Boolean.FALSE.equals(ruleEntry.getRule().apply(value))) return false;
 			}
-			if (!apply) break;
 		}
-		return apply;
+		return true;
 	}
 	
 }

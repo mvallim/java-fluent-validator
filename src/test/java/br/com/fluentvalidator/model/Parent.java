@@ -1,9 +1,12 @@
 package br.com.fluentvalidator.model;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Parent {
 
+	private String id;
+	
 	private String name;
 
 	private Integer age;
@@ -11,6 +14,19 @@ public class Parent {
 	private List<String> cities;
 
 	private List<Child> children;
+
+	
+	public Parent() {
+		this.id = UUID.randomUUID().toString();
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public List<Child> getChildren() {
 		return children;

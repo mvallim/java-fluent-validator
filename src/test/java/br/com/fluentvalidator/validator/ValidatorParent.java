@@ -27,6 +27,11 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 		
 		setPropertyOnContext("parent");
 
+		ruleFor(Parent::getId)
+			.when(id -> true)
+				.withValidator(new ValidatorId())
+				.critical();
+
 		ruleFor(Parent::getAge)
 			.when(age -> notNullValue().matches(age))
 				.must(age -> greaterThanOrEqualTo(5).matches(age))
