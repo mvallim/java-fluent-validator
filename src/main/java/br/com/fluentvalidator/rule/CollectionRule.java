@@ -32,13 +32,14 @@ public class CollectionRule<T, P> implements RuleCollection<T, P> {
 	}
 
 	@Override
-	public void apply(final T instance) {
+	public boolean apply(final T instance) {
 		final Collection<P> values = this.collectionFunction.apply(instance);
 		for (final RuleEntry<Collection<P>, Collection<P>> ruleEntry : ruleEntries) {
 			if (ruleEntry.getWhen().test(values)) {
-				ruleEntry.getRule().apply(values);	
+				if (Boolean.FALSE.equals(ruleEntry.getRule().apply(values))) return false;	
 			}
 		}
+		return true;
 	}
 
 }

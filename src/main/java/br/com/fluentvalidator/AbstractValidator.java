@@ -51,10 +51,11 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	}
 	
 	@Override
-	public void apply(final T instance) {
+	public boolean apply(final T instance) {
 		for (final Rule<T> rule : this.rules) {
-			rule.apply(instance);
-		}		
+			if (Boolean.FALSE.equals(rule.apply(instance))) return false;
+		}
+		return true;
 	}
 
 	@Override

@@ -31,13 +31,14 @@ public class PropetyRule<T, P> implements RuleProperty<T, P> {
 	}
 
 	@Override
-	public void apply(final T instance) {
+	public boolean apply(final T instance) {
 		final P value = this.propertyFunction.apply(instance);
 		for (final RuleEntry<P, P> ruleEntry : ruleEntries) {
 			if (ruleEntry.getWhen().test(value)) {
-				ruleEntry.getRule().apply(value);
+				if (Boolean.FALSE.equals(ruleEntry.getRule().apply(value))) return false;
 			}
 		}
+		return true;
 	}
 	
 }
