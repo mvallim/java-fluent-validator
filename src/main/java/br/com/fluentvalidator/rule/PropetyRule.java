@@ -35,7 +35,7 @@ public class PropetyRule<T, P> implements RuleProperty<T, P> {
 		final P value = this.propertyFunction.apply(instance);
 		for (final RuleEntry<P, P> ruleEntry : ruleEntries) {
 			if (ruleEntry.getWhen().test(value)) {
-				if (Boolean.FALSE.equals(ruleEntry.getRule().apply(value))) return false;
+				if (stopChain(ruleEntry.getRule().apply(value))) return false;
 			}
 		}
 		return true;

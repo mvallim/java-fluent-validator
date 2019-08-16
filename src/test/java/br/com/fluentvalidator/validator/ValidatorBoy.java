@@ -21,7 +21,8 @@ public class ValidatorBoy extends AbstractValidator<Boy>{
 			.when(gender -> notNullValue().matches(gender))
 				.must(gender -> equalTo(Gender.MALE).matches(gender))
 				.withMessage("gender of boy must be MALE")
-				.withFieldName("gender");
+				.withFieldName("gender")
+				.critical();
 		
 		ruleFor(Boy::getName)
 			.when(name -> not(isEmptyOrNullString()).matches(name))
