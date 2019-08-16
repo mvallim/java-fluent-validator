@@ -61,15 +61,16 @@ class ValidationCollectionRule<P> implements Validation<P, Collection<P>> {
 	@Override
 	public boolean apply(final Collection<P> instances) {
 		
-		boolean apply = true;
+		boolean apply = this.must.test(instances);
 		
-		if (!(apply = this.must.test(instances))) {
+		if (Boolean.FALSE.equals(apply)) {
 			ValidationContext.get().addError(this.fieldName, this.message, instances);
 		}
 
 		if (Optional.ofNullable(validator).isPresent()) {
 			for (final P instance : instances) {
-				this.validator.apply(instance);	
+				apply &= this.validator.apply(instance);
+				if (!apply) break;
 			}
 		}
 		

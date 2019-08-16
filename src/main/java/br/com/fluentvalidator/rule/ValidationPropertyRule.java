@@ -59,9 +59,9 @@ class ValidationPropertyRule<P> implements Validation<P, P> {
 	 */
 	@Override
 	public boolean apply(final P instance) {
-		boolean apply = true;
+		boolean apply = this.must.test(instance);
 		
-		if (!(apply = this.must.test(instance))) {
+		if (Boolean.FALSE.equals(apply)) {
 			ValidationContext.get().addError(this.fieldName, this.message, instance);
 		}
 
