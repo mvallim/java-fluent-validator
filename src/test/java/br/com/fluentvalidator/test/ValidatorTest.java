@@ -297,7 +297,7 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
 
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(10))));
+		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getAge()))));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
 
 		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
