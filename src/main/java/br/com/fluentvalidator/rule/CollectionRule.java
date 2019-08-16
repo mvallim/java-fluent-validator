@@ -36,7 +36,7 @@ public class CollectionRule<T, P> implements RuleCollection<T, P> {
 		final Collection<P> values = this.collectionFunction.apply(instance);
 		for (final RuleEntry<Collection<P>, Collection<P>> ruleEntry : ruleEntries) {
 			if (ruleEntry.getWhen().test(values)) {
-				if (Boolean.FALSE.equals(ruleEntry.getRule().apply(values))) return false;	
+				if (stopChain(ruleEntry.getRule().apply(values))) return false;	
 			}
 		}
 		return true;
