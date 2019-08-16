@@ -9,7 +9,7 @@ import br.com.fluentvalidator.builder.Validator;
 
 class ValidationCollectionRule<P> implements Validation<P, Collection<P>> {
 
-	private Predicate<Collection<P>> must = (m) -> true;
+	private Predicate<Collection<P>> must = m -> true;
 
 	private String message;
 

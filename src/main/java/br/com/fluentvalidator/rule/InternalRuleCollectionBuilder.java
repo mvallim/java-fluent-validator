@@ -20,7 +20,7 @@ class InternalRuleCollectionBuilder<T, P> implements
 	Critical<T, Collection<P>, WhenCollection<T, P>>, 
 	WithValidator<T, Collection<P>, WhenCollection<T, P>> {
 
-	private Predicate<Collection<P>> predicate = (p) -> true;
+	private Predicate<Collection<P>> predicate = p -> true;
 
 	private final RuleCollection<T, P> ruleBuilder;
 
