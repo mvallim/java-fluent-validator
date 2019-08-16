@@ -19,7 +19,7 @@ class InternalRulePropertyBuilder<T, P> implements
 	Critical<T, P, WhenProperty<T, P>>,
 	WithValidator<T, P, WhenProperty<T, P>> {
 	
-	private Predicate<P> predicate = (p) -> true;;
+	private Predicate<P> predicate = p -> true;;
 	
 	private final RuleProperty<T, P> ruleBuilder;
 

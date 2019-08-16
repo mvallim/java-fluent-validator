@@ -8,7 +8,7 @@ import br.com.fluentvalidator.builder.Validator;
 
 class ValidationPropertyRule<P> implements Validation<P, P> {
 
-	private Predicate<P> must = (m) -> true;
+	private Predicate<P> must = m -> true;
 
 	private String message;
 
