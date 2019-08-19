@@ -28,7 +28,8 @@ public class ValidatorChild extends AbstractValidator<Child>{
 			.when(age -> true)
 				.must(this::checkAgeConstraintChild)
 				.withMessage("child age must be less than age parent")
-				.withFieldName("age");
+				.withFieldName("age")
+				.critical();
 			
 		ruleFor(Child::getName)
 			.when(name -> true)

@@ -19,17 +19,14 @@ class InternalRulePropertyBuilder<T, P> implements
 	Critical<T, P, WhenProperty<T, P>>,
 	WithValidator<T, P, WhenProperty<T, P>> {
 	
-	private Predicate<P> predicate = p -> true;
-	
 	private final RuleProperty<T, P> ruleBuilder;
 
 	private Validation<P, P> validation;
 
 	public InternalRulePropertyBuilder(final RuleProperty<T, P> ruleBuilder, final Predicate<P> predicate) {
-		this.predicate = predicate;
 		this.ruleBuilder = ruleBuilder;
 		this.validation = new ValidationPropertyRule<>();
-		this.ruleBuilder.addRule(this.predicate, this.validation);
+		this.ruleBuilder.addRule(predicate, this.validation);
 	}
 	
 	@Override

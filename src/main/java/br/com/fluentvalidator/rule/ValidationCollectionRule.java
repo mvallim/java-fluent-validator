@@ -27,10 +27,7 @@ class ValidationCollectionRule<P> extends ValidationRule<P, Collection<P>> {
 		}
 
 		if (Optional.ofNullable(this.getValidator()).isPresent()) {
-			for (final P instance : instances) {
-				apply &= this.getValidator().apply(instance);
-				if (!apply) break;
-			}
+			apply = ValidationProcessor.process(instances, this.getValidator());
 		}
 		
 		return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
