@@ -312,6 +312,28 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child name must contains key Ana"))));
 	}
+	
+	@Test
+	public void validationMustBeFalseWhenParentAndChildrenIsCriticalInvalid() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
+		final Parent parent = new Parent();
+
+		parent.setAge(6);
+		parent.setName("John Gow");
+		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
+		parent.setChildren(Arrays.asList(new Girl("Barbara", 6)));
+
+		final ValidationResult result = validatorParent.validate(parent);
+
+		assertFalse(result.isValid());
+		assertThat(result.getErrors(), not(empty()));
+		assertThat(result.getErrors(), hasSize(1));
+
+		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
+		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(6))));
+		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child age must be less than age parent"))));
+	}	
 
 	@Test
 	public void validationMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {

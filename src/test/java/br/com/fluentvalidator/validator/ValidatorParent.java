@@ -26,7 +26,20 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 	protected void rules() {
 		
 		setPropertyOnContext("parent");
-
+		
+		ruleForEach(Parent::getChildren)
+			.when(children -> true)
+				.must(children -> notNullValue().matches(children))
+				.withMessage("parent's children cannot be null")
+				.withFieldName("children")
+			.when(children -> true)
+				.must(children -> not(empty()).matches(children))
+				.withMessage("parent must have at least one child")
+				.withFieldName("children")		
+			.when(children -> notNullValue().matches(children))
+				.withValidator(new ValidatorChild())
+				.critical();		
+	
 		ruleFor(Parent::getId)
 			.when(id -> true)
 				.withValidator(new ValidatorId())
@@ -53,20 +66,7 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 				.must(name -> containsString("John").matches(name))
 				.withMessage("name must contains key John")
 				.withFieldName("name");
-						
-		ruleForEach(Parent::getChildren)
-			.when(children -> true)
-				.must(children -> notNullValue().matches(children))
-				.withMessage("parent's children cannot be null")
-				.withFieldName("children")
-			.when(children -> true)
-				.must(children -> not(empty()).matches(children))
-				.withMessage("parent must have at least one child")
-				.withFieldName("children")		
-			.when(children -> notNullValue().matches(children))
-				.withValidator(new ValidatorChild())
-				.critical();
-		
+
 		ruleForEach(parent -> extractGirls(parent.getChildren()))
 			.when(girls -> notNullValue().matches(girls))
 				.withValidator(new ValidatorGirl());
