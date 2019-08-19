@@ -20,17 +20,14 @@ class InternalRuleCollectionBuilder<T, P> implements
 	Critical<T, Collection<P>, WhenCollection<T, P>>, 
 	WithValidator<T, Collection<P>, WhenCollection<T, P>> {
 
-	private Predicate<Collection<P>> predicate = p -> true;
-
 	private final RuleCollection<T, P> ruleBuilder;
 
 	private Validation<P, Collection<P>> validation;
 
 	public InternalRuleCollectionBuilder(final RuleCollection<T, P> ruleBuilder, final Predicate<Collection<P>> predicate) {
-		this.predicate = predicate;
 		this.ruleBuilder = ruleBuilder;
 		this.validation = new ValidationCollectionRule<>();
-		this.ruleBuilder.addRule(this.predicate, this.validation);
+		this.ruleBuilder.addRule(predicate, this.validation);
 	}
 
 	@Override

@@ -64,7 +64,8 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 				.withMessage("parent must have at least one child")
 				.withFieldName("children")		
 			.when(children -> notNullValue().matches(children))
-				.withValidator(new ValidatorChild());
+				.withValidator(new ValidatorChild())
+				.critical();
 		
 		ruleForEach(parent -> extractGirls(parent.getChildren()))
 			.when(girls -> notNullValue().matches(girls))

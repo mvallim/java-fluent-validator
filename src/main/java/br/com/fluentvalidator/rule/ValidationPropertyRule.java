@@ -26,7 +26,7 @@ class ValidationPropertyRule<P> extends ValidationRule<P, P> {
 		}
 
 		if (Optional.ofNullable(this.getValidator()).isPresent()) {
-			apply = this.getValidator().apply(instance);
+			apply = ValidationProcessor.process(instance, this.getValidator());
 		}
 		
 		return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
