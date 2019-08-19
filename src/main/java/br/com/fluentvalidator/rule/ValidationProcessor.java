@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import br.com.fluentvalidator.builder.Rule;
 
-final class ValidationProcessor {
+public final class ValidationProcessor {
 
 	private ValidationProcessor() {
 		super();
@@ -20,6 +20,12 @@ final class ValidationProcessor {
 		}
 		return true;
 	}
-
+	
+	public static <P> boolean process(final P value, final Collection<Rule<P>> rules) {
+		for (final Rule<P> rule : rules) {
+			if (!process(value, rule)) return false;
+		}
+		return true;
+	}
 
 }

@@ -23,7 +23,7 @@ class ValidationHandler<P> implements Rule<P> {
 
 	@Override
 	public boolean apply(final P instance) {
-		return (rule == null || (predicate.test(instance) && rule.apply(instance))) && (nextHandler == null || nextHandler.apply(instance));
+		return (predicate.test(instance) && rule.apply(instance)) && (nextHandler == null || nextHandler.apply(instance));
 	}
 
 	public ValidationHandler<P> setNextHandler(final ValidationHandler<P> nextHandler) {

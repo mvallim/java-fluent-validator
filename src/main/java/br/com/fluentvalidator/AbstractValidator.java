@@ -11,6 +11,7 @@ import br.com.fluentvalidator.builder.Rule;
 import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.rule.CollectionRule;
 import br.com.fluentvalidator.rule.PropetyRule;
+import br.com.fluentvalidator.rule.ValidationProcessor;
 import br.com.fluentvalidator.builder.RuleCollection;
 import br.com.fluentvalidator.builder.RuleProperty;
 
@@ -52,10 +53,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	
 	@Override
 	public boolean apply(final T instance) {
-		for (final Rule<T> rule : this.rules) {
-			if (Boolean.FALSE.equals(rule.apply(instance))) return false;
-		}
-		return true;
+		return ValidationProcessor.process(instance, rules);
 	}
 
 	@Override
