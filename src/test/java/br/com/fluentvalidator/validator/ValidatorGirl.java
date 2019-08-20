@@ -1,16 +1,16 @@
 package br.com.fluentvalidator.validator;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.not;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+import static br.com.fluentvalidator.predicate.StringPredicate.containsString;
+import static br.com.fluentvalidator.predicate.StringPredicate.emptyOrNullString;
 
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.model.Gender;
 import br.com.fluentvalidator.model.Girl;
 
-public class ValidatorGirl extends AbstractValidator<Girl>{
+public class ValidatorGirl extends AbstractValidator<Girl> {
 
 	@Override
 	protected void rules() {
@@ -18,14 +18,14 @@ public class ValidatorGirl extends AbstractValidator<Girl>{
 		setPropertyOnContext("girl");
 			
 		ruleFor(Girl::getGender)
-			.when(gender -> notNullValue().matches(gender))
-				.must(gender -> equalTo(Gender.FEMALE).matches(gender))
+			.when(not(nullValue(Gender.class)))
+				.must(equalTo(Gender.FEMALE))
 				.withMessage("gender of girl must be FEMALE")
 				.withFieldName("gender");
 		
 		ruleFor(Girl::getName)
-			.when(name -> not(isEmptyOrNullString()).matches(name))
-				.must(name -> containsString("Ana").matches(name))
+			.when(not(emptyOrNullString()))
+				.must(containsString("Ana"))
 				.withMessage("child name must contains key Ana")
 				.withFieldName("name");
 	}

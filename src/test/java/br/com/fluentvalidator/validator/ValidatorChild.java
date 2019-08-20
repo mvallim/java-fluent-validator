@@ -1,9 +1,10 @@
 package br.com.fluentvalidator.validator;
 
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOrEqual;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+import static br.com.fluentvalidator.predicate.StringPredicate.emptyOrNullString;
 
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.model.Child;
@@ -17,23 +18,23 @@ public class ValidatorChild extends AbstractValidator<Child>{
 		setPropertyOnContext("child");
 		
 		ruleFor(Child::getAge)
-			.when(age -> true)
-				.must(age -> notNullValue().matches(age))
+			.when(isTrue())
+				.must(not(nullValue()))
 				.withMessage("child age must be not null")
 				.withFieldName("age")
-			.when(age -> true)
-				.must(age -> greaterThanOrEqualTo(5).matches(age))
+			.when(isTrue())
+				.must(greaterThanOrEqual(5))
 				.withMessage("child age must be greater than or equal to 5")
 				.withFieldName("age")
-			.when(age -> true)
+			.when(isTrue())
 				.must(this::checkAgeConstraintChild)
 				.withMessage("child age must be less than age parent")
 				.withFieldName("age")
 				.critical();
 			
 		ruleFor(Child::getName)
-			.when(name -> true)
-				.must(name -> not(isEmptyOrNullString()).matches(name))
+			.when(isTrue())
+				.must(not(emptyOrNullString()))
 				.withMessage("child name must be not null or empty")
 				.withFieldName("name");
 
