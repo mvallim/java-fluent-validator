@@ -1,6 +1,6 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.CollectionPredicate.empty;
+import static br.com.fluentvalidator.predicate.CollectionPredicate.*;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasItems;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSize;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.between;
@@ -11,15 +11,15 @@ import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThanOrEqu
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isFalse;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
-import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
-import static br.com.fluentvalidator.predicate.StringPredicate.containsString;
-import static br.com.fluentvalidator.predicate.StringPredicate.emptyOrNullString;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.*;
 import static br.com.fluentvalidator.predicate.StringPredicate.matches;
-import static br.com.fluentvalidator.predicate.StringPredicate.siszeGreaterThan;
-import static br.com.fluentvalidator.predicate.StringPredicate.sizeBetween;
-import static br.com.fluentvalidator.predicate.StringPredicate.sizeGreaterThanOrEqual;
-import static br.com.fluentvalidator.predicate.StringPredicate.sizeLessThan;
-import static br.com.fluentvalidator.predicate.StringPredicate.sizeLessThanOrEqual;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeBetween;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeGreaterThan;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeGreaterThanOrEqual;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeLessThan;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeLessThanOrEqual;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -43,30 +43,30 @@ public class PredicateTest {
 	@Test
 	public void testStringPredicates() {
 		
-		assertTrue(siszeGreaterThan(1).test("he"));
-		assertFalse(siszeGreaterThan(2).test("he"));
+		assertTrue(stringSizeGreaterThan(1).test("he"));
+		assertFalse(stringSizeGreaterThan(2).test("he"));
 		
-		assertTrue(sizeLessThan(6).test("hello"));
-		assertFalse(sizeLessThan(5).test("hello"));
+		assertTrue(stringSizeLessThan(6).test("hello"));
+		assertFalse(stringSizeLessThan(5).test("hello"));
 		
-		assertTrue(sizeGreaterThanOrEqual(2).test("he"));
-		assertFalse(sizeGreaterThanOrEqual(3).test("he"));
+		assertTrue(stringSizeGreaterThanOrEqual(2).test("he"));
+		assertFalse(stringSizeGreaterThanOrEqual(3).test("he"));
 		
-		assertTrue(sizeLessThanOrEqual(5).test("hello"));
-		assertFalse(sizeLessThanOrEqual(4).test("hello"));
+		assertTrue(stringSizeLessThanOrEqual(5).test("hello"));
+		assertFalse(stringSizeLessThanOrEqual(4).test("hello"));
 		
-		assertTrue(sizeBetween(0, 5).test("hello"));
-		assertFalse(sizeBetween(5, 0).test("hello"));
+		assertTrue(stringSizeBetween(0, 5).test("hello"));
+		assertFalse(stringSizeBetween(5, 0).test("hello"));
 		
-		assertTrue(containsString("lo").test("hello"));
-		assertFalse(containsString("xo").test("hello"));
+		assertTrue(stringContains("lo").test("hello"));
+		assertFalse(stringContains("xo").test("hello"));
 		
 		assertTrue(matches("^h.*o$").test("hello"));
 		assertFalse(matches("^x$").test("hello"));
 		
-		assertTrue(emptyOrNullString().test(""));
-		assertTrue(emptyOrNullString().test(null));
-		assertFalse(emptyOrNullString().test("o"));
+		assertTrue(stringEmptyOrNull().test(""));
+		assertTrue(stringEmptyOrNull().test(null));
+		assertFalse(stringEmptyOrNull().test("o"));
 	}
 	
 	@Test
@@ -76,6 +76,9 @@ public class PredicateTest {
 		
 		assertTrue(nullValue(String.class).test(null));
 		assertFalse(nullValue(String.class).test("he"));
+		
+		assertTrue(equalTo("1").test("1"));
+		assertFalse(equalTo("1").test("he"));
 	}
 	
 	@Test
@@ -188,13 +191,21 @@ public class PredicateTest {
 	
 	@Test
 	public void testCollectionPredicates() {
+		final String element = "1";
+		
 		assertTrue(empty().test(Arrays.asList()));
-		assertFalse(empty().test(Arrays.asList("1")));
+		assertFalse(empty().test(Arrays.asList(element)));
 		
-		assertTrue(hasItems().test(Arrays.asList("1")));
-		assertFalse(hasItems().test(Arrays.asList()));
+		assertTrue(hasItems(element).test(Arrays.asList(element)));
+		assertFalse(hasItems("1").test(Arrays.asList()));
 		
-		assertTrue(hasSize(1).test(Arrays.asList("1")));
+		assertTrue(hasItem(element).test(Arrays.asList(element)));
+		assertFalse(hasItem("1").test(Arrays.asList()));
+		
+		assertTrue(hasAny(element).test(Arrays.asList(element)));
+		assertFalse(hasAny("1").test(Arrays.asList()));
+		
+		assertTrue(hasSize(1).test(Arrays.asList(element)));
 		assertFalse(hasSize(1).test(Arrays.asList()));
 	}
 

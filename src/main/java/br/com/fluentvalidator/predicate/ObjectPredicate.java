@@ -15,12 +15,17 @@ public final class ObjectPredicate {
 		return is(Objects::isNull);
 	}
 	
+	@SuppressWarnings("all")
 	public static <T> Predicate<T> nullValue(final Class<T> clazz) {
 		return is(Objects::isNull);
 	}
 	
 	public static <T> Predicate<T> equalTo(final T obj) {
-		return is(equalTo -> equalTo.equals(obj));
+		return is(obj::equals);
+	}
+	
+	public static <T> Predicate<T> instanceOf(final Class<?> clazz) {
+		return is(clazz::isInstance);
 	}
 
 }

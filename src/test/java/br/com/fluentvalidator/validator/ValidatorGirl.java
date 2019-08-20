@@ -3,8 +3,8 @@ package br.com.fluentvalidator.validator;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
-import static br.com.fluentvalidator.predicate.StringPredicate.containsString;
-import static br.com.fluentvalidator.predicate.StringPredicate.emptyOrNullString;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.model.Gender;
@@ -24,8 +24,8 @@ public class ValidatorGirl extends AbstractValidator<Girl> {
 				.withFieldName("gender");
 		
 		ruleFor(Girl::getName)
-			.when(not(emptyOrNullString()))
-				.must(containsString("Ana"))
+			.when(not(stringEmptyOrNull()))
+				.must(stringContains("Ana"))
 				.withMessage("child name must contains key Ana")
 				.withFieldName("name");
 	}
