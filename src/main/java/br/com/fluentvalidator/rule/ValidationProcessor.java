@@ -16,7 +16,7 @@ public final class ValidationProcessor {
 	
 	public static <P> boolean process(final Collection<P> values, final Rule<P> rule) {
 		for (final P value : values) {
-			if (!rule.apply(value)) return false;
+			if (!process(value, rule)) return false;
 		}
 		return true;
 	}
