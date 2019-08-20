@@ -79,6 +79,9 @@ public class PredicateTest {
 		
 		assertTrue(equalTo("1").test("1"));
 		assertFalse(equalTo("1").test("he"));
+		
+		assertTrue(instanceOf(String.class).test("1"));
+		assertFalse(instanceOf(String.class).test(1));		
 	}
 	
 	@Test

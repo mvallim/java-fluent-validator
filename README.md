@@ -18,12 +18,27 @@ This chapter will show you how to get started with Java Fluent Validator.
 
 In order to use Java Fluent Validator within a Maven project, simply add the following dependency to your pom.xml. There are no other dependencies for Java Fluent Validator, which means other unwanted libraries will not overwhelm your project.
 
+You can pull it from the central Maven repositories:
+
 ```xml
 <dependency>
     <groupId>com.github.mvallim</groupId>
     <artifactId>java-fluent-validator</artifactId>
     <version>0.0.4</version>
 </dependency>
+```
+
+If you want to try a snapshot version, add the following repository:
+
+```xml
+<repository>
+    <id>sonatype-snapshots</id>
+    <name>Sonatype Snapshots</name>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
 ```
 
 ### 1.2 Create a domain model
@@ -165,22 +180,23 @@ public class ValidatorChild extends AbstractValidator<Child>{
         setPropertyOnContext("child");
 
         ruleFor(Child::getAge)
-            .when(age -> true)
-                .must(age -> notNullValue().matches(age))
+            .when(isTrue())
+                .must(not(nullValue()))
                 .withMessage("child age must be not null")
                 .withFieldName("age")
-            .when(age -> true)
-                .must(age -> greaterThanOrEqualTo(5).matches(age))
+            .when(isTrue())
+                .must(greaterThanOrEqual(5))
                 .withMessage("child age must be greater than or equal to 5")
                 .withFieldName("age")
-            .when(age -> true)
+            .when(isTrue())
                 .must(this::checkAgeConstraintChild)
                 .withMessage("child age must be less than age parent")
-                .withFieldName("age");
+                .withFieldName("age")
+                .critical();
 
         ruleFor(Child::getName)
-            .when(name -> true)
-                .must(name -> not(isEmptyOrNullString()).matches(name))
+            .when(isTrue())
+                .must(not(stringEmptyOrNull()))
                 .withMessage("child name must be not null or empty")
                 .withFieldName("name");
 
@@ -204,14 +220,14 @@ public class ValidatorGirl extends AbstractValidator<Girl>{
         setPropertyOnContext("girl");
 
         ruleFor(Girl::getGender)
-            .when(gender -> notNullValue().matches(gender))
-                .must(gender -> equalTo(Gender.FEMALE).matches(gender))
+            .when(not(nullValue(Gender.class)))
+                .must(equalTo(Gender.FEMALE))
                 .withMessage("gender of girl must be FEMALE")
                 .withFieldName("gender");
 
         ruleFor(Girl::getName)
-            .when(name -> not(isEmptyOrNullString()).matches(name))
-                .must(name -> containsString("Ana").matches(name))
+            .when(not(stringEmptyOrNull()))
+                .must(stringContains("Ana"))
                 .withMessage("child name must contains key Ana")
                 .withFieldName("name");
     }
@@ -230,14 +246,15 @@ public class ValidatorBoy extends AbstractValidator<Boy>{
         setPropertyOnContext("boy");
 
         ruleFor(Boy::getGender)
-            .when(gender -> notNullValue().matches(gender))
-                .must(gender -> equalTo(Gender.MALE).matches(gender))
+            .when(not(nullValue(Gender.class)))
+                .must(equalTo(Gender.MALE))
                 .withMessage("gender of boy must be MALE")
-                .withFieldName("gender");
+                .withFieldName("gender")
+                .critical();
 
         ruleFor(Boy::getName)
-            .when(name -> not(isEmptyOrNullString()).matches(name))
-                .must(name -> containsString("John").matches(name))
+            .when(not(stringEmptyOrNull()))
+                .must(stringContains("John"))
                 .withMessage("child name must contains key John")
                 .withFieldName("name");
     }
@@ -255,49 +272,54 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 
         setPropertyOnContext("parent");
 
+        ruleForEach(Parent::getChildren)
+            .when(isTrue())
+                .must(not(nullValue()))
+                .withMessage("parent's children cannot be null")
+                .withFieldName("children")
+            .when(not(nullValue()))
+                .must(not(empty()))
+                .withMessage("parent must have at least one child")
+                .withFieldName("children")
+            .when(not(nullValue()))
+                .withValidator(new ValidatorChild())
+                .critical();
+
+        ruleFor(Parent::getId)
+            .when(isTrue())
+                .withValidator(new ValidatorId())
+                .critical();
+
         ruleFor(Parent::getAge)
-            .when(age -> notNullValue().matches(age))
-                .must(age -> greaterThanOrEqualTo(5).matches(age))
+            .when(not(nullValue()))
+                .must(greaterThanOrEqual(5))
                 .withMessage("age must be greater than or equal to 10")
                 .withFieldName("age")
-            .when(age -> notNullValue().matches(age))
-                .must(age -> lessThanOrEqualTo(7).matches(age))
+            .when(not(nullValue()))
+                .must(lessThanOrEqual(7))
                 .withMessage("age must be less than or equal to 7")
                 .withFieldName("age");
 
         ruleFor(Parent::getCities)
-            .when(cities -> notNullValue().matches(cities))
-                .must(cities -> hasSize(10).matches(cities))
+            .when(not(nullValue()))
+                .must(hasSize(10))
                 .withMessage("cities size must be 10")
                 .withFieldName("cities");
 
         ruleFor(Parent::getName)
-            .when(name -> not(isEmptyOrNullString()).matches(name))
-                .must(name -> containsString("John").matches(name))
+            .when(not(stringEmptyOrNull()))
+                .must(stringContains("John"))
                 .withMessage("name must contains key John")
                 .withFieldName("name");
 
-        ruleFor(Parent::getChildren)
-            .when(children -> true)
-                .must(children -> notNullValue().matches(children))
-                .withMessage("parent's children cannot be null")
-                .withFieldName("children")
-            .when(children -> true)
-                .must(children -> not(empty()).matches(children))
-                .withMessage("parent must have at least one child")
-                .withFieldName("children");
-
-        ruleForEach(Parent::getChildren)
-            .when(children -> notNullValue().matches(children))
-                .withValidator(new ValidatorChild());
-
         ruleForEach(parent -> extractGirls(parent.getChildren()))
-            .when(girls -> notNullValue().matches(girls))
+            .when(not(nullValue()))
                 .withValidator(new ValidatorGirl());
 
         ruleForEach(parent -> extractBoys(parent.getChildren()))
-            .when(boys -> notNullValue().matches(boys))
-                .withValidator(new ValidatorBoy());
+            .when(not(nullValue()))
+                .withValidator(new ValidatorBoy())
+                .critical();
 
     }
 
