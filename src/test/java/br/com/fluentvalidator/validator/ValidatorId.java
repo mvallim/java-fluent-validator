@@ -1,5 +1,8 @@
 package br.com.fluentvalidator.validator;
 
+import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
+import static br.com.fluentvalidator.predicate.StringPredicate.matches;
+
 import br.com.fluentvalidator.AbstractValidator;
 
 public class ValidatorId extends AbstractValidator<String>{
@@ -12,8 +15,8 @@ public class ValidatorId extends AbstractValidator<String>{
 		setPropertyOnContext("id");
 			
 		ruleFor(id -> id)
-			.when(id -> true)
-				.must(id -> id.matches(UUID_REGEX))
+			.when(isTrue())
+				.must(matches(UUID_REGEX))
 				.withMessage("id not matching the pattern of a UUID")
 				.withFieldName("id")
 				.critical();

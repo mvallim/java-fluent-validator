@@ -1,13 +1,14 @@
 package br.com.fluentvalidator.validator;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
+import static br.com.fluentvalidator.predicate.CollectionPredicate.empty;
+import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSize;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOrEqual;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThanOrEqual;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+import static br.com.fluentvalidator.predicate.StringPredicate.containsString;
+import static br.com.fluentvalidator.predicate.StringPredicate.emptyOrNullString;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,51 +29,51 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 		setPropertyOnContext("parent");
 		
 		ruleForEach(Parent::getChildren)
-			.when(children -> true)
-				.must(children -> notNullValue().matches(children))
+			.when(isTrue())
+				.must(not(nullValue()))
 				.withMessage("parent's children cannot be null")
 				.withFieldName("children")
-			.when(children -> true)
-				.must(children -> not(empty()).matches(children))
+			.when(not(nullValue()))
+				.must(not(empty()))
 				.withMessage("parent must have at least one child")
 				.withFieldName("children")		
-			.when(children -> notNullValue().matches(children))
+			.when(not(nullValue()))
 				.withValidator(new ValidatorChild())
 				.critical();		
 	
 		ruleFor(Parent::getId)
-			.when(id -> true)
+			.when(isTrue())
 				.withValidator(new ValidatorId())
 				.critical();
 
 		ruleFor(Parent::getAge)
-			.when(age -> notNullValue().matches(age))
-				.must(age -> greaterThanOrEqualTo(5).matches(age))
+			.when(not(nullValue()))
+				.must(greaterThanOrEqual(5))
 				.withMessage("age must be greater than or equal to 10")
 				.withFieldName("age")
-			.when(age -> notNullValue().matches(age))
-				.must(age -> lessThanOrEqualTo(7).matches(age))
+			.when(not(nullValue()))
+				.must(lessThanOrEqual(7))
 				.withMessage("age must be less than or equal to 7")
 				.withFieldName("age");
 
 		ruleFor(Parent::getCities)
-			.when(cities -> notNullValue().matches(cities))
-				.must(cities -> hasSize(10).matches(cities))
+			.when(not(nullValue()))
+				.must(hasSize(10))
 				.withMessage("cities size must be 10")
 				.withFieldName("cities");
 
 		ruleFor(Parent::getName)
-			.when(name -> not(isEmptyOrNullString()).matches(name))
-				.must(name -> containsString("John").matches(name))
+			.when(not(emptyOrNullString()))
+				.must(containsString("John"))
 				.withMessage("name must contains key John")
 				.withFieldName("name");
 
 		ruleForEach(parent -> extractGirls(parent.getChildren()))
-			.when(girls -> notNullValue().matches(girls))
+			.when(not(nullValue()))
 				.withValidator(new ValidatorGirl());
 		
 		ruleForEach(parent -> extractBoys(parent.getChildren()))
-			.when(boys -> notNullValue().matches(boys))
+			.when(not(nullValue()))
 				.withValidator(new ValidatorBoy())
 				.critical();
 

@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.test;
+package br.com.fluentvalidator;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
-import br.com.fluentvalidator.ValidationResult;
 import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
