@@ -7,8 +7,8 @@ import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThanOrEqu
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
-import static br.com.fluentvalidator.predicate.StringPredicate.containsString;
-import static br.com.fluentvalidator.predicate.StringPredicate.emptyOrNullString;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,8 +63,8 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 				.withFieldName("cities");
 
 		ruleFor(Parent::getName)
-			.when(not(emptyOrNullString()))
-				.must(containsString("John"))
+			.when(not(stringEmptyOrNull()))
+				.must(stringContains("John"))
 				.withMessage("name must contains key John")
 				.withFieldName("name");
 

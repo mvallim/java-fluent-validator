@@ -4,7 +4,7 @@ import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOr
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
-import static br.com.fluentvalidator.predicate.StringPredicate.emptyOrNullString;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.model.Child;
@@ -34,7 +34,7 @@ public class ValidatorChild extends AbstractValidator<Child>{
 			
 		ruleFor(Child::getName)
 			.when(isTrue())
-				.must(not(emptyOrNullString()))
+				.must(not(stringEmptyOrNull()))
 				.withMessage("child name must be not null or empty")
 				.withFieldName("name");
 

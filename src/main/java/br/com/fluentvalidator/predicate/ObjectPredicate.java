@@ -21,7 +21,11 @@ public final class ObjectPredicate {
 	}
 	
 	public static <T> Predicate<T> equalTo(final T obj) {
-		return is(equalTo -> equalTo.equals(obj));
+		return is(obj::equals);
+	}
+	
+	public static <T> Predicate<T> instanceOf(final Class<?> clazz) {
+		return is(clazz::isInstance);
 	}
 
 }

@@ -11,31 +11,31 @@ public final class StringPredicate {
 		super();
 	}
 
-	public static Predicate<String> siszeGreaterThan(final int size) {
+	public static Predicate<String> stringSizeGreaterThan(final int size) {
 		return is(moreThan -> moreThan.length() > size);
 	}
 
-	public static Predicate<String> sizeLessThan(final int size) {
+	public static Predicate<String> stringSizeLessThan(final int size) {
 		return is(lessThan -> lessThan.length() < size);
 	}
 
-	public static Predicate<String> sizeGreaterThanOrEqual(final int size) {
+	public static Predicate<String> stringSizeGreaterThanOrEqual(final int size) {
 		return is(moreThanOrEqual -> moreThanOrEqual.length() >= size);
 	}
 
-	public static Predicate<String> sizeLessThanOrEqual(final int size) {
+	public static Predicate<String> stringSizeLessThanOrEqual(final int size) {
 		return is(lessThanOrEqual -> lessThanOrEqual.length() <= size);
 	}
 
-	public static Predicate<String> sizeBetween(final int minSize, final int maxSize) {
-		return is(sizeGreaterThanOrEqual(minSize).and(sizeLessThanOrEqual(maxSize)));
+	public static Predicate<String> stringSizeBetween(final int minSize, final int maxSize) {
+		return is(stringSizeGreaterThanOrEqual(minSize).and(stringSizeLessThanOrEqual(maxSize)));
 	}
 
-	public static Predicate<String> emptyOrNullString() {
+	public static Predicate<String> stringEmptyOrNull() {
 		return is(nullValue(String.class)).or(String::isEmpty);
 	}
 
-	public static Predicate<String> containsString(final String str) {
+	public static Predicate<String> stringContains(final String str) {
 		return is(contains -> contains.contains(str));
 	}
 
