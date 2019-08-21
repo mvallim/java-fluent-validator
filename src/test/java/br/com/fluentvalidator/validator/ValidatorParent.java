@@ -32,6 +32,7 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 			.when(isTrue())
 				.must(not(nullValue()))
 				.withMessage("parent's children cannot be null")
+				.withCode("555")
 				.withFieldName("children")
 			.when(not(nullValue()))
 				.must(not(empty()))

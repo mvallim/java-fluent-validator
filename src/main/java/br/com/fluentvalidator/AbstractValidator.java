@@ -8,25 +8,25 @@ import java.util.List;
 import java.util.function.Function;
 
 import br.com.fluentvalidator.builder.Rule;
+import br.com.fluentvalidator.builder.RuleCollection;
+import br.com.fluentvalidator.builder.RuleProperty;
 import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.rule.CollectionRule;
 import br.com.fluentvalidator.rule.PropetyRule;
 import br.com.fluentvalidator.rule.ValidationProcessor;
-import br.com.fluentvalidator.builder.RuleCollection;
-import br.com.fluentvalidator.builder.RuleProperty;
 
 public abstract class AbstractValidator<T> implements Validator<T> {
 
 	private final List<Rule<T>> rules = new LinkedList<>();
 
 	private String property;
-
+	
 	protected AbstractValidator() {
-		this.rules();
+		super();
 	}
-
+	
 	protected abstract void rules();
-
+	
 	public void setPropertyOnContext(final String property) {
 		this.property = property;
 	}
@@ -34,10 +34,9 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	public <P> P getPropertyOnContext(final String property, final Class<P> clazz) {
 		return ValidationContext.get().getProperty(property, clazz);
 	}
-
+		
 	@Override
 	public ValidationResult validate(final T instance) {
-		ValidationContext.get().addProperty(this.property, instance);
 		apply(instance);
 		return ValidationContext.get().getValidationResult();
 	}
@@ -53,6 +52,8 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	
 	@Override
 	public boolean apply(final T instance) {
+		LazyInitializer.initialize(this);
+		ValidationContext.get().setProperty(this.property, instance);
 		return ValidationProcessor.process(instance, rules);
 	}
 

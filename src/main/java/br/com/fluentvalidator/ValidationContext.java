@@ -30,11 +30,11 @@ public final class ValidationContext {
 
 		private final Queue<Error> errors = new ConcurrentLinkedQueue<>();
 
-		public void addError(final String field, final String message, final Object attemptedValue) {
-			this.errors.add(Error.create(field, message, attemptedValue));
+		public void addError(final String field, final String message, final String code, final Object attemptedValue) {
+			this.errors.add(Error.create(field, message, code, attemptedValue));
 		}
 
-		public void addProperty(final String property, final Object value) {
+		public void setProperty(final String property, final Object value) {
 			this.properties.put(property, value);
 		}
 
@@ -46,6 +46,7 @@ public final class ValidationContext {
 			ValidationContext.remove();
 			return this.errors.isEmpty() ? ValidationResult.ok() : ValidationResult.fail(this.errors);
 		}
+
 	}
 
 }

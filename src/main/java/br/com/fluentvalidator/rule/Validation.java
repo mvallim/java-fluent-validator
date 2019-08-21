@@ -13,6 +13,8 @@ interface Validation<T, P> extends Rule<P> {
 
 	void withMessage(final String message);
 	
+	void withCode(final String code);
+	
 	void withValidator(final Validator<T> validator);
 
 	void critical();
