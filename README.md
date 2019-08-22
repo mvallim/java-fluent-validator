@@ -640,73 +640,99 @@ public class ValidatorSpringTest {
 
 ### 4.1 validate instance
 
-```java
-ValidationResult validate(final T instance);
-```
+* `validate(final T instance)`
 
 ### 4.2 validate collection
 
-```java
-List<ValidationResult> validate(final Collection<T> instances);
-```
+* `validate(final Collection<T> instances)`
 
 ### 4.3 ruleFor instance
 
-```java
-<P> RuleProperty<T, P> ruleFor(final Function<T, P> function);
-```
+* `ruleFor(final Function<T, P> function)`
 
 ### 4.3 ruleForEach collection
 
-```java
-<P> RuleCollection<T, P> ruleForEach(final Function<T, Collection<P>> function);
-```
+* `ruleForEach(final Function<T, Collection<P>> function)`
 
 ## 5. Chain methods
 
 ### 5.1 when condition to validate
 
-```java
-when(final Predicate<T> predicate)
-```
+* `when(final Predicate<T> predicate)`
 
 ### 5.2 must condition to valid
 
-```java
-must(final Predicate<T> predicate)
-```
+* `must(final Predicate<T> predicate)`
 
-### 5.3 withMessage when must not be true
+### 5.3 withMessage when `must` condition not be true
 
-```java
-withMessage(final String message)
-```
+* `withMessage(final String message)`
 
-### 5.4 withCode when must not be true
+### 5.4 withCode when `must` condition not be true
 
-```java
-withCode(final String code)
-```
+* `withCode(final String code)`
 
-### 5.5 withFieldName when must not be true
+### 5.5 withFieldName when `must` condition not be true
 
-```java
-withFieldName(final String fieldName)
-```
+* `withFieldName(final String fieldName)`
 
 ### 5.6 withValidator to validate object
 
-```java
-withValidator(final Validator<P> validator)
-```
+* `withValidator(final Validator<P> validator)`
 
 ### 5.7 critical path in chain validation
 
-```java
-critical()
-```
+* `critical()`
 
-## 6. Examples
+## 6. Predicates
+
+This is a functional interface and can therefore be used as the assignment target for a lambda expression or method reference.
+
+Represents a predicate (boolean-valued function) of one argument.
+
+### 6.1 Logical
+
+* `not(final Predicate<T> predicate)`
+* `isTrue()`
+* `isFalse()`
+
+### 6.2 Object
+
+* `nullValue()`
+* `nullValue(final Class<T> clazz)`
+* `equalTo(final T obj)`
+* `instanceOf(final Class<?> clazz)`
+
+### 6.3 String
+
+* `stringSizeGreaterThan(final int size)`
+* `stringSizeLessThan(final int size)`
+* `stringSizeGreaterThanOrEqual(final int size)`
+* `stringSizeLessThanOrEqual(final int size)`
+* `stringSizeBetween(final int minSize, final int maxSize)`
+* `stringEmptyOrNull()`
+* `stringContains(final String str)`
+* `matches(final String regex)`
+
+### 6.4 Comparable
+
+* `lessThan(final T max)`
+* `greaterThan(final T min)`
+* `greaterThanOrEqual(final T min)`
+* `lessThanOrEqual(final T max)`
+* `between(final T min, final T max)`
+
+### 6.5 Collection
+
+* `empty()`
+* `hasItem(final Object object)`
+* `hasItems(final Collection<Object> objects)`
+* `hasItems(final Object... objects)`
+* `hasAny(final Collection<Object> objects)`
+* `hasAny(final Object... objects)`
+* `hasSize(final int size)`
+
+## 7. Examples
 
 All test cases or samples can be found from the below links:
 
