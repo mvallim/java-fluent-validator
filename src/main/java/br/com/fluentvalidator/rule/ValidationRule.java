@@ -1,10 +1,11 @@
 package br.com.fluentvalidator.rule;
 
-import java.util.Optional;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import br.com.fluentvalidator.ValidationContext;
 import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.exception.ValidationException;
 
 abstract class ValidationRule<P, A> implements Validation<P, A> {
 
@@ -17,6 +18,8 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 	private String fieldName;
 
 	private boolean critical;
+	
+	private Class<? extends ValidationException> criticalException;
 
 	private Validator<P> validator;
 
@@ -77,6 +80,10 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 	public void critical() {
 		this.critical = true;
 	}
+	
+	public void critical(final Class<? extends ValidationException> clazz) {
+		this.criticalException = clazz;
+	}
 
 	/*
 	 * +----------+-----------+--------+
@@ -96,9 +103,13 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 		if (Boolean.FALSE.equals(apply)) {
 			ValidationContext.get().addError(this.getFieldName(), this.getMessage(), this.getCode(), instance);
 		}
-		
-		if (Optional.ofNullable(this.getValidator()).isPresent()) {
+				
+		if (Objects.nonNull(this.getValidator())) {
 			apply = applyValidator(instance);
+		}
+		
+		if (Objects.nonNull(criticalException) && Boolean.FALSE.equals(apply)) {
+			throw ValidationException.create(criticalException);
 		}
 		
 		return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));

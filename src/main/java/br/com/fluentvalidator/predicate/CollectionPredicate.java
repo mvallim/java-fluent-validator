@@ -13,23 +13,33 @@ public final class CollectionPredicate {
 	}
 
 	public static <T extends Collection<?>> Predicate<T> empty() {
-		return is(Collection::isEmpty);
+		return is(empty -> {
+			Assertions.checkNotNull(empty, "empty");
+			return empty.isEmpty();
+		});
 	}
 
 	public static <T extends Collection<?>> Predicate<T> hasItem(final Object object) {
-		return is(hasItem -> hasItem.contains(object));
+		return is(hasItem -> {
+			Assertions.checkNotNull(hasItem, "hasItem");
+			return hasItem.contains(object);
+		});
 	}
 	
-	public static <T extends Collection<?>> Predicate<T> hasItems(final Collection<Object> objects) {
-		return is(hasItems -> hasItems.containsAll(objects));
+	public static <T extends Collection<?>> Predicate<T> hasItems(final Collection<?> objects) {
+		return is(hasItems -> {
+			Assertions.checkNotNull(hasItems, "hasItems");
+			return hasItems.containsAll(objects);
+		});
 	}
 
 	public static <T extends Collection<?>> Predicate<T> hasItems(final Object... objects) {
 		return is(hasItems(Arrays.asList(objects)));
 	}
 	
-	public static <T extends Collection<?>> Predicate<T> hasAny(final Collection<Object> objects) {
-		return is(hasItems -> { 
+	public static <T extends Collection<?>> Predicate<T> hasAny(final Collection<?> objects) {
+		return is(hasItems -> {
+			Assertions.checkNotNull(hasItems, "hasAny");
 			for (final Object object : objects) {
 				if (hasItems.contains(object)) return true;
 			}
@@ -42,7 +52,10 @@ public final class CollectionPredicate {
 	}	
 
 	public static <T extends Collection<?>> Predicate<T> hasSize(final int size) {
-		return is(empty -> size == empty.size());
+		return is(hasSize -> {
+			Assertions.checkNotNull(hasSize, "hasSize");
+			return hasSize.size() == size;
+		});
 	}
 
 }

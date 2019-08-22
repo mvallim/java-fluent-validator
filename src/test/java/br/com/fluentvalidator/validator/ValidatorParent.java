@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.fluentvalidator.AbstractValidator;
+import br.com.fluentvalidator.exception.ValidatorSampleException;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Child;
 import br.com.fluentvalidator.model.Girl;
@@ -45,7 +46,7 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 		ruleFor(Parent::getId)
 			.when(isTrue())
 				.withValidator(new ValidatorId())
-				.critical();
+				.critical(ValidatorSampleException.class);
 
 		ruleFor(Parent::getAge)
 			.when(not(nullValue()))
@@ -77,7 +78,7 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 		ruleForEach(parent -> extractBoys(parent.getChildren()))
 			.when(not(nullValue()))
 				.withValidator(new ValidatorBoy())
-				.critical();
+				.critical(ValidatorSampleException.class);
 
 	}
 	

@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.exception.ValidationException;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
@@ -80,7 +81,7 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
 	}
 	
-	@Test
+	@Test(expected = ValidationException.class)
 	public void validationMustBeFailWhenFieldOfParentAreInvalidCriticalValidation() {
 		final Validator<Parent> validatorParent = new ValidatorParent();
 

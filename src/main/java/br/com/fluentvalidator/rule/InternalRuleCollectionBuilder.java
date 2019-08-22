@@ -12,6 +12,7 @@ import br.com.fluentvalidator.builder.RuleCollection;
 import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.builder.WhenCollection;
 import br.com.fluentvalidator.builder.WithValidator;
+import br.com.fluentvalidator.exception.ValidationException;
 
 class InternalRuleCollectionBuilder<T, P> implements 
 	WhenCollection<T, P>, 
@@ -70,6 +71,12 @@ class InternalRuleCollectionBuilder<T, P> implements
 	@Override
 	public Critical<T, Collection<P>, WhenCollection<T, P>> critical() {
 		this.validation.critical();
+		return this;
+	}
+
+	@Override
+	public Critical<T, Collection<P>, WhenCollection<T, P>> critical(final Class<? extends ValidationException> clazz) {
+		this.validation.critical(clazz);
 		return this;
 	}
 

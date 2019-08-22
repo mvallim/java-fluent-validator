@@ -11,6 +11,7 @@ import br.com.fluentvalidator.builder.RuleProperty;
 import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.builder.WhenProperty;
 import br.com.fluentvalidator.builder.WithValidator;
+import br.com.fluentvalidator.exception.ValidationException;
 
 class InternalRulePropertyBuilder<T, P> implements 
 	WhenProperty<T, P>, 
@@ -69,6 +70,12 @@ class InternalRulePropertyBuilder<T, P> implements
 	@Override
 	public Critical<T, P, WhenProperty<T, P>> critical() {
 		this.validation.critical();
+		return this;
+	}
+
+	@Override
+	public Critical<T, P, WhenProperty<T, P>> critical(final Class<? extends ValidationException> clazz) {
+		this.validation.critical(clazz);
 		return this;
 	}
 
