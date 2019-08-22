@@ -14,6 +14,31 @@
 
 Validating data is a common task that occurs throughout any application, especially the business logic layer. As for some quite complex scenarios, often the same or similar validations are scattered everywhere, thus it is hard to reuse code and break the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule.
 
+## Sample
+
+```java
+public class ValidatorBoy extends AbstractValidator<Boy>{
+
+    @Override
+    protected void rules() {
+
+        ruleFor(Boy::getGender)
+            .when(not(nullValue(Gender.class)))
+                .must(equalTo(Gender.MALE))
+                .withMessage("gender of boy must be MALE")
+                .withFieldName("gender")
+                .critical();
+
+        ruleFor(Boy::getName)
+            .when(not(stringEmptyOrNull()))
+                .must(stringContains("John"))
+                .withMessage("child name must contains key John")
+                .withFieldName("name");
+    }
+
+}
+```
+
 ## Index
 
 1. [Quick start](documentation/1-quick-start.md)
