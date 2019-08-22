@@ -2,7 +2,7 @@
 
 ## 3.1 Use Spring IoC to create validators
 
-### [ValidatorSpringChild](src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringChild.java)
+### [ValidatorSpringChild](../src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringChild.java)
 
 ```java
 @Component
@@ -43,7 +43,7 @@ public class ValidatorSpringChild extends AbstractValidator<Child>{
 }
 ```
 
-### [ValidationSpringGirl](src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringGirl.java)
+### [ValidationSpringGirl](../src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringGirl.java)
 
 ```java
 @Component
@@ -68,7 +68,7 @@ public class ValidatorSpringGirl extends AbstractValidator<Girl> {
 }
 ```
 
-### [ValidationSpringBoy](src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringBoy.java)
+### [ValidationSpringBoy](../src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringBoy.java)
 
 ```java
 @Component
@@ -94,7 +94,7 @@ public class ValidatorSpringBoy extends AbstractValidator<Boy>{
 }
 ```
 
-### [ValidatorSpringParent](src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringParent.java)
+### [ValidatorSpringParent](../src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringParent.java)
 
 ```java
 @Component

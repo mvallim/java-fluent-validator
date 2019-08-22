@@ -4,7 +4,7 @@ Java Fluent Valiator is inspired by [Fluent Interface](https://www.martinfowler.
 
 ## 2.1 Create validators
 
-### [ValidatorChild](src/test/java/br/com/fluentvalidator/validator/ValidatorChild.java)
+### [ValidatorChild](../src/test/java/br/com/fluentvalidator/validator/ValidatorChild.java)
 
 ```java
 public class ValidatorChild extends AbstractValidator<Child>{
@@ -44,7 +44,7 @@ public class ValidatorChild extends AbstractValidator<Child>{
 }
 ```
 
-### [ValidationGirl](src/test/java/br/com/fluentvalidator/validator/ValidatorGirl.java)
+### [ValidationGirl](../src/test/java/br/com/fluentvalidator/validator/ValidatorGirl.java)
 
 ```java
 public class ValidatorGirl extends AbstractValidator<Girl>{
@@ -68,7 +68,7 @@ public class ValidatorGirl extends AbstractValidator<Girl>{
 }
 ```
 
-### [ValidationBoy](src/test/java/br/com/fluentvalidator/validator/ValidatorBoy.java)
+### [ValidationBoy](../src/test/java/br/com/fluentvalidator/validator/ValidatorBoy.java)
 
 ```java
 public class ValidatorBoy extends AbstractValidator<Boy>{
@@ -93,7 +93,7 @@ public class ValidatorBoy extends AbstractValidator<Boy>{
 }
 ```
 
-### [ValidatorParent](src/test/java/br/com/fluentvalidator/validator/ValidatorParent.java)
+### [ValidatorParent](../src/test/java/br/com/fluentvalidator/validator/ValidatorParent.java)
 
 ```java
 public class ValidatorParent extends AbstractValidator<Parent>{
