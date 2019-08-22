@@ -22,7 +22,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	private String property;
 	
 	protected AbstractValidator() {
-		super();
+		this.rules();
 	}
 	
 	protected abstract void rules();
@@ -37,7 +37,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 		
 	@Override
 	public ValidationResult validate(final T instance) {
-		apply(instance);
+		ValidationProcessor.process(instance, this);
 		return ValidationContext.get().getValidationResult();
 	}
 
@@ -52,7 +52,6 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	
 	@Override
 	public boolean apply(final T instance) {
-		LazyInitializer.initialize(this);
 		ValidationContext.get().setProperty(this.property, instance);
 		return ValidationProcessor.process(instance, rules);
 	}

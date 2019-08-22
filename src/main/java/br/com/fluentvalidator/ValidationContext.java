@@ -1,6 +1,7 @@
 package br.com.fluentvalidator;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -35,7 +36,9 @@ public final class ValidationContext {
 		}
 
 		public void setProperty(final String property, final Object value) {
-			this.properties.put(property, value);
+			if (Objects.nonNull(property)) {
+				this.properties.put(property, value);
+			}
 		}
 
 		public <P> P getProperty(final String property, final Class<P> clazz) {
