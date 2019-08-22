@@ -745,7 +745,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Versioning
 
-We use [GitHub](https://github.com/mvallim/kubernetes-under-the-hood) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/kubernetes-under-the-hood/tags). 
+We use [GitHub](https://github.com/mvallim/java-fluent-validator) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/java-fluent-validator/tags).
 
 ## Authors
 
