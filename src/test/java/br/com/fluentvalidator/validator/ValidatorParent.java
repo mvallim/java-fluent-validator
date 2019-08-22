@@ -32,6 +32,7 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 			.when(isTrue())
 				.must(not(nullValue()))
 				.withMessage("parent's children cannot be null")
+				.withCode("555")
 				.withFieldName("children")
 			.when(not(nullValue()))
 				.must(not(empty()))
@@ -39,7 +40,7 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 				.withFieldName("children")		
 			.when(not(nullValue()))
 				.withValidator(new ValidatorChild())
-				.critical();		
+				.critical();
 	
 		ruleFor(Parent::getId)
 			.when(isTrue())
@@ -54,6 +55,7 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 			.when(not(nullValue()))
 				.must(lessThanOrEqual(7))
 				.withMessage("age must be less than or equal to 7")
+				.withCode("666")
 				.withFieldName("age");
 
 		ruleFor(Parent::getCities)

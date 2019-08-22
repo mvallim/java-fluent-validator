@@ -15,8 +15,6 @@ public class ValidatorBoy extends AbstractValidator<Boy>{
 	@Override
 	protected void rules() {
 		
-		setPropertyOnContext("boy");
-			
 		ruleFor(Boy::getGender)
 			.when(not(nullValue(Gender.class)))
 				.must(equalTo(Gender.MALE))

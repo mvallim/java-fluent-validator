@@ -7,23 +7,30 @@ public class Error {
 	private final String field;
 
 	private final Object attemptedValue;
-
-	public static Error create(final String field, final String message, final Object attemptedValue) {
-		return new Error(field, message, attemptedValue);
+	
+	private final String code;
+	
+	public static Error create(final String field, final String message, final String code, final Object attemptedValue) {
+		return new Error(field, message, code, attemptedValue);
 	}
 
-	private Error(final String field, final String message, final Object attemptedValue) {
+	private Error(final String field, final String message, final String code, final Object attemptedValue) {
 		this.field = field;
 		this.message = message;
+		this.code = code;
 		this.attemptedValue = attemptedValue;
+	}
+
+	public String getField() {
+		return this.field;
 	}
 
 	public String getMessage() {
 		return this.message;
 	}
 
-	public String getField() {
-		return this.field;
+	public String getCode() {
+		return code;
 	}
 
 	public Object getAttemptedValue() {

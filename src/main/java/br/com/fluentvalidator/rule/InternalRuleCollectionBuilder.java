@@ -3,6 +3,7 @@ package br.com.fluentvalidator.rule;
 import java.util.Collection;
 import java.util.function.Predicate;
 
+import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
 import br.com.fluentvalidator.builder.Message;
@@ -16,7 +17,8 @@ class InternalRuleCollectionBuilder<T, P> implements
 	WhenCollection<T, P>, 
 	Must<T, Collection<P>, WhenCollection<T, P>>, 
 	Message<T, Collection<P>, WhenCollection<T, P>>, 
-	FieldName<T, Collection<P>, WhenCollection<T, P>>, 
+	FieldName<T, Collection<P>, WhenCollection<T, P>>,
+	Code<T, Collection<P>, WhenCollection<T, P>>,
 	Critical<T, Collection<P>, WhenCollection<T, P>>, 
 	WithValidator<T, Collection<P>, WhenCollection<T, P>> {
 
@@ -44,6 +46,12 @@ class InternalRuleCollectionBuilder<T, P> implements
 	@Override
 	public Message<T, Collection<P>, WhenCollection<T, P>> withMessage(final String message) {
 		this.validation.withMessage(message);
+		return this;
+	}
+	
+	@Override
+	public Code<T, Collection<P>, WhenCollection<T, P>> withCode(final String code) {
+		this.validation.withCode(code);
 		return this;
 	}
 

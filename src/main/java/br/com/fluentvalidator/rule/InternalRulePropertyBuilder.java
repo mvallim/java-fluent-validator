@@ -2,6 +2,7 @@ package br.com.fluentvalidator.rule;
 
 import java.util.function.Predicate;
 
+import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
 import br.com.fluentvalidator.builder.Message;
@@ -15,7 +16,8 @@ class InternalRulePropertyBuilder<T, P> implements
 	WhenProperty<T, P>, 
 	Must<T, P, WhenProperty<T, P>>, 
 	Message<T, P, WhenProperty<T, P>>, 
-	FieldName<T, P, WhenProperty<T, P>>, 
+	FieldName<T, P, WhenProperty<T, P>>,
+	Code<T, P, WhenProperty<T, P>>,
 	Critical<T, P, WhenProperty<T, P>>,
 	WithValidator<T, P, WhenProperty<T, P>> {
 	
@@ -45,6 +47,12 @@ class InternalRulePropertyBuilder<T, P> implements
 		this.validation.withMessage(message);
 		return this;
 	}
+	
+	@Override
+	public Code<T, P, WhenProperty<T, P>> withCode(final String code) {
+		this.validation.withCode(code);
+		return this;
+	}	
 
 	@Override
 	public Must<T, P, WhenProperty<T, P>> must(final Predicate<P> predicate) {

@@ -2,9 +2,7 @@ package br.com.fluentvalidator.builder;
 
 import java.util.function.Predicate;
 
-public interface Message<T, P, W extends When<T, P, W>> {
-
-	Code<T, P, W> withCode(final String code);
+public interface Code<T, P, W extends When<T, P, W>> {
 
 	FieldName<T, P, W> withFieldName(final String fieldName);
 	

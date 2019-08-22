@@ -1,6 +1,7 @@
 package br.com.fluentvalidator;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -30,12 +31,14 @@ public final class ValidationContext {
 
 		private final Queue<Error> errors = new ConcurrentLinkedQueue<>();
 
-		public void addError(final String field, final String message, final Object attemptedValue) {
-			this.errors.add(Error.create(field, message, attemptedValue));
+		public void addError(final String field, final String message, final String code, final Object attemptedValue) {
+			this.errors.add(Error.create(field, message, code, attemptedValue));
 		}
 
-		public void addProperty(final String property, final Object value) {
-			this.properties.put(property, value);
+		public void setProperty(final String property, final Object value) {
+			if (Objects.nonNull(property)) {
+				this.properties.put(property, value);
+			}
 		}
 
 		public <P> P getProperty(final String property, final Class<P> clazz) {
@@ -46,6 +49,7 @@ public final class ValidationContext {
 			ValidationContext.remove();
 			return this.errors.isEmpty() ? ValidationResult.ok() : ValidationResult.fail(this.errors);
 		}
+
 	}
 
 }
