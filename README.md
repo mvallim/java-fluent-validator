@@ -13,17 +13,14 @@ Validating data is a common task that occurs throughout any application, especia
 ## Index
 
 1. [Quick start](documentation/1-quick-start.md)
-   * [Step by Step](documentation/2-step-by-step.md)
-   * [Spring support](documentation/3-spring-support.md)
+   - [Step by Step](documentation/2-step-by-step.md)
+   - [Spring support](documentation/3-spring-support.md)
 2. [Validator](documentation/4-validator-methods.md)
 3. [Builder](documentation/5-builder-methods.md)
 4. [Predicate](documentation/6-predicate-methods.md)
 5. Examples
-
-   All test cases or samples can be found from the below links:
-
-   * [Samples](src/test/java/br/com/fluentvalidator/ValidatorTest.java)
-   * [Spring support samples](src/test/java/br/com/fluentvalidator/spring/ValidatorSpringTest.java)
+   - [Samples](src/test/java/br/com/fluentvalidator/ValidatorTest.java)
+   - [Spring support samples](src/test/java/br/com/fluentvalidator/spring/ValidatorSpringTest.java)
 
 ## Contributing
 
