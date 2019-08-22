@@ -391,9 +391,9 @@ public class ValidatorTest {
 }
 ```
 
-## 3. Validation step by step with Spring
+## 3. Spring support
 
-### 3.1 Create validators
+### 3.1 Use Spring IoC to create validators
 
 #### [ValidatorSpringChild](src/test/java/br/com/fluentvalidator/spring/validator/ValidatorSpringChild.java)
 
@@ -635,3 +635,80 @@ public class ValidatorSpringTest {
 
 }
 ```
+
+## 4. Validator methods
+
+### 4.1 validate instance
+
+```java
+ValidationResult validate(final T instance);
+```
+
+### 4.2 validate collection
+
+```java
+List<ValidationResult> validate(final Collection<T> instances);
+```
+
+### 4.3 ruleFor instance
+
+```java
+<P> RuleProperty<T, P> ruleFor(final Function<T, P> function);
+```
+
+### 4.3 ruleForEach collection
+
+```java
+<P> RuleCollection<T, P> ruleForEach(final Function<T, Collection<P>> function);
+```
+
+## 5. Chain methods
+
+### 5.1 when condition to validate
+
+```java
+when(final Predicate<T> predicate)
+```
+
+### 5.2 must condition to valid
+
+```java
+must(final Predicate<T> predicate)
+```
+
+### 5.3 withMessage when must not be true
+
+```java
+withMessage(final String message)
+```
+
+### 5.4 withCode when must not be true
+
+```java
+withCode(final String code)
+```
+
+### 5.5 withFieldName when must not be true
+
+```java
+withFieldName(final String fieldName)
+```
+
+### 5.6 withValidator to validate object
+
+```java
+withValidator(final Validator<P> validator)
+```
+
+### 5.7 critical path in chain validation
+
+```java
+critical()
+```
+
+## 6. Examples
+
+All test cases or samples can be found from the below links:
+
+* [Samples](src/test/java/br/com/fluentvalidator/ValidatorTest.java)
+* [Spring support samples](src/test/java/br/com/fluentvalidator/spring/ValidatorSpringTest.java)
