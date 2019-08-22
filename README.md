@@ -1,3 +1,7 @@
+<p align="left">
+  <img src="documentation/fluent.png" height="20%" width="20%">
+</p>
+
 # Java Fluent Validator
 
 [![Build Status](https://travis-ci.org/mvallim/java-fluent-validator.svg?branch=master)](https://travis-ci.org/mvallim/java-fluent-validator)
