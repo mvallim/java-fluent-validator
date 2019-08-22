@@ -18,11 +18,25 @@ import br.com.fluentvalidator.rule.ValidationProcessor;
 public abstract class AbstractValidator<T> implements Validator<T> {
 
 	private final List<Rule<T>> rules = new LinkedList<>();
+	
+	private final Runnable initialize;
 
 	private String property;
 	
 	protected AbstractValidator() {
-		this.rules();
+		this.initialize = new Runnable() {
+			
+			private boolean initialized;
+			
+			@Override
+			public synchronized void run() {
+				if (!initialized) {
+					rules();
+					this.initialized = true;
+				}
+			}
+			
+		};
 	}
 	
 	protected abstract void rules();
@@ -52,6 +66,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	
 	@Override
 	public boolean apply(final T instance) {
+		this.initialize.run();
 		ValidationContext.get().setProperty(this.property, instance);
 		return ValidationProcessor.process(instance, rules);
 	}
