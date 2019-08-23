@@ -29,6 +29,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import br.com.fluentvalidator.ValidationResult;
+import br.com.fluentvalidator.exception.Error;
+import br.com.fluentvalidator.exception.ValidationSampleException;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
@@ -87,43 +89,41 @@ public class ValidatorSpringTest {
 	
 	@Test
 	public void validationMustBeFailWhenFieldOfParentAreInvalidCriticalValidation() {
-		final Parent parent = new Parent();
-
-		parent.setId("invalid");
-		parent.setAge(10);
-		parent.setName("Ana");
-		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-		parent.setChildren(Arrays.asList(new Boy("John", 5)));
-
-		final ValidationResult result = validatorParent.validate(parent);
-
-		assertFalse(result.isValid());
-		assertThat(result.getErrors(), not(empty()));
-		assertThat(result.getErrors(), hasSize(1));
-
-		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("id"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getId()))));
-		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("id not matching the pattern of a UUID"))));
+		try {
+			final Parent parent = new Parent();
+	
+			parent.setId("invalid");
+			parent.setAge(10);
+			parent.setName("Ana");
+			parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
+			parent.setChildren(Arrays.asList(new Boy("John", 5)));
+	
+			validatorParent.validate(parent);
+		} catch(Exception e) {
+			assertThat(e.getMessage(), equalTo("Constructor in class not found (Collection<Error> errors)"));			
+		}
 	}
 
 	@Test
 	public void validationMustBeFailWhenChildAgeGreateThanParentAgeInvalid() {
-		final Parent parent = new Parent();
-
-		parent.setAge(6);
-		parent.setName("John Gow");
-		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
-		parent.setChildren(Arrays.asList(new Boy("John", 6)));
-
-		final ValidationResult result = validatorParent.validate(parent);
-
-		assertFalse(result.isValid());
-		assertThat(result.getErrors(), not(empty()));
-		assertThat(result.getErrors(), hasSize(1));
-
-		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getAge()))));
-		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child age must be less than age parent"))));
+		try {
+			final Parent parent = new Parent();
+	
+			parent.setAge(6);
+			parent.setName("John Gow");
+			parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
+			parent.setChildren(Arrays.asList(new Boy("John", 6)));
+	
+			validatorParent.validate(parent);
+		} catch(ValidationSampleException e) {
+			final List<Error> erros = new ArrayList<>(e.getError());
+			assertThat(erros, hasSize(1));
+			assertThat(erros.get(0).getCode(), equalTo(null));
+			assertThat(erros.get(0).getMessage(), equalTo("child age must be less than age parent"));
+			assertThat(erros.get(0).getAttemptedValue(), equalTo(6));
+			assertThat(erros.get(0).getField(), equalTo("age"));
+			assertThat(e.getMessage(), equalTo("[Error [message=child age must be less than age parent, field=age, attemptedValue=6, code=null]]"));			
+		}
 	}
 
 	@Test
@@ -308,22 +308,24 @@ public class ValidatorSpringTest {
 	
 	@Test
 	public void validationMustBeFalseWhenParentAndChildrenIsCriticalInvalid() {
-		final Parent parent = new Parent();
-
-		parent.setAge(6);
-		parent.setName("John Gow");
-		parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
-		parent.setChildren(Arrays.asList(new Girl("Barbara", 6)));
-
-		final ValidationResult result = validatorParent.validate(parent);
-
-		assertFalse(result.isValid());
-		assertThat(result.getErrors(), not(empty()));
-		assertThat(result.getErrors(), hasSize(1));
-
-		assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-		assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(6))));
-		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child age must be less than age parent"))));
+		try {
+			final Parent parent = new Parent();
+	
+			parent.setAge(6);
+			parent.setName("John Gow");
+			parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"));
+			parent.setChildren(Arrays.asList(new Girl("Barbara", 6)));
+	
+			validatorParent.validate(parent);
+		} catch(ValidationSampleException e) {
+			final List<Error> erros = new ArrayList<>(e.getError());
+			assertThat(erros, hasSize(1));
+			assertThat(erros.get(0).getCode(), equalTo(null));
+			assertThat(erros.get(0).getMessage(), equalTo("child age must be less than age parent"));
+			assertThat(erros.get(0).getAttemptedValue(), equalTo(6));
+			assertThat(erros.get(0).getField(), equalTo("age"));
+			assertThat(e.getMessage(), equalTo("[Error [message=child age must be less than age parent, field=age, attemptedValue=6, code=null]]"));			
+		}
 	}	
 
 	@Test

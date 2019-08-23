@@ -10,8 +10,7 @@ public class Error {
 
 	private final String code;
 
-	public static Error create(final String field, final String message, final String code,
-			final Object attemptedValue) {
+	public static Error create(final String field, final String message, final String code, final Object attemptedValue) {
 		return new Error(field, message, code, attemptedValue);
 	}
 

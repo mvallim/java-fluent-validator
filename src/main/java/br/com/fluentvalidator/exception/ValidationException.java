@@ -30,7 +30,7 @@ public abstract class ValidationException extends RuntimeException {
 			final Constructor<? extends ValidationException> ctor = exceptionClass.getConstructor(Collection.class);
 			return ctor.newInstance(parameter);
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			return new RuntimeException(e);
+			return new RuntimeException("Constructor in class not found (Collection<Error> errors)", e);
 		}
 	}
 
