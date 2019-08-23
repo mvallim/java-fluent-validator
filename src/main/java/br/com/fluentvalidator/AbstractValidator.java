@@ -57,17 +57,8 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	}
 
 	@Override
-	public <E> E validate(final T instance, final ValidationResultTransform<E> transform) {
-		return transform.transform(validate(instance));
-	}
-
-	@Override
-	public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> transform) {
-		final List<E> results = new ArrayList<>();
-		for (final ValidationResult validationResult : validate(instances)) {
-			results.add(transform.transform(validationResult));
-		}
-		return results;
+	public <E> E validate(final T instance, final ValidationResultTransform<E> resultTransform) {
+		return resultTransform.transform(validate(instance));
 	}
 	
 	@Override
@@ -78,7 +69,16 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 		}
 		return Collections.unmodifiableList(results);
 	}
-	
+
+	@Override
+	public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> resultTransform) {
+		final List<E> results = new ArrayList<>();
+		for (final ValidationResult validationResult : validate(instances)) {
+			results.add(resultTransform.transform(validationResult));
+		}
+		return results;
+	}
+
 	@Override
 	public boolean apply(final T instance) {
 		this.initialize.run();
