@@ -14,6 +14,7 @@ import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.rule.CollectionRule;
 import br.com.fluentvalidator.rule.PropetyRule;
 import br.com.fluentvalidator.rule.ValidationProcessor;
+import br.com.fluentvalidator.transform.ValidationResultTransform;
 
 public abstract class AbstractValidator<T> implements Validator<T> {
 
@@ -55,6 +56,20 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 		return ValidationContext.get().getValidationResult();
 	}
 
+	@Override
+	public <E> E validate(final T instance, final ValidationResultTransform<E> transform) {
+		return transform.transform(validate(instance));
+	}
+
+	@Override
+	public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> transform) {
+		final List<E> results = new ArrayList<>();
+		for (final ValidationResult validationResult : validate(instances)) {
+			results.add(transform.transform(validationResult));
+		}
+		return results;
+	}
+	
 	@Override
 	public List<ValidationResult> validate(final Collection<T> instances) {
 		final List<ValidationResult> results = new ArrayList<>();
