@@ -27,3 +27,7 @@
 ## 5.7 `critical` path in chain validation
 
 * `critical()`
+
+## 5.8 `critical` rise exception path in chain validation
+
+* `critical(final Class<? extends ValidationException> clazz)`
