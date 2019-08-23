@@ -19,7 +19,7 @@ public abstract class ValidationException extends RuntimeException {
 		this.errors = errors;
 	}
 
-	public Collection<Error> getError() {
+	public Collection<Error> getErrors() {
 		return Collections.unmodifiableCollection(this.errors);
 	}
 

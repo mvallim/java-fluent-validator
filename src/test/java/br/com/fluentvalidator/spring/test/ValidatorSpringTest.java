@@ -116,7 +116,7 @@ public class ValidatorSpringTest {
 	
 			validatorParent.validate(parent);
 		} catch(ValidationSampleException e) {
-			final List<Error> erros = new ArrayList<>(e.getError());
+			final List<Error> erros = new ArrayList<>(e.getErrors());
 			assertThat(erros, hasSize(1));
 			assertThat(erros.get(0).getCode(), equalTo(null));
 			assertThat(erros.get(0).getMessage(), equalTo("child age must be less than age parent"));
@@ -318,7 +318,7 @@ public class ValidatorSpringTest {
 	
 			validatorParent.validate(parent);
 		} catch(ValidationSampleException e) {
-			final List<Error> erros = new ArrayList<>(e.getError());
+			final List<Error> erros = new ArrayList<>(e.getErrors());
 			assertThat(erros, hasSize(1));
 			assertThat(erros.get(0).getCode(), equalTo(null));
 			assertThat(erros.get(0).getMessage(), equalTo("child age must be less than age parent"));
