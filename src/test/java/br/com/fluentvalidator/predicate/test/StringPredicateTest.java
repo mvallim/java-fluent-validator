@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class StringPredicateTests {
+public class StringPredicateTest {
 
 	@Test
 	public void testNulltStringSizeGreaterThan() {

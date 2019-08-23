@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class ObjectPredicateTests {
+public class ObjectPredicateTest {
 
 	@Test
 	public void testNullObjectEqualTo() {

@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-public class CollectionPredicateTests {
+public class CollectionPredicateTest {
 
 	@Test
 	public void testNullCollectionEmpty() {

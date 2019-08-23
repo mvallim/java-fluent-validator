@@ -15,7 +15,7 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-public class ComparablePredicateTests {
+public class ComparablePredicateTest {
 
 	@Test
 	public void testNullComparableGreaterThan() {

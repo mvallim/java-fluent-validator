@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class LogicalPredicateTests {
+public class LogicalPredicateTest {
 
 	@Test
 	public void testLogicalPredicates() {
