@@ -56,7 +56,7 @@ class InternalRulePropertyBuilder<T, P> implements
 	}	
 
 	@Override
-	public Must<T, P, WhenProperty<T, P>> must(final Predicate<P> predicate) {
+	public Must<T, P, WhenProperty<T, P>> must(final Predicate<? super P> predicate) {
 		this.validation.must(predicate);
 		return this;
 	}
