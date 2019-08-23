@@ -72,7 +72,8 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 
 		ruleForEach(parent -> extractGirls(parent.getChildren()))
 			.when(not(nullValue()))
-				.withValidator(new ValidatorGirl());
+				.withValidator(new ValidatorGirl())
+				.critical();
 		
 		ruleForEach(parent -> extractBoys(parent.getChildren()))
 			.when(not(nullValue()))

@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 import br.com.fluentvalidator.builder.Rule;
 import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.exception.ValidationException;
 
 interface Validation<T, P> extends Rule<P> {
 
@@ -18,5 +19,7 @@ interface Validation<T, P> extends Rule<P> {
 	void withValidator(final Validator<T> validator);
 
 	void critical();
+	
+	void critical(final Class<? extends ValidationException> clazz);
 
 }

@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.spring;
+package br.com.fluentvalidator.test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
@@ -23,26 +23,20 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import br.com.fluentvalidator.ValidationResult;
+import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
-import br.com.fluentvalidator.spring.validator.ValidatorSpringParent;
+import br.com.fluentvalidator.validator.ValidatorParent;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ValidatorSpringConfig.class)
-public class ValidatorSpringTest {
+public class ValidatorTest {
 
-	@Autowired
-	ValidatorSpringParent validatorParent;
-	
 	@Test
 	public void validationMustBeSuccess() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setAge(6);
@@ -58,6 +52,8 @@ public class ValidatorSpringTest {
 
 	@Test
 	public void validationMustBeFailWhenFieldOfParentAreInvalid() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setAge(10);
@@ -87,6 +83,8 @@ public class ValidatorSpringTest {
 	
 	@Test
 	public void validationMustBeFailWhenFieldOfParentAreInvalidCriticalValidation() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setId("invalid");
@@ -108,6 +106,8 @@ public class ValidatorSpringTest {
 
 	@Test
 	public void validationMustBeFailWhenChildAgeGreateThanParentAgeInvalid() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setAge(6);
@@ -128,6 +128,8 @@ public class ValidatorSpringTest {
 
 	@Test
 	public void validationTwiceDiferentParentMustBeSuccess() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent1 = new Parent();
 
 		parent1.setAge(6);
@@ -168,6 +170,8 @@ public class ValidatorSpringTest {
 
 	@Test
 	public void validationCollectionParentMustBeSuccess() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent1 = new Parent();
 
 		parent1.setAge(6);
@@ -207,6 +211,8 @@ public class ValidatorSpringTest {
 
 	@Test
 	public void validationMustBeFalseWhenChildrenIsNull() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setAge(6);
@@ -227,6 +233,8 @@ public class ValidatorSpringTest {
 
 	@Test
 	public void validationMustBeFalseWhenChildrenIsEmpty() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setAge(6);
@@ -247,6 +255,8 @@ public class ValidatorSpringTest {
 
 	@Test
 	public void validationMustBeFalseWhenChildrenIsInvalid() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setAge(6);
@@ -271,6 +281,8 @@ public class ValidatorSpringTest {
 
 	@Test
 	public void validationMustBeFalseWhenParentAndChildrenIsInvalid() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setAge(10);
@@ -308,6 +320,8 @@ public class ValidatorSpringTest {
 	
 	@Test
 	public void validationMustBeFalseWhenParentAndChildrenIsCriticalInvalid() {
+		final Validator<Parent> validatorParent = new ValidatorParent();
+
 		final Parent parent = new Parent();
 
 		parent.setAge(6);
@@ -344,6 +358,8 @@ public class ValidatorSpringTest {
 			executor.submit(new Runnable() {
 				@Override
 				public void run() {
+					final Validator<Parent> validatorParent = new ValidatorParent();
+
 					final Parent parent = new Parent();
 
 					parent.setAge(6);
@@ -358,6 +374,9 @@ public class ValidatorSpringTest {
 			executor.submit(new Runnable() {
 				@Override
 				public void run() {
+
+					final Validator<Parent> validatorParent = new ValidatorParent();
+
 					final Parent parent = new Parent();
 
 					parent.setAge(10);

@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.fluentvalidator.AbstractValidator;
+import br.com.fluentvalidator.exception.ValidationSampleException;
+import br.com.fluentvalidator.exception.ValidationSampleInvalidException;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Child;
 import br.com.fluentvalidator.model.Girl;
@@ -56,12 +58,12 @@ public class ValidatorSpringParent extends AbstractValidator<Parent> {
 				.withFieldName("children")		
 			.when(not(nullValue()))
 				.withValidator(validatorChild)
-				.critical();
+				.critical(ValidationSampleException.class);
 	
 		ruleFor(Parent::getId)
 			.when(isTrue())
 				.withValidator(validatorId)
-				.critical();
+				.critical(ValidationSampleInvalidException.class);
 
 		ruleFor(Parent::getAge)
 			.when(not(nullValue()))

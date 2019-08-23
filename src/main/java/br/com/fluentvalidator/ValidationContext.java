@@ -6,6 +6,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import br.com.fluentvalidator.exception.Error;
+
 public final class ValidationContext {
 
 	private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();

@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.spring;
+package br.com.fluentvalidator.spring.test;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

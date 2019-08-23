@@ -17,23 +17,38 @@ public final class ComparablePredicate {
 	}
 
 	public static <T extends Comparable<T>> Predicate<T> lessThan(final T max){
-		return is(lessThan -> MINUS.equals(lessThan.compareTo(max)));
+		return is(lessThan -> {
+			Assertions.checkNotNull(lessThan, "lessThan");
+			return MINUS.equals(lessThan.compareTo(max));
+		});
 	}
 	
 	public static <T extends Comparable<T>> Predicate<T> greaterThan(final T min){
-		return is(greaterThan -> PLUS.equals(greaterThan.compareTo(min)));
+		return is(greaterThan -> {
+			Assertions.checkNotNull(greaterThan, "greaterThan");
+			return PLUS.equals(greaterThan.compareTo(min));
+		});
 	}
 	
 	public static <T extends Comparable<T>> Predicate<T> greaterThanOrEqual(final T min){
-		return is(greaterThan(min).or(greaterThanOrEqual -> ZERO.equals(greaterThanOrEqual.compareTo(min))));
+		return is(greaterThanOrEqual -> {
+			Assertions.checkNotNull(greaterThanOrEqual, "greaterThanOrEqual");
+			return PLUS.equals(greaterThanOrEqual.compareTo(min)) || (ZERO.equals(greaterThanOrEqual.compareTo(min)));
+		});
 	}
 	
 	public static <T extends Comparable<T>> Predicate<T> lessThanOrEqual(final T max){
-		return is(lessThan(max).or(lessThanOrEqual -> ZERO.equals(lessThanOrEqual.compareTo(max))));
+		return is(lessThanOrEqual -> {
+			Assertions.checkNotNull(lessThanOrEqual, "lessThanOrEqual");
+			return MINUS.equals(lessThanOrEqual.compareTo(max)) || ZERO.equals(lessThanOrEqual.compareTo(max));
+		});
 	}	
 	
 	public static <T extends Comparable<T>> Predicate<T> between(final T min, final T max){
-		return is(greaterThan(min).and(lessThan(max)));
+		return is(between -> {
+			Assertions.checkNotNull(between, "between");
+			return PLUS.equals(between.compareTo(min)) && MINUS.equals(between.compareTo(max));
+		});
 	}
 	
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import br.com.fluentvalidator.exception.Error;
+
 public class ValidationResult {
 
 	private final boolean valid;

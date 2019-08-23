@@ -14,7 +14,6 @@ public class Parent {
 	private List<String> cities;
 
 	private List<Child> children;
-
 	
 	public Parent() {
 		this.id = UUID.randomUUID().toString();
