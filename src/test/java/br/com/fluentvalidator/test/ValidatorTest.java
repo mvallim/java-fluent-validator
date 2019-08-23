@@ -1,4 +1,4 @@
-package br.com.fluentvalidator;
+package br.com.fluentvalidator.test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
+import br.com.fluentvalidator.ValidationResult;
 import br.com.fluentvalidator.builder.Validator;
-import br.com.fluentvalidator.exception.ValidationException;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
@@ -81,7 +81,7 @@ public class ValidatorTest {
 		assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
 	}
 	
-	@Test(expected = ValidationException.class)
+	@Test
 	public void validationMustBeFailWhenFieldOfParentAreInvalidCriticalValidation() {
 		final Validator<Parent> validatorParent = new ValidatorParent();
 

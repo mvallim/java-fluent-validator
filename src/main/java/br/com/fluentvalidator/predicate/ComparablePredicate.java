@@ -31,21 +31,24 @@ public final class ComparablePredicate {
 	}
 	
 	public static <T extends Comparable<T>> Predicate<T> greaterThanOrEqual(final T min){
-		return is(greaterThan(min).or(greaterThanOrEqual -> {
+		return is(greaterThanOrEqual -> {
 			Assertions.checkNotNull(greaterThanOrEqual, "greaterThanOrEqual");
-			return ZERO.equals(greaterThanOrEqual.compareTo(min));
-		}));
+			return PLUS.equals(greaterThanOrEqual.compareTo(min)) || (ZERO.equals(greaterThanOrEqual.compareTo(min)));
+		});
 	}
 	
 	public static <T extends Comparable<T>> Predicate<T> lessThanOrEqual(final T max){
-		return is(lessThan(max).or(lessThanOrEqual -> {
+		return is(lessThanOrEqual -> {
 			Assertions.checkNotNull(lessThanOrEqual, "lessThanOrEqual");
-			return ZERO.equals(lessThanOrEqual.compareTo(max));
-		}));
+			return MINUS.equals(lessThanOrEqual.compareTo(max)) || ZERO.equals(lessThanOrEqual.compareTo(max));
+		});
 	}	
 	
 	public static <T extends Comparable<T>> Predicate<T> between(final T min, final T max){
-		return is(greaterThan(min).and(lessThan(max)));
+		return is(between -> {
+			Assertions.checkNotNull(between, "between");
+			return PLUS.equals(between.compareTo(min)) && MINUS.equals(between.compareTo(max));
+		});
 	}
 	
 }

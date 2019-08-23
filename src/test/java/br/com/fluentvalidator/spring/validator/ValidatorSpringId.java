@@ -1,7 +1,7 @@
 package br.com.fluentvalidator.spring.validator;
 
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
-import static br.com.fluentvalidator.predicate.StringPredicate.matches;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringMatches;
 
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ public class ValidatorSpringId extends AbstractValidator<String>{
 			
 		ruleFor(id -> id)
 			.when(isTrue())
-				.must(matches(UUID_REGEX))
+				.must(stringMatches(UUID_REGEX))
 				.withMessage("id not matching the pattern of a UUID")
 				.withFieldName("id")
 				.critical();
