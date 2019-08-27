@@ -9,7 +9,7 @@ import br.com.fluentvalidator.exception.ValidationException;
 
 abstract class ValidationRule<P, A> implements Validation<P, A> {
 
-	private Predicate<? super A> must = m -> true;
+	private Predicate<A> must = m -> true;
 
 	private String message;
 	
@@ -27,7 +27,7 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 		super();
 	}
 
-	public Predicate<? super A> getMust() {
+	public Predicate<A> getMust() {
 		return this.must;
 	}
 
@@ -52,7 +52,7 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 	}
 
 	@Override
-	public void must(final Predicate<? super A> predicate) {
+	public void must(final Predicate<A> predicate) {
 		this.must = predicate;
 	}
 

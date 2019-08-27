@@ -8,7 +8,7 @@ import br.com.fluentvalidator.exception.ValidationException;
 
 interface Validation<T, P> extends Rule<P> {
 
-	void must(final Predicate<? super P> predicate);
+	void must(final Predicate<P> predicate);
 
 	void withFieldName(final String fieldName);
 

@@ -57,7 +57,7 @@ class InternalRuleCollectionBuilder<T, P> implements
 	}
 
 	@Override
-	public Must<T, Collection<P>, WhenCollection<T, P>> must(final Predicate<? super Collection<P>> predicate) {
+	public Must<T, Collection<P>, WhenCollection<T, P>> must(final Predicate<Collection<P>> predicate) {
 		this.validation.must(predicate);
 		return this;
 	}

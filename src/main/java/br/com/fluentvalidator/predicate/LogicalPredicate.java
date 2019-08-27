@@ -15,7 +15,7 @@ public final class LogicalPredicate {
 	public static <T> Predicate<T> not(final Predicate<T> predicate) {
 		return is(predicate).negate();
 	}
-	
+
 	public static <T> Predicate<T> isTrue() {
 		return is(isTrue -> true);
 	}

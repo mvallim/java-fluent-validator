@@ -12,32 +12,33 @@ public final class CollectionPredicate {
 		super();
 	}
 
-	public static <T extends Collection<?>> Predicate<T> empty() {
+	public static <E, T extends Collection<E>> Predicate<T> empty() {
 		return is(empty -> {
 			Assertions.checkNotNull(empty, "empty");
 			return empty.isEmpty();
 		});
 	}
 
-	public static <T extends Collection<?>> Predicate<T> hasItem(final Object object) {
+	public static <E, T extends Collection<E>> Predicate<T> hasItem(final E object) {
 		return is(hasItem -> {
 			Assertions.checkNotNull(hasItem, "hasItem");
 			return hasItem.contains(object);
 		});
 	}
 	
-	public static <T extends Collection<?>> Predicate<T> hasItems(final Collection<?> objects) {
+	public static <E, T extends Collection<E>> Predicate<T> hasItems(final Collection<E> objects) {
 		return is(hasItems -> {
 			Assertions.checkNotNull(hasItems, "hasItems");
 			return hasItems.containsAll(objects);
 		});
 	}
 
-	public static <T extends Collection<?>> Predicate<T> hasItems(final Object... objects) {
+	@SafeVarargs
+	public static <E, T extends Collection<E>> Predicate<T> hasItems(final E... objects) {
 		return is(hasItems(Arrays.asList(objects)));
 	}
 	
-	public static <T extends Collection<?>> Predicate<T> hasAny(final Collection<?> objects) {
+	public static <E, T extends Collection<E>> Predicate<T> hasAny(final Collection<E> objects) {
 		return is(hasItems -> {
 			Assertions.checkNotNull(hasItems, "hasAny");
 			for (final Object object : objects) {
@@ -47,11 +48,12 @@ public final class CollectionPredicate {
 		});
 	}
 	
-	public static <T extends Collection<?>> Predicate<T> hasAny(final Object... objects) {
+	@SafeVarargs
+	public static <E, T extends Collection<E>> Predicate<T> hasAny(final E... objects) {
 		return is(hasAny(Arrays.asList(objects)));
 	}	
 
-	public static <T extends Collection<?>> Predicate<T> hasSize(final int size) {
+	public static <E, T extends Collection<E>> Predicate<T> hasSize(final int size) {
 		return is(hasSize -> {
 			Assertions.checkNotNull(hasSize, "hasSize");
 			return hasSize.size() == size;
