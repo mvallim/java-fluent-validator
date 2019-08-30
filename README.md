@@ -1,6 +1,4 @@
-<p align="left">
-  <img src="documentation/fluent.png" height="20%" width="20%">
-</p>
+<p align="center"><img src="documentation/fluent.png" height="20%" width="20%"></p>
 
 # Java Fluent Validator
 
