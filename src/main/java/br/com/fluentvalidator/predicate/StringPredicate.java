@@ -1,5 +1,6 @@
 package br.com.fluentvalidator.predicate;
 
+import static br.com.fluentvalidator.predicate.ComparablePredicate.*;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
@@ -14,55 +15,58 @@ public final class StringPredicate {
 	}
 
 	public static Predicate<String> stringSizeGreaterThan(final int size) {
-		return SimplePredicate.<String>from(not(nullValue()))
-				.and(stringSizeGreaterThan -> stringSizeGreaterThan.length() > size);
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeGreaterThan -> greaterThan(size).test(stringSizeGreaterThan.length()));
 	}
 
 	public static Predicate<String> stringSizeLessThan(final int size) {
-		return SimplePredicate.<String>from(not(nullValue()))
-				.and(stringSizeLessThan -> stringSizeLessThan.length() < size);
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeLessThan -> lessThan(size).test(stringSizeLessThan.length()));
 	}
 
 	public static Predicate<String> stringSizeGreaterThanOrEqual(final int size) {
-		return SimplePredicate.<String>from(not(nullValue()))
-				.and(stringSizeGreaterThanOrEqual -> stringSizeGreaterThanOrEqual.length() >= size);
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeGreaterThanOrEqual -> greaterThanOrEqual(size).test(stringSizeGreaterThanOrEqual.length()));
 	}
 
 	public static Predicate<String> stringSizeLessThanOrEqual(final int size) {
-		return SimplePredicate.<String>from(not(nullValue()))
-				.and(stringSizeLessThanOrEqual -> stringSizeLessThanOrEqual.length() <= size);
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeLessThanOrEqual -> lessThanOrEqual(size).test(stringSizeLessThanOrEqual.length()));
 	}
 
 	public static Predicate<String> stringSizeBetween(final int minSize, final int maxSize) {
-		return SimplePredicate.<String>from(not(nullValue()))
-				.and(stringSizeBetween -> stringSizeBetween.length() > minSize && stringSizeBetween.length() < maxSize);
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeBetween -> between(minSize, maxSize).test(stringSizeBetween.length()));
 	}
 
 	public static Predicate<String> stringEmptyOrNull() {
-		return SimplePredicate.<String>from(is(nullValue()))
+		return PredicateBuilder.<String>from(is(nullValue()))
 				.or(String::isEmpty);
 	}
 
 	public static Predicate<String> stringContains(final String str) {
-		return SimplePredicate.<String>from(not(nullValue()))
+		return PredicateBuilder.<String>from(not(nullValue()))
 				.and(stringContains -> stringContains.contains(str));
 	}
 
 	public static Predicate<String> stringMatches(final String regex) {
-		return SimplePredicate.<String>from(not(nullValue()))
+		return PredicateBuilder.<String>from(not(nullValue()))
 				.and(stringMatches -> stringMatches.matches(regex));
 	}
 	
 	public static Predicate<String> isNumeric() {
-		return not(stringEmptyOrNull()).and(isNumeric -> isNumeric.chars().allMatch(Character::isDigit));
+		return not(stringEmptyOrNull())
+				.and(isNumeric -> isNumeric.chars().allMatch(Character::isDigit));
 	}
 	
 	public static Predicate<String> isAlpha() {
-		return not(stringEmptyOrNull()).and(isNumeric -> isNumeric.chars().allMatch(Character::isLetter));
+		return not(stringEmptyOrNull())
+				.and(isNumeric -> isNumeric.chars().allMatch(Character::isLetter));
 	}
 	
 	public static Predicate<String> isAlphaNumeric() {
-		return not(stringEmptyOrNull()).and(isNumeric -> isNumeric.chars().allMatch(Character::isLetterOrDigit));
+		return not(stringEmptyOrNull())
+				.and(isNumeric -> isNumeric.chars().allMatch(Character::isLetterOrDigit));
 	}
 	
 	public static Predicate<String> isNumber() {

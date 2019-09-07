@@ -15,15 +15,18 @@ public final class CollectionPredicate {
 	}
 
 	public static <E, T extends Collection<E>> Predicate<T> empty() {
-		return SimplePredicate.<T>from(not(nullValue())).and(Collection::isEmpty);
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(Collection::isEmpty);
 	}
 
 	public static <E, T extends Collection<E>> Predicate<T> hasItem(final E object) {
-		return SimplePredicate.<T>from(not(nullValue())).and(hasItem -> hasItem.contains(object));
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(hasItem -> hasItem.contains(object));
 	}
 	
 	public static <E, T extends Collection<E>> Predicate<T> hasItems(final Collection<E> objects) {
-		return SimplePredicate.<T>from(not(nullValue())).and(hasItems -> hasItems.containsAll(objects));
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(hasItems -> hasItems.containsAll(objects));
 	}
 
 	@SafeVarargs
@@ -32,7 +35,7 @@ public final class CollectionPredicate {
 	}
 	
 	public static <E, T extends Collection<E>> Predicate<T> hasAny(final Collection<E> objects) {
-		return SimplePredicate.<T>from(not(nullValue())).and(hasItems -> {
+		return PredicateBuilder.<T>from(not(nullValue())).and(hasItems -> {
 			for (final Object object : objects) {
 				if (hasItems.contains(object)) return true;
 			}
@@ -46,7 +49,8 @@ public final class CollectionPredicate {
 	}	
 
 	public static <E, T extends Collection<E>> Predicate<T> hasSize(final int size) {
-		return SimplePredicate.<T>from(not(nullValue())).and(hasSize -> hasSize.size() == size);
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(hasSize -> hasSize.size() == size);
 	}
 
 }
