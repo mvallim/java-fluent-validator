@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.mvallim</groupId>
@@ -203,6 +205,12 @@
 			<version>1.7.5</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.pitest</groupId>
+			<artifactId>pitest-parent</artifactId>
+			<version>1.4.10</version>
+			<type>pom</type>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -288,6 +296,19 @@
 								</goals>
 							</execution>
 						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<version>1.4.10</version>
+						<configuration>
+							<targetClasses>
+								<param>br.com.fluentvalidator.predicate.*</param>
+							</targetClasses>
+							<targetTests>
+								<param>br.com.fluentvalidator.predicate.test.*</param>
+							</targetTests>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

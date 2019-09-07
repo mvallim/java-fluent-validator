@@ -40,21 +40,36 @@ public class CollectionPredicateTest {
 	}
 
 	@Test
-	public void testCollectionPredicates() {
+	public void testCollectionEmty() {
 		final String element = "1";
-
 		assertTrue(empty().test(Arrays.asList()));
 		assertFalse(empty().test(Arrays.asList(element)));
+	}
 
+	@Test
+	public void testCollectionHasItems() {
+		final String element = "1";
 		assertTrue(hasItems(element).test(Arrays.asList(element)));
 		assertFalse(hasItems("1").test(Arrays.asList()));
+	}
 
+	@Test
+	public void testCollectionHasItem() {
+		final String element = "1";
 		assertTrue(hasItem(element).test(Arrays.asList(element)));
 		assertFalse(hasItem("1").test(Arrays.asList()));
+	}
 
+	@Test
+	public void testCollectionHasAny() {
+		final String element = "1";
 		assertTrue(hasAny(element).test(Arrays.asList(element)));
 		assertFalse(hasAny("1").test(Arrays.asList()));
+	}
 
+	@Test
+	public void testCollectionHasSize() {
+		final String element = "1";
 		assertTrue(hasSize(1).test(Arrays.asList(element)));
 		assertFalse(hasSize(1).test(Arrays.asList()));
 	}
