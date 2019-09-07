@@ -21,7 +21,7 @@ public class ValidatorBoy extends AbstractValidator<Boy>{
     protected void rules() {
 
         ruleFor(Boy::getGender)
-            .when(not(nullValue(Gender.class)))
+            .when(not(nullValue()))
                 .must(equalTo(Gender.MALE))
                 .withMessage("gender of boy must be MALE")
                 .withFieldName("gender")
