@@ -1,8 +1,11 @@
 package br.com.fluentvalidator.predicate;
 
+import static br.com.fluentvalidator.predicate.ComparablePredicate.*;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 
+import java.math.BigDecimal;
 import java.util.function.Predicate;
 
 public final class StringPredicate {
@@ -12,55 +15,69 @@ public final class StringPredicate {
 	}
 
 	public static Predicate<String> stringSizeGreaterThan(final int size) {
-		return is(stringSizeGreaterThan -> {
-			Assertions.checkNotNull(stringSizeGreaterThan, "stringSizeGreaterThan");
-			return stringSizeGreaterThan.length() > size;
-		});
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeGreaterThan -> greaterThan(size).test(stringSizeGreaterThan.length()));
 	}
 
 	public static Predicate<String> stringSizeLessThan(final int size) {
-		return is(stringSizeLessThan -> {
-			Assertions.checkNotNull(stringSizeLessThan, "stringSizeLessThan");
-			return stringSizeLessThan.length() < size;
-		});
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeLessThan -> lessThan(size).test(stringSizeLessThan.length()));
 	}
 
 	public static Predicate<String> stringSizeGreaterThanOrEqual(final int size) {
-		return is(stringSizeGreaterThanOrEqual -> {
-			Assertions.checkNotNull(stringSizeGreaterThanOrEqual, "stringSizeGreaterThanOrEqual");
-			return stringSizeGreaterThanOrEqual.length() >= size;
-		});
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeGreaterThanOrEqual -> greaterThanOrEqual(size).test(stringSizeGreaterThanOrEqual.length()));
 	}
 
 	public static Predicate<String> stringSizeLessThanOrEqual(final int size) {
-		return is(stringSizeLessThanOrEqual -> {
-			Assertions.checkNotNull(stringSizeLessThanOrEqual, "stringSizeLessThanOrEqual");
-			return stringSizeLessThanOrEqual.length() <= size;
-		});
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeLessThanOrEqual -> lessThanOrEqual(size).test(stringSizeLessThanOrEqual.length()));
 	}
 
 	public static Predicate<String> stringSizeBetween(final int minSize, final int maxSize) {
-		return is(stringSizeBetween -> {
-			Assertions.checkNotNull(stringSizeBetween, "stringSizeBetween");
-			return stringSizeBetween.length() > minSize && stringSizeBetween.length() < maxSize;
-		});
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSizeBetween -> between(minSize, maxSize).test(stringSizeBetween.length()));
 	}
 
 	public static Predicate<String> stringEmptyOrNull() {
-		return is(nullValue(String.class)).or(String::isEmpty);
+		return PredicateBuilder.<String>from(is(nullValue()))
+				.or(String::isEmpty);
 	}
 
 	public static Predicate<String> stringContains(final String str) {
-		return is(stringContains -> {
-			Assertions.checkNotNull(stringContains, "stringContains");
-			return stringContains.contains(str);
-		});
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringContains -> stringContains.contains(str));
 	}
 
 	public static Predicate<String> stringMatches(final String regex) {
-		return is(stringMatches -> {
-			Assertions.checkNotNull(stringMatches, "stringMatches");
-			return stringMatches.matches(regex);
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringMatches -> stringMatches.matches(regex));
+	}
+	
+	public static Predicate<String> isNumeric() {
+		return not(stringEmptyOrNull())
+				.and(isNumeric -> isNumeric.chars().allMatch(Character::isDigit));
+	}
+	
+	public static Predicate<String> isAlpha() {
+		return not(stringEmptyOrNull())
+				.and(isNumeric -> isNumeric.chars().allMatch(Character::isLetter));
+	}
+	
+	public static Predicate<String> isAlphaNumeric() {
+		return not(stringEmptyOrNull())
+				.and(isNumeric -> isNumeric.chars().allMatch(Character::isLetterOrDigit));
+	}
+	
+	public static Predicate<String> isNumber() {
+		return not(stringEmptyOrNull()).and(isNumber -> {
+			try {
+				new BigDecimal(isNumber);
+			} catch(final NumberFormatException e) {
+				return false;
+			}
+			return true;
 		});
 	}
+
 }

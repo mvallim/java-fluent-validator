@@ -53,7 +53,7 @@ public class ValidatorGirl extends AbstractValidator<Girl>{
     protected void rules() {
 
         ruleFor(Girl::getGender)
-            .when(not(nullValue(Gender.class)))
+            .when(not(nullValue()))
                 .must(equalTo(Gender.FEMALE))
                 .withMessage("gender of girl must be FEMALE")
                 .withFieldName("gender");
@@ -77,7 +77,7 @@ public class ValidatorBoy extends AbstractValidator<Boy>{
     protected void rules() {
 
         ruleFor(Boy::getGender)
-            .when(not(nullValue(Gender.class)))
+            .when(not(nullValue()))
                 .must(equalTo(Gender.MALE))
                 .withMessage("gender of boy must be MALE")
                 .withFieldName("gender")

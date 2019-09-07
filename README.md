@@ -1,6 +1,4 @@
-<p align="left">
-  <img src="documentation/fluent.png" height="20%" width="20%">
-</p>
+<p align="center"><img src="documentation/fluent.png" height="20%" width="20%"></p>
 
 # Java Fluent Validator
 
@@ -23,7 +21,7 @@ public class ValidatorBoy extends AbstractValidator<Boy>{
     protected void rules() {
 
         ruleFor(Boy::getGender)
-            .when(not(nullValue(Gender.class)))
+            .when(not(nullValue()))
                 .must(equalTo(Gender.MALE))
                 .withMessage("gender of boy must be MALE")
                 .withFieldName("gender")

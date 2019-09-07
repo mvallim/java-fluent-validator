@@ -13,7 +13,6 @@ Represents a predicate (boolean-valued function) of one argument.
 ## 6.2 Object
 
 * `nullValue()`
-* `nullValue(final Class<T> clazz)`
 * `equalTo(final T obj)`
 * `instanceOf(final Class<?> clazz)`
 
@@ -26,7 +25,11 @@ Represents a predicate (boolean-valued function) of one argument.
 * `stringSizeBetween(final int minSize, final int maxSize)`
 * `stringEmptyOrNull()`
 * `stringContains(final String str)`
-* `matches(final String regex)`
+* `stringMatches(final String regex)`
+* `isNumeric()`
+* `isAlpha()`
+* `isAlphaNumeric()`
+* `isNumber()`
 
 ## 6.4 Comparable
 

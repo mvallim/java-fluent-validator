@@ -5,9 +5,7 @@ import static br.com.fluentvalidator.predicate.CollectionPredicate.hasAny;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasItem;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasItems;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSize;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -18,65 +16,60 @@ public class CollectionPredicateTest {
 
 	@Test
 	public void testNullCollectionEmpty() {
-		try {
-			empty().test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'empty' could not evaluate null value"));
-		}
+		assertFalse(empty().test(null));
 	}
 
 	@Test
 	public void testNullCollectionHasItems() {
-		try {
-			hasItems(1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'hasItems' could not evaluate null value"));
-		}
+		assertFalse(hasItems(1).test(null));
 	}
 
 	@Test
 	public void testNullCollectionHasItem() {
-		try {
-			hasItem(1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'hasItem' could not evaluate null value"));
-		}
+		assertFalse(hasItem(1).test(null));
 	}
 
 	@Test
 	public void testNullCollectionHasAny() {
-		try {
-			hasAny(1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'hasAny' could not evaluate null value"));
-		}
+		assertFalse(hasAny(1).test(null));
 	}
 
 	@Test
 	public void testNullCollectionHasSize() {
-		try {
-			hasSize(1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'hasSize' could not evaluate null value"));
-		}
+		assertFalse(hasSize(1).test(null));
 	}
 
 	@Test
-	public void testCollectionPredicates() {
+	public void testCollectionEmty() {
 		final String element = "1";
-
 		assertTrue(empty().test(Arrays.asList()));
 		assertFalse(empty().test(Arrays.asList(element)));
+	}
 
+	@Test
+	public void testCollectionHasItems() {
+		final String element = "1";
 		assertTrue(hasItems(element).test(Arrays.asList(element)));
 		assertFalse(hasItems("1").test(Arrays.asList()));
+	}
 
+	@Test
+	public void testCollectionHasItem() {
+		final String element = "1";
 		assertTrue(hasItem(element).test(Arrays.asList(element)));
 		assertFalse(hasItem("1").test(Arrays.asList()));
+	}
 
+	@Test
+	public void testCollectionHasAny() {
+		final String element = "1";
 		assertTrue(hasAny(element).test(Arrays.asList(element)));
 		assertFalse(hasAny("1").test(Arrays.asList()));
+	}
 
+	@Test
+	public void testCollectionHasSize() {
+		final String element = "1";
 		assertTrue(hasSize(1).test(Arrays.asList(element)));
 		assertFalse(hasSize(1).test(Arrays.asList()));
 	}
