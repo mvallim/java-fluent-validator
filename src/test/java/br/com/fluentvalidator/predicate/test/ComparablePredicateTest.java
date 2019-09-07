@@ -51,7 +51,7 @@ public class ComparablePredicateTest {
 		assertTrue(lessThan(6).test(5));
 		assertFalse(lessThan(5).test(5));
 	}
-	
+
 	@Test
 	public void testComparableIntegerGreaterThanOrEqual() {
 		assertTrue(greaterThanOrEqual(2).test(2));
@@ -74,91 +74,151 @@ public class ComparablePredicateTest {
 	}
 
 	@Test
-	public void testComparableLongPredicates() {
+	public void testComparableLongGreaterThan() {
 		assertTrue(greaterThan(1L).test(2L));
 		assertFalse(greaterThan(2L).test(2L));
+	}
 
+	@Test
+	public void testComparableLongLessThan() {
 		assertTrue(lessThan(6L).test(5L));
 		assertFalse(lessThan(5L).test(5L));
+	}
 
+	@Test
+	public void testComparableLongGreaterThanOrEqual() {
 		assertTrue(greaterThanOrEqual(2L).test(2L));
 		assertFalse(greaterThanOrEqual(3L).test(2L));
+	}
 
+	@Test
+	public void testComparableLongLessThanOrEqual() {
 		assertTrue(lessThanOrEqual(5L).test(5L));
 		assertFalse(lessThanOrEqual(4L).test(5L));
+	}
 
+	@Test
+	public void testComparableLongBetween() {
 		assertTrue(between(0L, 5L).test(2L));
 		assertFalse(between(5L, 0L).test(6L));
 	}
 
 	@Test
-	public void testComparableDoublePredicates() {
+	public void testComparableDoubleGreaterThan() {
 		assertTrue(greaterThan(1d).test(2d));
 		assertFalse(greaterThan(2d).test(2d));
-
+	}
+	
+	@Test
+	public void testComparableDoubleLessThan() {
 		assertTrue(lessThan(6d).test(5d));
 		assertFalse(lessThan(5d).test(5d));
-
+	}
+	
+	@Test
+	public void testComparableDoubleGreaterThanOrEqual() {
 		assertTrue(greaterThanOrEqual(2d).test(2d));
 		assertFalse(greaterThanOrEqual(3d).test(2d));
-
+	}
+	
+	@Test
+	public void testComparableDoubleLessThanOrEqual() {
 		assertTrue(lessThanOrEqual(5d).test(5d));
 		assertFalse(lessThanOrEqual(4d).test(5d));
-
+	}
+	
+	@Test
+	public void testComparableDoubleBetween() {
 		assertTrue(between(0d, 5d).test(2d));
 		assertFalse(between(5d, 0d).test(6d));
 	}
 
 	@Test
-	public void testComparableFloatPredicates() {
+	public void testComparableFloatGreaterThan() {
 		assertTrue(greaterThan(1f).test(2f));
 		assertFalse(greaterThan(2f).test(2f));
+	}
 
+	@Test
+	public void testComparableFloatLessThan() {
 		assertTrue(lessThan(6f).test(5f));
 		assertFalse(lessThan(5f).test(5f));
+	}
 
+	@Test
+	public void testComparableFloatGreaterThanOrEqual() {
 		assertTrue(greaterThanOrEqual(2f).test(2f));
 		assertFalse(greaterThanOrEqual(3f).test(2f));
+	}
 
+	@Test
+	public void testComparableFloatLessThanOrEqual() {
 		assertTrue(lessThanOrEqual(5f).test(5f));
 		assertFalse(lessThanOrEqual(4f).test(5f));
+	}
 
+	@Test
+	public void testComparableFloatBetween() {
 		assertTrue(between(0f, 5f).test(2f));
 		assertFalse(between(5f, 0f).test(6f));
 	}
 
 	@Test
-	public void testComparableBigIntegerPredicates() {
+	public void testComparableBigIntegerGreaterThan() {
 		assertTrue(greaterThan(BigInteger.valueOf(1)).test(BigInteger.valueOf(2)));
 		assertFalse(greaterThan(BigInteger.valueOf(2)).test(BigInteger.valueOf(2)));
+	}
 
+	@Test
+	public void testComparableBigIntegerLessThan() {
 		assertTrue(lessThan(BigInteger.valueOf(6)).test(BigInteger.valueOf(5)));
 		assertFalse(lessThan(BigInteger.valueOf(5)).test(BigInteger.valueOf(5)));
+	}
 
+	@Test
+	public void testComparableBigIntegerGreaterThanOrEqual() {
 		assertTrue(greaterThanOrEqual(BigInteger.valueOf(2)).test(BigInteger.valueOf(2)));
 		assertFalse(greaterThanOrEqual(BigInteger.valueOf(3)).test(BigInteger.valueOf(2)));
+	}
 
+	@Test
+	public void testComparableBigIntegerLessThanOrEqual() {
 		assertTrue(lessThanOrEqual(BigInteger.valueOf(5)).test(BigInteger.valueOf(5)));
 		assertFalse(lessThanOrEqual(BigInteger.valueOf(4)).test(BigInteger.valueOf(5)));
+	}
 
+	@Test
+	public void testComparableBigIntegerBetween() {
 		assertTrue(between(BigInteger.valueOf(0), BigInteger.valueOf(5)).test(BigInteger.valueOf(2)));
 		assertFalse(between(BigInteger.valueOf(5), BigInteger.valueOf(0)).test(BigInteger.valueOf(6)));
 	}
 
 	@Test
-	public void testComparableBigDecimalPredicates() {
+	public void testComparableBigDecimalGreaterThan() {
 		assertTrue(greaterThan(BigDecimal.valueOf(1)).test(BigDecimal.valueOf(2)));
 		assertFalse(greaterThan(BigDecimal.valueOf(2)).test(BigDecimal.valueOf(2)));
-
+	}
+	
+	@Test
+	public void testComparableBigDecimalLessThan() {
 		assertTrue(lessThan(BigDecimal.valueOf(6)).test(BigDecimal.valueOf(5)));
 		assertFalse(lessThan(BigDecimal.valueOf(5)).test(BigDecimal.valueOf(5)));
-
+	}
+	
+	@Test
+	public void testComparableBigDecimalGreaterThanOrEqual() {
 		assertTrue(greaterThanOrEqual(BigDecimal.valueOf(2)).test(BigDecimal.valueOf(2)));
 		assertFalse(greaterThanOrEqual(BigDecimal.valueOf(3)).test(BigDecimal.valueOf(2)));
-
+	}
+	
+	@Test
+	public void testComparableBigDecimalLessThanOrEqual() {
 		assertTrue(lessThanOrEqual(BigDecimal.valueOf(5)).test(BigDecimal.valueOf(5)));
 		assertFalse(lessThanOrEqual(BigDecimal.valueOf(4)).test(BigDecimal.valueOf(5)));
-
+	}
+	
+	@Test
+	public void testComparableBigDecimalBetween() {
 		assertTrue(between(BigDecimal.valueOf(0), BigDecimal.valueOf(5)).test(BigDecimal.valueOf(2)));
 		assertFalse(between(BigDecimal.valueOf(5), BigDecimal.valueOf(0)).test(BigDecimal.valueOf(6)));
 	}
