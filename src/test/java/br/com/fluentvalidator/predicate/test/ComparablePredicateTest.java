@@ -5,9 +5,7 @@ import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThan;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOrEqual;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThan;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThanOrEqual;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -19,65 +17,57 @@ public class ComparablePredicateTest {
 
 	@Test
 	public void testNullComparableGreaterThan() {
-		try {
-			greaterThan(1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'greaterThan' could not evaluate null value"));
-		}
+		assertFalse(greaterThan(1).test(null));
 	}
 
 	@Test
 	public void testNullComparableLessThan() {
-		try {
-			lessThan(1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'lessThan' could not evaluate null value"));
-		}
+		assertFalse(lessThan(1).test(null));
 	}
 
 	@Test
 	public void testNullComparableGreaterThanOrEqual() {
-		try {
-			greaterThanOrEqual(1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'greaterThanOrEqual' could not evaluate null value"));
-		}
+		assertFalse(greaterThanOrEqual(1).test(null));
 	}
 
 	@Test
 	public void testNullComparableLessThanOrEqual() {
-		try {
-			lessThanOrEqual(1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'lessThanOrEqual' could not evaluate null value"));
-		}
+		assertFalse(lessThanOrEqual(1).test(null));
 	}
 
 	@Test
 	public void testNullComparableBetween() {
-		try {
-			between(1, 1).test(null);
-		} catch (NullPointerException e) {
-			assertThat(e.getMessage(), equalTo("predicate 'between' could not evaluate null value"));
-		}
+		assertFalse(between(1, 1).test(null));
 	}
 
 	@Test
-	public void testComparableIntegerPredicates() {
+	public void testComparableIntegerGreaterThan() {
 		assertTrue(greaterThan(1).test(2));
 		assertFalse(greaterThan(2).test(2));
+	}
 
+	@Test
+	public void testComparableIntegerLessThan() {
 		assertTrue(lessThan(6).test(5));
 		assertFalse(lessThan(5).test(5));
-
+	}
+	
+	@Test
+	public void testComparableIntegerGreaterThanOrEqual() {
 		assertTrue(greaterThanOrEqual(2).test(2));
 		assertTrue(greaterThanOrEqual(2).test(3));
 		assertFalse(greaterThanOrEqual(3).test(2));
+	}
 
+	@Test
+	public void testComparableIntegerLessThanOrEqual() {
 		assertTrue(lessThanOrEqual(5).test(5));
 		assertTrue(lessThanOrEqual(5).test(4));
 		assertFalse(lessThanOrEqual(4).test(5));
+	}
 
+	@Test
+	public void testComparableIntegerBetween() {
 		assertTrue(between(0, 5).test(2));
 		assertFalse(between(5, 0).test(5));
 		assertFalse(between(0, 0).test(5));

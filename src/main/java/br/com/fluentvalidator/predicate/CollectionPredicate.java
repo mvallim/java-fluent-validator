@@ -1,6 +1,8 @@
 package br.com.fluentvalidator.predicate;
 
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,24 +15,15 @@ public final class CollectionPredicate {
 	}
 
 	public static <E, T extends Collection<E>> Predicate<T> empty() {
-		return is(empty -> {
-			Assertions.checkNotNull(empty, "empty");
-			return empty.isEmpty();
-		});
+		return SimplePredicate.<T>from(not(nullValue())).and(Collection::isEmpty);
 	}
 
 	public static <E, T extends Collection<E>> Predicate<T> hasItem(final E object) {
-		return is(hasItem -> {
-			Assertions.checkNotNull(hasItem, "hasItem");
-			return hasItem.contains(object);
-		});
+		return SimplePredicate.<T>from(not(nullValue())).and(hasItem -> hasItem.contains(object));
 	}
 	
 	public static <E, T extends Collection<E>> Predicate<T> hasItems(final Collection<E> objects) {
-		return is(hasItems -> {
-			Assertions.checkNotNull(hasItems, "hasItems");
-			return hasItems.containsAll(objects);
-		});
+		return SimplePredicate.<T>from(not(nullValue())).and(hasItems -> hasItems.containsAll(objects));
 	}
 
 	@SafeVarargs
@@ -39,8 +32,7 @@ public final class CollectionPredicate {
 	}
 	
 	public static <E, T extends Collection<E>> Predicate<T> hasAny(final Collection<E> objects) {
-		return is(hasItems -> {
-			Assertions.checkNotNull(hasItems, "hasAny");
+		return SimplePredicate.<T>from(not(nullValue())).and(hasItems -> {
 			for (final Object object : objects) {
 				if (hasItems.contains(object)) return true;
 			}
@@ -54,10 +46,7 @@ public final class CollectionPredicate {
 	}	
 
 	public static <E, T extends Collection<E>> Predicate<T> hasSize(final int size) {
-		return is(hasSize -> {
-			Assertions.checkNotNull(hasSize, "hasSize");
-			return hasSize.size() == size;
-		});
+		return SimplePredicate.<T>from(not(nullValue())).and(hasSize -> hasSize.size() == size);
 	}
 
 }
