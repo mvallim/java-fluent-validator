@@ -38,10 +38,4 @@ public class ObjectPredicateTest {
 		assertFalse(nullValue().test("false"));
 	}
 	
-	@Test
-	public void testNullValueWithParameter() {
-		assertTrue(nullValue(String.class).test(null));
-		assertFalse(nullValue(String.class).test("he"));
-	}
-
 }

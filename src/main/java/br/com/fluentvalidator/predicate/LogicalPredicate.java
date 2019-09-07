@@ -9,19 +9,19 @@ public final class LogicalPredicate {
 	}
 	
 	static <T> Predicate<T> is(final Predicate<T> predicate) {
-		return predicate.and(is -> true);
+		return SimplePredicate.<T>from(predicate.and(is -> true));
 	}
 
 	public static <T> Predicate<T> not(final Predicate<T> predicate) {
-		return is(predicate).negate();
+		return SimplePredicate.<T>from(is(predicate).negate());
 	}
 
 	public static <T> Predicate<T> isTrue() {
-		return is(isTrue -> true);
+		return SimplePredicate.<T>from(is(isTrue -> true));
 	}
 	
 	public static <T> Predicate<T> isFalse() {
-		return is(isFalse -> false);
+		return SimplePredicate.<T>from(is(isFalse -> false));
 	}
 
 }
