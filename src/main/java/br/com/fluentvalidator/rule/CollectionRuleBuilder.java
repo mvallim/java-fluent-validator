@@ -1,6 +1,7 @@
 package br.com.fluentvalidator.rule;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -26,7 +27,7 @@ public class CollectionRuleBuilder<T, P> extends AbstractRuleBuilder<T, Collecti
 
 	@Override
 	public boolean apply(final T instance) {
-		return ValidationProcessor.process(this.function.apply(instance), store.getRules());
+		return Objects.nonNull(instance) && ValidationProcessor.process(this.function.apply(instance), store.getRules());
 	}
 
 	@Override
@@ -81,6 +82,11 @@ public class CollectionRuleBuilder<T, P> extends AbstractRuleBuilder<T, Collecti
 
 		protected CollectionValidationRule(final Predicate<Collection<P>> when) {
 			super(when);
+		}
+		
+		@Override
+		public boolean apply(Collection<P> instance) {
+			return Boolean.FALSE.equals(super.getWhen().test(instance)) || super.apply(instance);
 		}
 
 		@Override

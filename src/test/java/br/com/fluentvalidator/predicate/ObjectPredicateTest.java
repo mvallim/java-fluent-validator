@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.predicate.test;
+package br.com.fluentvalidator.predicate;
 
 import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.instanceOf;

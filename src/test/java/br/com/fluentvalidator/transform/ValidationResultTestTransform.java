@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.transform.test;
+package br.com.fluentvalidator.transform;
 
 import br.com.fluentvalidator.ValidationResult;
 import br.com.fluentvalidator.exception.Error;

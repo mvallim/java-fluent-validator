@@ -13,19 +13,13 @@ public final class ValidationProcessor {
 	public static <E> boolean process(final E value, final Rule<E> rule) {
 		return rule.apply(value);
 	}
-	
+
 	public static <E> boolean process(final Collection<E> values, final Rule<E> rule) {
-		for (final E value : values) {
-			if (!process(value, rule)) return false;
-		}
-		return true;
+		return values.stream().allMatch(value -> process(value, rule));
 	}
 	
 	public static <E> boolean process(final E value, final Collection<Rule<E>> rules) {
-		for (final Rule<E> rule : rules) {
-			if (!process(value, rule)) return false;
-		}			
-		return true;
+		return rules.stream().allMatch(rule -> process(value, rule));
 	}
 
 }

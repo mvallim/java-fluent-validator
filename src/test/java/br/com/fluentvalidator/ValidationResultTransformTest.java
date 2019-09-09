@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.test;
+package br.com.fluentvalidator;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
@@ -21,7 +21,7 @@ import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
-import br.com.fluentvalidator.transform.test.ValidationResultTestTransform;
+import br.com.fluentvalidator.transform.ValidationResultTestTransform;
 import br.com.fluentvalidator.validator.ValidatorParent;
 
 public class ValidationResultTransformTest {
