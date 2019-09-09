@@ -18,7 +18,7 @@ import br.com.fluentvalidator.exception.ValidationException;
 public class CollectionRuleBuilder<T, P> extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>>
 		implements RuleBuilder<T, Collection<P>, WhenCollection<T, P>>, WhenCollection<T, P> {
 
-	private ValidationRuleStore<P, Collection<P>> store = new ValidationRuleStore<>();
+	private ValidationRuleContainer<P, Collection<P>> store = new ValidationRuleContainer<>();
 	
 	public CollectionRuleBuilder(final Function<T, Collection<P>> function) {
 		super(function);

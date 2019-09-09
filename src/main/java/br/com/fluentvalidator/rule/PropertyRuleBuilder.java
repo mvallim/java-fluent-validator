@@ -17,7 +17,7 @@ import br.com.fluentvalidator.exception.ValidationException;
 public class PropertyRuleBuilder<T, P> extends AbstractRuleBuilder<T, P, WhenProperty<T, P>>
 		implements RuleBuilder<T, P, WhenProperty<T, P>>, WhenProperty<T, P> {
 
-	private ValidationRuleStore<P, P> store = new ValidationRuleStore<>();
+	private ValidationRuleContainer<P, P> store = new ValidationRuleContainer<>();
 
 	public PropertyRuleBuilder(final Function<T, P> function) {
 		super(function);
