@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import br.com.fluentvalidator.exception.Error;
 
-public class ValidationResult {
+public final class ValidationResult {
 
 	private final boolean valid;
 

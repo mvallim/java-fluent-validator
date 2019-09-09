@@ -1,10 +1,13 @@
-package br.com.fluentvalidator.builder;
+package br.com.fluentvalidator;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-import br.com.fluentvalidator.ValidationResult;
+import br.com.fluentvalidator.builder.Rule;
+import br.com.fluentvalidator.builder.RuleBuilder;
+import br.com.fluentvalidator.builder.WhenCollection;
+import br.com.fluentvalidator.builder.WhenProperty;
 import br.com.fluentvalidator.transform.ValidationResultTransform;
 
 public interface Validator<T> extends Rule<T> {
@@ -17,8 +20,8 @@ public interface Validator<T> extends Rule<T> {
 
 	<E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> transform);
 
-	<P> RuleProperty<T, P> ruleFor(final Function<T, P> function);
+	<P> RuleBuilder<T, P, WhenProperty<T, P>> ruleFor(final Function<T, P> function);
 
-	<P> RuleCollection<T, P> ruleForEach(final Function<T, Collection<P>> function);
+	<P> RuleBuilder<T, Collection<P>, WhenCollection<T, P>> ruleForEach(final Function<T, Collection<P>> function);
 
 }

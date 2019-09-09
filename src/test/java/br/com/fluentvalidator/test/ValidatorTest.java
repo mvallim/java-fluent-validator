@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 import br.com.fluentvalidator.ValidationResult;
-import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
@@ -208,7 +208,7 @@ public class ValidatorTest {
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("attemptedValue", containsString(parent2.getName()))));
 		assertThat(result.get(1).getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
 	}
-
+	
 	@Test
 	public void validationMustBeFalseWhenChildrenIsNull() {
 		final Validator<Parent> validatorParent = new ValidatorParent();

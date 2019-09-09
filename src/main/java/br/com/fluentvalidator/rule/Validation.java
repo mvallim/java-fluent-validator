@@ -2,8 +2,8 @@ package br.com.fluentvalidator.rule;
 
 import java.util.function.Predicate;
 
+import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.builder.Rule;
-import br.com.fluentvalidator.builder.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
 
 interface Validation<T, P> extends Rule<P> {
