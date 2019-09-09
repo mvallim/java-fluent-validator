@@ -78,8 +78,8 @@ public class PropertyRuleBuilder<T, P> extends AbstractRuleBuilder<T, P, WhenPro
 
 	class PropertyValidationRule extends ValidationRule<P, P> {
 
-		protected PropertyValidationRule(final Predicate<P> must) {
-			super(must);
+		protected PropertyValidationRule(final Predicate<P> when) {
+			super(when);
 		}
 
 		@Override

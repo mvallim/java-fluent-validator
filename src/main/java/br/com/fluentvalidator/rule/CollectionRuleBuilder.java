@@ -79,8 +79,8 @@ public class CollectionRuleBuilder<T, P> extends AbstractRuleBuilder<T, Collecti
 	
 	class CollectionValidationRule extends ValidationRule<P, Collection<P>> {
 
-		protected CollectionValidationRule(final Predicate<Collection<P>> must) {
-			super(must);
+		protected CollectionValidationRule(final Predicate<Collection<P>> when) {
+			super(when);
 		}
 
 		@Override
