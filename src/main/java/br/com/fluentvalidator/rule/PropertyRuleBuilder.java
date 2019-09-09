@@ -1,5 +1,6 @@
 package br.com.fluentvalidator.rule;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -25,7 +26,7 @@ public class PropertyRuleBuilder<T, P> extends AbstractRuleBuilder<T, P, WhenPro
 
 	@Override
 	public boolean apply(final T instance) {
-		return ValidationProcessor.process(this.function.apply(instance), store.getRules());
+		return Objects.nonNull(instance) && ValidationProcessor.process(this.function.apply(instance), store.getRules());
 	}
 
 	@Override
@@ -80,6 +81,11 @@ public class PropertyRuleBuilder<T, P> extends AbstractRuleBuilder<T, P, WhenPro
 
 		protected PropertyValidationRule(final Predicate<P> when) {
 			super(when);
+		}
+		
+		@Override
+		public boolean apply(P instance) {
+			return Boolean.FALSE.equals(super.getWhen().test(instance)) || super.apply(instance);
 		}
 
 		@Override

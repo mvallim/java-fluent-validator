@@ -104,8 +104,6 @@ abstract class ValidationRule<T, P> implements Validation<T, P> {
 	@Override
 	public boolean apply(final P instance) {
 		
-		if (!this.getWhen().test(instance)) return true;
-		
 		boolean apply = this.getMust().test(instance);
 		
 		if (Boolean.FALSE.equals(apply)) {

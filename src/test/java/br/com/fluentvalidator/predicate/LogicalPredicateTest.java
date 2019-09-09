@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.predicate.test;
+package br.com.fluentvalidator.predicate;
 
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isFalse;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;

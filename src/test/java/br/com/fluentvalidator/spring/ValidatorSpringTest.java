@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.spring.test;
+package br.com.fluentvalidator.spring;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
