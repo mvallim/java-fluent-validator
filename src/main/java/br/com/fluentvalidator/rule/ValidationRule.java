@@ -4,12 +4,14 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import br.com.fluentvalidator.ValidationContext;
-import br.com.fluentvalidator.builder.Validator;
+import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
 
-abstract class ValidationRule<P, A> implements Validation<P, A> {
+abstract class ValidationRule<T, P> implements Validation<T, P> {
 
-	private Predicate<A> must = m -> true;
+	private final Predicate<P> when;
+	
+	private Predicate<P> must = m -> true;
 
 	private String message;
 	
@@ -21,13 +23,17 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 	
 	private Class<? extends ValidationException> criticalException;
 
-	private Validator<P> validator;
-
-	public ValidationRule() {
-		super();
+	private Validator<T> validator;
+	
+	protected ValidationRule(final Predicate<P> when) {
+		this.when = when;
 	}
 
-	public Predicate<A> getMust() {
+	public Predicate<P> getWhen() {
+		return this.when;
+	}
+
+	public Predicate<P> getMust() {
 		return this.must;
 	}
 
@@ -47,13 +53,13 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 		return this.critical;
 	}
 
-	public Validator<P> getValidator() {
+	public Validator<T> getValidator() {
 		return this.validator;
 	}
 
 	@Override
-	public void must(final Predicate<A> predicate) {
-		this.must = predicate;
+	public void must(final Predicate<P> must) {
+		this.must = must;
 	}
 
 	@Override
@@ -72,7 +78,7 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 	}
 
 	@Override
-	public void withValidator(final Validator<P> validator) {
+	public void withValidator(final Validator<T> validator) {
 		this.validator = validator;
 	}
 
@@ -96,7 +102,9 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 	 * +----------+-----------+--------+
 	 */
 	@Override
-	public boolean apply(final A instance) {
+	public boolean apply(final P instance) {
+		
+		if (!this.getWhen().test(instance)) return true;
 		
 		boolean apply = this.getMust().test(instance);
 		
@@ -104,8 +112,8 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 			ValidationContext.get().addError(this.getFieldName(), this.getMessage(), this.getCode(), instance);
 		}
 				
-		if (Objects.nonNull(this.getValidator())) {
-			apply = applyValidator(instance);
+		if (Objects.nonNull(instance) && Objects.nonNull(this.getValidator())) {
+			apply = accept(instance);
 		}
 		
 		if (Objects.nonNull(criticalException) && Boolean.FALSE.equals(apply)) {
@@ -115,6 +123,6 @@ abstract class ValidationRule<P, A> implements Validation<P, A> {
 		return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
 	}
 	
-	abstract boolean applyValidator(final A instance);
+	abstract boolean accept(final P instance);
 
 }

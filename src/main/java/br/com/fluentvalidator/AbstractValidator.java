@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.function.Function;
 
 import br.com.fluentvalidator.builder.Rule;
-import br.com.fluentvalidator.builder.RuleCollection;
-import br.com.fluentvalidator.builder.RuleProperty;
-import br.com.fluentvalidator.builder.Validator;
-import br.com.fluentvalidator.rule.CollectionRule;
-import br.com.fluentvalidator.rule.PropetyRule;
+import br.com.fluentvalidator.builder.RuleBuilder;
+import br.com.fluentvalidator.builder.WhenCollection;
+import br.com.fluentvalidator.builder.WhenProperty;
+import br.com.fluentvalidator.rule.CollectionRuleBuilder;
+import br.com.fluentvalidator.rule.PropertyRuleBuilder;
 import br.com.fluentvalidator.rule.ValidationProcessor;
 import br.com.fluentvalidator.transform.ValidationResultTransform;
 
@@ -87,15 +87,15 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	}
 
 	@Override
-	public <P> RuleProperty<T, P> ruleFor(final Function<T, P> function) {
-		final PropetyRule<T, P> rule = new PropetyRule<>(function);
+	public <P> RuleBuilder<T, P, WhenProperty<T, P>> ruleFor(final Function<T, P> function) {
+		final PropertyRuleBuilder<T, P> rule = new PropertyRuleBuilder<>(function);
 		this.rules.add(rule);
 		return rule;
 	}
 
 	@Override
-	public <P> RuleCollection<T, P> ruleForEach(final Function<T, Collection<P>> function) {
-		final CollectionRule<T, P> rule = new CollectionRule<>(function);
+	public <P> RuleBuilder<T, Collection<P>, WhenCollection<T, P>> ruleForEach(final Function<T, Collection<P>> function) {
+		final CollectionRuleBuilder<T, P> rule = new CollectionRuleBuilder<>(function);
 		this.rules.add(rule);
 		return rule;
 	}

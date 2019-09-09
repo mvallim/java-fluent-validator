@@ -10,21 +10,21 @@ public final class ValidationProcessor {
 		super();
 	}
 	
-	public static <P> boolean process(final P value, final Rule<P> rule) {
+	public static <E> boolean process(final E value, final Rule<E> rule) {
 		return rule.apply(value);
 	}
 	
-	public static <P> boolean process(final Collection<P> values, final Rule<P> rule) {
-		for (final P value : values) {
+	public static <E> boolean process(final Collection<E> values, final Rule<E> rule) {
+		for (final E value : values) {
 			if (!process(value, rule)) return false;
 		}
 		return true;
 	}
 	
-	public static <P> boolean process(final P value, final Collection<Rule<P>> rules) {
-		for (final Rule<P> rule : rules) {
+	public static <E> boolean process(final E value, final Collection<Rule<E>> rules) {
+		for (final Rule<E> rule : rules) {
 			if (!process(value, rule)) return false;
-		}
+		}			
 		return true;
 	}
 
