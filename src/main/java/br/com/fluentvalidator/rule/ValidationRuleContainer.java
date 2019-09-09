@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 import br.com.fluentvalidator.builder.Rule;
 
-class ValidationRuleStore<T, P> {
+class ValidationRuleContainer<T, P> {
 
 	private final Collection<Rule<P>> rules = new LinkedList<>();
 		
