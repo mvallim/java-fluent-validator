@@ -14,9 +14,8 @@ import org.junit.After;
 import org.junit.Test;
 
 import br.com.fluentvalidator.ValidationContext;
-import br.com.fluentvalidator.builder.Rule;
 
-public class ValidationProcessorTest {
+public class RuleProcessorTest {
 
 	@After
 	public void tearDown() {
@@ -29,7 +28,7 @@ public class ValidationProcessorTest {
 		final StringValidationRule rule = new StringValidationRule(when -> true);
 		rule.must(equalTo("o"));
 		
-		assertTrue(ValidationProcessor.process("o", rule));
+		assertTrue(RuleProcessor.process("o", rule));
 	}
 	
 	@Test
@@ -39,7 +38,7 @@ public class ValidationProcessorTest {
 		rule.must(equalTo("o"));
 		rule.critical();
 		
-		assertFalse(ValidationProcessor.process("oo", rule));
+		assertFalse(RuleProcessor.process("oo", rule));
 	}
 	
 	@Test
@@ -51,7 +50,7 @@ public class ValidationProcessorTest {
 		rules.add(new StringValidationRule(when -> true));
 		rules.add(new StringValidationRule(when -> true));
 		
-		assertTrue(ValidationProcessor.process("o", rules));
+		assertTrue(RuleProcessor.process("o", rules));
 	}
 
 	@Test
@@ -67,7 +66,7 @@ public class ValidationProcessorTest {
 		rules.add(stringValidationRule);
 		rules.add(new StringValidationRule(when -> true));
 		
-		assertFalse(ValidationProcessor.process("oo", rules));
+		assertFalse(RuleProcessor.process("oo", rules));
 	}
 
 	@Test
@@ -78,10 +77,10 @@ public class ValidationProcessorTest {
 		
 		final Collection<String> values = Arrays.asList("o", "oo");
 				
-		assertTrue(ValidationProcessor.process(values, rule));
+		assertTrue(RuleProcessor.process(values, rule));
 	}
 
-	class StringValidationRule extends ValidationRule<String, String> {
+	class StringValidationRule extends AbstractRuleDescriptor<String, String> {
 
 		protected StringValidationRule(final Predicate<String> when) {
 			super(when);

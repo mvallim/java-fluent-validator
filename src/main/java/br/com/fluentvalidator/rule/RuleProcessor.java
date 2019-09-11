@@ -2,16 +2,14 @@ package br.com.fluentvalidator.rule;
 
 import java.util.Collection;
 
-import br.com.fluentvalidator.builder.Rule;
+public final class RuleProcessor {
 
-public final class ValidationProcessor {
-
-	private ValidationProcessor() {
+	private RuleProcessor() {
 		super();
 	}
 	
 	public static <E> boolean process(final E value, final Rule<E> rule) {
-		return rule.apply(value);
+		return Boolean.FALSE.equals(rule.support(value)) || rule.apply(value);
 	}
 
 	public static <E> boolean process(final Collection<E> values, final Rule<E> rule) {

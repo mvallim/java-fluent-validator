@@ -12,31 +12,43 @@ import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
 import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
-import br.com.fluentvalidator.builder.Rule;
-import br.com.fluentvalidator.builder.RuleBuilder;
+import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.WhenCollection;
 import br.com.fluentvalidator.builder.WithValidator;
 import br.com.fluentvalidator.exception.ValidationException;
 
-public class CollectionRuleBuilder<T, P> extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>>
-		implements RuleBuilder<T, Collection<P>, WhenCollection<T, P>>, WhenCollection<T, P> {
+public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>>
+		implements RuleBuilderCollection<T, P>, WhenCollection<T, P> {
 
 	private Collection<Rule<Collection<P>>> rules = new LinkedList<>();
-	
-	private Validation<P, Collection<P>> currentValidation;
-	
-	public CollectionRuleBuilder(final Function<T, Collection<P>> function) {
+
+	private RuleDescriptor<P, Collection<P>> currentValidation;
+
+	public RuleBuilderCollectionImpl(final Function<T, Collection<P>> function) {
 		super(function);
 	}
 
 	@Override
 	public boolean apply(final T instance) {
-		return Objects.nonNull(instance) && ValidationProcessor.process(this.function.apply(instance), rules);
+		return Objects.nonNull(instance) && RuleProcessor.process(this.function.apply(instance), rules);
+	}
+	
+	@Override
+	public boolean support(final T instance) {
+		return true;
+	}
+	
+	@Override
+	public WhenCollection<T, P> whenever(Predicate<Collection<P>> whenever) {
+		this.currentValidation = new CollectionValidationRule(whenever);
+		this.rules.add(this.currentValidation);
+		return this;
 	}
 
 	@Override
-	public Must<T, Collection<P>, WhenCollection<T, P>> must(final Predicate<Collection<P>> predicate) {
-		this.currentValidation.must(predicate);
+	public Must<T, Collection<P>, WhenCollection<T, P>> must(final Predicate<Collection<P>> must) {
+		this.currentValidation = new CollectionValidationRule(must);
+		this.rules.add(this.currentValidation);
 		return this;
 	}
 
@@ -75,28 +87,22 @@ public class CollectionRuleBuilder<T, P> extends AbstractRuleBuilder<T, Collecti
 		this.currentValidation.withValidator(validator);
 		return this;
 	}
-	
+
 	@Override
-	public WhenCollection<T, P> when(final Predicate<Collection<P>> predicate) {
-		this.currentValidation = new CollectionValidationRule(predicate);
-		this.rules.add(this.currentValidation);
+	public WhenCollection<T, P> when(final Predicate<Collection<P>> when) {
+		this.currentValidation.when(when);
 		return this;
 	}
-	
-	class CollectionValidationRule extends ValidationRule<P, Collection<P>> {
+
+	class CollectionValidationRule extends AbstractRuleDescriptor<P, Collection<P>> {
 
 		protected CollectionValidationRule(final Predicate<Collection<P>> when) {
 			super(when);
 		}
-		
-		@Override
-		public boolean apply(Collection<P> instance) {
-			return Boolean.FALSE.equals(super.getWhen().test(instance)) || super.apply(instance);
-		}
 
 		@Override
 		boolean accept(final Collection<P> instance) {
-			return ValidationProcessor.process(instance, this.getValidator());
+			return RuleProcessor.process(instance, this.getValidator());
 		}
 
 	}

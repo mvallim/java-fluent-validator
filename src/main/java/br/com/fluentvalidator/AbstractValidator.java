@@ -7,13 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
-import br.com.fluentvalidator.builder.Rule;
-import br.com.fluentvalidator.builder.RuleBuilder;
-import br.com.fluentvalidator.builder.WhenCollection;
-import br.com.fluentvalidator.builder.WhenProperty;
-import br.com.fluentvalidator.rule.CollectionRuleBuilder;
-import br.com.fluentvalidator.rule.PropertyRuleBuilder;
-import br.com.fluentvalidator.rule.ValidationProcessor;
+import br.com.fluentvalidator.builder.RuleBuilderCollection;
+import br.com.fluentvalidator.builder.RuleBuilderProperty;
+import br.com.fluentvalidator.rule.Rule;
+import br.com.fluentvalidator.rule.RuleBuilderCollectionImpl;
+import br.com.fluentvalidator.rule.RuleBuilderPropertyImpl;
+import br.com.fluentvalidator.rule.RuleProcessor;
 import br.com.fluentvalidator.transform.ValidationResultTransform;
 
 public abstract class AbstractValidator<T> implements Validator<T> {
@@ -52,7 +51,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 		
 	@Override
 	public ValidationResult validate(final T instance) {
-		ValidationProcessor.process(instance, this);
+		RuleProcessor.process(instance, this);
 		return ValidationContext.get().getValidationResult();
 	}
 
@@ -83,19 +82,24 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	public boolean apply(final T instance) {
 		this.initialize.run();
 		ValidationContext.get().setProperty(this.property, instance);
-		return ValidationProcessor.process(instance, rules);
+		return RuleProcessor.process(instance, rules);
+	}
+	
+	@Override
+	public boolean support(final T instance) {
+		return true;
 	}
 
 	@Override
-	public <P> RuleBuilder<T, P, WhenProperty<T, P>> ruleFor(final Function<T, P> function) {
-		final PropertyRuleBuilder<T, P> rule = new PropertyRuleBuilder<>(function);
+	public <P> RuleBuilderProperty<T, P> ruleFor(final Function<T, P> function) {
+		final RuleBuilderProperty<T, P> rule = new RuleBuilderPropertyImpl<>(function);
 		this.rules.add(rule);
 		return rule;
 	}
 
 	@Override
-	public <P> RuleBuilder<T, Collection<P>, WhenCollection<T, P>> ruleForEach(final Function<T, Collection<P>> function) {
-		final CollectionRuleBuilder<T, P> rule = new CollectionRuleBuilder<>(function);
+	public <P> RuleBuilderCollection<T, P> ruleForEach(final Function<T, Collection<P>> function) {
+		final RuleBuilderCollection<T, P> rule = new RuleBuilderCollectionImpl<>(function);
 		this.rules.add(rule);
 		return rule;
 	}

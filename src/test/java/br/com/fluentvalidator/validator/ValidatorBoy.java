@@ -16,15 +16,15 @@ public class ValidatorBoy extends AbstractValidator<Boy>{
 	protected void rules() {
 		
 		ruleFor(Boy::getGender)
-			.when(not(nullValue()))
-				.must(equalTo(Gender.MALE))
+			.must(equalTo(Gender.MALE))
+				.when(not(nullValue()))			
 				.withMessage("gender of boy must be MALE")
 				.withFieldName("gender")
 				.critical();
 		
 		ruleFor(Boy::getName)
-			.when(not(stringEmptyOrNull()))
-				.must(stringContains("John"))
+			.must(stringContains("John"))
+				.when(not(stringEmptyOrNull()))			
 				.withMessage("child name must contains key John")
 				.withFieldName("name");
 	}

@@ -7,7 +7,6 @@ import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
 import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
-import br.com.fluentvalidator.builder.Rule;
 import br.com.fluentvalidator.builder.When;
 import br.com.fluentvalidator.builder.WithValidator;
 

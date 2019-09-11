@@ -48,7 +48,7 @@ public class ValidationRuleTest {
 		assertTrue(rule.apply("o"));
 	}
 
-	class StringValidationRule extends ValidationRule<String, String> {
+	class StringValidationRule extends AbstractRuleDescriptor<String, String> {
 
 		protected StringValidationRule(Predicate<String> when) {
 			super(when);

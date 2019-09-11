@@ -3,12 +3,13 @@ package br.com.fluentvalidator.rule;
 import java.util.function.Predicate;
 
 import br.com.fluentvalidator.Validator;
-import br.com.fluentvalidator.builder.Rule;
 import br.com.fluentvalidator.exception.ValidationException;
 
-interface Validation<T, P> extends Rule<P> {
+interface RuleDescriptor<T, P> extends Rule<P> {
 
-	void must(final Predicate<P> predicate);
+	void when(final Predicate<P> when);
+	
+	void must(final Predicate<P> must);
 
 	void withFieldName(final String fieldName);
 

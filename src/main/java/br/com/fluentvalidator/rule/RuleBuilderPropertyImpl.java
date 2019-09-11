@@ -12,31 +12,38 @@ import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
 import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
-import br.com.fluentvalidator.builder.Rule;
-import br.com.fluentvalidator.builder.RuleBuilder;
+import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.builder.WhenProperty;
 import br.com.fluentvalidator.builder.WithValidator;
 import br.com.fluentvalidator.exception.ValidationException;
 
-public class PropertyRuleBuilder<T, P> extends AbstractRuleBuilder<T, P, WhenProperty<T, P>>
-		implements RuleBuilder<T, P, WhenProperty<T, P>>, WhenProperty<T, P> {
+public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, WhenProperty<T, P>>
+		implements RuleBuilderProperty<T, P>, WhenProperty<T, P> {
 
 	private Collection<Rule<P>> rules = new LinkedList<>();
 	
-	private Validation<P, P> currentValidation;
+	private RuleDescriptor<P, P> currentValidation;
 
-	public PropertyRuleBuilder(final Function<T, P> function) {
+	public RuleBuilderPropertyImpl(final Function<T, P> function) {
 		super(function);
 	}
 
 	@Override
 	public boolean apply(final T instance) {
-		return Objects.nonNull(instance) && ValidationProcessor.process(this.function.apply(instance), this.rules);
+		return Objects.nonNull(instance) && RuleProcessor.process(this.function.apply(instance), this.rules);
+	}
+	
+	@Override
+	public WhenProperty<T, P> whenever(final Predicate<P> whenever) {
+		this.currentValidation = new PropertyValidationRule(whenever);
+		this.rules.add(this.currentValidation);
+		return this;
 	}
 
 	@Override
-	public Must<T, P, WhenProperty<T, P>> must(final Predicate<P> predicate) {
-		this.currentValidation.must(predicate);
+	public Must<T, P, WhenProperty<T, P>> must(final Predicate<P> must) {
+		this.currentValidation = new PropertyValidationRule(must);
+		this.rules.add(this.currentValidation);
 		return this;
 	}
 
@@ -69,7 +76,7 @@ public class PropertyRuleBuilder<T, P> extends AbstractRuleBuilder<T, P, WhenPro
 		this.currentValidation.critical(clazz);
 		return this;
 	}
-
+	
 	@Override
 	public WithValidator<T, P, WhenProperty<T, P>> withValidator(final Validator<P> validator) {
 		this.currentValidation.withValidator(validator);
@@ -78,25 +85,24 @@ public class PropertyRuleBuilder<T, P> extends AbstractRuleBuilder<T, P, WhenPro
 
 	@Override
 	public WhenProperty<T, P> when(final Predicate<P> predicate) {
-		this.currentValidation = new PropertyValidationRule(predicate);
-		this.rules.add(this.currentValidation);
+		this.currentValidation.when(predicate);
 		return this;
 	}
+	
+	@Override
+	public boolean support(T instance) {
+		return true;
+	}
 
-	class PropertyValidationRule extends ValidationRule<P, P> {
+	class PropertyValidationRule extends AbstractRuleDescriptor<P, P> {
 
 		protected PropertyValidationRule(final Predicate<P> when) {
 			super(when);
 		}
 		
 		@Override
-		public boolean apply(P instance) {
-			return Boolean.FALSE.equals(super.getWhen().test(instance)) || super.apply(instance);
-		}
-
-		@Override
 		boolean accept(final P instance) {
-			return ValidationProcessor.process(instance, this.getValidator());
+			return RuleProcessor.process(instance, this.getValidator());
 		}
 
 	}

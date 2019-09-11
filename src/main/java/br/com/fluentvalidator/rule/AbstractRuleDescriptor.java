@@ -7,9 +7,9 @@ import br.com.fluentvalidator.ValidationContext;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
 
-abstract class ValidationRule<T, P> implements Validation<T, P> {
+abstract class AbstractRuleDescriptor<T, P> implements RuleDescriptor<T, P> {
 
-	private final Predicate<P> when;
+	private Predicate<P> when = w -> true;
 	
 	private Predicate<P> must = m -> true;
 
@@ -25,8 +25,8 @@ abstract class ValidationRule<T, P> implements Validation<T, P> {
 
 	private Validator<T> validator;
 	
-	protected ValidationRule(final Predicate<P> when) {
-		this.when = when;
+	protected AbstractRuleDescriptor(final Predicate<P> must) {
+		this.must = must;
 	}
 
 	public Predicate<P> getWhen() {
@@ -55,6 +55,11 @@ abstract class ValidationRule<T, P> implements Validation<T, P> {
 
 	public Validator<T> getValidator() {
 		return this.validator;
+	}
+	
+	@Override
+	public void when(Predicate<P> when) {
+		this.when = when;
 	}
 
 	@Override
@@ -89,6 +94,11 @@ abstract class ValidationRule<T, P> implements Validation<T, P> {
 	
 	public void critical(final Class<? extends ValidationException> clazz) {
 		this.criticalException = clazz;
+	}
+	
+	@Override
+	public boolean support(final P instance) {
+		return Boolean.TRUE.equals(this.getWhen().test(instance));
 	}
 
 	/*
