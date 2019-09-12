@@ -1,9 +1,8 @@
 package br.com.fluentvalidator.rule;
 
+import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import static br.com.fluentvalidator.predicate.ObjectPredicate.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -80,15 +79,10 @@ public class RuleProcessorTest {
 		assertTrue(RuleProcessor.process(values, rule));
 	}
 
-	class StringValidationRule extends AbstractRuleDescriptor<String, String> {
+	class StringValidationRule extends ValidationDescriptorImpl<String> {
 
 		protected StringValidationRule(final Predicate<String> when) {
 			super(when);
-		}
-
-		@Override
-		boolean accept(final String instance) {
-			return false;
 		}
 		
 	}

@@ -22,7 +22,9 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 
 	private Collection<Rule<P>> rules = new LinkedList<>();
 	
-	private RuleDescriptor<P, P> currentValidation;
+	private ValidationDescriptor<P> currentValidation;
+
+	private ValidatorDescriptor<P> currentValidator;
 
 	public RuleBuilderPropertyImpl(final Function<T, P> function) {
 		super(function);
@@ -35,14 +37,14 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 	
 	@Override
 	public WhenProperty<T, P> whenever(final Predicate<P> whenever) {
-		this.currentValidation = new PropertyValidationRule(whenever);
-		this.rules.add(this.currentValidation);
+		this.currentValidator = new ValidatorDescriptorImpl<>(whenever);
+		this.rules.add(this.currentValidator);
 		return this;
 	}
 
 	@Override
 	public Must<T, P, WhenProperty<T, P>> must(final Predicate<P> must) {
-		this.currentValidation = new PropertyValidationRule(must);
+		this.currentValidation = new ValidationDescriptorImpl<>(must);
 		this.rules.add(this.currentValidation);
 		return this;
 	}
@@ -79,7 +81,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 	
 	@Override
 	public WithValidator<T, P, WhenProperty<T, P>> withValidator(final Validator<P> validator) {
-		this.currentValidation.withValidator(validator);
+		this.currentValidator.withValidator(validator);
 		return this;
 	}
 
@@ -92,19 +94,6 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 	@Override
 	public boolean support(T instance) {
 		return true;
-	}
-
-	class PropertyValidationRule extends AbstractRuleDescriptor<P, P> {
-
-		protected PropertyValidationRule(final Predicate<P> when) {
-			super(when);
-		}
-		
-		@Override
-		boolean accept(final P instance) {
-			return RuleProcessor.process(instance, this.getValidator());
-		}
-
 	}
 
 }

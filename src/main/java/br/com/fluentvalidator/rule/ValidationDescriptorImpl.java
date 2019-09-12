@@ -4,10 +4,9 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import br.com.fluentvalidator.ValidationContext;
-import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
 
-abstract class AbstractRuleDescriptor<T, P> implements RuleDescriptor<T, P> {
+class ValidationDescriptorImpl<P> implements ValidationDescriptor<P> {
 
 	private Predicate<P> when = w -> true;
 	
@@ -23,9 +22,7 @@ abstract class AbstractRuleDescriptor<T, P> implements RuleDescriptor<T, P> {
 	
 	private Class<? extends ValidationException> criticalException;
 
-	private Validator<T> validator;
-	
-	protected AbstractRuleDescriptor(final Predicate<P> must) {
+	protected ValidationDescriptorImpl(final Predicate<P> must) {
 		this.must = must;
 	}
 
@@ -53,10 +50,6 @@ abstract class AbstractRuleDescriptor<T, P> implements RuleDescriptor<T, P> {
 		return this.critical;
 	}
 
-	public Validator<T> getValidator() {
-		return this.validator;
-	}
-	
 	@Override
 	public void when(Predicate<P> when) {
 		this.when = when;
@@ -81,12 +74,7 @@ abstract class AbstractRuleDescriptor<T, P> implements RuleDescriptor<T, P> {
 	public void withCode(final String code) {
 		this.code = code;
 	}
-
-	@Override
-	public void withValidator(final Validator<T> validator) {
-		this.validator = validator;
-	}
-
+	
 	@Override
 	public void critical() {
 		this.critical = true;
@@ -120,10 +108,6 @@ abstract class AbstractRuleDescriptor<T, P> implements RuleDescriptor<T, P> {
 			ValidationContext.get().addError(this.getFieldName(), this.getMessage(), this.getCode(), instance);
 		}
 				
-		if (Objects.nonNull(instance) && Objects.nonNull(this.getValidator())) {
-			apply = accept(instance);
-		}
-		
 		if (Objects.nonNull(criticalException) && Boolean.FALSE.equals(apply)) {
 			throw ValidationException.create(criticalException);
 		}
@@ -131,6 +115,4 @@ abstract class AbstractRuleDescriptor<T, P> implements RuleDescriptor<T, P> {
 		return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
 	}
 	
-	abstract boolean accept(final P instance);
-
 }

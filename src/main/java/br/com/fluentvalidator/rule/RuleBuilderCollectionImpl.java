@@ -22,14 +22,16 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 
 	private Collection<Rule<Collection<P>>> rules = new LinkedList<>();
 
-	private RuleDescriptor<P, Collection<P>> currentValidation;
+	private ValidationDescriptor<Collection<P>> currentValidation;
+	
+	private ValidatorDescriptor<Collection<P>> currentValidator;
 
 	public RuleBuilderCollectionImpl(final Function<T, Collection<P>> function) {
 		super(function);
 	}
 
 	@Override
-	public boolean apply(final T instance) {
+	public <T> boolean apply(final T instance) {
 		return Objects.nonNull(instance) && RuleProcessor.process(this.function.apply(instance), rules);
 	}
 	
@@ -39,15 +41,15 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 	}
 	
 	@Override
-	public WhenCollection<T, P> whenever(Predicate<Collection<P>> whenever) {
-		this.currentValidation = new CollectionValidationRule(whenever);
-		this.rules.add(this.currentValidation);
+	public WhenCollection<T, P> whenever(final Predicate<Collection<P>> whenever) {
+		this.currentValidator = new ValidatorDescriptorImpl<>(whenever);
+		this.rules.add(this.currentValidator);
 		return this;
 	}
 
 	@Override
 	public Must<T, Collection<P>, WhenCollection<T, P>> must(final Predicate<Collection<P>> must) {
-		this.currentValidation = new CollectionValidationRule(must);
+		this.currentValidation = new ValidationDescriptorImpl<>(must);
 		this.rules.add(this.currentValidation);
 		return this;
 	}
@@ -84,7 +86,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 
 	@Override
 	public WithValidator<T, Collection<P>, WhenCollection<T, P>> withValidator(final Validator<P> validator) {
-		this.currentValidation.withValidator(validator);
+		this.currentValidator.withValidator(validator);
 		return this;
 	}
 
@@ -92,19 +94,6 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 	public WhenCollection<T, P> when(final Predicate<Collection<P>> when) {
 		this.currentValidation.when(when);
 		return this;
-	}
-
-	class CollectionValidationRule extends AbstractRuleDescriptor<P, Collection<P>> {
-
-		protected CollectionValidationRule(final Predicate<Collection<P>> when) {
-			super(when);
-		}
-
-		@Override
-		boolean accept(final Collection<P> instance) {
-			return RuleProcessor.process(instance, this.getValidator());
-		}
-
 	}
 
 }
