@@ -84,6 +84,17 @@ public class ValidationRuleTest {
 		assertTrue(rule.apply("o"));
 	}
 	
+	@Test
+	public void testSuccessCritical() {
+		
+		final StringValidationRule rule = new StringValidationRule();
+		rule.must(not(nullValue()));
+		rule.critical();
+		
+		assertFalse(rule.apply(null));
+		assertTrue(rule.apply("o"));
+	}
+	
 	class StringValidationRule extends AbstractValidationRule<String, String> {
 
 		@Override
