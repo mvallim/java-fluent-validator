@@ -1,6 +1,7 @@
 package br.com.fluentvalidator.rule;
 
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSize;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThan;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isFalse;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
@@ -14,8 +15,10 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Test;
 
+import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.ValidationContext;
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
+import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.exception.ValidationSampleException;
 
 public class RuleBuilderCollectionTest {
@@ -87,17 +90,98 @@ public class RuleBuilderCollectionTest {
 	}
 
 	@Test
+	public void testSuccessInvalidSingleRuleWithCritical() {
+		
+		final RuleBuilderCollection<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		
+		builder
+			.must(hasSize(2))
+				.when(not(nullValue()))		
+				.withMessage("test")
+				.critical();
+		
+		assertTrue(builder.apply(Arrays.asList("o", "oo")));
+	}
+
+	@Test
 	public void testFailInvalidSingleRuleWithCritical() {
 		
 		final RuleBuilderCollection<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
 		
-		builder.must(hasSize(1))
-			.when(not(nullValue()))		
-			.withMessage("test")
-			.critical();
+		builder
+			.must(hasSize(1))
+				.when(not(nullValue()))		
+				.withMessage("test")
+				.critical();
 		
 		assertFalse(builder.apply(Arrays.asList("o", "oo")));
 	}
+	
+	@Test
+	public void testSuccessInvalidSingleRuleWithCriticalException() {
+		
+		final RuleBuilderCollection<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		
+		builder
+			.must(hasSize(2))
+				.when(not(nullValue()))		
+				.withMessage("test")
+				.critical(ValidationSampleException.class);
+		
+		assertTrue(builder.apply(Arrays.asList("o", "oo")));
+	}
+
+	@Test(expected = ValidationSampleException.class)
+	public void testFailInvalidSingleRuleWithCriticalException() {
+		
+		final RuleBuilderCollection<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		
+		builder
+			.must(hasSize(1))
+				.when(not(nullValue()))		
+				.withMessage("test")
+				.critical(ValidationSampleException.class);
+		
+		assertFalse(builder.apply(Arrays.asList("o", "oo")));
+	}
+
+	@Test
+	public void testFailRuleValidator() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.whenever(not(nullValue()))
+				.withValidator(new ValidatorIdTest());
+		
+		assertTrue(builder.apply(""));
+	}
+	
+	@Test
+	public void testFailRuleValidatorWithCritical() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.whenever(not(nullValue()))
+				.withValidator(new ValidatorIdTest())
+				.critical();
+		
+		assertFalse(builder.apply("oo"));
+	}
+	
+	@Test(expected = ValidationSampleException.class)
+	public void testFailRuleValidatorWithCriticalException() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.whenever(not(nullValue()))
+				.withValidator(new ValidatorIdTest())
+				.critical(ValidationSampleException.class);
+		
+		assertFalse(builder.apply("o"));
+	}	
 
 	@Test
 	public void testFailInvalidMultipleRuleWithCritical() {
@@ -128,11 +212,12 @@ public class RuleBuilderCollectionTest {
 		
 		final RuleBuilderCollection<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
 		
-		builder.must(hasSize(1))
-			.when(not(nullValue()))		
-			.withMessage("test")
-			.critical(ValidationSampleException.class);
-		
+		builder
+			.must(hasSize(1))
+				.when(not(nullValue()))		
+				.withMessage("test")
+				.critical(ValidationSampleException.class);
+						
 		assertFalse(builder.apply(Arrays.asList("o", "oo")));
 	}
 
@@ -187,5 +272,21 @@ public class RuleBuilderCollectionTest {
 				.withFieldName("size");
 		
 		assertTrue(builder.apply(Arrays.asList("o")));
+	}
+	
+	class ValidatorIdTest extends AbstractValidator<Integer> {
+
+		@Override
+		protected void rules() {
+			
+			ruleFor(id -> id)
+				.must(lessThan(2))
+					.withMessage("rule 1")
+					.critical()
+				.must(lessThan(1))
+					.withMessage("rule 2")
+					.critical();
+		}
+		
 	}
 }
