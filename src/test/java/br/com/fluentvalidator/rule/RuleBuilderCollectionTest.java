@@ -1,15 +1,16 @@
 package br.com.fluentvalidator.rule;
 
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSize;
-import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThan;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isFalse;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeLessThan;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
@@ -29,7 +30,7 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testFailWhenApplyNullValue() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(2))
@@ -42,7 +43,7 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testSuccessValidValue() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(2))
@@ -55,7 +56,7 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testSuccessInvalidSingleRuleWithoutCritical() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(1))
@@ -68,7 +69,7 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testSuccessInvalidMultipleRuleWithoutCritical() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(2))
@@ -90,7 +91,7 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testSuccessInvalidSingleRuleWithCritical() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(2))
@@ -104,7 +105,7 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testFailInvalidSingleRuleWithCritical() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(1))
@@ -118,7 +119,7 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testSuccessInvalidSingleRuleWithCriticalException() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(2))
@@ -132,7 +133,7 @@ public class RuleBuilderCollectionTest {
 	@Test(expected = ValidationSampleException.class)
 	public void testFailInvalidSingleRuleWithCriticalException() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(1))
@@ -146,45 +147,45 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testFailRuleValidator() {
 		
-		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.whenever(not(nullValue()))
 				.withValidator(new ValidatorIdTest());
 		
-		assertTrue(builder.apply(""));
+		assertTrue(builder.apply(Arrays.asList("")));
 	}
 	
 	@Test
 	public void testFailRuleValidatorWithCritical() {
 		
-		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.whenever(not(nullValue()))
 				.withValidator(new ValidatorIdTest())
 				.critical();
 		
-		assertFalse(builder.apply("oo"));
+		assertFalse(builder.apply(Arrays.asList("oo")));
 	}
 	
 	@Test(expected = ValidationSampleException.class)
 	public void testFailRuleValidatorWithCriticalException() {
 		
-		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.whenever(not(nullValue()))
 				.withValidator(new ValidatorIdTest())
 				.critical(ValidationSampleException.class);
 		
-		assertFalse(builder.apply("o"));
+		assertFalse(builder.apply(Arrays.asList("o")));
 	}	
 
 	@Test
 	public void testFailInvalidMultipleRuleWithCritical() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(2))
@@ -208,7 +209,7 @@ public class RuleBuilderCollectionTest {
 	@Test(expected = ValidationSampleException.class)
 	public void testFailInvalidSingleWithCriticalException() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(1))
@@ -222,7 +223,7 @@ public class RuleBuilderCollectionTest {
 	@Test(expected = ValidationSampleException.class)
 	public void testFailInvalidMultipleWithCriticalException() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(hasSize(2))
@@ -245,7 +246,7 @@ public class RuleBuilderCollectionTest {
 	@Test
 	public void testSuccessValidAndInvalidMultipleRule() {
 		
-		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(listStr -> listStr);
+		final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 		
 		builder
 			.must(isFalse())
@@ -272,16 +273,16 @@ public class RuleBuilderCollectionTest {
 		assertTrue(builder.apply(Arrays.asList("o")));
 	}
 	
-	class ValidatorIdTest extends AbstractValidator<Integer> {
+	class ValidatorIdTest extends AbstractValidator<String> {
 
 		@Override
 		protected void rules() {
 			
 			ruleFor(id -> id)
-				.must(lessThan(2))
+				.must(stringSizeLessThan(2))
 					.withMessage("rule 1")
 					.critical()
-				.must(lessThan(1))
+				.must(stringSizeLessThan(1))
 					.withMessage("rule 2")
 					.critical();
 		}

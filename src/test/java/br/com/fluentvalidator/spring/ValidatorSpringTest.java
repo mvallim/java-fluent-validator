@@ -99,7 +99,7 @@ public class ValidatorSpringTest {
 			parent.setChildren(Arrays.asList(new Boy("John", 5)));
 	
 			validatorParent.validate(parent);
-		} catch(Exception e) {
+		} catch(RuntimeException e) {
 			assertThat(e.getMessage(), equalTo("Constructor in class not found (Collection<Error> errors)"));			
 		}
 	}

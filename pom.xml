@@ -164,11 +164,16 @@
 					<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
 				<version>1.4.8</version>
+				<configuration>
+					<outputFormats>
+						<outputFormat>XML</outputFormat>
+					</outputFormats>
+				</configuration>
 				<executions>
 					<execution>
 						<phase>test</phase>
@@ -178,7 +183,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 

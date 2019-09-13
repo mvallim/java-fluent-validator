@@ -11,5 +11,5 @@ cache:
   - "$HOME/.cache"      
 
 after_success:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=java-fluent-validator
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=java-fluent-validator -Dsonar.pitest.mode=reuseReport
 

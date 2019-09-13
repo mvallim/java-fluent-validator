@@ -1,6 +1,8 @@
 package br.com.fluentvalidator.rule;
 
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -76,6 +78,17 @@ public class RuleProcessorTest {
 		final Collection<String> values = Arrays.asList("o", "oo");
 				
 		assertTrue(RuleProcessor.process(values, rule));
+	}
+	
+	@Test
+	public void testSuccessCritical() {
+		
+		final StringValidationRule rule = new StringValidationRule();
+		rule.must(not(nullValue()));
+		rule.critical();
+		
+		assertFalse(RuleProcessor.process((String)null, rule));
+		assertTrue(RuleProcessor.process("o", rule));
 	}
 
 	class StringValidationRule extends AbstractValidationRule<String, String> {
