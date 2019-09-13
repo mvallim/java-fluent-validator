@@ -137,13 +137,13 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 
 		@Override
 		public boolean apply(final Collection<P> instance) {
-
+			
 			final boolean apply = RuleProcessor.process(instance, this.getValidator());
-
+			
 			if (Objects.nonNull(this.getCriticalException()) && Boolean.FALSE.equals(apply)) {
 				throw ValidationException.create(this.getCriticalException());
 			}
-
+			
 			return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
 		}
 

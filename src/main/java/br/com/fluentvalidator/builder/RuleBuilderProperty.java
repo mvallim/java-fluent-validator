@@ -1,5 +1,7 @@
 package br.com.fluentvalidator.builder;
 
-public interface RuleBuilderProperty<T, P> extends RuleBuilder<T, P, WhenProperty<T, P>> {
+import br.com.fluentvalidator.rule.Rule;
+
+public interface RuleBuilderProperty<T, P> extends RuleBuilder<T, P, WhenProperty<T, P>>, Rule<T> {
 		
 }

@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.After;
 import org.junit.Test;
 
+import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.ValidationContext;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.exception.ValidationSampleException;
@@ -30,7 +31,7 @@ public class RuleBuilderPropertyTest {
 		builder
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test");
+				.withMessage("rule 1");
 		
 		assertFalse(builder.apply(null));
 	}
@@ -43,7 +44,7 @@ public class RuleBuilderPropertyTest {
 		builder
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test");
+				.withMessage("rule 1");
 		
 		assertTrue(builder.apply("o"));
 	}
@@ -56,7 +57,7 @@ public class RuleBuilderPropertyTest {
 		builder
 			.must(lessThan(1))
 				.when(not(nullValue()))
-				.withMessage("test");
+				.withMessage("rule 1");
 		
 		assertTrue(builder.apply("o"));
 	}
@@ -69,30 +70,122 @@ public class RuleBuilderPropertyTest {
 		builder
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 1")
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 2")
 			.must(lessThan(1))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 3")
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test");
+				.withMessage("rule 4");
 		
 		assertTrue(builder.apply("o"));
 	}
 
 	@Test
-	public void testFailInvalidSingleRuleWithCritical() {
+	public void testSuccessRuleWithCritical() {
 		
 		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(1))
-				.when(not(nullValue()))
-				.withMessage("test")
+				.when(not(nullValue()))		
+				.withMessage("rule 1")
+			.must(lessThan(2))
+				.when(not(nullValue()))		
+				.withMessage("rule 2")
 				.critical();
+		
+		assertTrue(builder.apply("o"));
+	}
+
+	@Test
+	public void testFailRuleWithCritical() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.must(lessThan(1))
+				.when(not(nullValue()))		
+				.withMessage("rule 1")
+			.must(lessThan(1))
+				.when(not(nullValue()))		
+				.withMessage("rule 2")
+				.critical();
+		
+		assertFalse(builder.apply("o"));
+	}
+	
+	@Test
+	public void testSuccessRuleWithCriticalException() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.must(lessThan(1))
+				.when(not(nullValue()))		
+				.withMessage("rule 1")
+			.must(lessThan(2))
+				.when(not(nullValue()))		
+				.withMessage("rule 2")
+				.critical(ValidationSampleException.class);
+		
+		assertTrue(builder.apply("o"));
+	}
+
+	@Test(expected = ValidationSampleException.class)
+	public void testFailRuleWithCriticalException() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.must(lessThan(1))
+				.when(not(nullValue()))		
+				.withMessage("rule 1")
+			.must(lessThan(1))
+				.when(not(nullValue()))		
+				.withMessage("rule 2")
+				.critical(ValidationSampleException.class);
+		
+		assertFalse(builder.apply("o"));
+	}
+	
+	@Test
+	public void testSuccessRuleValidator() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.whenever(not(nullValue()))
+				.withValidator(new ValidatorIdTest());
+		
+		assertTrue(builder.apply(""));
+	}	
+
+	@Test
+	public void testFailRuleValidatorWithCritical() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.whenever(not(nullValue()))
+				.withValidator(new ValidatorIdTest())
+				.critical();
+		
+		assertFalse(builder.apply("oo"));
+	}
+	
+	@Test(expected = ValidationSampleException.class)
+	public void testFailRuleValidatorWithCriticalException() {
+		
+		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		
+		builder
+			.whenever(not(nullValue()))
+				.withValidator(new ValidatorIdTest())
+				.critical(ValidationSampleException.class);
 		
 		assertFalse(builder.apply("o"));
 	}
@@ -105,33 +198,18 @@ public class RuleBuilderPropertyTest {
 		builder
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 1")
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 2")
 			.must(lessThan(1))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 3")
 				.critical()
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test");
+				.withMessage("rule 4");
 
-		assertFalse(builder.apply("o"));
-	}
-
-
-	@Test(expected = ValidationSampleException.class)
-	public void testFailInvalidSingleRuleWithCriticalException() {
-		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
-		
-		builder
-			.must(lessThan(1))
-				.when(not(nullValue()))
-				.withMessage("test")
-				.critical(ValidationSampleException.class);
-		
 		assertFalse(builder.apply("o"));
 	}
 
@@ -143,17 +221,17 @@ public class RuleBuilderPropertyTest {
 		builder
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 1")
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 2")
 			.must(lessThan(1))
 				.when(not(nullValue()))
-				.withMessage("test")
+				.withMessage("rule 3")
 				.critical(ValidationSampleException.class)
 			.must(lessThan(2))
 				.when(not(nullValue()))
-				.withMessage("test");
+				.withMessage("rule 4");
 		
 		assertFalse(builder.apply("o"));
 	}
@@ -186,6 +264,22 @@ public class RuleBuilderPropertyTest {
 				.withFieldName("size");
 		
 		assertTrue(builder.apply("o"));
+	}
+	
+	class ValidatorIdTest extends AbstractValidator<Integer> {
+
+		@Override
+		protected void rules() {
+			
+			ruleFor(id -> id)
+				.must(lessThan(2))
+					.withMessage("rule 1")
+					.critical()
+				.must(lessThan(1))
+					.withMessage("rule 2")
+					.critical();
+		}
+		
 	}
 
 }
