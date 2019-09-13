@@ -19,14 +19,14 @@ public class ValidatorSpringGirl extends AbstractValidator<Girl> {
 	protected void rules() {
 		
 		ruleFor(Girl::getGender)
-			.when(not(nullValue()))
-				.must(equalTo(Gender.FEMALE))
+			.must(equalTo(Gender.FEMALE))
+				.when(not(nullValue()))			
 				.withMessage("gender of girl must be FEMALE")
 				.withFieldName("gender");
 		
 		ruleFor(Girl::getName)
-			.when(not(stringEmptyOrNull()))
-				.must(stringContains("Ana"))
+			.must(stringContains("Ana"))
+				.when(not(stringEmptyOrNull()))			
 				.withMessage("child name must contains key Ana")
 				.withFieldName("name");
 	}

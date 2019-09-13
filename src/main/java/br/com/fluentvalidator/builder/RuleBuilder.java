@@ -2,8 +2,12 @@ package br.com.fluentvalidator.builder;
 
 import java.util.function.Predicate;
 
-public interface RuleBuilder<T, P, W extends When<T, P, W>> extends Rule<T> {
+import br.com.fluentvalidator.rule.Rule;
+
+interface RuleBuilder<T, P, W extends When<T, P, W>> extends Rule<T> {
 	
-	W when(final Predicate<P> predicate);
+	W whenever(final Predicate<P> predicate);
+	
+	Must<T, P, W> must(final Predicate<P> predicate);
 	
 }

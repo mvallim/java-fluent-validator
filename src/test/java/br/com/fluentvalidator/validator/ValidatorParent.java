@@ -4,7 +4,6 @@ import static br.com.fluentvalidator.predicate.CollectionPredicate.empty;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSize;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOrEqual;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThanOrEqual;
-import static br.com.fluentvalidator.predicate.LogicalPredicate.isTrue;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
@@ -20,6 +19,7 @@ import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Child;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
+import br.com.fluentvalidator.predicate.PredicateBuilder;
 
 public class ValidatorParent extends AbstractValidator<Parent> {
 
@@ -29,54 +29,53 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 		setPropertyOnContext("parent");
 		
 		ruleForEach(Parent::getChildren)
-			.when(isTrue())
-				.must(not(nullValue()))
+			.must(not(nullValue()))
 				.withMessage("parent's children cannot be null")
 				.withCode("555")
 				.withFieldName("children")
-			.when(not(nullValue()))
-				.must(not(empty()))
+			.must(not(empty()))
+				.when(not(nullValue()))
 				.withMessage("parent must have at least one child")
 				.withFieldName("children")		
-			.when(not(nullValue()))
+			.whenever(not(nullValue()))
 				.withValidator(new ValidatorChild())
 				.critical();
 	
 		ruleFor(Parent::getId)
-			.when(isTrue())
+			.whenever(not(nullValue()))
 				.withValidator(new ValidatorId())
 				.critical();
 
 		ruleFor(Parent::getAge)
-			.when(not(nullValue()))
-				.must(greaterThanOrEqual(5))
+			.must(greaterThanOrEqual(5))
+				.when(not(nullValue()))				
 				.withMessage("age must be greater than or equal to 10")
 				.withFieldName("age")
-			.when(not(nullValue()))
-				.must(lessThanOrEqual(7))
+			.must(lessThanOrEqual(7))
+				.when(not(nullValue()))
 				.withMessage("age must be less than or equal to 7")
 				.withCode("666")
 				.withFieldName("age");
 
 		ruleFor(Parent::getCities)
-			.when(not(nullValue()))
-				.must(hasSize(10))
+			.must(hasSize(10))
+				.when(not(nullValue()))
 				.withMessage("cities size must be 10")
 				.withFieldName("cities");
 
 		ruleFor(Parent::getName)
-			.when(not(stringEmptyOrNull()))
-				.must(stringContains("John"))
+			.must(stringContains("John"))
+				.when(not(stringEmptyOrNull()))
 				.withMessage("name must contains key John")
 				.withFieldName("name");
 
 		ruleForEach(parent -> extractGirls(parent.getChildren()))
-			.when(not(nullValue()))
+			.whenever(PredicateBuilder.<Collection<Girl>>from(not(nullValue())).and(not(empty())))
 				.withValidator(new ValidatorGirl())
 				.critical();
 		
 		ruleForEach(parent -> extractBoys(parent.getChildren()))
-			.when(not(nullValue()))
+			.whenever(PredicateBuilder.<Collection<Boy>>from(not(nullValue())).and(not(empty())))
 				.withValidator(new ValidatorBoy())
 				.critical();
 
