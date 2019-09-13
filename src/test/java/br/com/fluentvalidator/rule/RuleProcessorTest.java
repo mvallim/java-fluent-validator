@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.function.Predicate;
 
 import org.junit.After;
 import org.junit.Test;
@@ -24,7 +23,7 @@ public class RuleProcessorTest {
 	@Test
 	public void testSuccessSingleRule() {
 		
-		final StringValidationRule rule = new StringValidationRule(when -> true);
+		final StringValidationRule rule = new StringValidationRule();
 		rule.must(equalTo("o"));
 		
 		assertTrue(RuleProcessor.process("o", rule));
@@ -33,7 +32,7 @@ public class RuleProcessorTest {
 	@Test
 	public void testSuccessSingleRuleWithCritical() {
 		
-		final StringValidationRule rule = new StringValidationRule(when -> true);
+		final StringValidationRule rule = new StringValidationRule();
 		rule.must(equalTo("o"));
 		rule.critical();
 		
@@ -45,9 +44,9 @@ public class RuleProcessorTest {
 		
 		final Collection<Rule<String>> rules = new LinkedList<>();
 		
-		rules.add(new StringValidationRule(when -> true));
-		rules.add(new StringValidationRule(when -> true));
-		rules.add(new StringValidationRule(when -> true));
+		rules.add(new StringValidationRule());
+		rules.add(new StringValidationRule());
+		rules.add(new StringValidationRule());
 		
 		assertTrue(RuleProcessor.process("o", rules));
 	}
@@ -57,13 +56,13 @@ public class RuleProcessorTest {
 		
 		final Collection<Rule<String>> rules = new LinkedList<>();
 		
-		final StringValidationRule stringValidationRule = new StringValidationRule(when -> true);
+		final StringValidationRule stringValidationRule = new StringValidationRule();
 		stringValidationRule.must(equalTo("o"));
 		stringValidationRule.critical();
 		
-		rules.add(new StringValidationRule(when -> true));
+		rules.add(new StringValidationRule());
 		rules.add(stringValidationRule);
-		rules.add(new StringValidationRule(when -> true));
+		rules.add(new StringValidationRule());
 		
 		assertFalse(RuleProcessor.process("oo", rules));
 	}
@@ -71,7 +70,7 @@ public class RuleProcessorTest {
 	@Test
 	public void testSuccessSinleRulesAndMultipleValues() {
 		
-		final StringValidationRule rule = new StringValidationRule(when -> true);
+		final StringValidationRule rule = new StringValidationRule();
 		rule.must(equalTo("o"));
 		
 		final Collection<String> values = Arrays.asList("o", "oo");
@@ -79,10 +78,21 @@ public class RuleProcessorTest {
 		assertTrue(RuleProcessor.process(values, rule));
 	}
 
-	class StringValidationRule extends ValidationDescriptorImpl<String> {
+	class StringValidationRule extends AbstractValidationRule<String, String> {
 
-		protected StringValidationRule(final Predicate<String> when) {
-			super(when);
+		public StringValidationRule() {
+			super();
+		}
+
+		@Override
+		public boolean apply(final String instance) {
+			final boolean apply = this.getMust().test(instance);
+			return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
+		}
+
+		@Override
+		public boolean support(final String instance) {
+			return Boolean.TRUE.equals(this.getWhen().test(instance));
 		}
 		
 	}

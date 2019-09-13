@@ -2,7 +2,7 @@ package br.com.fluentvalidator.rule;
 
 public interface Rule<T> {
 
-	<P> boolean apply(final P instance);
+	boolean apply(final T instance);
 	
 	boolean support(final T instance);
 

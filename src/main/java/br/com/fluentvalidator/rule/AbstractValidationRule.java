@@ -1,13 +1,14 @@
 package br.com.fluentvalidator.rule;
 
-import java.util.Objects;
 import java.util.function.Predicate;
 
-import br.com.fluentvalidator.ValidationContext;
+import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
 
-class ValidationDescriptorImpl<P> implements ValidationDescriptor<P> {
+abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P> {
 
+	private Predicate<P> whenever = w -> true;
+	
 	private Predicate<P> when = w -> true;
 	
 	private Predicate<P> must = m -> true;
@@ -21,9 +22,11 @@ class ValidationDescriptorImpl<P> implements ValidationDescriptor<P> {
 	private boolean critical;
 	
 	private Class<? extends ValidationException> criticalException;
-
-	protected ValidationDescriptorImpl(final Predicate<P> must) {
-		this.must = must;
+	
+	private Validator<T> validator;
+	
+	public Predicate<P> getWhenever() {
+		return this.whenever;
 	}
 
 	public Predicate<P> getWhen() {
@@ -34,12 +37,20 @@ class ValidationDescriptorImpl<P> implements ValidationDescriptor<P> {
 		return this.must;
 	}
 
+	public Class<? extends ValidationException> getCriticalException() {
+		return this.criticalException;
+	}
+
+	public Validator<T> getValidator() {
+		return this.validator;
+	}
+
 	public String getMessage() {
 		return this.message;
 	}
 	
 	public String getCode() {
-		return code;
+		return this.code;
 	}
 
 	public String getFieldName() {
@@ -51,7 +62,7 @@ class ValidationDescriptorImpl<P> implements ValidationDescriptor<P> {
 	}
 
 	@Override
-	public void when(Predicate<P> when) {
+	public void when(final Predicate<P> when) {
 		this.when = when;
 	}
 
@@ -80,39 +91,20 @@ class ValidationDescriptorImpl<P> implements ValidationDescriptor<P> {
 		this.critical = true;
 	}
 	
+	@Override
 	public void critical(final Class<? extends ValidationException> clazz) {
+		this.critical = true;
 		this.criticalException = clazz;
 	}
 	
 	@Override
-	public boolean support(final P instance) {
-		return Boolean.TRUE.equals(this.getWhen().test(instance));
+	public void whenever(final Predicate<P> whenever) {
+		this.whenever = whenever;
 	}
 
-	/*
-	 * +----------+-----------+--------+
-	 * | critical | composite | result |
-	 * +----------+-----------+--------|
-	 * | true     | true      | true   |
-	 * | true     | false     | false  |
-	 * | false    | true      | true   |
-	 * | false    | false     | true   |
-	 * +----------+-----------+--------+
-	 */
 	@Override
-	public boolean apply(final P instance) {
-		
-		boolean apply = this.getMust().test(instance);
-		
-		if (Boolean.FALSE.equals(apply)) {
-			ValidationContext.get().addError(this.getFieldName(), this.getMessage(), this.getCode(), instance);
-		}
-				
-		if (Objects.nonNull(criticalException) && Boolean.FALSE.equals(apply)) {
-			throw ValidationException.create(criticalException);
-		}
-		
-		return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
+	public void withValidator(final Validator<T> validator) {
+		this.validator = validator;
 	}
 	
 }

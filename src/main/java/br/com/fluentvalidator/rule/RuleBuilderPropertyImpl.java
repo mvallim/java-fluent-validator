@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import br.com.fluentvalidator.ValidationContext;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
@@ -22,9 +23,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 
 	private Collection<Rule<P>> rules = new LinkedList<>();
 	
-	private ValidationDescriptor<P> currentValidation;
-
-	private ValidatorDescriptor<P> currentValidator;
+	private ValidationRule<P, P> currentValidation;
 
 	public RuleBuilderPropertyImpl(final Function<T, P> function) {
 		super(function);
@@ -37,14 +36,14 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 	
 	@Override
 	public WhenProperty<T, P> whenever(final Predicate<P> whenever) {
-		this.currentValidator = new ValidatorDescriptorImpl<>(whenever);
-		this.rules.add(this.currentValidator);
+		this.currentValidation = new ValidatorRuleInternal(whenever);
+		this.rules.add(this.currentValidation);
 		return this;
 	}
 
 	@Override
 	public Must<T, P, WhenProperty<T, P>> must(final Predicate<P> must) {
-		this.currentValidation = new ValidationDescriptorImpl<>(must);
+		this.currentValidation = new ValidationRuleInternal(must);
 		this.rules.add(this.currentValidation);
 		return this;
 	}
@@ -81,7 +80,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 	
 	@Override
 	public WithValidator<T, P, WhenProperty<T, P>> withValidator(final Validator<P> validator) {
-		this.currentValidator.withValidator(validator);
+		this.currentValidation.withValidator(validator);
 		return this;
 	}
 
@@ -94,6 +93,60 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 	@Override
 	public boolean support(T instance) {
 		return true;
+	}
+	
+	class ValidationRuleInternal extends AbstractValidationRule<P, P> {
+
+		ValidationRuleInternal(final Predicate<P> must) {
+			this.must(must);
+		}
+
+		@Override
+		public boolean support(final P instance) {
+			return Boolean.TRUE.equals(this.getWhen().test(instance));
+		}
+		
+		@Override
+		public boolean apply(final P instance) {
+			
+			final boolean apply = this.getMust().test(instance);
+			
+			if (Boolean.FALSE.equals(apply)) {
+				ValidationContext.get().addError(this.getFieldName(), this.getMessage(), this.getCode(), instance);
+			}
+					
+			if (Objects.nonNull(this.getCriticalException()) && Boolean.FALSE.equals(apply)) {
+				throw ValidationException.create(this.getCriticalException());
+			}
+			
+			return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
+		}
+		
+	}
+	
+	class ValidatorRuleInternal extends AbstractValidationRule<P, P> {
+
+		ValidatorRuleInternal(final Predicate<P> whenever) {
+			this.whenever(whenever);
+		}
+
+		@Override
+		public boolean support(final P instance) {
+			return Boolean.TRUE.equals(this.getWhenever().test(instance));
+		}
+
+		@Override
+		public boolean apply(final P instance) {
+
+			final boolean apply = RuleProcessor.process(instance, this.getValidator());
+
+			if (Objects.nonNull(this.getCriticalException()) && Boolean.FALSE.equals(apply)) {
+				throw ValidationException.create(this.getCriticalException());
+			}
+
+			return !(Boolean.TRUE.equals(this.isCritical()) && Boolean.FALSE.equals(apply));
+		}
+
 	}
 
 }
