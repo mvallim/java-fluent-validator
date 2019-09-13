@@ -127,12 +127,12 @@ public class ValidatorSpringParent extends AbstractValidator<Parent> {
                 .must(not(empty()))
                 .withMessage("parent must have at least one child")
                 .withFieldName("children")
-            .when(not(nullValue()))
+            .whenever(not(nullValue()))
                 .withValidator(validatorChild)
                 .critical();
 
         ruleFor(Parent::getId)
-            .when(isTrue())
+            .whenever(isTrue())
                 .withValidator(validatorId)
                 .critical();
 
@@ -160,11 +160,11 @@ public class ValidatorSpringParent extends AbstractValidator<Parent> {
                 .withFieldName("name");
 
         ruleForEach(parent -> extractGirls(parent.getChildren()))
-            .when(not(nullValue()))
+            .whenever(not(nullValue()))
                 .withValidator(validatorGirl);
 
         ruleForEach(parent -> extractBoys(parent.getChildren()))
-            .when(not(nullValue()))
+            .whenever(not(nullValue()))
                 .withValidator(validatorBoy)
                 .critical();
 
