@@ -92,14 +92,14 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 
 	@Override
 	public <P> RuleBuilderProperty<T, P> ruleFor(final Function<T, P> function) {
-		final RuleBuilderProperty<T, P> rule = new RuleBuilderPropertyImpl<>(function);
+		final RuleBuilderPropertyImpl<T, P> rule = new RuleBuilderPropertyImpl<>(function);
 		this.rules.add(rule);
 		return rule;
 	}
 
 	@Override
 	public <P> RuleBuilderCollection<T, P> ruleForEach(final Function<T, Collection<P>> function) {
-		final RuleBuilderCollection<T, P> rule = new RuleBuilderCollectionImpl<>(function);
+		final RuleBuilderCollectionImpl<T, P> rule = new RuleBuilderCollectionImpl<>(function);
 		this.rules.add(rule);
 		return rule;
 	}

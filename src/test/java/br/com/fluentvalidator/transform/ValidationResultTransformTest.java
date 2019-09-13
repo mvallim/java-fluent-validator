@@ -1,4 +1,4 @@
-package br.com.fluentvalidator;
+package br.com.fluentvalidator.transform;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
@@ -17,11 +17,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
+import br.com.fluentvalidator.ValidationResult;
 import br.com.fluentvalidator.Validator;
+import br.com.fluentvalidator.exception.Error;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
-import br.com.fluentvalidator.transform.ValidationResultTestTransform;
 import br.com.fluentvalidator.validator.ValidatorParent;
 
 public class ValidationResultTransformTest {
@@ -157,6 +158,19 @@ public class ValidationResultTransformTest {
 			assertThat(result, containsString("name must contains key John"));			
 		}
 		
+	}
+	
+	class ValidationResultTestTransform implements ValidationResultTransform<String> {
+
+		@Override
+		public String transform(final ValidationResult validationResult) {
+			final StringBuilder sb = new StringBuilder();
+			for (final Error error : validationResult.getErrors()) {
+				sb.append(String.format("%s\n", error.getMessage()));
+			}
+			return sb.toString();
+		}
+
 	}
 
 }
