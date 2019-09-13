@@ -19,7 +19,7 @@ import br.com.fluentvalidator.builder.WithValidator;
 import br.com.fluentvalidator.exception.ValidationException;
 
 public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, WhenProperty<T, P>>
-		implements RuleBuilderProperty<T, P>, WhenProperty<T, P> {
+		implements RuleBuilderProperty<T, P>, WhenProperty<T, P>, Rule<T> {
 
 	private Collection<Rule<P>> rules = new LinkedList<>();
 	

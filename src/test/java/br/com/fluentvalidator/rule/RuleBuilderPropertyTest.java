@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.ValidationContext;
-import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.exception.ValidationSampleException;
 
 public class RuleBuilderPropertyTest {
@@ -24,9 +23,9 @@ public class RuleBuilderPropertyTest {
 	}
 
 	@Test
-	public void testFailWhenDontApplyNullValue() {
+	public void testFailWhenApplyNullValue() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(2))
@@ -39,7 +38,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testSuccessValidValue() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(2))
@@ -52,7 +51,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testSuccessInvalidSingleRuleWithoutCritical() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(1))
@@ -65,7 +64,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testSuccessInvalidMultipleRuleWithoutCritical() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(2))
@@ -87,7 +86,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testSuccessRuleWithCritical() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(1))
@@ -104,7 +103,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testFailRuleWithCritical() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(1))
@@ -121,7 +120,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testSuccessRuleWithCriticalException() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(1))
@@ -138,7 +137,7 @@ public class RuleBuilderPropertyTest {
 	@Test(expected = ValidationSampleException.class)
 	public void testFailRuleWithCriticalException() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(1))
@@ -155,7 +154,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testSuccessRuleValidator() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.whenever(not(nullValue()))
@@ -167,7 +166,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testFailRuleValidatorWithCritical() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.whenever(not(nullValue()))
@@ -180,7 +179,7 @@ public class RuleBuilderPropertyTest {
 	@Test(expected = ValidationSampleException.class)
 	public void testFailRuleValidatorWithCriticalException() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.whenever(not(nullValue()))
@@ -193,7 +192,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testFailInvalidMultipleRuleWithCritical() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 
 		builder
 			.must(lessThan(2))
@@ -216,7 +215,7 @@ public class RuleBuilderPropertyTest {
 	@Test(expected = ValidationSampleException.class)
 	public void testFailInvalidMultipleRuleWithCriticalException() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(lessThan(2))
@@ -239,7 +238,7 @@ public class RuleBuilderPropertyTest {
 	@Test
 	public void testSuccessValidAndInvalidMultipleRule() {
 		
-		final RuleBuilderProperty<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
+		final RuleBuilderPropertyImpl<String, Integer> builder = new RuleBuilderPropertyImpl<>(String::length);
 		
 		builder
 			.must(isFalse())
