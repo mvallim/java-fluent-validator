@@ -23,6 +23,7 @@ public class ValidatorSpringChild extends AbstractValidator<Child>{
 			.must(not(nullValue()))
 				.withMessage("child age must be not null")
 				.withFieldName("age")
+				.critical()
 			.must(greaterThanOrEqual(5))
 				.when(not(nullValue()))
 				.withMessage("child age must be greater than or equal to 5")
