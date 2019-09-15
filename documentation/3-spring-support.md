@@ -14,23 +14,19 @@ public class ValidatorSpringChild extends AbstractValidator<Child>{
         setPropertyOnContext("child");
 
         ruleFor(Child::getAge)
-            .when(isTrue())
-                .must(not(nullValue()))
+            .must(not(nullValue()))
                 .withMessage("child age must be not null")
                 .withFieldName("age")
-            .when(isTrue())
-                .must(greaterThanOrEqual(5))
+            .must(greaterThanOrEqual(5))
                 .withMessage("child age must be greater than or equal to 5")
                 .withFieldName("age")
-            .when(isTrue())
-                .must(this::checkAgeConstraintChild)
+            .must(this::checkAgeConstraintChild)
                 .withMessage("child age must be less than age parent")
                 .withFieldName("age")
                 .critical();
 
         ruleFor(Child::getName)
-            .when(isTrue())
-                .must(not(stringEmptyOrNull()))
+            .must(not(stringEmptyOrNull()))
                 .withMessage("child name must be not null or empty")
                 .withFieldName("name");
 
@@ -53,14 +49,14 @@ public class ValidatorSpringGirl extends AbstractValidator<Girl> {
     protected void rules() {
 
         ruleFor(Girl::getGender)
-            .when(not(nullValue(Gender.class)))
-                .must(equalTo(Gender.FEMALE))
+            .must(equalTo(Gender.FEMALE))
+                .when(not(nullValue(Gender.class)))
                 .withMessage("gender of girl must be FEMALE")
                 .withFieldName("gender");
 
         ruleFor(Girl::getName)
-            .when(not(stringEmptyOrNull()))
-                .must(stringContains("Ana"))
+            .must(stringContains("Ana"))
+                .when(not(stringEmptyOrNull()))
                 .withMessage("child name must contains key Ana")
                 .withFieldName("name");
     }
@@ -78,15 +74,15 @@ public class ValidatorSpringBoy extends AbstractValidator<Boy>{
     protected void rules() {
 
         ruleFor(Boy::getGender)
-            .when(not(nullValue(Gender.class)))
-                .must(equalTo(Gender.MALE))
+            .must(equalTo(Gender.MALE))
+                .when(not(nullValue(Gender.class)))
                 .withMessage("gender of boy must be MALE")
                 .withFieldName("gender")
                 .critical();
 
         ruleFor(Boy::getName)
-            .when(not(stringEmptyOrNull()))
-                .must(stringContains("John"))
+            .must(stringContains("John"))
+                .when(not(stringEmptyOrNull()))
                 .withMessage("child name must contains key John")
                 .withFieldName("name");
     }
@@ -118,13 +114,12 @@ public class ValidatorSpringParent extends AbstractValidator<Parent> {
         setPropertyOnContext("parent");
 
         ruleForEach(Parent::getChildren)
-            .when(isTrue())
-                .must(not(nullValue()))
+            .must(not(nullValue()))
                 .withMessage("parent's children cannot be null")
                 .withCode("555")
                 .withFieldName("children")
-            .when(not(nullValue()))
-                .must(not(empty()))
+            .must(not(empty()))
+                .when(not(nullValue()))
                 .withMessage("parent must have at least one child")
                 .withFieldName("children")
             .whenever(not(nullValue()))
@@ -137,25 +132,25 @@ public class ValidatorSpringParent extends AbstractValidator<Parent> {
                 .critical();
 
         ruleFor(Parent::getAge)
-            .when(not(nullValue()))
-                .must(greaterThanOrEqual(5))
+            .must(greaterThanOrEqual(5))
+                .when(not(nullValue()))
                 .withMessage("age must be greater than or equal to 10")
                 .withFieldName("age")
-            .when(not(nullValue()))
-                .must(lessThanOrEqual(7))
+            .must(lessThanOrEqual(7))
+                .when(not(nullValue()))
                 .withMessage("age must be less than or equal to 7")
                 .withCode("666")
                 .withFieldName("age");
 
         ruleFor(Parent::getCities)
-            .when(not(nullValue()))
-                .must(hasSize(10))
+            .must(hasSize(10))
+                .when(not(nullValue()))
                 .withMessage("cities size must be 10")
                 .withFieldName("cities");
 
         ruleFor(Parent::getName)
-            .when(not(stringEmptyOrNull()))
-                .must(stringContains("John"))
+            .must(stringContains("John"))
+                .when(not(stringEmptyOrNull()))
                 .withMessage("name must contains key John")
                 .withFieldName("name");
 
