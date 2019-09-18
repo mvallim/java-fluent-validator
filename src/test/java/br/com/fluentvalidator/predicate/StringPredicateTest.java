@@ -7,6 +7,7 @@ import static br.com.fluentvalidator.predicate.StringPredicate.isNumeric;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringMatches;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringSize;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeBetween;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeGreaterThan;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeGreaterThanOrEqual;
@@ -72,6 +73,11 @@ public class StringPredicateTest {
 	@Test
 	public void testNullIsAlphaNumeric() {
 		assertFalse(isAlphaNumeric().test(null));
+	}
+
+	@Test
+	public void testNullStringSize() {
+		assertFalse(stringSize(10).test(null));
 	}
 
 	@Test
@@ -156,6 +162,12 @@ public class StringPredicateTest {
 		assertFalse(isAlphaNumeric().test("1234.5E-4"));
 		assertFalse(isAlphaNumeric().test("0E+7"));
 		assertFalse(isAlphaNumeric().test("-0"));
+	}
+
+	@Test
+	public void testStringSize() {
+		assertTrue(stringSize(2).test("he"));
+		assertFalse(stringSize(1).test("he"));
 	}
 
 	@Test

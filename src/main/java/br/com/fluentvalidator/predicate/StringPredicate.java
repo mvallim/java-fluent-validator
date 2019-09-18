@@ -1,8 +1,13 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.ComparablePredicate.*;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.between;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThan;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOrEqual;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThan;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThanOrEqual;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 
 import java.math.BigDecimal;
@@ -12,6 +17,11 @@ public final class StringPredicate {
 
 	private StringPredicate() {
 		super();
+	}
+
+	public static Predicate<String> stringSize(final int size) {
+		return PredicateBuilder.<String>from(not(nullValue()))
+				.and(stringSize -> equalTo(size).test(stringSize.length()));
 	}
 
 	public static Predicate<String> stringSizeGreaterThan(final int size) {
