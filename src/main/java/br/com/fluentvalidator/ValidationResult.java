@@ -1,26 +1,24 @@
 package br.com.fluentvalidator;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 import br.com.fluentvalidator.exception.Error;
 
-public final class ValidationResult implements Serializable {
-
-	private static final long serialVersionUID = -8106392260993817271L;
+public final class ValidationResult {
 
 	private final boolean valid;
 
 	private final Collection<Error> errors;
 
-	public static ValidationResult ok() {
+	static ValidationResult ok() {
 		return new ValidationResult(true, new ArrayList<>());
 	}
 
-	public static ValidationResult fail(final Collection<Error> messages) {
-		return new ValidationResult(false, messages);
+	static ValidationResult fail(final Collection<Error> messages) {
+		return new ValidationResult(false, Optional.ofNullable(messages).orElse(new ArrayList<>()));
 	}
 
 	private ValidationResult(final boolean valid, final Collection<Error> messages) {
@@ -42,10 +40,8 @@ public final class ValidationResult implements Serializable {
 		builder.append("ValidationResult [valid=");
 		builder.append(valid);
 		builder.append(", ");
-		if (errors != null) {
-			builder.append("errors=");
-			builder.append(errors);
-		}
+		builder.append("errors=");
+		builder.append(errors);
 		builder.append("]");
 		return builder.toString();
 	}
