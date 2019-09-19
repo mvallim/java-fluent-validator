@@ -18,6 +18,7 @@ Represents a predicate (boolean-valued function) of one argument.
 
 ## 6.3 String
 
+* `stringSize(final int size)`
 * `stringSizeGreaterThan(final int size)`
 * `stringSizeLessThan(final int size)`
 * `stringSizeGreaterThanOrEqual(final int size)`
