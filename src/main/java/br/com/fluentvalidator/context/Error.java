@@ -1,4 +1,4 @@
-package br.com.fluentvalidator.exception;
+package br.com.fluentvalidator.context;
 
 public class Error {
 

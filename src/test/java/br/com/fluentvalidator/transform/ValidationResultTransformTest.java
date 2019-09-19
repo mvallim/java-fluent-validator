@@ -17,9 +17,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
-import br.com.fluentvalidator.ValidationResult;
 import br.com.fluentvalidator.Validator;
-import br.com.fluentvalidator.exception.Error;
+import br.com.fluentvalidator.context.Error;
+import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;

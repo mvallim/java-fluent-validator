@@ -3,8 +3,8 @@ package br.com.fluentvalidator.exception;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import br.com.fluentvalidator.ValidationContext;
-import br.com.fluentvalidator.ValidationResult;
+import br.com.fluentvalidator.context.ValidationContext;
+import br.com.fluentvalidator.context.ValidationResult;
 
 public abstract class ValidationException extends RuntimeException {
 
@@ -21,9 +21,12 @@ public abstract class ValidationException extends RuntimeException {
 		return validationResult;
 	}
 
-	public static RuntimeException create(final Class<? extends ValidationException> exceptionClass) {
+	public static <T extends ValidationException> RuntimeException create(final Class<T> exceptionClass) {
+		return create(exceptionClass, ValidationContext.get().getValidationResult());
+	}
+	
+	public static <T extends ValidationException> RuntimeException create(final Class<T> exceptionClass, final ValidationResult validationResult) {
 		try {
-			final ValidationResult validationResult = ValidationContext.get().getValidationResult();
 			final Constructor<? extends ValidationException> ctor = exceptionClass.getConstructor(ValidationResult.class);
 			return ctor.newInstance(validationResult);
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

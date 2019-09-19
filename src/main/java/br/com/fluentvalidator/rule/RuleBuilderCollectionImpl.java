@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import br.com.fluentvalidator.ValidationContext;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
@@ -16,6 +15,7 @@ import br.com.fluentvalidator.builder.Must;
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.WhenCollection;
 import br.com.fluentvalidator.builder.WithValidator;
+import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationException;
 
 public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>>

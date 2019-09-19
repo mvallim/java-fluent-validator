@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import org.junit.After;
 import org.junit.Test;
 
-import br.com.fluentvalidator.ValidationContext;
+import br.com.fluentvalidator.context.ValidationContext;
 
 public class RuleProcessorTest {
 

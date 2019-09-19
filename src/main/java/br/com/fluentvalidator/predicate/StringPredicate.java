@@ -1,6 +1,5 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.ComparablePredicate.between;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThan;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOrEqual;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThan;
@@ -46,7 +45,8 @@ public final class StringPredicate {
 
 	public static Predicate<String> stringSizeBetween(final int minSize, final int maxSize) {
 		return PredicateBuilder.<String>from(not(nullValue()))
-				.and(stringSizeBetween -> between(minSize, maxSize).test(stringSizeBetween.length()));
+				.and(stringSizeGreaterThanOrEqual(minSize))
+				.and(stringSizeLessThanOrEqual(maxSize));
 	}
 
 	public static Predicate<String> stringEmptyOrNull() {

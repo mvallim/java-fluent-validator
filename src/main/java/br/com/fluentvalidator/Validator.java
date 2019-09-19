@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
+import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.rule.Rule;
 import br.com.fluentvalidator.transform.ValidationResultTransform;
 

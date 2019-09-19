@@ -197,6 +197,7 @@ public class StringPredicateTest {
 	@Test
 	public void testStringSizeBetween() {
 		assertTrue(stringSizeBetween(0, 6).test("hello"));
+		assertTrue(stringSizeBetween(0, 5).test("hello"));
 		assertFalse(stringSizeBetween(6, 0).test("hello"));
 	}
 

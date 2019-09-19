@@ -1,11 +1,11 @@
-package br.com.fluentvalidator;
+package br.com.fluentvalidator.context;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-import br.com.fluentvalidator.exception.Error;
+import br.com.fluentvalidator.exception.ValidationException;
 
 public final class ValidationResult {
 
@@ -24,6 +24,12 @@ public final class ValidationResult {
 	private ValidationResult(final boolean valid, final Collection<Error> messages) {
 		this.valid = valid;
 		this.errors = Collections.unmodifiableCollection(messages);
+	}
+	
+	public <T extends ValidationException> void isInvalidThrow(final Class<T> clazz) {
+		if (!isValid()) {
+			throw ValidationException.create(clazz, this);
+		}
 	}
 
 	public boolean isValid() {

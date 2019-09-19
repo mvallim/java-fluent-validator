@@ -1,6 +1,6 @@
 package br.com.fluentvalidator.transform;
 
-import br.com.fluentvalidator.ValidationResult;
+import br.com.fluentvalidator.context.ValidationResult;
 
 public interface ValidationResultTransform<E> {
 

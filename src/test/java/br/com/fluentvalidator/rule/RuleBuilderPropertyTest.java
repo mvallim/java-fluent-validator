@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import br.com.fluentvalidator.AbstractValidator;
-import br.com.fluentvalidator.ValidationContext;
+import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationSampleException;
 
 public class RuleBuilderPropertyTest {

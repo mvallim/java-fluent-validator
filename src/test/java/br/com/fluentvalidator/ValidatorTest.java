@@ -24,8 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
-import br.com.fluentvalidator.ValidationResult;
-import br.com.fluentvalidator.Validator;
+import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
@@ -45,7 +44,7 @@ public class ValidatorTest {
 		parent.setChildren(Arrays.asList(new Boy("John", 5), new Girl("Ana", 5)));
 
 		final ValidationResult result = validatorParent.validate(parent);
-
+		
 		assertTrue(result.isValid());
 		assertThat(result.getErrors(), empty());
 	}

@@ -1,6 +1,6 @@
 package br.com.fluentvalidator.exception;
 
-import br.com.fluentvalidator.ValidationResult;
+import br.com.fluentvalidator.context.ValidationResult;
 
 public class ValidationSampleException extends ValidationException {
 
