@@ -1,12 +1,15 @@
 package br.com.fluentvalidator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 import br.com.fluentvalidator.exception.Error;
 
-public final class ValidationResult {
+public final class ValidationResult implements Serializable {
+
+	private static final long serialVersionUID = -8106392260993817271L;
 
 	private final boolean valid;
 
@@ -32,4 +35,21 @@ public final class ValidationResult {
 	public Collection<Error> getErrors() {
 		return this.errors;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ValidationResult [valid=");
+		builder.append(valid);
+		builder.append(", ");
+		if (errors != null) {
+			builder.append("errors=");
+			builder.append(errors);
+		}
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
+	
 }

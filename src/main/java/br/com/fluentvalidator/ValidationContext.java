@@ -17,7 +17,7 @@ public final class ValidationContext {
 	}
 
 	public static Context get() {
-		if (threadLocal.get() == null) {
+		if (Objects.isNull(threadLocal.get())) {
 			threadLocal.set(new Context());
 		}
 		return threadLocal.get();

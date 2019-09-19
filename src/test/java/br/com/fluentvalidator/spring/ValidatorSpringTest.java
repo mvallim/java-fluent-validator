@@ -100,7 +100,7 @@ public class ValidatorSpringTest {
 	
 			validatorParent.validate(parent);
 		} catch(RuntimeException e) {
-			assertThat(e.getMessage(), equalTo("Constructor in class not found (Collection<Error> errors)"));			
+			assertThat(e.getMessage(), equalTo("Constructor in class not found (ValidationResult validationResult)"));			
 		}
 	}
 
@@ -116,13 +116,13 @@ public class ValidatorSpringTest {
 	
 			validatorParent.validate(parent);
 		} catch(ValidationSampleException e) {
-			final List<Error> erros = new ArrayList<>(e.getErrors());
+			final List<Error> erros = new ArrayList<>(e.getValidationResult().getErrors());
 			assertThat(erros, hasSize(1));
 			assertThat(erros.get(0).getCode(), equalTo(null));
 			assertThat(erros.get(0).getMessage(), equalTo("child age must be less than age parent"));
 			assertThat(erros.get(0).getAttemptedValue(), equalTo(6));
 			assertThat(erros.get(0).getField(), equalTo("age"));
-			assertThat(e.getMessage(), equalTo("[Error [message=child age must be less than age parent, field=age, attemptedValue=6, code=null]]"));			
+			assertThat(e.getMessage(), equalTo("ValidationResult [valid=false, errors=[Error [message=child age must be less than age parent, field=age, attemptedValue=6, code=null]]]"));			
 		}
 	}
 
@@ -318,13 +318,13 @@ public class ValidatorSpringTest {
 	
 			validatorParent.validate(parent);
 		} catch(ValidationSampleException e) {
-			final List<Error> erros = new ArrayList<>(e.getErrors());
+			final List<Error> erros = new ArrayList<>(e.getValidationResult().getErrors());
 			assertThat(erros, hasSize(1));
 			assertThat(erros.get(0).getCode(), equalTo(null));
 			assertThat(erros.get(0).getMessage(), equalTo("child age must be less than age parent"));
 			assertThat(erros.get(0).getAttemptedValue(), equalTo(6));
 			assertThat(erros.get(0).getField(), equalTo("age"));
-			assertThat(e.getMessage(), equalTo("[Error [message=child age must be less than age parent, field=age, attemptedValue=6, code=null]]"));			
+			assertThat(e.getMessage(), equalTo("ValidationResult [valid=false, errors=[Error [message=child age must be less than age parent, field=age, attemptedValue=6, code=null]]]"));			
 		}
 	}	
 
