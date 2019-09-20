@@ -167,11 +167,6 @@
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
 				<version>1.4.8</version>
-				<configuration>
-					<outputFormats>
-						<outputFormat>XML</outputFormat>
-					</outputFormats>
-				</configuration>
 				<executions>
 					<execution>
 						<phase>test</phase>
@@ -229,11 +224,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		  <groupId>org.assertj</groupId>
-		  <artifactId>assertj-core</artifactId>
-		  <version>3.11.1</version>
-		  <scope>test</scope>
-		</dependency>		
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.11.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<profiles>

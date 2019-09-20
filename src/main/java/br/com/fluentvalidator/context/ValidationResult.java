@@ -13,11 +13,11 @@ public final class ValidationResult {
 
 	private final Collection<Error> errors;
 
-	static ValidationResult ok() {
+	public static ValidationResult ok() {
 		return new ValidationResult(true, new ArrayList<>());
 	}
 
-	static ValidationResult fail(final Collection<Error> messages) {
+	public static ValidationResult fail(final Collection<Error> messages) {
 		return new ValidationResult(false, Optional.ofNullable(messages).orElse(new ArrayList<>()));
 	}
 
