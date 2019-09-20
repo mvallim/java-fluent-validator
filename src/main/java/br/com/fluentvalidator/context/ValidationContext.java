@@ -4,21 +4,21 @@ import java.util.Objects;
 
 public final class ValidationContext {
 
-	private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
+  private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
 
-	private ValidationContext() {
-		super();
-	}
+  private ValidationContext() {
+    super();
+  }
 
-	public static Context get() {
-		if (Objects.isNull(threadLocal.get())) {
-			threadLocal.set(new Context());
-		}
-		return threadLocal.get();
-	}
+  public static Context get() {
+    if (Objects.isNull(threadLocal.get())) {
+      threadLocal.set(new Context());
+    }
+    return threadLocal.get();
+  }
 
-	public static void remove() {
-		threadLocal.remove();
-	}
+  public static void remove() {
+    threadLocal.remove();
+  }
 
 }

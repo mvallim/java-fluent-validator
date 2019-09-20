@@ -11,9 +11,12 @@ import br.com.fluentvalidator.exception.ValidationSampleException;
 
 public class ValidationResultTest {
 
-	@Test
-	public void testIsInvalidThrow() {
-		assertThatThrownBy(() -> ValidationResult.fail(new ArrayList<>()).isInvalidThrow(ValidationSampleException.class)).isInstanceOf(ValidationSampleException.class);
-		assertThatCode(() -> ValidationResult.ok().isInvalidThrow(ValidationSampleException.class)).doesNotThrowAnyException();
-	}
+  @Test
+  public void testIsInvalidThrow() {
+    assertThatThrownBy(() -> ValidationResult.fail(new ArrayList<>())
+        .isInvalidThrow(ValidationSampleException.class))
+            .isInstanceOf(ValidationSampleException.class);
+    assertThatCode(() -> ValidationResult.ok().isInvalidThrow(ValidationSampleException.class))
+        .doesNotThrowAnyException();
+  }
 }

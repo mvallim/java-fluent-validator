@@ -2,14 +2,14 @@ package br.com.fluentvalidator.model;
 
 public class Boy extends Child {
 
-	private final Gender gender =  Gender.MALE;
+  private final Gender gender = Gender.MALE;
 
-	public Boy(String name, int age) {
-		super(name, age);
-	}
+  public Boy(final String name, final int age) {
+    super(name, age);
+  }
 
-	public Gender getGender() {
-		return this.gender;
-	}
+  public Gender getGender() {
+    return gender;
+  }
 
 }

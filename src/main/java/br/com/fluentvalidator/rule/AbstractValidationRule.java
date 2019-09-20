@@ -7,104 +7,104 @@ import br.com.fluentvalidator.exception.ValidationException;
 
 abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P> {
 
-	private Predicate<P> whenever = w -> true;
-	
-	private Predicate<P> when = w -> true;
-	
-	private Predicate<P> must = m -> true;
+  private Predicate<P> whenever = w -> true;
 
-	private String message;
-	
-	private String code;
+  private Predicate<P> when = w -> true;
 
-	private String fieldName;
+  private Predicate<P> must = m -> true;
 
-	private boolean critical;
-	
-	private Class<? extends ValidationException> criticalException;
-	
-	private Validator<T> validator;
-	
-	public Predicate<P> getWhenever() {
-		return this.whenever;
-	}
+  private String message;
 
-	public Predicate<P> getWhen() {
-		return this.when;
-	}
+  private String code;
 
-	public Predicate<P> getMust() {
-		return this.must;
-	}
+  private String fieldName;
 
-	public Class<? extends ValidationException> getCriticalException() {
-		return this.criticalException;
-	}
+  private boolean critical;
 
-	public Validator<T> getValidator() {
-		return this.validator;
-	}
+  private Class<? extends ValidationException> criticalException;
 
-	public String getMessage() {
-		return this.message;
-	}
-	
-	public String getCode() {
-		return this.code;
-	}
+  private Validator<T> validator;
 
-	public String getFieldName() {
-		return this.fieldName;
-	}
+  public Predicate<P> getWhenever() {
+    return this.whenever;
+  }
 
-	public boolean isCritical() {
-		return this.critical;
-	}
+  public Predicate<P> getWhen() {
+    return this.when;
+  }
 
-	@Override
-	public void when(final Predicate<P> when) {
-		this.when = when;
-	}
+  public Predicate<P> getMust() {
+    return this.must;
+  }
 
-	@Override
-	public void must(final Predicate<P> must) {
-		this.must = must;
-	}
+  public Class<? extends ValidationException> getCriticalException() {
+    return this.criticalException;
+  }
 
-	@Override
-	public void withFieldName(final String fieldName) {
-		this.fieldName = fieldName;
-	}
+  public Validator<T> getValidator() {
+    return this.validator;
+  }
 
-	@Override
-	public void withMessage(final String message) {
-		this.message = message;
-	}
-	
-	@Override
-	public void withCode(final String code) {
-		this.code = code;
-	}
-	
-	@Override
-	public void critical() {
-		this.critical = true;
-	}
-	
-	@Override
-	public void critical(final Class<? extends ValidationException> clazz) {
-		this.critical = true;
-		this.criticalException = clazz;
-	}
-	
-	@Override
-	public void whenever(final Predicate<P> whenever) {
-		this.whenever = whenever;
-	}
+  public String getMessage() {
+    return this.message;
+  }
 
-	@Override
-	public void withValidator(final Validator<T> validator) {
-		this.validator = validator;
-	}
-	
+  public String getCode() {
+    return this.code;
+  }
+
+  public String getFieldName() {
+    return this.fieldName;
+  }
+
+  public boolean isCritical() {
+    return this.critical;
+  }
+
+  @Override
+  public void when(final Predicate<P> when) {
+    this.when = when;
+  }
+
+  @Override
+  public void must(final Predicate<P> must) {
+    this.must = must;
+  }
+
+  @Override
+  public void withFieldName(final String fieldName) {
+    this.fieldName = fieldName;
+  }
+
+  @Override
+  public void withMessage(final String message) {
+    this.message = message;
+  }
+
+  @Override
+  public void withCode(final String code) {
+    this.code = code;
+  }
+
+  @Override
+  public void critical() {
+    this.critical = true;
+  }
+
+  @Override
+  public void critical(final Class<? extends ValidationException> clazz) {
+    this.critical = true;
+    this.criticalException = clazz;
+  }
+
+  @Override
+  public void whenever(final Predicate<P> whenever) {
+    this.whenever = whenever;
+  }
+
+  @Override
+  public void withValidator(final Validator<T> validator) {
+    this.validator = validator;
+  }
+
 }

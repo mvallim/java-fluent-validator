@@ -13,23 +13,16 @@ import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Gender;
 
 @Component
-public class ValidatorSpringBoy extends AbstractValidator<Boy>{
+public class ValidatorSpringBoy extends AbstractValidator<Boy> {
 
-	@Override
-	protected void rules() {
-		
-		ruleFor(Boy::getGender)
-			.must(equalTo(Gender.MALE))
-				.when(not(nullValue()))			
-				.withMessage("gender of boy must be MALE")
-				.withFieldName("gender")
-				.critical();
-		
-		ruleFor(Boy::getName)
-			.must(stringContains("John"))
-				.when(not(stringEmptyOrNull()))			
-				.withMessage("child name must contains key John")
-				.withFieldName("name");
-	}
+  @Override
+  protected void rules() {
+
+    ruleFor(Boy::getGender).must(equalTo(Gender.MALE)).when(not(nullValue()))
+        .withMessage("gender of boy must be MALE").withFieldName("gender").critical();
+
+    ruleFor(Boy::getName).must(stringContains("John")).when(not(stringEmptyOrNull()))
+        .withMessage("child name must contains key John").withFieldName("name");
+  }
 
 }

@@ -4,6 +4,6 @@ import br.com.fluentvalidator.context.ValidationResult;
 
 public interface ValidationResultTransform<E> {
 
-	E transform(final ValidationResult validationResult);
-	
+  E transform(final ValidationResult validationResult);
+
 }

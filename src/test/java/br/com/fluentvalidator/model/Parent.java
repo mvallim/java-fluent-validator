@@ -5,58 +5,58 @@ import java.util.UUID;
 
 public class Parent {
 
-	private String id;
-	
-	private String name;
+  private String id;
 
-	private Integer age;
+  private String name;
 
-	private List<String> cities;
+  private Integer age;
 
-	private List<Child> children;
-	
-	public Parent() {
-		this.id = UUID.randomUUID().toString();
-	}
-	
-	public String getId() {
-		return id;
-	}
+  private List<String> cities;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  private List<Child> children;
 
-	public List<Child> getChildren() {
-		return children;
-	}
+  public Parent() {
+    id = UUID.randomUUID().toString();
+  }
 
-	public void setChildren(List<Child> children) {
-		this.children = children;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public List<String> getCities() {
-		return this.cities;
-	}
+  public void setId(final String id) {
+    this.id = id;
+  }
 
-	public void setCities(List<String> cities) {
-		this.cities = cities;
-	}
+  public List<Child> getChildren() {
+    return children;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public void setChildren(final List<Child> children) {
+    this.children = children;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public List<String> getCities() {
+    return cities;
+  }
 
-	public Integer getAge() {
-		return this.age;
-	}
+  public void setCities(final List<String> cities) {
+    this.cities = cities;
+  }
 
-	public void setAge(Integer age) {
-		this.age = age;
-	}
+  public String getName() {
+    return name;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+  public Integer getAge() {
+    return age;
+  }
+
+  public void setAge(final Integer age) {
+    this.age = age;
+  }
 
 }
