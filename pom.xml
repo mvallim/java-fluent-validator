@@ -3,7 +3,7 @@
 
 	<groupId>com.github.mvallim</groupId>
 	<artifactId>java-fluent-validator</artifactId>
-	<version>1.3.0</version>
+	<version>1.3.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -15,7 +15,7 @@
 		<url>scm:git:git@github.com:mvallim/java-fluent-validator</url>
 		<connection>scm:git:git@github.com:mvallim/java-fluent-validator</connection>
 		<developerConnection>scm:git:git@github.com:mvallim/java-fluent-validator</developerConnection>
-		<tag>java-fluent-validator-1.3.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<name>java-fluent-validator</name>
