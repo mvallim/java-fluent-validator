@@ -50,11 +50,11 @@ Represents a predicate (boolean-valued function) of one argument.
 * `hasAny(final Object... objects)`
 * `hasSize(final int size)`
 
-## 6.6 Date
+## 6.6 DateTime
 
-* `dateEqualTo(final String dateString, final String pattern)`
-* `dateGreaterThan(final String dateString, final String pattern)`
-* `dateLessThan(final String dateString, final String pattern)`
-* `dateGreaterThanOrEqual(final String dateString, final String pattern)`
-* `dateLessThanOrEqual(final String dateString, final String pattern)`
-* `dateBetween(final String dateStringMin, final String dateStringMax, final String pattern)`
+* `dateTimeEqualTo(final String dateString, final String pattern)`
+* `dateTimeGreaterThan(final String dateString, final String pattern)`
+* `dateTimeLessThan(final String dateString, final String pattern)`
+* `dateTimeGreaterThanOrEqual(final String dateString, final String pattern)`
+* `dateTimeLessThanOrEqual(final String dateString, final String pattern)`
+* `dateTimeBetween(final String dateStringMin, final String dateStringMax, final String pattern)`
