@@ -58,3 +58,9 @@ Represents a predicate (boolean-valued function) of one argument.
 * `dateTimeGreaterThanOrEqual(final String dateString, final String pattern)`
 * `dateTimeLessThanOrEqual(final String dateString, final String pattern)`
 * `dateTimeBetween(final String dateStringMin, final String dateStringMax, final String pattern)`
+* `dateTimeEqualTo(final Function<T, String> source, final Function<T, String> target, final String pattern)`
+* `dateTimeGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern)`
+* `dateTimeLessThan(final Function<T, String> source, final Function<T, String> target, final String pattern)`
+* `dateTimeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern)`
+* `dateTimeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern)`
+
