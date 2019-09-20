@@ -333,6 +333,34 @@ public class DateTimePredicateTest {
   }
 
   @Test
+  public void testObjectDateTimeGreaterThan() {
+    assertTrue(dateTimeGreaterThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-19", "2019-09-18")));
+    assertFalse(dateTimeGreaterThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-18", "2019-09-18")));
+    assertFalse(dateTimeGreaterThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-17", "2019-09-18")));
+  }
+
+  @Test
+  public void testObjectDateTimeGreaterThanOrEqual() {
+    assertTrue(dateTimeGreaterThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-19", "2019-09-18")));
+    assertTrue(dateTimeGreaterThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-18", "2019-09-18")));
+    assertFalse(dateTimeGreaterThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-17", "2019-09-18")));
+  }
+
+  @Test
+  public void testObjectDateTimeLessThan() {
+    assertTrue(dateTimeLessThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-18", "2019-09-19")));
+    assertFalse(dateTimeLessThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-19", "2019-09-19")));
+    assertFalse(dateTimeLessThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-20", "2019-09-19")));
+  }
+  
+  @Test
+  public void testObjectDateTimeLessThanOrEqual() {
+    assertTrue(dateTimeLessThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-18", "2019-09-19")));
+    assertTrue(dateTimeLessThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-19", "2019-09-19")));
+    assertFalse(dateTimeLessThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-20", "2019-09-19")));
+  }
+
+  @Test
   public void testDateTimePredicateMultiThreadMustBeTrue() throws InterruptedException {
 
     final int CONCURRENT_RUNNABLE = 100000;
@@ -366,4 +394,26 @@ public class DateTimePredicateTest {
     }
   }
 
+  
+  public class DateTimeTest {
+	  
+    private final String x;
+	  
+	private final String y;
+	
+	private DateTimeTest(String x, String y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public String getX() {
+		return x;
+	}
+
+	public String getY() {
+		return y;
+	}
+	  
+  }
+  
 }
