@@ -93,10 +93,8 @@ public class DateTimePredicateTest {
 
   @Test
   public void testDateTimeEqualToDateTime() {
-    assertTrue(
-        dateTimeEqualTo("2019-09-19 03:03:03", "yyyy-MM-dd HH:mm:ss").test("2019-09-19 03:03:03"));
-    assertFalse(
-        dateTimeEqualTo("2019-09-19 03:03:03", "yyyy-MM-dd HH:mm:ss").test("2019-09-19 03:03:04"));
+    assertTrue(dateTimeEqualTo("2019-09-19 03:03:03", "yyyy-MM-dd HH:mm:ss").test("2019-09-19 03:03:03"));
+    assertFalse(dateTimeEqualTo("2019-09-19 03:03:03", "yyyy-MM-dd HH:mm:ss").test("2019-09-19 03:03:04"));
   }
 
   @Test
@@ -150,12 +148,9 @@ public class DateTimePredicateTest {
 
   @Test
   public void testDateTimeGreaterThanDateTime() {
-    assertTrue(dateTimeGreaterThan("2019-09-19 03:03:03", "yyyy-MM-dd HH:mm:ss")
-        .test("2019-09-19 03:03:04"));
-    assertFalse(dateTimeGreaterThan("2019-09-19 03:03:04", "yyyy-MM-dd HH:mm:ss")
-        .test("2019-09-19 03:03:04"));
-    assertFalse(dateTimeGreaterThan("2019-09-19 03:03:05", "yyyy-MM-dd HH:mm:ss")
-        .test("2019-09-19 03:03:04"));
+    assertTrue(dateTimeGreaterThan("2019-09-19 03:03:03", "yyyy-MM-dd HH:mm:ss").test("2019-09-19 03:03:04"));
+    assertFalse(dateTimeGreaterThan("2019-09-19 03:03:04", "yyyy-MM-dd HH:mm:ss").test("2019-09-19 03:03:04"));
+    assertFalse(dateTimeGreaterThan("2019-09-19 03:03:05", "yyyy-MM-dd HH:mm:ss").test("2019-09-19 03:03:04"));
   }
 
   @Test
@@ -237,12 +232,9 @@ public class DateTimePredicateTest {
 
   @Test
   public void testDateTimeLessThanDateTime() {
-    assertTrue(
-        dateTimeLessThan("2019-09-19 03:03:04", "yyyy-MM-dd HH:mm:ss").test("2019-09-18 03:03:04"));
-    assertFalse(
-        dateTimeLessThan("2019-09-18 03:03:04", "yyyy-MM-dd HH:mm:ss").test("2019-09-18 03:03:04"));
-    assertFalse(
-        dateTimeLessThan("2019-09-17 03:03:04", "yyyy-MM-dd HH:mm:ss").test("2019-09-18 03:03:04"));
+    assertTrue(dateTimeLessThan("2019-09-19 03:03:04", "yyyy-MM-dd HH:mm:ss").test("2019-09-18 03:03:04"));
+    assertFalse(dateTimeLessThan("2019-09-18 03:03:04", "yyyy-MM-dd HH:mm:ss").test("2019-09-18 03:03:04"));
+    assertFalse(dateTimeLessThan("2019-09-17 03:03:04", "yyyy-MM-dd HH:mm:ss").test("2019-09-18 03:03:04"));
   }
 
   @Test
@@ -334,30 +326,90 @@ public class DateTimePredicateTest {
 
   @Test
   public void testObjectDateTimeGreaterThan() {
-    assertTrue(dateTimeGreaterThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-19", "2019-09-18")));
-    assertFalse(dateTimeGreaterThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-18", "2019-09-18")));
-    assertFalse(dateTimeGreaterThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-17", "2019-09-18")));
+    assertTrue(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-19", "2019-09-18")));
+    assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-18", "2019-09-18")));
+    assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-17", "2019-09-18")));
+  }
+
+  @Test
+  public void testNullObjectDateTimeGreaterThan() {
+    assertFalse(
+        dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd").test(null));
+    assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-18", null)));
+    assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>(null, "2019-09-18")));
+    assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>(null, null)));
   }
 
   @Test
   public void testObjectDateTimeGreaterThanOrEqual() {
-    assertTrue(dateTimeGreaterThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-19", "2019-09-18")));
-    assertTrue(dateTimeGreaterThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-18", "2019-09-18")));
-    assertFalse(dateTimeGreaterThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-17", "2019-09-18")));
+    assertTrue(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-19", "2019-09-18")));
+    assertTrue(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-18", "2019-09-18")));
+    assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-17", "2019-09-18")));
+  }
+
+  @Test
+  public void testNullObjectDateTimeGreaterThanOrEqual() {
+    assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(null));
+    assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-18", null)));
+    assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>(null, "2019-09-18")));
+    assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>(null, null)));
   }
 
   @Test
   public void testObjectDateTimeLessThan() {
-    assertTrue(dateTimeLessThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-18", "2019-09-19")));
-    assertFalse(dateTimeLessThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-19", "2019-09-19")));
-    assertFalse(dateTimeLessThan(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-20", "2019-09-19")));
+    assertTrue(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-18", "2019-09-19")));
+    assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-19", "2019-09-19")));
+    assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-20", "2019-09-19")));
   }
-  
+
+  @Test
+  public void testNullObjectDateTimeLessThan() {
+    assertFalse(
+        dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd").test(null));
+    assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-18", null)));
+    assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>(null, "2019-09-18")));
+    assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>(null, null)));
+  }
+
   @Test
   public void testObjectDateTimeLessThanOrEqual() {
-    assertTrue(dateTimeLessThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-18", "2019-09-19")));
-    assertTrue(dateTimeLessThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-19", "2019-09-19")));
-    assertFalse(dateTimeLessThanOrEqual(DateTimeTest::getX, DateTimeTest::getY, "yyyy-MM-dd").test(new DateTimeTest("2019-09-20", "2019-09-19")));
+    assertTrue(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-18", "2019-09-19")));
+    assertTrue(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-19", "2019-09-19")));
+    assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-20", "2019-09-19")));
+  }
+
+  @Test
+  public void testNullObjectDateTimeLessThanOrEqual() {
+    assertFalse(
+        dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd").test(null));
+    assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>("2019-09-18", null)));
+    assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>(null, "2019-09-18")));
+    assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget, "yyyy-MM-dd")
+        .test(new ObjectFrom<String>(null, null)));
   }
 
   @Test
@@ -374,8 +426,8 @@ public class DateTimePredicateTest {
         @Override
         public void run() {
           try {
-            resultsOne.add(dateTimeBetween("2018-06-22T10:00:00", "2018-06-22T10:00:00",
-                "yyyy-MM-dd'T'HH:mm:ss").test("2018-06-22T10:00:00"));
+            resultsOne.add(dateTimeBetween("2018-06-22T10:00:00", "2018-06-22T10:00:00", "yyyy-MM-dd'T'HH:mm:ss")
+                .test("2018-06-22T10:00:00"));
           } catch (final Exception e) {
             e.printStackTrace();
           }
@@ -394,26 +446,4 @@ public class DateTimePredicateTest {
     }
   }
 
-  
-  public class DateTimeTest {
-	  
-    private final String x;
-	  
-	private final String y;
-	
-	private DateTimeTest(String x, String y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	public String getX() {
-		return x;
-	}
-
-	public String getY() {
-		return y;
-	}
-	  
-  }
-  
 }
