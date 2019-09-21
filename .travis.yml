@@ -8,7 +8,11 @@ addons:
 
 cache:
   directories:
-  - "$HOME/.cache"      
+  - "$HOME/.cache"
+
+script:
+  - mvn clean compile
+  - mvn test
 
 after_success:
   - mvn sonar:sonar -Dsonar.projectKey=java-fluent-validator
