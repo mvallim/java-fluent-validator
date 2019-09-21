@@ -14,7 +14,7 @@ import br.com.fluentvalidator.predicate.PredicateBuilder;
 public class ValidatorGirl extends AbstractValidator<Girl> {
 
   @Override
-  protected void rules() {
+  public void rules() {
 
     ruleFor(Girl::getGender).must(PredicateBuilder.from(equalTo(Gender.FEMALE)))
         .when(not(nullValue())).withMessage("gender of girl must be FEMALE")

@@ -13,7 +13,7 @@ import br.com.fluentvalidator.model.Gender;
 public class ValidatorBoy extends AbstractValidator<Boy> {
 
   @Override
-  protected void rules() {
+  public void rules() {
 
     ruleFor(Boy::getGender).must(equalTo(Gender.MALE)).when(not(nullValue()))
         .withMessage("gender of boy must be MALE").withFieldName("gender").critical();

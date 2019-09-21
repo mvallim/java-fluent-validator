@@ -14,6 +14,25 @@ public interface Validator<T> extends Rule<T> {
 
   /**
    *
+   */
+  void rules();
+
+  /**
+   *
+   * @param property
+   */
+  void setPropertyOnContext(final String property);
+
+  /**
+   *
+   * @param property
+   * @param clazz
+   * @return
+   */
+  <P> P getPropertyOnContext(final String property, final Class<P> clazz);
+
+  /**
+   *
    * @param instance
    * @return
    */

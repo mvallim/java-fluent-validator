@@ -15,7 +15,7 @@ import br.com.fluentvalidator.model.Parent;
 public class ValidatorSpringChild extends AbstractValidator<Child> {
 
   @Override
-  protected void rules() {
+  public void rules() {
 
     setPropertyOnContext("child");
 
