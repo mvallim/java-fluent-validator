@@ -9,7 +9,7 @@ public class ValidatorId extends AbstractValidator<String> {
   private static final String UUID_REGEX = "[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}";
 
   @Override
-  protected void rules() {
+  public void rules() {
 
     setPropertyOnContext("id");
 

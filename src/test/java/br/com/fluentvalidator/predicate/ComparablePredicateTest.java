@@ -18,26 +18,36 @@ public class ComparablePredicateTest {
   @Test
   public void testNullComparableGreaterThan() {
     assertFalse(greaterThan(1).test(null));
+    assertFalse(greaterThan(null).test(null));
+    assertFalse(greaterThan((Integer) null).test(1));
   }
 
   @Test
   public void testNullComparableLessThan() {
     assertFalse(lessThan(1).test(null));
+    assertFalse(lessThan(null).test(null));
+    assertFalse(lessThan((Integer) null).test(1));
   }
 
   @Test
   public void testNullComparableGreaterThanOrEqual() {
     assertFalse(greaterThanOrEqual(1).test(null));
+    assertFalse(greaterThanOrEqual(null).test(null));
+    assertFalse(greaterThanOrEqual((Integer) null).test(1));
   }
 
   @Test
   public void testNullComparableLessThanOrEqual() {
     assertFalse(lessThanOrEqual(1).test(null));
+    assertFalse(lessThanOrEqual(null).test(null));
+    assertFalse(lessThanOrEqual((Integer) null).test(1));
   }
 
   @Test
   public void testNullComparableBetween() {
     assertFalse(between(1, 1).test(null));
+    assertFalse(greaterThan(null).test(null));
+    assertFalse(greaterThan((Integer) null).test(1));
   }
 
   @Test

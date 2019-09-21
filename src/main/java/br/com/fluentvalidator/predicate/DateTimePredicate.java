@@ -16,33 +16,75 @@ public final class DateTimePredicate {
     super();
   }
 
+  /**
+   *
+   * @param source
+   * @param target
+   * @param pattern
+   * @return
+   */
   public static <T> Predicate<T> dateTimeEqualTo(final Function<T, String> source, final Function<T, String> target, final String pattern) {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(obj -> dateTimeEqualTo(target.apply(obj), pattern).test(source.apply(obj)));
   }
 
+  /**
+   *
+   * @param source
+   * @param target
+   * @param pattern
+   * @return
+   */
   public static <T> Predicate<T> dateTimeGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(obj -> dateTimeGreaterThan(target.apply(obj), pattern).test(source.apply(obj)));
   }
 
+  /**
+   *
+   * @param source
+   * @param target
+   * @param pattern
+   * @return
+   */
   public static <T> Predicate<T> dateTimeLessThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(obj -> dateTimeLessThan(target.apply(obj), pattern).test(source.apply(obj)));
   }
 
+  /**
+   *
+   * @param source
+   * @param target
+   * @param pattern
+   * @return
+   */
   public static <T> Predicate<T> dateTimeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
     return dateTimeGreaterThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern));
   }
 
+  /**
+   *
+   * @param source
+   * @param target
+   * @param pattern
+   * @return
+   */
   public static <T> Predicate<T> dateTimeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
     return dateTimeLessThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern));
   }
 
+  /**
+   *
+   * @param dateString
+   * @param pattern
+   * @return
+   */
   public static Predicate<String> dateTimeEqualTo(final String dateString, final String pattern) {
     return PredicateBuilder.<String>from(not(nullValue()))
         .and(dateTimeEqualTo -> not(stringEmptyOrNull()).test(dateString))
-        .and(dateTimeEqualTo -> not(stringEmptyOrNull()).test(pattern)).and(dateTimeEqualTo -> {
+        .and(dateTimeEqualTo -> not(stringEmptyOrNull()).test(pattern))
+        .and(dateTimeEqualTo -> {
           try {
             final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
             final Date dateTest = dateFormat.parse(dateTimeEqualTo);
@@ -54,6 +96,12 @@ public final class DateTimePredicate {
         });
   }
 
+  /**
+   *
+   * @param dateString
+   * @param pattern
+   * @return
+   */
   public static Predicate<String> dateTimeGreaterThan(final String dateString, final String pattern) {
     return PredicateBuilder.<String>from(not(nullValue()))
         .and(dateTimeGreaterThan -> not(stringEmptyOrNull()).test(dateString))
@@ -70,10 +118,17 @@ public final class DateTimePredicate {
         });
   }
 
+  /**
+   *
+   * @param dateString
+   * @param pattern
+   * @return
+   */
   public static Predicate<String> dateTimeLessThan(final String dateString, final String pattern) {
     return PredicateBuilder.<String>from(not(nullValue()))
         .and(dateTimeLessThan -> not(stringEmptyOrNull()).test(dateString))
-        .and(dateTimeLessThan -> not(stringEmptyOrNull()).test(pattern)).and(dateTimeLessThan -> {
+        .and(dateTimeLessThan -> not(stringEmptyOrNull()).test(pattern))
+        .and(dateTimeLessThan -> {
           try {
             final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
             final Date dateTest = dateFormat.parse(dateTimeLessThan);
@@ -85,14 +140,33 @@ public final class DateTimePredicate {
         });
   }
 
+  /**
+   *
+   * @param dateString
+   * @param pattern
+   * @return
+   */
   public static Predicate<String> dateTimeGreaterThanOrEqual(final String dateString, final String pattern) {
     return dateTimeGreaterThan(dateString, pattern).or(dateTimeEqualTo(dateString, pattern));
   }
 
+  /**
+   *
+   * @param dateString
+   * @param pattern
+   * @return
+   */
   public static Predicate<String> dateTimeLessThanOrEqual(final String dateString, final String pattern) {
     return dateTimeLessThan(dateString, pattern).or(dateTimeEqualTo(dateString, pattern));
   }
 
+  /**
+   *
+   * @param dateStringMin
+   * @param dateStringMax
+   * @param pattern
+   * @return
+   */
   public static Predicate<String> dateTimeBetween(final String dateStringMin, final String dateStringMax, final String pattern) {
     return dateTimeLessThanOrEqual(dateStringMax, pattern).and(dateTimeGreaterThanOrEqual(dateStringMin, pattern));
   }

@@ -17,25 +17,37 @@ public abstract class ValidationException extends RuntimeException {
     this.validationResult = validationResult;
   }
 
+  /**
+   *
+   * @return
+   */
   public ValidationResult getValidationResult() {
     return validationResult;
   }
 
-  public static <T extends ValidationException> RuntimeException create(
-      final Class<T> exceptionClass) {
+  /**
+   *
+   * @param exceptionClass
+   * @return
+   */
+  public static <T extends ValidationException> RuntimeException create(final Class<T> exceptionClass) {
     return create(exceptionClass, ValidationContext.get().getValidationResult());
   }
 
-  public static <T extends ValidationException> RuntimeException create(
-      final Class<T> exceptionClass, final ValidationResult validationResult) {
+  /**
+   *
+   * @param exceptionClass
+   * @param validationResult
+   * @return
+   */
+  public static <T extends ValidationException> RuntimeException create(final Class<T> exceptionClass,
+      final ValidationResult validationResult) {
     try {
-      final Constructor<? extends ValidationException> ctor = exceptionClass
-          .getConstructor(ValidationResult.class);
+      final Constructor<? extends ValidationException> ctor = exceptionClass.getConstructor(ValidationResult.class);
       return ctor.newInstance(validationResult);
-    } catch (final NoSuchMethodException | SecurityException | InstantiationException
-        | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      return new RuntimeException(
-          "Constructor in class not found (ValidationResult validationResult)", e);
+    } catch (final NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+        | IllegalArgumentException | InvocationTargetException e) {
+      return new RuntimeException("Constructor in class not found (ValidationResult validationResult)", e);
     }
   }
 

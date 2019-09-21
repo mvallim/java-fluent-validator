@@ -200,7 +200,7 @@ public class RuleBuilderPropertyTest {
   class ValidatorIdTest extends AbstractValidator<String> {
 
     @Override
-    protected void rules() {
+    public void rules() {
 
       ruleFor(id -> id).must(stringSizeLessThan(2)).withMessage("rule 1").critical()
           .must(stringSizeLessThan(1)).withMessage("rule 2").critical();

@@ -24,7 +24,7 @@ import br.com.fluentvalidator.predicate.PredicateBuilder;
 public class ValidatorParent extends AbstractValidator<Parent> {
 
   @Override
-  protected void rules() {
+  public void rules() {
 
     setPropertyOnContext("parent");
 

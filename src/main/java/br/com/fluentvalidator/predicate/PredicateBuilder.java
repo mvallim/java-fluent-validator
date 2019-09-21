@@ -10,6 +10,11 @@ public final class PredicateBuilder<T> implements Predicate<T> {
     this.predicate = predicate;
   }
 
+  /**
+   *
+   * @param predicate
+   * @return
+   */
   public static <T> Predicate<T> from(final Predicate<T> predicate) {
     return new PredicateBuilder<>(predicate);
   }

@@ -41,27 +41,42 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     };
   }
 
-  protected abstract void rules();
-
+  /**
+   * {@link #setPropertyOnContext(String) AbstractValidator }
+   */
+  @Override
   public void setPropertyOnContext(final String property) {
     this.property = property;
   }
 
+  /**
+   * {@link #getPropertyOnContext(String, Class) AbstractValidator }
+   */
+  @Override
   public <P> P getPropertyOnContext(final String property, final Class<P> clazz) {
     return ValidationContext.get().getProperty(property, clazz);
   }
 
+  /**
+   * {@link #validate(Object) AbstractValidator }
+   */
   @Override
   public ValidationResult validate(final T instance) {
     RuleProcessor.process(instance, this);
     return ValidationContext.get().getValidationResult();
   }
 
+  /**
+   * {@link #validate(Object, ValidationResultTransform) AbstractValidator}
+   */
   @Override
   public <E> E validate(final T instance, final ValidationResultTransform<E> resultTransform) {
     return resultTransform.transform(validate(instance));
   }
 
+  /**
+   * {@link #validate(Collection) AbstractValidator}
+   */
   @Override
   public List<ValidationResult> validate(final Collection<T> instances) {
     final List<ValidationResult> results = new ArrayList<>();
@@ -71,9 +86,11 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     return Collections.unmodifiableList(results);
   }
 
+  /**
+   * {@link #validate(Collection, ValidationResultTransform) AbstractValidator}
+   */
   @Override
-  public <E> List<E> validate(final Collection<T> instances,
-      final ValidationResultTransform<E> resultTransform) {
+  public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> resultTransform) {
     final List<E> results = new ArrayList<>();
     for (final ValidationResult validationResult : validate(instances)) {
       results.add(resultTransform.transform(validationResult));
@@ -81,6 +98,9 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     return results;
   }
 
+  /**
+   * {@link #apply(Object) AbstractValidator}
+   */
   @Override
   public boolean apply(final T instance) {
     this.initialize.run();
@@ -88,11 +108,17 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     return RuleProcessor.process(instance, rules);
   }
 
+  /**
+   * {@link #support(Object) AbstractValidator}
+   */
   @Override
   public boolean support(final T instance) {
     return true;
   }
 
+  /**
+   * {@link #ruleFor(Function) AbstractValidator}
+   */
   @Override
   public <P> RuleBuilderProperty<T, P> ruleFor(final Function<T, P> function) {
     final RuleBuilderPropertyImpl<T, P> rule = new RuleBuilderPropertyImpl<>(function);
@@ -100,6 +126,9 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     return rule;
   }
 
+  /**
+   * {@link #ruleForEach(Function) AbstractValidator}
+   */
   @Override
   public <P> RuleBuilderCollection<T, P> ruleForEach(final Function<T, Collection<P>> function) {
     final RuleBuilderCollectionImpl<T, P> rule = new RuleBuilderCollectionImpl<>(function);

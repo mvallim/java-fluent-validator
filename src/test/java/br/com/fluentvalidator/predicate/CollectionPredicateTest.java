@@ -21,22 +21,33 @@ public class CollectionPredicateTest {
 
   @Test
   public void testNullCollectionHasItems() {
+    final Integer nullInteger = null;
     assertFalse(hasItems(1).test(null));
+    assertFalse(hasItems(nullInteger).test(null));
+    assertFalse(hasItems(nullInteger).test(Arrays.asList(1)));
   }
 
   @Test
   public void testNullCollectionHasItem() {
+    final Integer nullInteger = null;
     assertFalse(hasItem(1).test(null));
+    assertFalse(hasItem(nullInteger).test(null));
+    assertFalse(hasItem(nullInteger).test(Arrays.asList(1)));
   }
 
   @Test
   public void testNullCollectionHasAny() {
+    final Integer nullInteger = null;
     assertFalse(hasAny(1).test(null));
+    assertFalse(hasAny(nullInteger).test(null));
+    assertFalse(hasAny(nullInteger).test(Arrays.asList(1)));
   }
 
   @Test
   public void testNullCollectionHasSize() {
     assertFalse(hasSize(1).test(null));
+    assertFalse(hasSize(null).test(null));
+    assertFalse(hasSize(null).test(Arrays.asList(1)));
   }
 
   @Test

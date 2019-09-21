@@ -42,7 +42,7 @@ public class ValidatorSpringParent extends AbstractValidator<Parent> {
   ValidatorSpringBoy validatorBoy;
 
   @Override
-  protected void rules() {
+  public void rules() {
 
     setPropertyOnContext("parent");
 
