@@ -12,14 +12,28 @@ public final class ObjectPredicate {
     super();
   }
 
+  /**
+   *
+   * @return
+   */
   public static <T> Predicate<T> nullValue() {
     return PredicateBuilder.<T>from(is(Objects::isNull));
   }
 
+  /**
+   *
+   * @param obj
+   * @return
+   */
   public static <T> Predicate<T> equalTo(final T obj) {
     return PredicateBuilder.<T>from(not(nullValue())).and(equalTo -> equalTo.equals(obj));
   }
 
+  /**
+   *
+   * @param clazz
+   * @return
+   */
   public static <T> Predicate<T> instanceOf(final Class<?> clazz) {
     return PredicateBuilder.<T>from(not(nullValue())).and(clazz::isInstance);
   }

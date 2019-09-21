@@ -13,10 +13,19 @@ public final class ValidationResult {
 
   private final Collection<Error> errors;
 
+  /**
+   *
+   * @return
+   */
   public static ValidationResult ok() {
     return new ValidationResult(true, new ArrayList<>());
   }
 
+  /**
+   *
+   * @param messages
+   * @return
+   */
   public static ValidationResult fail(final Collection<Error> messages) {
     return new ValidationResult(false, Optional.ofNullable(messages).orElse(new ArrayList<>()));
   }
@@ -26,16 +35,28 @@ public final class ValidationResult {
     errors = Collections.unmodifiableCollection(messages);
   }
 
+  /**
+   *
+   * @param clazz
+   */
   public <T extends ValidationException> void isInvalidThrow(final Class<T> clazz) {
     if (!isValid()) {
       throw ValidationException.create(clazz, this);
     }
   }
 
+  /**
+   *
+   * @return
+   */
   public boolean isValid() {
     return valid;
   }
 
+  /**
+   *
+   * @return
+   */
   public Collection<Error> getErrors() {
     return errors;
   }

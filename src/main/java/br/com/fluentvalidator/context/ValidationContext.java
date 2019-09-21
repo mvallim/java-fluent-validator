@@ -10,6 +10,10 @@ public final class ValidationContext {
     super();
   }
 
+  /**
+   *
+   * @return
+   */
   public static Context get() {
     if (Objects.isNull(threadLocal.get())) {
       threadLocal.set(new Context());
@@ -17,6 +21,9 @@ public final class ValidationContext {
     return threadLocal.get();
   }
 
+  /**
+   *
+   */
   public static void remove() {
     threadLocal.remove();
   }

@@ -14,24 +14,47 @@ public final class CollectionPredicate {
     super();
   }
 
+  /**
+   *
+   * @return
+   */
   public static <E, T extends Collection<E>> Predicate<T> empty() {
     return PredicateBuilder.<T>from(not(nullValue())).and(Collection::isEmpty);
   }
 
+  /**
+   *
+   * @param object
+   * @return
+   */
   public static <E, T extends Collection<E>> Predicate<T> hasItem(final E object) {
     return PredicateBuilder.<T>from(not(nullValue())).and(hasItem -> hasItem.contains(object));
   }
 
+  /**
+   *
+   * @param objects
+   * @return
+   */
   public static <E, T extends Collection<E>> Predicate<T> hasItems(final Collection<E> objects) {
-    return PredicateBuilder.<T>from(not(nullValue()))
-        .and(hasItems -> hasItems.containsAll(objects));
+    return PredicateBuilder.<T>from(not(nullValue())).and(hasItems -> hasItems.containsAll(objects));
   }
 
+  /**
+   *
+   * @param objects
+   * @return
+   */
   @SafeVarargs
   public static <E, T extends Collection<E>> Predicate<T> hasItems(final E... objects) {
     return is(hasItems(Arrays.asList(objects)));
   }
 
+  /**
+   *
+   * @param objects
+   * @return
+   */
   public static <E, T extends Collection<E>> Predicate<T> hasAny(final Collection<E> objects) {
     return PredicateBuilder.<T>from(not(nullValue())).and(hasItems -> {
       for (final Object object : objects) {
@@ -43,11 +66,21 @@ public final class CollectionPredicate {
     });
   }
 
+  /**
+   *
+   * @param objects
+   * @return
+   */
   @SafeVarargs
   public static <E, T extends Collection<E>> Predicate<T> hasAny(final E... objects) {
     return is(hasAny(Arrays.asList(objects)));
   }
 
+  /**
+   *
+   * @param size
+   * @return
+   */
   public static <E, T extends Collection<E>> Predicate<T> hasSize(final int size) {
     return PredicateBuilder.<T>from(not(nullValue())).and(hasSize -> hasSize.size() == size);
   }

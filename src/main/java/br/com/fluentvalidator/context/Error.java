@@ -10,31 +10,53 @@ public class Error {
 
   private final String code;
 
-  public static Error create(final String field, final String message, final String code,
-      final Object attemptedValue) {
+  /**
+   *
+   * @param field
+   * @param message
+   * @param code
+   * @param attemptedValue
+   * @return
+   */
+  public static Error create(final String field, final String message, final String code, final Object attemptedValue) {
     return new Error(field, message, code, attemptedValue);
   }
 
-  protected Error(final String field, final String message, final String code,
-      final Object attemptedValue) {
+  protected Error(final String field, final String message, final String code, final Object attemptedValue) {
     this.field = field;
     this.message = message;
     this.code = code;
     this.attemptedValue = attemptedValue;
   }
 
+  /**
+   *
+   * @return
+   */
   public String getField() {
     return field;
   }
 
+  /**
+   *
+   * @return
+   */
   public String getMessage() {
     return message;
   }
 
+  /**
+   *
+   * @return
+   */
   public String getCode() {
     return code;
   }
 
+  /**
+   *
+   * @return
+   */
   public Object getAttemptedValue() {
     return attemptedValue;
   }

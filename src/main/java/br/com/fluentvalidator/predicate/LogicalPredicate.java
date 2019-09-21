@@ -8,18 +8,36 @@ public final class LogicalPredicate {
     super();
   }
 
+  /**
+   *
+   * @param predicate
+   * @return
+   */
   static <T> Predicate<T> is(final Predicate<T> predicate) {
     return PredicateBuilder.<T>from(predicate.and(is -> true));
   }
 
+  /**
+   *
+   * @param predicate
+   * @return
+   */
   public static <T> Predicate<T> not(final Predicate<T> predicate) {
     return PredicateBuilder.<T>from(is(predicate).negate());
   }
 
+  /**
+   *
+   * @return
+   */
   public static <T> Predicate<T> isTrue() {
     return PredicateBuilder.<T>from(is(isTrue -> true));
   }
 
+  /**
+   *
+   * @return
+   */
   public static <T> Predicate<T> isFalse() {
     return PredicateBuilder.<T>from(is(isFalse -> false));
   }
