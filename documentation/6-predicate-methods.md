@@ -7,7 +7,7 @@ Represents a predicate (boolean-valued function) of one argument.
 ## 6.1 Logical
 
 ```java
-not(final Predicate<T> predicate)
+not(Predicate<T> predicate)
 ```
 
 ```java
@@ -25,37 +25,37 @@ nullValue()
 ```
 
 ```java
-equalTo(final T obj)
+equalTo(T obj)
 ```
 
 ```java
-instanceOf(final Class<?> clazz)
+instanceOf(Class<?> clazz)
 ```
 
 ## 6.3 String
 
 ```java
-stringSize(final Integer size)
+stringSize(Integer size)
 ```
 
 ```java
-stringSizeGreaterThan(final Integer size)
+stringSizeGreaterThan(Integer size)
 ```
 
 ```java
-stringSizeLessThan(final int size)
+stringSizeLessThan(Integer size)
 ```
 
 ```java
-stringSizeGreaterThanOrEqual(final Integer size)
+stringSizeGreaterThanOrEqual(Integer size)
 ```
 
 ```java
-stringSizeLessThanOrEqual(final Integer size)
+stringSizeLessThanOrEqual(Integer size)
 ```
 
 ```java
-stringSizeBetween(final Integer minSize, final Integer maxSize)
+stringSizeBetween(Integer minSize, Integer maxSize)
 ```
 
 ```java
@@ -63,11 +63,11 @@ stringEmptyOrNull()
 ```
 
 ```java
-stringContains(final String str)
+stringContains(String str)
 ```
 
 ```java
-stringMatches(final String regex)
+stringMatches(String regex)
 ```
 
 ```java
@@ -89,23 +89,23 @@ isNumber()
 ## 6.4 Comparable
 
 ```java
-lessThan(final T max)
+lessThan(T max)
 ```
 
 ```java
-greaterThan(final T min)
+greaterThan(T min)
 ```
 
 ```java
-greaterThanOrEqual(final T min)
+greaterThanOrEqual(T min)
 ```
 
 ```java
-lessThanOrEqual(final T max)
+lessThanOrEqual(T max)
 ```
 
 ```java
-between(final T min, final T max)
+between(T min, T max)
 
 ## 6.5 Collection
 
@@ -114,53 +114,53 @@ empty()
 ```
 
 ```java
-hasItem(final Object object)
+hasItem(Object object)
 ```
 
 ```java
-hasItems(final Collection<Object> objects)
+hasItems(Collection<Object> objects)
 ```
 
 ```java
-hasItems(final Object... objects)
+hasItems(Object... objects)
 ```
 
 ```java
-hasAny(final Collection<Object> objects)
+hasAny(Collection<Object> objects)
 ```
 
 ```java
-hasAny(final Object... objects)
+hasAny(Object... objects)
 ```
 
 ```java
-hasSize(final Integer size)
+hasSize(Integer size)
 ```
 
 ## 6.6 DateTime
 
 ```java
-dateTimeEqualTo(final String dateString, final String pattern)
+dateTimeEqualTo(String dateString, String pattern)
 ```
 
 ```java
-dateTimeGreaterThan(final String dateString, final String pattern)
+dateTimeGreaterThan(String dateString, String pattern)
 ```
 
 ```java
-dateTimeLessThan(final String dateString, final String pattern)
+dateTimeLessThan(String dateString, String pattern)
 ```
 
 ```java
-dateTimeGreaterThanOrEqual(final String dateString, final String pattern)
+dateTimeGreaterThanOrEqual(String dateString, String pattern)
 ```
 
 ```java
-dateTimeLessThanOrEqual(final String dateString, final String pattern)
+dateTimeLessThanOrEqual(String dateString, String pattern)
 ```
 
 ```java
-dateTimeBetween(final String dateStringMin, final String dateStringMax, final String pattern)
+dateTimeBetween(String dateStringMin, String dateStringMax, String pattern)
 ```
 
 ## 6.7 Predicate inter properties
@@ -168,65 +168,65 @@ dateTimeBetween(final String dateStringMin, final String dateStringMax, final St
 ### 6.7.1 Comparable
 
 ```java
-equalTo(final Function<T, E> source, final Function<T, E> target)
+equalTo(Function<T, E> source, Function<T, E> target)
 ```
 
 ```java
-lessThan(final Function<T, E> source, final Function<T, E> target)
+lessThan(Function<T, E> source, Function<T, E> target)
 ```
 
 ```java
-lessThanOrEqual(final Function<T, E> source, final Function<T, E> target)
+lessThanOrEqual(Function<T, E> source, Function<T, E> target)
 ```
 
 ```java
-greaterThan(final Function<T, E> source, final Function<T, E> target)
+greaterThan(Function<T, E> source, Function<T, E> target)
 ```
 
 ```java
-greaterThanOrEqual(final Function<T, E> source, final Function<T, E> target)
+greaterThanOrEqual(Function<T, E> source, Function<T, E> target)
 ```
 
 ### 6.7.2 String
 
 ```java
-stringSize(final Function<T, String> source, final Function<T, String> target)
+stringSize(Function<T, String> source, Function<T, String> target)
 ```
 
 ```java
-stringSizeGreaterThan(final Function<T, String> source, final Function<T, String> target)
+stringSizeGreaterThan(Function<T, String> source, Function<T, String> target)
 ```
 
 ```java
-stringSizeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target)
+stringSizeGreaterThanOrEqual(Function<T, String> source, Function<T, String> target)
 ```
 
 ```java
-stringSizeLessThan(final Function<T, String> source, final Function<T, String> target)
+stringSizeLessThan(Function<T, String> source, Function<T, String> target)
 ```
 
 ```java
-stringSizeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target)
+stringSizeLessThanOrEqual(Function<T, String> source, Function<T, String> target)
 ```
 
 ### 6.7.2 DateTime
 
 ```java
-dateTimeEqualTo(final Function<T, String> source, final Function<T, String> target, final String pattern)
+dateTimeEqualTo(Function<T, String> source, Function<T, String> target, String pattern)
 ```
 
 ```java
-dateTimeGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern)
+dateTimeGreaterThan(Function<T, String> source, Function<T, String> target, String pattern)
 ```
 
 ```java
-dateTimeLessThan(final Function<T, String> source, final Function<T, String> target, final String pattern)
+dateTimeLessThan(Function<T, String> source, Function<T, String> target, String pattern)
 ```
 
 ```java
-dateTimeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern)
+dateTimeGreaterThanOrEqual(Function<T, String> source, Function<T, String> target, String pattern)
 ```
 
 ```java
-dateTimeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern)
+dateTimeLessThanOrEqual(Function<T, String> source, Function<T, String> target, String pattern)
 ```
