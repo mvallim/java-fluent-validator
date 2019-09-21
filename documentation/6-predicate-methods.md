@@ -106,6 +106,7 @@ lessThanOrEqual(T max)
 
 ```java
 between(T min, T max)
+```
 
 ## 6.5 Collection
 
