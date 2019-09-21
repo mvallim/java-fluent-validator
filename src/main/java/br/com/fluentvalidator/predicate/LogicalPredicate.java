@@ -23,7 +23,7 @@ public final class LogicalPredicate {
    * @return
    */
   public static <T> Predicate<T> not(final Predicate<T> predicate) {
-    return PredicateBuilder.<T>from(is(predicate).negate());
+    return PredicateBuilder.<T>from(predicate.negate());
   }
 
   /**
@@ -31,7 +31,7 @@ public final class LogicalPredicate {
    * @return
    */
   public static <T> Predicate<T> isTrue() {
-    return PredicateBuilder.<T>from(is(isTrue -> true));
+    return PredicateBuilder.<T>from(isTrue -> true);
   }
 
   /**
@@ -39,7 +39,7 @@ public final class LogicalPredicate {
    * @return
    */
   public static <T> Predicate<T> isFalse() {
-    return PredicateBuilder.<T>from(is(isFalse -> false));
+    return PredicateBuilder.<T>from(isFalse -> false);
   }
 
 }

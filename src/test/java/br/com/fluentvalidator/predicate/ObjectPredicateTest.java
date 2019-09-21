@@ -18,6 +18,8 @@ public class ObjectPredicateTest {
   @Test
   public void testNullObjectInstanceOf() {
     assertFalse(instanceOf(String.class).test(null));
+    assertFalse(instanceOf(null).test(null));
+    assertFalse(instanceOf(null).test("he"));
   }
 
   @Test

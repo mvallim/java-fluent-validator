@@ -23,36 +23,54 @@ public class StringPredicateTest {
   @Test
   public void testNulltStringSizeGreaterThan() {
     assertFalse(stringSizeGreaterThan(1).test(null));
+    assertFalse(stringSizeGreaterThan(null).test(null));
+    assertFalse(stringSizeGreaterThan(null).test("xo"));
   }
 
   @Test
   public void testNulltStringSizeLessThan() {
     assertFalse(stringSizeLessThan(1).test(null));
+    assertFalse(stringSizeLessThan(null).test(null));
+    assertFalse(stringSizeLessThan(null).test("xo"));
   }
 
   @Test
   public void testNulltStringSizeGreaterThanOrEqual() {
     assertFalse(stringSizeGreaterThanOrEqual(1).test(null));
+    assertFalse(stringSizeGreaterThanOrEqual(null).test(null));
+    assertFalse(stringSizeGreaterThanOrEqual(null).test("xo"));
   }
 
   @Test
   public void testNulltStringSizeLessThanOrEqual() {
     assertFalse(stringSizeLessThanOrEqual(1).test(null));
+    assertFalse(stringSizeLessThanOrEqual(null).test(null));
+    assertFalse(stringSizeLessThanOrEqual(null).test("xo"));
   }
 
   @Test
   public void testNulltStringSizeBetween() {
     assertFalse(stringSizeBetween(1, 1).test(null));
+    assertFalse(stringSizeBetween(null, null).test(null));
+    assertFalse(stringSizeBetween(null, null).test("xo"));
+    assertFalse(stringSizeBetween(1, null).test(null));
+    assertFalse(stringSizeBetween(null, 1).test("xo"));
+    assertFalse(stringSizeBetween(null, 1).test(null));
+    assertFalse(stringSizeBetween(1, null).test("xo"));
   }
 
   @Test
   public void testNulltStringContains() {
     assertFalse(stringContains("xo").test(null));
+    assertFalse(stringContains(null).test(null));
+    assertFalse(stringContains(null).test("xo"));
   }
 
   @Test
   public void testNullMatches() {
     assertFalse(stringMatches("xo").test(null));
+    assertFalse(stringMatches(null).test(null));
+    assertFalse(stringMatches(null).test("xo"));
   }
 
   @Test
