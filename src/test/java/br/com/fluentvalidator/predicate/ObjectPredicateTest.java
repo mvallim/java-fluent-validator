@@ -31,6 +31,9 @@ public class ObjectPredicateTest {
     @Test
     public void testInstanceOf() {
         assertTrue(instanceOf(String.class).test("1"));
+        assertTrue(instanceOf(Object.class).test("1"));
+        assertTrue(instanceOf(Object.class).test(1));
+        assertFalse(instanceOf(String.class).test(1));
         assertFalse(instanceOf(String.class).test(1));
     }
 

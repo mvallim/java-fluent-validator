@@ -34,7 +34,7 @@ public final class ObjectPredicate {
      * @return
      */
     public static <T> Predicate<T> instanceOf(final Class<?> clazz) {
-        return PredicateBuilder.<T>from(not(nullValue())).and(instanceOf -> not(nullValue()).test(clazz)).and(instanceOf -> clazz.isInstance(instanceOf));
+        return PredicateBuilder.<T>from(not(nullValue())).and(instanceOf -> not(nullValue()).test(clazz)).and(instanceOf -> clazz.isAssignableFrom(instanceOf.getClass()));
     }
 
 }
