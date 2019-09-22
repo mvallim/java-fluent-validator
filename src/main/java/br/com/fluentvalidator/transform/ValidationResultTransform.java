@@ -4,11 +4,11 @@ import br.com.fluentvalidator.context.ValidationResult;
 
 public interface ValidationResultTransform<E> {
 
-  /**
-   *
-   * @param validationResult
-   * @return
-   */
-  E transform(final ValidationResult validationResult);
+    /**
+     *
+     * @param validationResult
+     * @return
+     */
+    E transform(final ValidationResult validationResult);
 
 }
