@@ -1,5 +1,6 @@
 package br.com.fluentvalidator;
 
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
@@ -67,23 +68,18 @@ public class ValidatorTest {
     assertThat(result.getErrors(), hasSize(3));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent.getAge()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getAge()))));
     assertThat(result.getErrors(),
         hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
     assertThat(result.getErrors(), hasItem(hasProperty("code", containsString("666"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("cities size must be 10"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("attemptedValue", containsString(parent.getName()))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("name must contains key John"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString(parent.getName()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
   }
 
   @Test
@@ -102,12 +98,23 @@ public class ValidatorTest {
 
     assertFalse(result.isValid());
     assertThat(result.getErrors(), not(empty()));
-    assertThat(result.getErrors(), hasSize(1));
+    assertThat(result.getErrors(), hasSize(4));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("id"))));
     assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getId()))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("id not matching the pattern of a UUID"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("id not matching the pattern of a UUID"))));
+
+    assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getName()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
+
+    assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
+
+    assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getId()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
   }
 
   @Test
@@ -128,8 +135,7 @@ public class ValidatorTest {
     assertThat(result.getErrors(), hasSize(1));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent.getAge()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getAge()))));
     assertThat(result.getErrors(),
         hasItem(hasProperty("message", containsString("child age must be less than age parent"))));
   }
@@ -163,23 +169,18 @@ public class ValidatorTest {
     assertThat(result2.getErrors(), hasSize(3));
 
     assertThat(result2.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-    assertThat(result2.getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent2.getAge()))));
+    assertThat(result2.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent2.getAge()))));
     assertThat(result2.getErrors(),
         hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
     assertThat(result2.getErrors(), hasItem(hasProperty("code", containsString("666"))));
 
     assertThat(result2.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-    assertThat(result2.getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent2.getCities()))));
-    assertThat(result2.getErrors(),
-        hasItem(hasProperty("message", containsString("cities size must be 10"))));
+    assertThat(result2.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent2.getCities()))));
+    assertThat(result2.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 
     assertThat(result2.getErrors(), hasItem(hasProperty("field", containsString("name"))));
-    assertThat(result2.getErrors(),
-        hasItem(hasProperty("attemptedValue", containsString(parent2.getName()))));
-    assertThat(result2.getErrors(),
-        hasItem(hasProperty("message", containsString("name must contains key John"))));
+    assertThat(result2.getErrors(), hasItem(hasProperty("attemptedValue", containsString(parent2.getName()))));
+    assertThat(result2.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
   }
 
   @Test
@@ -210,21 +211,17 @@ public class ValidatorTest {
     assertThat(result.get(1).getErrors(), hasSize(3));
 
     assertThat(result.get(1).getErrors(), hasItem(hasProperty("field", containsString("age"))));
-    assertThat(result.get(1).getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent2.getAge()))));
+    assertThat(result.get(1).getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent2.getAge()))));
     assertThat(result.get(1).getErrors(),
         hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
     assertThat(result.get(1).getErrors(), hasItem(hasProperty("code", containsString("666"))));
 
     assertThat(result.get(1).getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-    assertThat(result.get(1).getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent2.getCities()))));
-    assertThat(result.get(1).getErrors(),
-        hasItem(hasProperty("message", containsString("cities size must be 10"))));
+    assertThat(result.get(1).getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent2.getCities()))));
+    assertThat(result.get(1).getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 
     assertThat(result.get(1).getErrors(), hasItem(hasProperty("field", containsString("name"))));
-    assertThat(result.get(1).getErrors(),
-        hasItem(hasProperty("attemptedValue", containsString(parent2.getName()))));
+    assertThat(result.get(1).getErrors(), hasItem(hasProperty("attemptedValue", containsString(parent2.getName()))));
     assertThat(result.get(1).getErrors(),
         hasItem(hasProperty("message", containsString("name must contains key John"))));
   }
@@ -247,8 +244,7 @@ public class ValidatorTest {
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("children"))));
     assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", nullValue())));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("parent's children cannot be null"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("parent's children cannot be null"))));
     assertThat(result.getErrors(), hasItem(hasProperty("code", containsString("555"))));
   }
 
@@ -293,15 +289,13 @@ public class ValidatorTest {
     assertThat(result.getErrors(), hasSize(2));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("name must contains key Ana"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key Ana"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
     assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(4))));
-    assertThat(result.getErrors(), hasItem(
-        hasProperty("message", containsString("child age must be greater than or equal to 5"))));
+    assertThat(result.getErrors(),
+        hasItem(hasProperty("message", containsString("child age must be greater than or equal to 5"))));
   }
 
   @Test
@@ -323,32 +317,26 @@ public class ValidatorTest {
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
     assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("name must contains key John"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent.getAge()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getAge()))));
     assertThat(result.getErrors(),
         hasItem(hasProperty("message", containsString("age must be less than or equal to 7"))));
     assertThat(result.getErrors(), hasItem(hasProperty("code", containsString("666"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("cities size must be 10"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
     assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(4))));
-    assertThat(result.getErrors(), hasItem(
-        hasProperty("message", containsString("child age must be greater than or equal to 5"))));
+    assertThat(result.getErrors(),
+        hasItem(hasProperty("message", containsString("child age must be greater than or equal to 5"))));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("child name must contains key Ana"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Barbara"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child name must contains key Ana"))));
   }
 
   @Test
@@ -366,12 +354,19 @@ public class ValidatorTest {
 
     assertFalse(result.isValid());
     assertThat(result.getErrors(), not(empty()));
-    assertThat(result.getErrors(), hasSize(1));
+    assertThat(result.getErrors(), hasSize(3));
 
     assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("age"))));
     assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(6))));
-    assertThat(result.getErrors(),
-        hasItem(hasProperty("message", containsString("child age must be less than age parent"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child age must be less than age parent"))));
+    
+    assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(parent.getCities()))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
+
+    assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo("Barbara"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child name must contains key Ana"))));
   }
 
   @Test
@@ -398,8 +393,7 @@ public class ValidatorTest {
 
           parent.setAge(6);
           parent.setName("John Gow");
-          parent
-              .setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
+          parent.setCities(Arrays.asList("c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"));
           parent.setChildren(Arrays.asList(new Boy("John", 5)));
 
           resultsOne.add(validatorParent.validate(parent));
@@ -449,13 +443,48 @@ public class ValidatorTest {
 
       assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("cities"))));
       assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", equalTo(cities))));
-      assertThat(result.getErrors(),
-          hasItem(hasProperty("message", containsString("cities size must be 10"))));
+      assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("cities size must be 10"))));
 
       assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("name"))));
       assertThat(result.getErrors(), hasItem(hasProperty("attemptedValue", containsString("Ana"))));
-      assertThat(result.getErrors(),
-          hasItem(hasProperty("message", containsString("name must contains key John"))));
+      assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("name must contains key John"))));
+    }
+
+  }
+
+  @Test
+  public void testSuccessWhenCriticalWasInDifferentRuleGroup() {
+
+    final StringValidator validator = new StringValidator();
+
+    final ValidationResult result = validator.validate("bla");
+
+    assertFalse(result.isValid());
+    assertThat(result.getErrors(), hasSize(3));
+
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 1 rule 1"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 2 rule 1"))));
+    assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 3 rule 1"))));
+  }
+
+  class StringValidator extends AbstractValidator<String> {
+
+    @Override
+    public void rules() {
+
+      ruleFor(str -> str)
+        .must(not(br.com.fluentvalidator.predicate.ComparablePredicate.equalTo("bla")))
+          .withMessage("group 1 rule 1");
+
+      ruleFor(str -> str)
+        .must(not(br.com.fluentvalidator.predicate.ComparablePredicate.equalTo("bla")))
+          .withMessage("group 2 rule 1").critical()
+          .must(not(br.com.fluentvalidator.predicate.ComparablePredicate.equalTo("bla"))).withMessage("group 2 rule 2");
+
+      ruleFor(str -> str)
+        .must(not(br.com.fluentvalidator.predicate.ComparablePredicate.equalTo("bla")))
+          .withMessage("group 3 rule 1");
+
     }
 
   }

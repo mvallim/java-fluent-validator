@@ -1,6 +1,7 @@
 package br.com.fluentvalidator.rule;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public final class RuleProcessor {
 
@@ -13,11 +14,21 @@ public final class RuleProcessor {
   }
 
   public static <E> boolean process(final Collection<E> values, final Rule<E> rule) {
-    return values.stream().allMatch(value -> process(value, rule));
+    return values.stream()
+     .map(value -> RuleProcessor.process(value, rule))
+     .collect(Collectors.toList())
+     .stream()
+     .allMatch(result -> result);
+    // return values.stream().allMatch(value -> process(value, rule));
   }
 
   public static <E> boolean process(final E value, final Collection<Rule<E>> rules) {
-    return rules.stream().allMatch(rule -> process(value, rule));
+    return rules.stream()
+        .map(rule -> RuleProcessor.process(value, rule))
+        .collect(Collectors.toList())
+        .stream()
+        .allMatch(result -> result);   
+    // return rules.stream().allMatch(rule -> process(value, rule));
   }
 
 }

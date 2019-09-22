@@ -31,7 +31,8 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 
   @Override
   public boolean apply(final T instance) {
-    return Objects.nonNull(instance) && RuleProcessor.process(function.apply(instance), this.rules);
+    return rules.stream()
+        .allMatch(rule -> Objects.nonNull(instance) && RuleProcessor.process(function.apply(instance), rule));
   }
 
   @Override
@@ -73,8 +74,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
   }
 
   @Override
-  public Critical<T, P, WhenProperty<T, P>> critical(
-      final Class<? extends ValidationException> clazz) {
+  public Critical<T, P, WhenProperty<T, P>> critical(final Class<? extends ValidationException> clazz) {
     this.currentValidation.critical(clazz);
     return this;
   }

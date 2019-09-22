@@ -18,8 +18,7 @@ import br.com.fluentvalidator.builder.WithValidator;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationException;
 
-public class RuleBuilderCollectionImpl<T, P>
-    extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>>
+public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>>
     implements RuleBuilderCollection<T, P>, WhenCollection<T, P>, Rule<T> {
 
   private final Collection<Rule<Collection<P>>> rules = new LinkedList<>();
@@ -32,7 +31,8 @@ public class RuleBuilderCollectionImpl<T, P>
 
   @Override
   public boolean apply(final T instance) {
-    return Objects.nonNull(instance) && RuleProcessor.process(function.apply(instance), rules);
+    return rules.stream()
+        .allMatch(rule -> Objects.nonNull(instance) && RuleProcessor.process(function.apply(instance), rule));
   }
 
   @Override
@@ -79,15 +79,13 @@ public class RuleBuilderCollectionImpl<T, P>
   }
 
   @Override
-  public Critical<T, Collection<P>, WhenCollection<T, P>> critical(
-      final Class<? extends ValidationException> clazz) {
+  public Critical<T, Collection<P>, WhenCollection<T, P>> critical(final Class<? extends ValidationException> clazz) {
     this.currentValidation.critical(clazz);
     return this;
   }
 
   @Override
-  public WithValidator<T, Collection<P>, WhenCollection<T, P>> withValidator(
-      final Validator<P> validator) {
+  public WithValidator<T, Collection<P>, WhenCollection<T, P>> withValidator(final Validator<P> validator) {
     this.currentValidation.withValidator(validator);
     return this;
   }

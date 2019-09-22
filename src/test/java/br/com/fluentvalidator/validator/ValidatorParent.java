@@ -28,18 +28,34 @@ public class ValidatorParent extends AbstractValidator<Parent> {
 
     setPropertyOnContext("parent");
 
-    ruleForEach(Parent::getChildren).must(not(nullValue()))
-        .withMessage("parent's children cannot be null").withCode("555").withFieldName("children")
-        .must(not(empty())).when(not(nullValue()))
-        .withMessage("parent must have at least one child").withFieldName("children")
-        .whenever(not(nullValue())).withValidator(new ValidatorChild()).critical();
+    ruleForEach(Parent::getChildren)
+      .must(not(nullValue()))
+        .withMessage("parent's children cannot be null")
+        .withCode("555")
+        .withFieldName("children")
+      .must(not(empty()))
+        .when(not(nullValue()))
+        .withMessage("parent must have at least one child")
+        .withFieldName("children")
+      .whenever(not(nullValue()))
+        .withValidator(new ValidatorChild())
+        .critical();
 
-    ruleFor(Parent::getId).whenever(not(nullValue())).withValidator(new ValidatorId()).critical();
+    ruleFor(Parent::getId)
+      .whenever(not(nullValue()))
+        .withValidator(new ValidatorId())
+        .critical();
 
-    ruleFor(Parent::getAge).must(greaterThanOrEqual(5)).when(not(nullValue()))
-        .withMessage("age must be greater than or equal to 10").withFieldName("age")
-        .must(lessThanOrEqual(7)).when(not(nullValue()))
-        .withMessage("age must be less than or equal to 7").withCode("666").withFieldName("age");
+    ruleFor(Parent::getAge)
+      .must(greaterThanOrEqual(5))
+        .when(not(nullValue()))
+        .withMessage("age must be greater than or equal to 10")
+        .withFieldName("age")
+      .must(lessThanOrEqual(7))
+        .when(not(nullValue()))
+        .withMessage("age must be less than or equal to 7")
+        .withCode("666")
+        .withFieldName("age");
 
     ruleFor(Parent::getCities).must(hasSize(10)).when(not(nullValue()))
         .withMessage("cities size must be 10").withFieldName("cities");
