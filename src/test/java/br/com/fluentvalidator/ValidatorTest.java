@@ -457,6 +457,23 @@ public class ValidatorTest {
         assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 3 rule 1"))));
     }
 
+    @Test
+    public void testSuccessWhenCriticalWasInDifferentRuleGroupFailFast() {
+
+        final StringValidator validator = new StringValidator();
+        
+        validator.failFastRule();
+
+        final ValidationResult result = validator.validate("bla");
+
+        assertFalse(result.isValid());
+        assertThat(result.getErrors(), hasSize(2));
+
+        assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 1 rule 1"))));
+        assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 2 rule 1"))));
+        assertThat(result.getErrors(), hasItem(hasProperty("message", not(containsString("group 3 rule 1")))));
+    }
+
     class StringValidator extends AbstractValidator<String> {
 
         @Override

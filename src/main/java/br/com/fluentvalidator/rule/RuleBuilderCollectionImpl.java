@@ -23,6 +23,8 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 
     private final Collection<Rule<Collection<P>>> rules = new LinkedList<>();
 
+    private final RuleProcessorStrategy ruleProcessor = RuleProcessorStrategy.getFailFast();
+
     private ValidationRule<P, Collection<P>> currentValidation;
 
     public RuleBuilderCollectionImpl(final Function<T, Collection<P>> function) {
@@ -31,7 +33,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 
     @Override
     public boolean apply(final T instance) {
-        return rules.stream().allMatch(rule -> Objects.nonNull(instance) && RuleProcessor.process(function.apply(instance), rule));
+        return Objects.nonNull(instance) && ruleProcessor.process(function.apply(instance), rules);
     }
 
     @Override
@@ -138,7 +140,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
         @Override
         public boolean apply(final Collection<P> instance) {
 
-            final boolean apply = RuleProcessor.process(instance, getValidator());
+            final boolean apply = ruleProcessor.process(instance, getValidator());
 
             if (Objects.nonNull(getCriticalException()) && Boolean.FALSE.equals(apply)) {
                 throw ValidationException.create(getCriticalException());

@@ -19,6 +19,11 @@ public interface Validator<T> extends Rule<T> {
 
     /**
      *
+     */
+    void failFastRule();
+
+    /**
+     *
      * @param property
      */
     void setPropertyOnContext(final String property);

@@ -22,6 +22,8 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 
     private final Collection<Rule<P>> rules = new LinkedList<>();
 
+    private final RuleProcessorStrategy ruleProcessor = RuleProcessorStrategy.getFailFast();
+
     private ValidationRule<P, P> currentValidation;
 
     public RuleBuilderPropertyImpl(final Function<T, P> function) {
@@ -30,7 +32,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 
     @Override
     public boolean apply(final T instance) {
-        return rules.stream().allMatch(rule -> Objects.nonNull(instance) && RuleProcessor.process(function.apply(instance), rule));
+        return Objects.nonNull(instance) && ruleProcessor.process(function.apply(instance), rules);
     }
 
     @Override
@@ -137,7 +139,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
         @Override
         public boolean apply(final P instance) {
 
-            final boolean apply = RuleProcessor.process(instance, getValidator());
+            final boolean apply = ruleProcessor.process(instance, getValidator());
 
             if (Objects.nonNull(getCriticalException()) && Boolean.FALSE.equals(apply)) {
                 throw ValidationException.create(getCriticalException());

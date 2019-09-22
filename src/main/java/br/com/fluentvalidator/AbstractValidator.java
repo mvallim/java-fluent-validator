@@ -14,7 +14,7 @@ import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.rule.Rule;
 import br.com.fluentvalidator.rule.RuleBuilderCollectionImpl;
 import br.com.fluentvalidator.rule.RuleBuilderPropertyImpl;
-import br.com.fluentvalidator.rule.RuleProcessor;
+import br.com.fluentvalidator.rule.RuleProcessorStrategy;
 import br.com.fluentvalidator.transform.ValidationResultTransform;
 
 public abstract class AbstractValidator<T> implements Validator<T> {
@@ -24,6 +24,8 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     private final Runnable initialize;
 
     private String property;
+
+    private RuleProcessorStrategy ruleProcessor = RuleProcessorStrategy.getDefault();
 
     protected AbstractValidator() {
         this.initialize = new Runnable() {
@@ -39,6 +41,14 @@ public abstract class AbstractValidator<T> implements Validator<T> {
             }
 
         };
+    }
+
+    /**
+     * {@link #failFastRule() AbstractValidator}
+     */
+    @Override
+    public void failFastRule() {
+        this.ruleProcessor = RuleProcessorStrategy.getFailFast();
     }
 
     /**
@@ -62,7 +72,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
      */
     @Override
     public ValidationResult validate(final T instance) {
-        RuleProcessor.process(instance, this);
+        ruleProcessor.process(instance, this);
         return ValidationContext.get().getValidationResult();
     }
 
@@ -105,7 +115,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     public boolean apply(final T instance) {
         this.initialize.run();
         ValidationContext.get().setProperty(this.property, instance);
-        return RuleProcessor.process(instance, rules);
+        return ruleProcessor.process(instance, rules);
     }
 
     /**
