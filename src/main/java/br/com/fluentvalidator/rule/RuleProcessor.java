@@ -15,11 +15,10 @@ public final class RuleProcessor {
 
   public static <E> boolean process(final Collection<E> values, final Rule<E> rule) {
     return values.stream()
-     .map(value -> RuleProcessor.process(value, rule))
-     .collect(Collectors.toList())
-     .stream()
-     .allMatch(result -> result);
-    // return values.stream().allMatch(value -> process(value, rule));
+        .map(value -> RuleProcessor.process(value, rule))
+        .collect(Collectors.toList())
+        .stream()
+        .allMatch(result -> result);
   }
 
   public static <E> boolean process(final E value, final Collection<Rule<E>> rules) {
@@ -27,8 +26,7 @@ public final class RuleProcessor {
         .map(rule -> RuleProcessor.process(value, rule))
         .collect(Collectors.toList())
         .stream()
-        .allMatch(result -> result);   
-    // return rules.stream().allMatch(rule -> process(value, rule));
+        .allMatch(result -> result);
   }
 
 }
