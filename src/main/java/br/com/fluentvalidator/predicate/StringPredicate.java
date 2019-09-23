@@ -21,6 +21,7 @@ public final class StringPredicate {
 
 	/**
 	 *
+	 * @param <T>
 	 * @param source
 	 * @param target
 	 * @return
@@ -32,48 +33,48 @@ public final class StringPredicate {
 
 	/**
 	 *
+	 * @param <T>
 	 * @param source
 	 * @param target
 	 * @return
 	 */
-	public static <T> Predicate<T> stringSizeGreaterThan(final Function<T, String> source,
-	        final Function<T, String> target) {
+	public static <T> Predicate<T> stringSizeGreaterThan(final Function<T, String> source, final Function<T, String> target) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(target.apply(obj)))
 		        .and(obj -> stringSizeGreaterThan(target.apply(obj).length()).test(source.apply(obj)));
 	}
 
 	/**
 	 *
+	 * @param <T>
 	 * @param source
 	 * @param target
 	 * @return
 	 */
-	public static <T> Predicate<T> stringSizeGreaterThanOrEqual(final Function<T, String> source,
-	        final Function<T, String> target) {
+	public static <T> Predicate<T> stringSizeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(target.apply(obj)))
 		        .and(obj -> stringSizeGreaterThanOrEqual(target.apply(obj).length()).test(source.apply(obj)));
 	}
 
 	/**
 	 *
+	 * @param <T>
 	 * @param source
 	 * @param target
 	 * @return
 	 */
-	public static <T> Predicate<T> stringSizeLessThan(final Function<T, String> source,
-	        final Function<T, String> target) {
+	public static <T> Predicate<T> stringSizeLessThan(final Function<T, String> source, final Function<T, String> target) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(target.apply(obj)))
 		        .and(obj -> stringSizeLessThan(target.apply(obj).length()).test(source.apply(obj)));
 	}
 
 	/**
 	 *
+	 * @param <T>
 	 * @param source
 	 * @param target
 	 * @return
 	 */
-	public static <T> Predicate<T> stringSizeLessThanOrEqual(final Function<T, String> source,
-	        final Function<T, String> target) {
+	public static <T> Predicate<T> stringSizeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(target.apply(obj)))
 		        .and(obj -> stringSizeLessThanOrEqual(target.apply(obj).length()).test(source.apply(obj)));
 	}
@@ -152,12 +153,78 @@ public final class StringPredicate {
 
 	/**
 	 *
+	 * @param <T>
+	 * @param source
+	 * @param size
+	 * @return
+	 */
+	public static <T> Predicate<T> stringSize(final Function<T, String> source, final Integer size) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringSize(size).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param size
+	 * @return
+	 */
+	public static <T> Predicate<T> stringSizeGreaterThan(final Function<T, String> source, final Integer size) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringSizeGreaterThan(size).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param size
+	 * @return
+	 */
+	public static <T> Predicate<T> stringSizeLessThan(final Function<T, String> source, final Integer size) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringSizeLessThan(size).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param size
+	 * @return
+	 */
+	public static <T> Predicate<T> stringSizeGreaterThanOrEqual(final Function<T, String> source, final Integer size) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringSizeGreaterThanOrEqual(size).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param size
+	 * @return
+	 */
+	public static <T> Predicate<T> stringSizeLessThanOrEqual(final Function<T, String> source, final Integer size) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringSizeLessThanOrEqual(size).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param minSize
+	 * @param maxSize
+	 * @return
+	 */
+	public static <T> Predicate<T> stringSizeBetween(final Function<T, String> source, final Integer minSize, final Integer maxSize) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringSizeBetween(minSize, maxSize).test(source.apply(obj)));
+	}
+
+	/**
+	 *
 	 * @param size
 	 * @return
 	 */
 	public static Predicate<String> stringSize(final Integer size) {
-		return PredicateBuilder.<String>from(not(nullValue())).and(stringSize -> not(nullValue()).test(size))
-		        .and(stringSize -> equalTo(size).test(stringSize.length()));
+		return PredicateBuilder.<String>from(not(nullValue())).and(stringSize -> not(nullValue()).test(size)).and(stringSize -> equalTo(size).test(stringSize.length()));
 	}
 
 	/**
@@ -186,10 +253,8 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> stringSizeGreaterThanOrEqual(final Integer size) {
-		return PredicateBuilder.<String>from(not(nullValue()))
-		        .and(stringSizeGreaterThanOrEqual -> not(nullValue()).test(size))
-		        .and(stringSizeGreaterThanOrEqual -> greaterThanOrEqual(size)
-		                .test(stringSizeGreaterThanOrEqual.length()));
+		return PredicateBuilder.<String>from(not(nullValue())).and(stringSizeGreaterThanOrEqual -> not(nullValue()).test(size))
+		        .and(stringSizeGreaterThanOrEqual -> greaterThanOrEqual(size).test(stringSizeGreaterThanOrEqual.length()));
 	}
 
 	/**
@@ -198,8 +263,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> stringSizeLessThanOrEqual(final Integer size) {
-		return PredicateBuilder.<String>from(not(nullValue()))
-		        .and(stringSizeLessThanOrEqual -> not(nullValue()).test(size))
+		return PredicateBuilder.<String>from(not(nullValue())).and(stringSizeLessThanOrEqual -> not(nullValue()).test(size))
 		        .and(stringSizeLessThanOrEqual -> lessThanOrEqual(size).test(stringSizeLessThanOrEqual.length()));
 	}
 
@@ -210,8 +274,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> stringSizeBetween(final Integer minSize, final Integer maxSize) {
-		return PredicateBuilder.<String>from(not(nullValue()))
-		        .and(stringSizeGreaterThanOrEqual(minSize).and(stringSizeLessThanOrEqual(maxSize)));
+		return PredicateBuilder.<String>from(not(nullValue())).and(stringSizeGreaterThanOrEqual(minSize).and(stringSizeLessThanOrEqual(maxSize)));
 	}
 
 	/**
@@ -228,8 +291,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> stringContains(final String str) {
-		return PredicateBuilder.<String>from(not(nullValue())).and(stringContains -> not(nullValue()).test(str))
-		        .and(stringContains -> stringContains.contains(str));
+		return PredicateBuilder.<String>from(not(nullValue())).and(stringContains -> not(nullValue()).test(str)).and(stringContains -> stringContains.contains(str));
 	}
 
 	/**
@@ -238,8 +300,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> stringMatches(final String regex) {
-		return PredicateBuilder.<String>from(not(nullValue())).and(stringMatches -> not(nullValue()).test(regex))
-		        .and(stringMatches -> stringMatches.matches(regex));
+		return PredicateBuilder.<String>from(not(nullValue())).and(stringMatches -> not(nullValue()).test(regex)).and(stringMatches -> stringMatches.matches(regex));
 	}
 
 	/**
@@ -247,8 +308,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> isNumeric() {
-		return PredicateBuilder.<String>from(not(stringEmptyOrNull()))
-		        .and(isNumeric -> isNumeric.chars().allMatch(Character::isDigit));
+		return PredicateBuilder.<String>from(not(stringEmptyOrNull())).and(isNumeric -> isNumeric.chars().allMatch(Character::isDigit));
 	}
 
 	/**
@@ -256,8 +316,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> isAlpha() {
-		return PredicateBuilder.<String>from(not(stringEmptyOrNull()))
-		        .and(isNumeric -> isNumeric.chars().allMatch(Character::isLetter));
+		return PredicateBuilder.<String>from(not(stringEmptyOrNull())).and(isNumeric -> isNumeric.chars().allMatch(Character::isLetter));
 	}
 
 	/**
@@ -265,8 +324,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> isAlphaNumeric() {
-		return PredicateBuilder.<String>from(not(stringEmptyOrNull()))
-		        .and(isNumeric -> isNumeric.chars().allMatch(Character::isLetterOrDigit));
+		return PredicateBuilder.<String>from(not(stringEmptyOrNull())).and(isNumeric -> isNumeric.chars().allMatch(Character::isLetterOrDigit));
 	}
 
 	/**
