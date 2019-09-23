@@ -12,16 +12,72 @@ import br.com.fluentvalidator.transform.ValidationResultTransform;
 
 public interface Validator<T> extends Rule<T> {
 
-  ValidationResult validate(final T instance);
+    /**
+     *
+     */
+    void rules();
 
-  <E> E validate(final T instance, final ValidationResultTransform<E> transform);
+    /**
+     *
+     */
+    void failFastRule();
 
-  List<ValidationResult> validate(final Collection<T> instances);
+    /**
+     *
+     * @param property
+     */
+    void setPropertyOnContext(final String property);
 
-  <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> transform);
+    /**
+     *
+     * @param property
+     * @param clazz
+     * @return
+     */
+    <P> P getPropertyOnContext(final String property, final Class<P> clazz);
 
-  <P> RuleBuilderProperty<T, P> ruleFor(final Function<T, P> function);
+    /**
+     *
+     * @param instance
+     * @return
+     */
+    ValidationResult validate(final T instance);
 
-  <P> RuleBuilderCollection<T, P> ruleForEach(final Function<T, Collection<P>> function);
+    /**
+     *
+     * @param instance
+     * @param transform
+     * @return
+     */
+    <E> E validate(final T instance, final ValidationResultTransform<E> transform);
+
+    /**
+     *
+     * @param instances
+     * @return
+     */
+    List<ValidationResult> validate(final Collection<T> instances);
+
+    /**
+     *
+     * @param instances
+     * @param transform
+     * @return
+     */
+    <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> transform);
+
+    /**
+     *
+     * @param function
+     * @return
+     */
+    <P> RuleBuilderProperty<T, P> ruleFor(final Function<T, P> function);
+
+    /**
+     *
+     * @param function
+     * @return
+     */
+    <P> RuleBuilderCollection<T, P> ruleForEach(final Function<T, Collection<P>> function);
 
 }

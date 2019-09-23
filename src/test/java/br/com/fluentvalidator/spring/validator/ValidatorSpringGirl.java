@@ -15,14 +15,12 @@ import br.com.fluentvalidator.model.Girl;
 @Component
 public class ValidatorSpringGirl extends AbstractValidator<Girl> {
 
-  @Override
-  protected void rules() {
+    @Override
+    public void rules() {
 
-    ruleFor(Girl::getGender).must(equalTo(Gender.FEMALE)).when(not(nullValue()))
-        .withMessage("gender of girl must be FEMALE").withFieldName("gender");
+        ruleFor(Girl::getGender).must(equalTo(Gender.FEMALE)).when(not(nullValue())).withMessage("gender of girl must be FEMALE").withFieldName("gender");
 
-    ruleFor(Girl::getName).must(stringContains("Ana")).when(not(stringEmptyOrNull()))
-        .withMessage("child name must contains key Ana").withFieldName("name");
-  }
+        ruleFor(Girl::getName).must(stringContains("Ana")).when(not(stringEmptyOrNull())).withMessage("child name must contains key Ana").withFieldName("name");
+    }
 
 }

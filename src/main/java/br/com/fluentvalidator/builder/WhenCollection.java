@@ -6,6 +6,11 @@ import br.com.fluentvalidator.Validator;
 
 public interface WhenCollection<T, P> extends When<T, Collection<P>, WhenCollection<T, P>> {
 
-  WithValidator<T, Collection<P>, WhenCollection<T, P>> withValidator(final Validator<P> validator);
+    /**
+     *
+     * @param validator
+     * @return
+     */
+    WithValidator<T, Collection<P>, WhenCollection<T, P>> withValidator(final Validator<P> validator);
 
 }

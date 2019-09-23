@@ -8,8 +8,12 @@ addons:
 
 cache:
   directories:
-  - "$HOME/.cache"      
+  - "$HOME/.cache"
+
+script:
+  - mvn clean compile
+  - mvn test
 
 after_success:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=java-fluent-validator -Dsonar.pitest.mode=reuseReport
+  - mvn sonar:sonar -Dsonar.projectKey=java-fluent-validator
 
