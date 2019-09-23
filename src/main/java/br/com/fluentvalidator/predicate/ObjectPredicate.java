@@ -1,4 +1,4 @@
- package br.com.fluentvalidator.predicate;
+package br.com.fluentvalidator.predicate;
 
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 
@@ -23,7 +23,7 @@ public final class ObjectPredicate {
 	/**
 	 *
 	 * @param <T>
- 	 * @param source
+	 * @param source
 	 * @return
 	 */
 	public static <T> Predicate<T> nullValue(final Function<T, ?> source) {
@@ -37,7 +37,8 @@ public final class ObjectPredicate {
 	 * @return
 	 */
 	public static <T> Predicate<T> equalTo(final T obj) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(equalTo -> equalTo.equals(obj));
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(equalTo -> equalTo.equals(obj));
 	}
 
 	/**
@@ -66,17 +67,15 @@ public final class ObjectPredicate {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param <T>
 	 * @param source
 	 * @param clazz
 	 * @return
-	 */
+	 */ 
 	public static <T> Predicate<T> instanceOf(final Function<T, ?> source, final Class<?> clazz) {
 		return PredicateBuilder.<T>from(not(nullValue()))
-				.and(instanceOf -> not(nullValue()).test(source.apply(instanceOf)))
-				.and(instanceOf -> not(nullValue()).test(clazz))
-		        .and(instanceOf -> clazz.isAssignableFrom(source.apply(instanceOf).getClass()));
+		        .and(instanceOf -> instanceOf(clazz).test(source.apply(instanceOf)));
 	}
 
 }
