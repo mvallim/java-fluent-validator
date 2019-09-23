@@ -166,6 +166,50 @@ dateTimeBetween(String dateStringMin, String dateStringMax, String pattern)
 
 ## 6.7 Predicate inter properties
 
+### 6.7.1 Object
+
+```java
+nullValue(Function<T, E> source)
+```
+
+```java
+equalTo(Function<T, E> source, Function<T, E> target)
+```
+
+```java
+instanceOf(Function<T, E> source, Class<?> clazz)
+```
+
+### 6.7.2 String
+
+```java
+stringEmptyOrNull(Function<T, E> source)
+```
+
+```java
+stringContains(Function<T, E> source, String str)
+```
+
+```java
+stringMatches(Function<T, E> source, String regex)
+```
+
+```java
+isNumeric(Function<T, E> source)
+```
+
+```java
+isAlpha(Function<T, E> source)
+```
+
+```java
+isAlphaNumeric(Function<T, E> source)
+```
+
+```java
+isNumber(Function<T, E> source)
+```
+
 ### 6.7.1 Comparable
 
 ```java
@@ -210,10 +254,44 @@ stringSizeLessThan(Function<T, String> source, Function<T, String> target)
 stringSizeLessThanOrEqual(Function<T, String> source, Function<T, String> target)
 ```
 
+### 6.7.3 Comparable
+
+```java
+lessThan(Function<T, E> source, E max)
+```
+
+```java
+greaterThan(Function<T, E> source, E min)
+```
+
+```java
+greaterThanOrEqual(Function<T, E> source, E min)
+```
+
+```java
+lessThanOrEqual(Function<T, E> source, E max)
+```
+
+```java
+between(Function<T, E> source, E min, E max)
+```
+
 ### 6.7.2 DateTime
 
 ```java
+dateTimeBetween(Function<T, String> source, String dateStringMin, String dateStringMax, String pattern)
+```
+
+```java
+dateTimeEqualTo(Function<T, String> source, String target, String pattern)
+```
+
+```java
 dateTimeEqualTo(Function<T, String> source, Function<T, String> target, String pattern)
+```
+
+```java
+dateTimeGreaterThan(Function<T, String> source, String target, String pattern)
 ```
 
 ```java
@@ -221,11 +299,23 @@ dateTimeGreaterThan(Function<T, String> source, Function<T, String> target, Stri
 ```
 
 ```java
+dateTimeLessThan(Function<T, String> source, String target, String pattern)
+```
+
+```java
 dateTimeLessThan(Function<T, String> source, Function<T, String> target, String pattern)
 ```
 
 ```java
+dateTimeGreaterThanOrEqual(Function<T, String> source, String target, String pattern)
+```
+
+```java
 dateTimeGreaterThanOrEqual(Function<T, String> source, Function<T, String> target, String pattern)
+```
+
+```java
+dateTimeLessThanOrEqual(Function<T, String> source, String target, String pattern)
 ```
 
 ```java
