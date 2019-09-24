@@ -1,9 +1,7 @@
 package br.com.fluentvalidator.predicate;
 
 import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThan;
-import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOrEqual;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThan;
-import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThanOrEqual;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
@@ -51,8 +49,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static <T> Predicate<T> stringSizeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(target.apply(obj)))
-		        .and(obj -> stringSizeGreaterThanOrEqual(target.apply(obj).length()).test(source.apply(obj)));
+		return PredicateBuilder.<T>from(not(nullValue())).and(stringSizeGreaterThan(source, target).or(stringSize(source, target)));
 	}
 
 	/**
@@ -75,8 +72,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static <T> Predicate<T> stringSizeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(target.apply(obj)))
-		        .and(obj -> stringSizeLessThanOrEqual(target.apply(obj).length()).test(source.apply(obj)));
+		return PredicateBuilder.<T>from(not(nullValue())).and(stringSizeLessThan(source, target).or(stringSize(source, target)));
 	}
 
 	/**
@@ -192,7 +188,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static <T> Predicate<T> stringSizeGreaterThanOrEqual(final Function<T, String> source, final Integer size) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringSizeGreaterThanOrEqual(size).test(source.apply(obj)));
+		return PredicateBuilder.<T>from(not(nullValue())).and(stringSizeGreaterThan(source, size).or(stringSize(source, size)));
 	}
 
 	/**
@@ -203,7 +199,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static <T> Predicate<T> stringSizeLessThanOrEqual(final Function<T, String> source, final Integer size) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringSizeLessThanOrEqual(size).test(source.apply(obj)));
+		return PredicateBuilder.<T>from(not(nullValue())).and(stringSizeLessThan(source, size).or(stringSize(source, size)));
 	}
 
 	/**
@@ -253,8 +249,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> stringSizeGreaterThanOrEqual(final Integer size) {
-		return PredicateBuilder.<String>from(not(nullValue())).and(stringSizeGreaterThanOrEqual -> not(nullValue()).test(size))
-		        .and(stringSizeGreaterThanOrEqual -> greaterThanOrEqual(size).test(stringSizeGreaterThanOrEqual.length()));
+		return PredicateBuilder.<String>from(not(nullValue())).and(stringSizeGreaterThan(size).or(stringSize(size)));
 	}
 
 	/**
@@ -263,8 +258,7 @@ public final class StringPredicate {
 	 * @return
 	 */
 	public static Predicate<String> stringSizeLessThanOrEqual(final Integer size) {
-		return PredicateBuilder.<String>from(not(nullValue())).and(stringSizeLessThanOrEqual -> not(nullValue()).test(size))
-		        .and(stringSizeLessThanOrEqual -> lessThanOrEqual(size).test(stringSizeLessThanOrEqual.length()));
+		return PredicateBuilder.<String>from(not(nullValue())).and(stringSizeLessThan(size).or(stringSize(size)));
 	}
 
 	/**

@@ -22,37 +22,12 @@ public final class ObjectPredicate {
 
 	/**
 	 *
-	 * @param <T>
-	 * @param source
-	 * @return
-	 */
-	public static <T> Predicate<T> nullValue(final Function<T, ?> source) {
-		return PredicateBuilder.<T>from(not(nullValue()))
-				.and(nullValue -> nullValue().test(source.apply(nullValue)));
-	}
-
-	/**
-	 *
 	 * @param obj
 	 * @return
 	 */
 	public static <T> Predicate<T> equalTo(final T obj) {
 		return PredicateBuilder.<T>from(not(nullValue()))
 				.and(equalTo -> equalTo.equals(obj));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @return
-	 */
-	public static <T> Predicate<T> equalTo(final Function<T, ?> source, final Function<T, ?> target) {
-		return PredicateBuilder.<T>from(not(nullValue()))
-				.and(equalTo -> not(nullValue()).test(source.apply(equalTo)))
-		        .and(equalTo -> not(nullValue()).test(target.apply(equalTo)))
-		        .and(equalTo -> source.apply(equalTo).equals(target.apply(equalTo)));
 	}
 
 	/**
@@ -70,10 +45,35 @@ public final class ObjectPredicate {
 	 *
 	 * @param <T>
 	 * @param source
+	 * @return
+	 */
+	public static <T> Predicate<T> nullValue(final Function<T, ?> source) {
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(obj -> nullValue().test(source.apply(obj)));
+	}
+	
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @return
+	 */
+	public static <T> Predicate<T> equalTo(final Function<T, Object> source, final Function<T, Object> target) {
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(obj -> not(nullValue()).test(source.apply(obj)))
+				.and(obj -> not(nullValue()).test(target.apply(obj)))
+				.and(obj -> equalTo(source.apply(obj)).test(target.apply(obj)));
+	}
+	
+	/**
+	 *
+	 * @param <T>
+	 * @param source
 	 * @param clazz
 	 * @return
 	 */ 
-	public static <T> Predicate<T> instanceOf(final Function<T, ?> source, final Class<?> clazz) {
+	public static <T> Predicate<T> instanceOf(final Function<T, Object> source, final Class<?> clazz) {
 		return PredicateBuilder.<T>from(not(nullValue()))
 		        .and(instanceOf -> instanceOf(clazz).test(source.apply(instanceOf)));
 	}
