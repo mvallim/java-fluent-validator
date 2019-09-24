@@ -241,65 +241,65 @@ public class ComparablePredicateTest {
 		assertFalse(PredicateBuilder.<LocalDate>from(lessThanOrEqual(LocalDate.now())).test(LocalDate.now().plusYears(10)));
 	}
 
-//	@Test
-//	public void testObjectComparableGreaterThan() {
-//		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(2, 1)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(2, 2)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(2, 3)));
-//	}
-//
-//	@Test
-//	public void testNullObjectComparableGreaterThan() {
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(null));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(2, null)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(null, 2)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(null, null)));
-//	}
-//
-//	@Test
-//	public void testObjectComparableGreaterThanOrEqual() {
-//		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(2, 1)));
-//		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(2, 2)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(2, 3)));
-//	}
-//
-//	@Test
-//	public void testNullObjectComparableGreaterThanOrEqual() {
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(null));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(2, null)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(null, 2)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(null, null)));
-//	}
-//
-//	@Test
-//	public void testObjectComparableLessThan() {
-//		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(1, 2)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(1, 1)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(1, 0)));
-//	}
-//
-//	@Test
-//	public void testNullObjectComparableLessThan() {
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(null));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(1, null)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(null, 1)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(null, null)));
-//	}
-//
-//	@Test
-//	public void testObjectComparableLessThanOrEqual() {
-//		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(1, 2)));
-//		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(1, 1)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(1, 0)));
-//	}
-//
-//	@Test
-//	public void testNullObjectComparableLessThanOrEqual() {
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(null));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(1, null)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(null, 1)));
-//		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom<Integer>::getSource, ObjectFrom::getTarget)).test(new ObjectFrom<>(null, null)));
-//	}
+	@Test
+	public void testObjectComparableGreaterThan() {
+		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 1)).test(new ObjectFrom<Integer>(2, 1)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(2, 2)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 3)).test(new ObjectFrom<>(2, 3)));
+	}
+
+	@Test
+	public void testNullObjectComparableGreaterThan() {
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 0)).test(null));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(2, null)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(null, 2)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(null, null)));
+	}
+
+	@Test
+	public void testObjectComparableGreaterThanOrEqual() {
+		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(2, 1)));
+		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(2, 2)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 3)).test(new ObjectFrom<>(2, 3)));
+	}
+
+	@Test
+	public void testNullObjectComparableGreaterThanOrEqual() {
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 0)).test(null));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(2, null)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(null, 2)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(null, null)));
+	}
+
+	@Test
+	public void testObjectComparableLessThan() {
+		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(1, 2)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(1, 1)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 0)).test(new ObjectFrom<>(1, 0)));
+	}
+
+	@Test
+	public void testNullObjectComparableLessThan() {
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 0)).test(null));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(1, null)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(null, 1)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(null, null)));
+	}
+
+	@Test
+	public void testObjectComparableLessThanOrEqual() {
+		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(1, 2)));
+		assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(1, 1)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 0)).test(new ObjectFrom<>(1, 0)));
+	}
+
+	@Test
+	public void testNullObjectComparableLessThanOrEqual() {
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 0)).test(null));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(1, null)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(null, 1)));
+		assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(null, null)));
+	}
 
 	@Test
 	public void testObjectComparableBetween() {
