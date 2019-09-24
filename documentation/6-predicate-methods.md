@@ -123,7 +123,7 @@ hasItems(Collection<Object> objects)
 ```
 
 ```java
-hasItems(Object... objects)
+hasItems(Object[] objects)
 ```
 
 ```java
@@ -131,7 +131,7 @@ hasAny(Collection<Object> objects)
 ```
 
 ```java
-hasAny(Object... objects)
+hasAny(Object[] objects)
 ```
 
 ```java
@@ -232,6 +232,26 @@ greaterThan(Function<T, E> source, Function<T, E> target)
 greaterThanOrEqual(Function<T, E> source, Function<T, E> target)
 ```
 
+```java
+lessThan(Function<T, E> source, E max)
+```
+
+```java
+greaterThan(Function<T, E> source, E min)
+```
+
+```java
+greaterThanOrEqual(Function<T, E> source, E min)
+```
+
+```java
+lessThanOrEqual(Function<T, E> source, E max)
+```
+
+```java
+between(Function<T, E> source, E min, E max)
+```
+
 ### 6.7.2 String
 
 ```java
@@ -252,28 +272,6 @@ stringSizeLessThan(Function<T, String> source, Function<T, String> target)
 
 ```java
 stringSizeLessThanOrEqual(Function<T, String> source, Function<T, String> target)
-```
-
-### 6.7.3 Comparable
-
-```java
-lessThan(Function<T, E> source, E max)
-```
-
-```java
-greaterThan(Function<T, E> source, E min)
-```
-
-```java
-greaterThanOrEqual(Function<T, E> source, E min)
-```
-
-```java
-lessThanOrEqual(Function<T, E> source, E max)
-```
-
-```java
-between(Function<T, E> source, E min, E max)
 ```
 
 ### 6.7.2 DateTime
