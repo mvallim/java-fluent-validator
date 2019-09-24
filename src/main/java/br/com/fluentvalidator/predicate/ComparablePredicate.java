@@ -8,10 +8,6 @@ import java.util.function.Predicate;
 
 public final class ComparablePredicate {
 
-	private static final Integer MINUS = -1;
-
-	private static final Integer PLUS = 1;
-
 	private static final Integer ZERO = 0;
 
 	private ComparablePredicate() {
@@ -159,7 +155,7 @@ public final class ComparablePredicate {
 	 * @return
 	 */
 	public static <E, T extends Comparable<E>> Predicate<T> equalTo(final E value) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(equalTo -> not(nullValue()).test(value)).and(equalTo -> ZERO.equals(equalTo.compareTo(value)));
+		return PredicateBuilder.<T>from(not(nullValue())).and(equalTo -> not(nullValue()).test(value)).and(equalTo -> equalTo.compareTo(value) == ZERO);
 	}
 
 	/**
@@ -170,7 +166,7 @@ public final class ComparablePredicate {
 	 * @return
 	 */
 	public static <E, T extends Comparable<E>> Predicate<T> lessThan(final E max) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(lessThan -> not(nullValue()).test(max)).and(lessThan -> MINUS.equals(lessThan.compareTo(max)));
+		return PredicateBuilder.<T>from(not(nullValue())).and(lessThan -> not(nullValue()).test(max)).and(lessThan -> lessThan.compareTo(max) < ZERO);
 	}
 
 	/**
@@ -181,7 +177,7 @@ public final class ComparablePredicate {
 	 * @return
 	 */
 	public static <E, T extends Comparable<E>> Predicate<T> greaterThan(final E min) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(greaterThan -> not(nullValue()).test(min)).and(greaterThan -> PLUS.equals(greaterThan.compareTo(min)));
+		return PredicateBuilder.<T>from(not(nullValue())).and(greaterThan -> not(nullValue()).test(min)).and(greaterThan -> greaterThan.compareTo(min) > ZERO);
 	}
 
 	/**
