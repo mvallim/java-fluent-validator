@@ -6,6 +6,7 @@ import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -157,10 +158,14 @@ public final class DatePredicate {
 	public static Predicate<String> dateEqualTo(final String dateString, final String pattern) {
 		return PredicateBuilder.<String>from(not(nullValue())).and(dateEqualTo -> not(stringEmptyOrNull()).test(dateString))
 		        .and(dateEqualTo -> not(stringEmptyOrNull()).test(pattern)).and(dateEqualTo -> {
-			        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
-			        final LocalDate dateTest = LocalDate.parse(dateEqualTo, dateFormat);
-			        final LocalDate date = LocalDate.parse(dateString, dateFormat);
-			        return dateTest.isEqual(date);
+			        try {
+				        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+				        final LocalDate dateTest = LocalDate.parse(dateEqualTo, dateFormat);
+				        final LocalDate date = LocalDate.parse(dateString, dateFormat);
+				        return dateTest.isEqual(date);
+			        } catch (final IllegalArgumentException | DateTimeParseException ex) {
+				        return false;
+			        }
 		        });
 	}
 
@@ -173,10 +178,14 @@ public final class DatePredicate {
 	public static Predicate<String> dateGreaterThan(final String dateString, final String pattern) {
 		return PredicateBuilder.<String>from(not(nullValue())).and(dateGreaterThan -> not(stringEmptyOrNull()).test(dateString))
 		        .and(dateGreaterThan -> not(stringEmptyOrNull()).test(pattern)).and(dateGreaterThan -> {
-			        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
-			        final LocalDate dateTest = LocalDate.parse(dateGreaterThan, dateFormat);
-			        final LocalDate date = LocalDate.parse(dateString, dateFormat);
-			        return dateTest.isAfter(date);
+			        try {
+				        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+				        final LocalDate dateTest = LocalDate.parse(dateGreaterThan, dateFormat);
+				        final LocalDate date = LocalDate.parse(dateString, dateFormat);
+				        return dateTest.isAfter(date);
+			        } catch (final IllegalArgumentException | DateTimeParseException ex) {
+				        return false;
+			        }
 		        });
 	}
 
@@ -189,10 +198,14 @@ public final class DatePredicate {
 	public static Predicate<String> dateLessThan(final String dateString, final String pattern) {
 		return PredicateBuilder.<String>from(not(nullValue())).and(dateLessThan -> not(stringEmptyOrNull()).test(dateString))
 		        .and(dateLessThan -> not(stringEmptyOrNull()).test(pattern)).and(dateLessThan -> {
-			        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
-			        final LocalDate dateTest = LocalDate.parse(dateLessThan, dateFormat);
-			        final LocalDate date = LocalDate.parse(dateString, dateFormat);
-			        return dateTest.isBefore(date);
+			        try {
+				        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+				        final LocalDate dateTest = LocalDate.parse(dateLessThan, dateFormat);
+				        final LocalDate date = LocalDate.parse(dateString, dateFormat);
+				        return dateTest.isBefore(date);
+			        } catch (final IllegalArgumentException | DateTimeParseException ex) {
+				        return false;
+			        }
 		        });
 	}
 

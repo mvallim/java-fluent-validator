@@ -7,13 +7,11 @@ import static br.com.fluentvalidator.predicate.DatePredicate.dateGreaterThanOrEq
 import static br.com.fluentvalidator.predicate.DatePredicate.dateLessThan;
 import static br.com.fluentvalidator.predicate.DatePredicate.dateLessThanOrEqual;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -41,10 +39,10 @@ public class DatePredicateTest {
 
 	@Test
 	public void testDateEqualToInvalid() {
-		assertThatThrownBy(() -> dateEqualTo("2019-09-19", YYYY_MM_DD).test("2019-09-40")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateEqualTo("2019-09-19", YYYY_MM_DD).test("2019/09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateEqualTo("2019-09-19", "yyyy/MM-dd").test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateEqualTo("2019/09-19", YYYY_MM_DD).test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateEqualTo("2019-09-19", YYYY_MM_DD).test("2019-09-40"));
+		assertFalse(dateEqualTo("2019-09-19", YYYY_MM_DD).test("2019/09-19"));
+		assertFalse(dateEqualTo("2019-09-19", "yyyy/MM-dd").test("2019-09-19"));
+		assertFalse(dateEqualTo("2019/09-19", YYYY_MM_DD).test("2019-09-19"));
 	}
 
 	@Test
@@ -68,10 +66,10 @@ public class DatePredicateTest {
 
 	@Test
 	public void testDateGreaterThanInvalid() {
-		assertThatThrownBy(() -> dateGreaterThan("2019-09-19", YYYY_MM_DD).test("2019-09-40")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateGreaterThan("2019-09-19", YYYY_MM_DD).test("2019/09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateGreaterThan("2019-09-19", "yyyy/MM-dd").test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateGreaterThan("2019/09-19", YYYY_MM_DD).test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateGreaterThan("2019-09-19", YYYY_MM_DD).test("2019-09-40"));
+		assertFalse(dateGreaterThan("2019-09-19", YYYY_MM_DD).test("2019/09-19"));
+		assertFalse(dateGreaterThan("2019-09-19", "yyyy/MM-dd").test("2019-09-19"));
+		assertFalse(dateGreaterThan("2019/09-19", YYYY_MM_DD).test("2019-09-19"));
 	}
 
 	@Test
@@ -96,9 +94,9 @@ public class DatePredicateTest {
 
 	@Test
 	public void testDateLessThanInvalid() {
-		assertThatThrownBy(() -> dateLessThan("2019-09-19", YYYY_MM_DD).test("2019/09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateLessThan("2019-09-19", "yyyy/MM-dd").test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateLessThan("2019/09-19", YYYY_MM_DD).test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateLessThan("2019-09-19", YYYY_MM_DD).test("2019/09-19"));
+		assertFalse(dateLessThan("2019-09-19", "yyyy/MM-dd").test("2019-09-19"));
+		assertFalse(dateLessThan("2019/09-19", YYYY_MM_DD).test("2019-09-19"));
 	}
 
 	@Test
@@ -123,9 +121,9 @@ public class DatePredicateTest {
 
 	@Test
 	public void testDateGreaterThanOrEqualInvalid() {
-		assertThatThrownBy(() -> dateGreaterThanOrEqual("2019-09-19", YYYY_MM_DD).test("2019/09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateGreaterThanOrEqual("2019-09-19", "yyyy/MM-dd").test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateGreaterThanOrEqual("2019/09-19", YYYY_MM_DD).test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateGreaterThanOrEqual("2019-09-19", YYYY_MM_DD).test("2019/09-19"));
+		assertFalse(dateGreaterThanOrEqual("2019-09-19", "yyyy/MM-dd").test("2019-09-19"));
+		assertFalse(dateGreaterThanOrEqual("2019/09-19", YYYY_MM_DD).test("2019-09-19"));
 	}
 
 	@Test
@@ -150,9 +148,9 @@ public class DatePredicateTest {
 
 	@Test
 	public void testDateLessTimeThanOrEqualInvalid() {
-		assertThatThrownBy(() -> dateLessThanOrEqual("2019-09-19", YYYY_MM_DD).test("2019/09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateLessThanOrEqual("2019-09-19", "yyyy/MM-dd").test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateLessThanOrEqual("2019/09-19", YYYY_MM_DD).test("2019-09-19")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateLessThanOrEqual("2019-09-19", YYYY_MM_DD).test("2019/09-19"));
+		assertFalse(dateLessThanOrEqual("2019-09-19", "yyyy/MM-dd").test("2019-09-19"));
+		assertFalse(dateLessThanOrEqual("2019/09-19", YYYY_MM_DD).test("2019-09-19"));
 	}
 
 	@Test
@@ -180,10 +178,10 @@ public class DatePredicateTest {
 
 	@Test
 	public void testTimeBetweenInvalid() {
-		assertThatThrownBy(() -> dateBetween("2019-09-19", "2019-09-19", YYYY_MM_DD).test("03/59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateBetween("2019-09-19", "2019-09-19", "yyyy-MM/dd").test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateBetween("2019-09-19", "2019-09/19", YYYY_MM_DD).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateBetween("2019-09/19", "2019-09-19", YYYY_MM_DD).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateBetween("2019-09-19", "2019-09-19", YYYY_MM_DD).test("03/59:59"));
+		assertFalse(dateBetween("2019-09-19", "2019-09-19", "yyyy-MM/dd").test("03:59:59"));
+		assertFalse(dateBetween("2019-09-19", "2019-09/19", YYYY_MM_DD).test("03:59:59"));
+		assertFalse(dateBetween("2019-09/19", "2019-09-19", YYYY_MM_DD).test("03:59:59"));
 	}
 
 	@Test

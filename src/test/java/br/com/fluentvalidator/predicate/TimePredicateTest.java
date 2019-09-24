@@ -7,13 +7,11 @@ import static br.com.fluentvalidator.predicate.TimePredicate.timeGreaterThanOrEq
 import static br.com.fluentvalidator.predicate.TimePredicate.timeLessThan;
 import static br.com.fluentvalidator.predicate.TimePredicate.timeLessThanOrEqual;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -41,9 +39,9 @@ public class TimePredicateTest {
 
 	@Test
 	public void testTimeEqualToInvalid() {
-		assertThatThrownBy(() -> timeEqualTo("03:59:59", HH_MM_SS).test("00/00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeEqualTo("03:59:59", "HH/mm:ss").test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeEqualTo("00/00:00", HH_MM_SS).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(timeEqualTo("03:59:59", HH_MM_SS).test("00/00:00"));
+		assertFalse(timeEqualTo("03:59:59", "HH/mm:ss").test("03:59:59"));
+		assertFalse(timeEqualTo("00/00:00", HH_MM_SS).test("03:59:59"));
 	}
 
 	@Test
@@ -68,9 +66,9 @@ public class TimePredicateTest {
 
 	@Test
 	public void testTimeGreaterThanInvalid() {
-		assertThatThrownBy(() -> timeGreaterThan("03:59:59", HH_MM_SS).test("03/59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeGreaterThan("03:59:59", "HH/mm:ss").test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeGreaterThan("03/59:59", HH_MM_SS).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(timeGreaterThan("03:59:59", HH_MM_SS).test("03/59:59"));
+		assertFalse(timeGreaterThan("03:59:59", "HH/mm:ss").test("03:59:59"));
+		assertFalse(timeGreaterThan("03/59:59", HH_MM_SS).test("03:59:59"));
 	}
 
 	@Test
@@ -95,9 +93,9 @@ public class TimePredicateTest {
 
 	@Test
 	public void testTimeLessThanInvalid() {
-		assertThatThrownBy(() -> timeLessThan("03:59:59", HH_MM_SS).test("03/59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeLessThan("03:59:59", "HH/mm:ss").test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeLessThan("03/59:59", HH_MM_SS).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(timeLessThan("03:59:59", HH_MM_SS).test("03/59:59"));
+		assertFalse(timeLessThan("03:59:59", "HH/mm:ss").test("03:59:59"));
+		assertFalse(timeLessThan("03/59:59", HH_MM_SS).test("03:59:59"));
 	}
 
 	@Test
@@ -122,9 +120,9 @@ public class TimePredicateTest {
 
 	@Test
 	public void testTimeGreaterThanOrEqualInvalid() {
-		assertThatThrownBy(() -> timeGreaterThanOrEqual("03:59:59", HH_MM_SS).test("03/59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeGreaterThanOrEqual("03:59:59", "HH/mm:ss").test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeGreaterThanOrEqual("03/59:59", HH_MM_SS).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(timeGreaterThanOrEqual("03:59:59", HH_MM_SS).test("03/59:59"));
+		assertFalse(timeGreaterThanOrEqual("03:59:59", "HH/mm:ss").test("03:59:59"));
+		assertFalse(timeGreaterThanOrEqual("03/59:59", HH_MM_SS).test("03:59:59"));
 	}
 
 	@Test
@@ -149,9 +147,9 @@ public class TimePredicateTest {
 
 	@Test
 	public void testDateLessTimeThanOrEqualInvalid() {
-		assertThatThrownBy(() -> timeLessThanOrEqual("03:59:59", HH_MM_SS).test("03/59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeLessThanOrEqual("03:59:59", "yyyy/MM-dd").test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeLessThanOrEqual("03/59:59", HH_MM_SS).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(timeLessThanOrEqual("03:59:59", HH_MM_SS).test("03/59:59"));
+		assertFalse(timeLessThanOrEqual("03:59:59", "yyyy/MM-dd").test("03:59:59"));
+		assertFalse(timeLessThanOrEqual("03/59:59", HH_MM_SS).test("03:59:59"));
 	}
 
 	@Test
@@ -178,10 +176,10 @@ public class TimePredicateTest {
 
 	@Test
 	public void testTimeBetweenInvalid() {
-		assertThatThrownBy(() -> timeBetween("03:59:59", "03:59:59", HH_MM_SS).test("03/59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeBetween("03:59:59", "03:59:59", "HH:mm/ss").test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeBetween("03:59:59", "03:59/59", HH_MM_SS).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> timeBetween("03:59/59", "03:59:59", HH_MM_SS).test("03:59:59")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(timeBetween("03:59:59", "03:59:59", HH_MM_SS).test("03/59:59"));
+		assertFalse(timeBetween("03:59:59", "03:59:59", "HH:mm/ss").test("03:59:59"));
+		assertFalse(timeBetween("03:59:59", "03:59/59", HH_MM_SS).test("03:59:59"));
+		assertFalse(timeBetween("03:59/59", "03:59:59", HH_MM_SS).test("03:59:59"));
 	}
 
 	@Test

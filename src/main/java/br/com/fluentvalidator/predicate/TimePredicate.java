@@ -6,6 +6,7 @@ import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -157,10 +158,14 @@ public final class TimePredicate {
 	public static Predicate<String> timeEqualTo(final String timeString, final String pattern) {
 		return PredicateBuilder.<String>from(not(nullValue())).and(timeEqualTo -> not(stringEmptyOrNull()).test(timeString))
 		        .and(timeEqualTo -> not(stringEmptyOrNull()).test(pattern)).and(timeEqualTo -> {
-			        final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern(pattern);
-			        final LocalTime timeTest = LocalTime.parse(timeEqualTo, timeFormat);
-			        final LocalTime time = LocalTime.parse(timeString, timeFormat);
-			        return timeTest.equals(time);
+			        try {
+				        final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern(pattern);
+				        final LocalTime timeTest = LocalTime.parse(timeEqualTo, timeFormat);
+				        final LocalTime time = LocalTime.parse(timeString, timeFormat);
+				        return timeTest.equals(time);
+			        } catch (final IllegalArgumentException | DateTimeParseException ex) {
+				        return false;
+			        }
 		        });
 	}
 
@@ -173,10 +178,14 @@ public final class TimePredicate {
 	public static Predicate<String> timeGreaterThan(final String timeString, final String pattern) {
 		return PredicateBuilder.<String>from(not(nullValue())).and(timeGreaterThan -> not(stringEmptyOrNull()).test(timeString))
 		        .and(timeGreaterThan -> not(stringEmptyOrNull()).test(pattern)).and(timeGreaterThan -> {
-			        final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern(pattern);
-			        final LocalTime timeTest = LocalTime.parse(timeGreaterThan, timeFormat);
-			        final LocalTime time = LocalTime.parse(timeString, timeFormat);
-			        return timeTest.isAfter(time);
+			        try {
+				        final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern(pattern);
+				        final LocalTime timeTest = LocalTime.parse(timeGreaterThan, timeFormat);
+				        final LocalTime time = LocalTime.parse(timeString, timeFormat);
+				        return timeTest.isAfter(time);
+			        } catch (final IllegalArgumentException | DateTimeParseException ex) {
+				        return false;
+			        }
 		        });
 	}
 
@@ -189,10 +198,14 @@ public final class TimePredicate {
 	public static Predicate<String> timeLessThan(final String timeString, final String pattern) {
 		return PredicateBuilder.<String>from(not(nullValue())).and(timeLessThan -> not(stringEmptyOrNull()).test(timeString))
 		        .and(timeLessThan -> not(stringEmptyOrNull()).test(pattern)).and(timeLessThan -> {
-			        final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern(pattern);
-			        final LocalTime timeTest = LocalTime.parse(timeLessThan, timeFormat);
-			        final LocalTime time = LocalTime.parse(timeString, timeFormat);
-			        return timeTest.isBefore(time);
+			        try {
+				        final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern(pattern);
+				        final LocalTime timeTest = LocalTime.parse(timeLessThan, timeFormat);
+				        final LocalTime time = LocalTime.parse(timeString, timeFormat);
+				        return timeTest.isBefore(time);
+			        } catch (final IllegalArgumentException | DateTimeParseException ex) {
+				        return false;
+			        }
 		        });
 	}
 

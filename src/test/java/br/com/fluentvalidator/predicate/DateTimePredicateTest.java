@@ -7,13 +7,11 @@ import static br.com.fluentvalidator.predicate.DateTimePredicate.dateTimeGreater
 import static br.com.fluentvalidator.predicate.DateTimePredicate.dateTimeLessThan;
 import static br.com.fluentvalidator.predicate.DateTimePredicate.dateTimeLessThanOrEqual;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -41,10 +39,10 @@ public class DateTimePredicateTest {
 
 	@Test
 	public void testDateTimeEqualToInvalid() {
-		assertThatThrownBy(() -> dateTimeEqualTo("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeEqualTo("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeEqualTo("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeEqualTo("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateTimeEqualTo("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00"));
+		assertFalse(dateTimeEqualTo("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
+		assertFalse(dateTimeEqualTo("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
+		assertFalse(dateTimeEqualTo("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
 	}
 
 	@Test
@@ -68,10 +66,10 @@ public class DateTimePredicateTest {
 
 	@Test
 	public void testDateTimeGreaterThanInvalid() {
-		assertThatThrownBy(() -> dateTimeGreaterThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeGreaterThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeGreaterThan("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeGreaterThan("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateTimeGreaterThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00"));
+		assertFalse(dateTimeGreaterThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
+		assertFalse(dateTimeGreaterThan("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
+		assertFalse(dateTimeGreaterThan("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
 	}
 
 	@Test
@@ -96,9 +94,9 @@ public class DateTimePredicateTest {
 
 	@Test
 	public void testDateTimeLessThanInvalid() {
-		assertThatThrownBy(() -> dateTimeLessThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeLessThan("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeLessThan("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateTimeLessThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
+		assertFalse(dateTimeLessThan("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
+		assertFalse(dateTimeLessThan("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
 	}
 
 	@Test
@@ -123,10 +121,10 @@ public class DateTimePredicateTest {
 
 	@Test
 	public void testDateTimeGreaterThanOrEqualInvalid() {
-		assertThatThrownBy(() -> dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeGreaterThanOrEqual("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00"));
+		assertFalse(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
+		assertFalse(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
+		assertFalse(dateTimeGreaterThanOrEqual("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
 	}
 
 	@Test
@@ -151,10 +149,10 @@ public class DateTimePredicateTest {
 
 	@Test
 	public void testDateLessTimeThanOrEqualInvalid() {
-		assertThatThrownBy(() -> dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeLessThanOrEqual("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeLessThanOrEqual("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00"));
+		assertFalse(dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
+		assertFalse(dateTimeLessThanOrEqual("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
+		assertFalse(dateTimeLessThanOrEqual("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
 	}
 
 	@Test
@@ -182,12 +180,12 @@ public class DateTimePredicateTest {
 
 	@Test
 	public void testDateTimeBetweenInvalid() {
-		assertThatThrownBy(() -> dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00/00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00:00", "HH:mm/ss").test("2019/09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00/00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeBetween("2019-09-19 00:00:00", "2019-09/19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeBetween("2019-09-19 00:00/00", "2019-09:19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
-		assertThatThrownBy(() -> dateTimeBetween("2019-09/19 00:00:00", "2019-09:19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00")).isInstanceOf(DateTimeParseException.class);
+		assertFalse(dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00/00"));
+		assertFalse(dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00:00", "HH:mm/ss").test("2019/09-19 00:00:00"));
+		assertFalse(dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00/00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
+		assertFalse(dateTimeBetween("2019-09-19 00:00:00", "2019-09/19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
+		assertFalse(dateTimeBetween("2019-09-19 00:00/00", "2019-09:19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
+		assertFalse(dateTimeBetween("2019-09/19 00:00:00", "2019-09:19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
 	}
 
 	@Test
