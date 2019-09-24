@@ -51,7 +51,7 @@ public final class ComparablePredicate {
 	 * @return
 	 */
 	public static <T, E extends Comparable<E>> Predicate<T> lessThanOrEqual(final Function<T, E> source, final Function<T, E> sourceMax) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(lessThan(source, sourceMax).or(equalTo(source, sourceMax)));
+		return PredicateBuilder.<T>from(lessThan(source, sourceMax).or(equalTo(source, sourceMax)));
 	}
 
 	/**
@@ -75,7 +75,7 @@ public final class ComparablePredicate {
 	 * @return
 	 */
 	public static <T, E extends Comparable<E>> Predicate<T> greaterThanOrEqual(final Function<T, E> source, final Function<T, E> sourceMin) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(greaterThan(source, sourceMin).or(equalTo(source, sourceMin)));
+		return PredicateBuilder.<T>from(greaterThan(source, sourceMin).or(equalTo(source, sourceMin)));
 	}
 
 	/**
