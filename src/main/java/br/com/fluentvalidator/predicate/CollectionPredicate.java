@@ -26,11 +26,21 @@ public final class CollectionPredicate {
 	}
 
 	/**
+	 * Creates a predicate for {@link Collection} that only matches when a single
+	 * pass over the examined {@link Collection} yields at least one item that is
+	 * equal to the specified <code>object</code>. Whilst matching, the traversal of
+	 * the examined {@link Collection} will stop as soon as a matching item is
+	 * found.
 	 *
-	 * @param <E>
-	 * @param <T>
-	 * @param object
-	 * @return
+	 * <pre>
+	 * ruleForEach(Parent::getNames).must(hasItem("John"));
+	 * </pre>
+	 *
+	 * @param <E>    type of object
+	 * @param <T>    type of exam class
+	 * @param object the object to compare against the objects provided by the
+	 *               examined {@link Collection}
+	 * @return {@link Predicate}
 	 */
 	public static <E, T extends Collection<E>> Predicate<T> hasItem(final E object) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> obj.contains(object));

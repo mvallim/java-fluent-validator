@@ -13,7 +13,8 @@ public final class ObjectPredicate {
 	}
 
 	/**
-	 *
+	 * 
+	 * @param <T>
 	 * @return
 	 */
 	public static <T> Predicate<T> nullValue() {
@@ -21,7 +22,8 @@ public final class ObjectPredicate {
 	}
 
 	/**
-	 *
+	 * 
+	 * @param <T>
 	 * @param obj
 	 * @return
 	 */
@@ -31,7 +33,8 @@ public final class ObjectPredicate {
 	}
 
 	/**
-	 *
+	 * 
+	 * @param <T>
 	 * @param clazz
 	 * @return
 	 */
@@ -42,7 +45,7 @@ public final class ObjectPredicate {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param <T>
 	 * @param source
 	 * @return
@@ -53,7 +56,7 @@ public final class ObjectPredicate {
 	}
 	
 	/**
-	 *
+	 * 
 	 * @param <T>
 	 * @param source
 	 * @param target
