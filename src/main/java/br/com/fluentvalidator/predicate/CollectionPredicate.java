@@ -54,8 +54,7 @@ public final class CollectionPredicate {
 	 * @param objects
 	 * @return
 	 */
-	@SafeVarargs
-	public static <E, T extends Collection<E>> Predicate<T> hasItems(final E... objects) {
+	public static <E, T extends Collection<E>> Predicate<T> hasItems(final E[] objects) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(objects)).and(obj -> hasItems(Arrays.asList(objects)).test(obj));
 	}
 
@@ -77,8 +76,7 @@ public final class CollectionPredicate {
 	 * @param objects
 	 * @return
 	 */
-	@SafeVarargs
-	public static <E, T extends Collection<E>> Predicate<T> hasAny(final E... objects) {
+	public static <E, T extends Collection<E>> Predicate<T> hasAny(final E[] objects) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(objects)).and(obj -> hasAny(Arrays.asList(objects)).test(obj));
 	}
 
@@ -100,7 +98,7 @@ public final class CollectionPredicate {
 	 * @param source
 	 * @return
 	 */
-	public static <T, E extends Collection<E>> Predicate<T> empty(final Function<T, E> source) {
+	public static <T, E> Predicate<T> empty(final Function<T, Collection<E>> source) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(source.apply(obj))).and(obj -> source.apply(obj).isEmpty());
 	}
 
@@ -112,7 +110,7 @@ public final class CollectionPredicate {
 	 * @param object
 	 * @return
 	 */
-	public static <T, E extends Collection<E>> Predicate<T> hasItem(final Function<T, E> source, final E object) {
+	public static <T, E> Predicate<T> hasItem(final Function<T, Collection<E>> source, final E object) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> hasItem(object).test(source.apply(obj)));
 	}
 
@@ -124,7 +122,7 @@ public final class CollectionPredicate {
 	 * @param objects
 	 * @return
 	 */
-	public static <T, E extends Collection<E>> Predicate<T> hasItems(final Function<T, E> source, final Collection<E> objects) {
+	public static <T, E> Predicate<T> hasItems(final Function<T, Collection<E>> source, final Collection<E> objects) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> hasItems(objects).test(source.apply(obj)));
 	}
 
@@ -136,8 +134,7 @@ public final class CollectionPredicate {
 	 * @param objects
 	 * @return
 	 */
-	@SafeVarargs
-	public static <T, E extends Collection<E>> Predicate<T> hasItems(final Function<T, E> source, final E... objects) {
+	public static <T, E> Predicate<T> hasItems(final Function<T, Collection<E>> source, final E[] objects) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> hasItems(objects).test(source.apply(obj)));
 	}
 
@@ -149,7 +146,7 @@ public final class CollectionPredicate {
 	 * @param objects
 	 * @return
 	 */
-	public static <T, E extends Collection<E>> Predicate<T> hasAny(final Function<T, E> source, final Collection<E> objects) {
+	public static <T, E> Predicate<T> hasAny(final Function<T, Collection<E>> source, final Collection<E> objects) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> hasAny(objects).test(source.apply(obj)));
 	}
 
@@ -161,8 +158,7 @@ public final class CollectionPredicate {
 	 * @param objects
 	 * @return
 	 */
-	@SafeVarargs
-	public static <T, E extends Collection<E>> Predicate<T> hasAny(final Function<T, E> source, final E... objects) {
+	public static <T, E> Predicate<T> hasAny(final Function<T, Collection<E>> source, final E[] objects) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> hasAny(objects).test(source.apply(obj)));
 	}
 
@@ -174,7 +170,7 @@ public final class CollectionPredicate {
 	 * @param size
 	 * @return
 	 */
-	public static <T, E extends Collection<E>> Predicate<T> hasSize(final Function<T, E> source, final Integer size) {
+	public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Integer size) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> equalTo(size).test(source.apply(obj).size()));
 	}
 
