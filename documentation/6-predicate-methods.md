@@ -189,19 +189,11 @@ equalTo(final Function<T, E> source, final E value)
 ```
 
 ```java
-equalTo(final Function<T, E> source, final Function<T, E> target)
-```
-
-```java
 greaterThan(final E min)
 ```
 
 ```java
 greaterThan(final Function<T, E> source, final E min)
-```
-
-```java
-greaterThan(final Function<T, E> source, final Function<T, E> sourceMin)
 ```
 
 ```java
@@ -213,10 +205,6 @@ greaterThanOrEqual(final Function<T, E> source, final E min)
 ```
 
 ```java
-greaterThanOrEqual(final Function<T, E> source, final Function<T, E> sourceMin)
-```
-
-```java
 lessThan(final E max)
 ```
 
@@ -225,19 +213,11 @@ lessThan(final Function<T, E> source, final E max)
 ```
 
 ```java
-lessThan(final Function<T, E> source, final Function<T, E> sourceMax)
-```
-
-```java
 lessThanOrEqual(final E max)
 ```
 
 ```java
 lessThanOrEqual(final Function<T, E> source, final E max)
-```
-
-```java
-lessThanOrEqual(final Function<T, E> source, final Function<T, E> sourceMax)
 ```
 
 ## 6.5 Collection
