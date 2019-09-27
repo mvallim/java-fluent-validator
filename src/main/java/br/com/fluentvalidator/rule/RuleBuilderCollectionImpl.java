@@ -38,8 +38,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
     @Override
     public boolean apply(final T instance) {
         final Collection<P> value = Objects.nonNull(instance) ? function.apply(instance) : null;
-        boolean process = ruleProcessor.process(value, rules);
-        return process;
+        return ruleProcessor.process(value, rules);
     }
 
     @Override
