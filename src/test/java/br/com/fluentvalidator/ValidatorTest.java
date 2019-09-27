@@ -1,6 +1,7 @@
 package br.com.fluentvalidator;
 
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.StringPredicate.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
@@ -474,6 +475,34 @@ public class ValidatorTest {
         assertThat(result.getErrors(), hasItem(hasProperty("message", not(containsString("group 3 rule 1")))));
     }
 
+    @Test
+    public void testFailWhenValidatePropertyNullValue() {
+
+        final String2Validator validator = new String2Validator();
+        
+        final ValidationResult result = validator.validate((String) null);
+
+        assertFalse(result.isValid());
+        assertThat(result.getErrors(), hasSize(1));
+
+        assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 1 rule 1"))));
+        assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("string"))));
+    }
+    
+    @Test
+    public void testFailWhenValidateCollectionNullValue() {
+
+        final String3Validator validator = new String3Validator();
+        
+        final ValidationResult result = validator.validate((Collection<String>) null);
+
+        assertFalse(result.isValid());
+        assertThat(result.getErrors(), hasSize(1));
+
+        assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 1 rule 1"))));
+        assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("collection"))));
+    }
+
     class StringValidator extends AbstractValidator<String> {
 
         @Override
@@ -493,6 +522,32 @@ public class ValidatorTest {
             ruleFor(str -> str)
                 .must(not(br.com.fluentvalidator.predicate.ComparablePredicate.equalTo("bla")))
                     .withMessage("group 3 rule 1");
+
+        }
+
+    }
+    
+    class String2Validator extends AbstractValidator<String> {
+
+        @Override
+        public void rules() {
+
+            ruleFor("string", str -> str)
+                .must(not(stringEmptyOrNull()))
+                    .withMessage("group 1 rule 1");
+
+        }
+
+    }
+    
+    class String3Validator extends AbstractValidator<Collection<String>> {
+
+        @Override
+        public void rules() {
+
+            ruleForEach("collection", str -> str)
+                .must(not(br.com.fluentvalidator.predicate.CollectionPredicate.empty()))
+                    .withMessage("group 1 rule 1");
 
         }
 

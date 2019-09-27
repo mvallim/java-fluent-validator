@@ -32,7 +32,7 @@ public class RuleBuilderCollectionTest {
 
         final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 
-        builder.must(hasSize(2)).when(not(nullValue())).withMessage("test");
+        builder.must(hasSize(2)).withMessage("test").critical();
 
         assertFalse(builder.apply(null));
     }

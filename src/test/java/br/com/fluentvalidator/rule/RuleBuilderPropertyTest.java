@@ -27,7 +27,7 @@ public class RuleBuilderPropertyTest {
 
         final RuleBuilderPropertyImpl<String, String> builder = new RuleBuilderPropertyImpl<>(String::new);
 
-        builder.must(stringSizeLessThan(2)).when(not(nullValue())).withMessage("rule 1");
+        builder.must(stringSizeLessThan(2)).withMessage("rule 1").critical();
 
         assertFalse(builder.apply(null));
     }
