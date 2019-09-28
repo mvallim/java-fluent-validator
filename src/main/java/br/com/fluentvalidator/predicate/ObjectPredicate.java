@@ -15,10 +15,15 @@ public final class ObjectPredicate {
 	/**
 	 * 
 	 * @param <T>
+	 * @param source
+	 * @param target
 	 * @return
 	 */
-	public static <T> Predicate<T> nullValue() {
-		return PredicateBuilder.<T>from(Objects::isNull);
+	public static <T> Predicate<T> equalTo(final Function<T, Object> source, final Function<T, Object> target) {
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(obj -> not(nullValue()).test(source.apply(obj)))
+				.and(obj -> not(nullValue()).test(target.apply(obj)))
+				.and(obj -> equalTo(source.apply(obj)).test(target.apply(obj)));
 	}
 
 	/**
@@ -45,31 +50,6 @@ public final class ObjectPredicate {
 	}
 
 	/**
-	 * 
-	 * @param <T>
-	 * @param source
-	 * @return
-	 */
-	public static <T> Predicate<T> nullValue(final Function<T, ?> source) {
-		return PredicateBuilder.<T>from(not(nullValue()))
-				.and(obj -> nullValue().test(source.apply(obj)));
-	}
-	
-	/**
-	 * 
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @return
-	 */
-	public static <T> Predicate<T> equalTo(final Function<T, Object> source, final Function<T, Object> target) {
-		return PredicateBuilder.<T>from(not(nullValue()))
-				.and(obj -> not(nullValue()).test(source.apply(obj)))
-				.and(obj -> not(nullValue()).test(target.apply(obj)))
-				.and(obj -> equalTo(source.apply(obj)).test(target.apply(obj)));
-	}
-	
-	/**
 	 *
 	 * @param <T>
 	 * @param source
@@ -79,6 +59,26 @@ public final class ObjectPredicate {
 	public static <T> Predicate<T> instanceOf(final Function<T, Object> source, final Class<?> clazz) {
 		return PredicateBuilder.<T>from(not(nullValue()))
 		        .and(instanceOf -> instanceOf(clazz).test(source.apply(instanceOf)));
+	}
+	
+	/**
+	 * 
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> Predicate<T> nullValue() {
+		return PredicateBuilder.<T>from(Objects::isNull);
+	}
+	
+	/**
+	 * 
+	 * @param <T>
+	 * @param source
+	 * @return
+	 */
+	public static <T> Predicate<T> nullValue(final Function<T, ?> source) {
+		return PredicateBuilder.<T>from(not(nullValue()))
+				.and(obj -> nullValue().test(source.apply(obj)));
 	}
 
 }

@@ -20,6 +20,30 @@ public final class DateTimePredicate {
 	 *
 	 * @param <T>
 	 * @param source
+	 * @param dateStringMin
+	 * @param dateStringMax
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> dateTimeBetween(final Function<T, String> source, final String dateStringMin, final String dateStringMax, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeBetween(dateStringMin, dateStringMax, pattern).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param dateStringMin
+	 * @param dateStringMax
+	 * @param pattern
+	 * @return
+	 */
+	public static Predicate<String> dateTimeBetween(final String dateStringMin, final String dateStringMax, final String pattern) {
+		return PredicateBuilder.<String>from(dateTimeLessThanOrEqual(dateStringMax, pattern).and(dateTimeGreaterThanOrEqual(dateStringMin, pattern)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
 	 * @param target
 	 * @param pattern
 	 * @return
@@ -36,117 +60,8 @@ public final class DateTimePredicate {
 	 * @param pattern
 	 * @return
 	 */
-	public static <T> Predicate<T> dateTimeGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeGreaterThan(target.apply(obj), pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> dateTimeLessThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeLessThan(target.apply(obj), pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> dateTimeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
-		return PredicateBuilder.<T>from(dateTimeGreaterThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> dateTimeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
-		return PredicateBuilder.<T>from(dateTimeLessThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
 	public static <T> Predicate<T> dateTimeEqualTo(final Function<T, String> source, final String target, final String pattern) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeEqualTo(target, pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> dateTimeGreaterThan(final Function<T, String> source, final String target, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeGreaterThan(target, pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> dateTimeLessThan(final Function<T, String> source, final String target, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeLessThan(target, pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> dateTimeGreaterThanOrEqual(final Function<T, String> source, final String target, final String pattern) {
-		return PredicateBuilder.<T>from(dateTimeGreaterThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> dateTimeLessThanOrEqual(final Function<T, String> source, final String target, final String pattern) {
-		return PredicateBuilder.<T>from(dateTimeLessThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param dateStringMin
-	 * @param dateStringMax
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> dateTimeBetween(final Function<T, String> source, final String dateStringMin, final String dateStringMax, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeBetween(dateStringMin, dateStringMax, pattern).test(source.apply(obj)));
 	}
 
 	/**
@@ -171,6 +86,30 @@ public final class DateTimePredicate {
 
 	/**
 	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> dateTimeGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeGreaterThan(target.apply(obj), pattern).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> dateTimeGreaterThan(final Function<T, String> source, final String target, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeGreaterThan(target, pattern).test(source.apply(obj)));
+	}
+
+	/**
+	 *
 	 * @param dateString
 	 * @param pattern
 	 * @return
@@ -187,6 +126,64 @@ public final class DateTimePredicate {
 				        return false;
 			        }
 		        });
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> dateTimeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+		return PredicateBuilder.<T>from(dateTimeGreaterThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> dateTimeGreaterThanOrEqual(final Function<T, String> source, final String target, final String pattern) {
+		return PredicateBuilder.<T>from(dateTimeGreaterThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern)));
+	}
+
+	/**
+	 *
+	 * @param dateString
+	 * @param pattern
+	 * @return
+	 */
+	public static Predicate<String> dateTimeGreaterThanOrEqual(final String dateString, final String pattern) {
+		return PredicateBuilder.<String>from(dateTimeGreaterThan(dateString, pattern).or(dateTimeEqualTo(dateString, pattern)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> dateTimeLessThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeLessThan(target.apply(obj), pattern).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> dateTimeLessThan(final Function<T, String> source, final String target, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> dateTimeLessThan(target, pattern).test(source.apply(obj)));
 	}
 
 	/**
@@ -211,12 +208,26 @@ public final class DateTimePredicate {
 
 	/**
 	 *
-	 * @param dateString
+	 * @param <T>
+	 * @param source
+	 * @param target
 	 * @param pattern
 	 * @return
 	 */
-	public static Predicate<String> dateTimeGreaterThanOrEqual(final String dateString, final String pattern) {
-		return PredicateBuilder.<String>from(dateTimeGreaterThan(dateString, pattern).or(dateTimeEqualTo(dateString, pattern)));
+	public static <T> Predicate<T> dateTimeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+		return PredicateBuilder.<T>from(dateTimeLessThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> dateTimeLessThanOrEqual(final Function<T, String> source, final String target, final String pattern) {
+		return PredicateBuilder.<T>from(dateTimeLessThan(source, target, pattern).or(dateTimeEqualTo(source, target, pattern)));
 	}
 
 	/**
@@ -227,17 +238,6 @@ public final class DateTimePredicate {
 	 */
 	public static Predicate<String> dateTimeLessThanOrEqual(final String dateString, final String pattern) {
 		return PredicateBuilder.<String>from(dateTimeLessThan(dateString, pattern).or(dateTimeEqualTo(dateString, pattern)));
-	}
-
-	/**
-	 *
-	 * @param dateStringMin
-	 * @param dateStringMax
-	 * @param pattern
-	 * @return
-	 */
-	public static Predicate<String> dateTimeBetween(final String dateStringMin, final String dateStringMax, final String pattern) {
-		return PredicateBuilder.<String>from(dateTimeLessThanOrEqual(dateStringMax, pattern).and(dateTimeGreaterThanOrEqual(dateStringMin, pattern)));
 	}
 
 }

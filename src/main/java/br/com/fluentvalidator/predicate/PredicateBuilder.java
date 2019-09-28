@@ -10,6 +10,11 @@ public final class PredicateBuilder<T> implements Predicate<T> {
 		this.predicate = predicate;
 	}
 
+	@Override
+	public boolean test(final T value) {
+		return predicate.test(value);
+	}
+
 	/**
 	 *
 	 * @param <T>
@@ -18,11 +23,6 @@ public final class PredicateBuilder<T> implements Predicate<T> {
 	 */
 	public static <T> Predicate<T> from(final Predicate<T> predicate) {
 		return new PredicateBuilder<>(predicate);
-	}
-
-	@Override
-	public boolean test(final T value) {
-		return predicate.test(value);
 	}
 
 }

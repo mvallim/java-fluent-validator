@@ -20,6 +20,30 @@ public final class TimePredicate {
 	 *
 	 * @param <T>
 	 * @param source
+	 * @param timeStringMin
+	 * @param timeStringMax
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> timeBetween(final Function<T, String> source, final String timeStringMin, final String timeStringMax, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeBetween(timeStringMin, timeStringMax, pattern).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param timeStringMin
+	 * @param timeStringMax
+	 * @param pattern
+	 * @return
+	 */
+	public static Predicate<String> timeBetween(final String timeStringMin, final String timeStringMax, final String pattern) {
+		return PredicateBuilder.<String>from(timeLessThanOrEqual(timeStringMax, pattern).and(timeGreaterThanOrEqual(timeStringMin, pattern)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
 	 * @param target
 	 * @param pattern
 	 * @return
@@ -36,117 +60,8 @@ public final class TimePredicate {
 	 * @param pattern
 	 * @return
 	 */
-	public static <T> Predicate<T> timeGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeGreaterThan(target.apply(obj), pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> timeLessThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeLessThan(target.apply(obj), pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> timeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
-		return PredicateBuilder.<T>from(timeGreaterThan(source, target, pattern).or(timeEqualTo(source, target, pattern)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> timeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
-		return PredicateBuilder.<T>from(timeLessThan(source, target, pattern).or(timeEqualTo(source, target, pattern)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
 	public static <T> Predicate<T> timeEqualTo(final Function<T, String> source, final String target, final String pattern) {
 		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeEqualTo(target, pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> timeGreaterThan(final Function<T, String> source, final String target, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeGreaterThan(target, pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> timeLessThan(final Function<T, String> source, final String target, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeLessThan(target, pattern).test(source.apply(obj)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> timeGreaterThanOrEqual(final Function<T, String> source, final String target, final String pattern) {
-		return PredicateBuilder.<T>from(timeGreaterThan(source, target, pattern).or(timeEqualTo(source, target, pattern)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param target
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> timeLessThanOrEqual(final Function<T, String> source, final String target, final String pattern) {
-		return PredicateBuilder.<T>from(timeLessThan(source, target, pattern).or(timeEqualTo(source, target, pattern)));
-	}
-
-	/**
-	 *
-	 * @param <T>
-	 * @param source
-	 * @param timeStringMin
-	 * @param timeStringMax
-	 * @param pattern
-	 * @return
-	 */
-	public static <T> Predicate<T> timeBetween(final Function<T, String> source, final String timeStringMin, final String timeStringMax, final String pattern) {
-		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeBetween(timeStringMin, timeStringMax, pattern).test(source.apply(obj)));
 	}
 
 	/**
@@ -171,6 +86,30 @@ public final class TimePredicate {
 
 	/**
 	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> timeGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeGreaterThan(target.apply(obj), pattern).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> timeGreaterThan(final Function<T, String> source, final String target, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeGreaterThan(target, pattern).test(source.apply(obj)));
+	}
+
+	/**
+	 *
 	 * @param timeString
 	 * @param pattern
 	 * @return
@@ -187,6 +126,64 @@ public final class TimePredicate {
 				        return false;
 			        }
 		        });
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> timeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+		return PredicateBuilder.<T>from(timeGreaterThan(source, target, pattern).or(timeEqualTo(source, target, pattern)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> timeGreaterThanOrEqual(final Function<T, String> source, final String target, final String pattern) {
+		return PredicateBuilder.<T>from(timeGreaterThan(source, target, pattern).or(timeEqualTo(source, target, pattern)));
+	}
+
+	/**
+	 *
+	 * @param timeString
+	 * @param pattern
+	 * @return
+	 */
+	public static Predicate<String> timeGreaterThanOrEqual(final String timeString, final String pattern) {
+		return PredicateBuilder.<String>from(timeGreaterThan(timeString, pattern).or(timeEqualTo(timeString, pattern)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> timeLessThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeLessThan(target.apply(obj), pattern).test(source.apply(obj)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> timeLessThan(final Function<T, String> source, final String target, final String pattern) {
+		return PredicateBuilder.<T>from(not(nullValue())).and(obj -> timeLessThan(target, pattern).test(source.apply(obj)));
 	}
 
 	/**
@@ -211,12 +208,26 @@ public final class TimePredicate {
 
 	/**
 	 *
-	 * @param timeString
+	 * @param <T>
+	 * @param source
+	 * @param target
 	 * @param pattern
 	 * @return
 	 */
-	public static Predicate<String> timeGreaterThanOrEqual(final String timeString, final String pattern) {
-		return PredicateBuilder.<String>from(timeGreaterThan(timeString, pattern).or(timeEqualTo(timeString, pattern)));
+	public static <T> Predicate<T> timeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+		return PredicateBuilder.<T>from(timeLessThan(source, target, pattern).or(timeEqualTo(source, target, pattern)));
+	}
+
+	/**
+	 *
+	 * @param <T>
+	 * @param source
+	 * @param target
+	 * @param pattern
+	 * @return
+	 */
+	public static <T> Predicate<T> timeLessThanOrEqual(final Function<T, String> source, final String target, final String pattern) {
+		return PredicateBuilder.<T>from(timeLessThan(source, target, pattern).or(timeEqualTo(source, target, pattern)));
 	}
 
 	/**
@@ -227,17 +238,6 @@ public final class TimePredicate {
 	 */
 	public static Predicate<String> timeLessThanOrEqual(final String timeString, final String pattern) {
 		return PredicateBuilder.<String>from(timeLessThan(timeString, pattern).or(timeEqualTo(timeString, pattern)));
-	}
-
-	/**
-	 *
-	 * @param timeStringMin
-	 * @param timeStringMax
-	 * @param pattern
-	 * @return
-	 */
-	public static Predicate<String> timeBetween(final String timeStringMin, final String timeStringMax, final String pattern) {
-		return PredicateBuilder.<String>from(timeLessThanOrEqual(timeStringMax, pattern).and(timeGreaterThanOrEqual(timeStringMin, pattern)));
 	}
 
 }

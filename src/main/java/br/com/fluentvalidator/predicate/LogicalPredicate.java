@@ -21,11 +21,10 @@ public final class LogicalPredicate {
 	/**
 	 *
 	 * @param <T>
-	 * @param predicate
 	 * @return
 	 */
-	public static <T> Predicate<T> not(final Predicate<T> predicate) {
-		return PredicateBuilder.<T>from(predicate.negate());
+	public static <T> Predicate<T> isFalse() {
+		return PredicateBuilder.<T>from(isFalse -> false);
 	}
 
 	/**
@@ -40,10 +39,11 @@ public final class LogicalPredicate {
 	/**
 	 *
 	 * @param <T>
+	 * @param predicate
 	 * @return
 	 */
-	public static <T> Predicate<T> isFalse() {
-		return PredicateBuilder.<T>from(isFalse -> false);
+	public static <T> Predicate<T> not(final Predicate<T> predicate) {
+		return PredicateBuilder.<T>from(predicate.negate());
 	}
 
 }
