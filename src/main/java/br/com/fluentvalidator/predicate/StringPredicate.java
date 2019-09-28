@@ -13,39 +13,6 @@ import java.util.function.Predicate;
 
 public final class StringPredicate {
 
-    private StringPredicate() {
-        super();
-    }
-
-    /**
-     *
-     * @param source
-     * @param target
-     * @return
-     */
-    public static <T> Predicate<T> equalsIgnoreCase(final Function<T, String> source, final Function<T, String> target) {
-        return PredicateBuilder.<T>from(not(nullValue())).and(obj -> equalsIgnoreCase(source, target.apply(obj)).test(obj));
-    }
-
-    /**
-     *
-     * @param source
-     * @param value
-     * @return
-     */
-    public static <T> Predicate<T> equalsIgnoreCase(final Function<T, String> source, final String value) {
-        return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(source.apply(obj))).and(obj -> equalsIgnoreCase(value).test(source.apply(obj)));
-    }
-
-    /**
-     *
-     * @param value
-     * @return
-     */
-    public static Predicate<String> equalsIgnoreCase(final String value) {
-        return PredicateBuilder.<String>from(not(nullValue())).and(obj -> not(nullValue()).test(value)).and(obj -> obj.equalsIgnoreCase(value));
-    }
-
     /**
      *
      * @return
@@ -161,6 +128,35 @@ public final class StringPredicate {
      */
     public static <T> Predicate<T> stringEmptyOrNull(final Function<T, String> source) {
         return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringEmptyOrNull().test(source.apply(obj)));
+    }
+
+    /**
+     *
+     * @param source
+     * @param target
+     * @return
+     */
+    public static <T> Predicate<T> stringEqualsIgnoreCase(final Function<T, String> source, final Function<T, String> target) {
+        return PredicateBuilder.<T>from(not(nullValue())).and(obj -> stringEqualsIgnoreCase(source, target.apply(obj)).test(obj));
+    }
+
+    /**
+     *
+     * @param source
+     * @param value
+     * @return
+     */
+    public static <T> Predicate<T> stringEqualsIgnoreCase(final Function<T, String> source, final String value) {
+        return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(source.apply(obj))).and(obj -> stringEqualsIgnoreCase(value).test(source.apply(obj)));
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    public static Predicate<String> stringEqualsIgnoreCase(final String value) {
+        return PredicateBuilder.<String>from(not(nullValue())).and(obj -> not(nullValue()).test(value)).and(obj -> obj.equalsIgnoreCase(value));
     }
 
     /**
@@ -363,6 +359,10 @@ public final class StringPredicate {
      */
     public static Predicate<String> stringSizeLessThanOrEqual(final Integer size) {
         return PredicateBuilder.<String>from(not(nullValue())).and(stringSizeLessThan(size).or(stringSize(size)));
+    }
+
+    private StringPredicate() {
+        super();
     }
 
 }
