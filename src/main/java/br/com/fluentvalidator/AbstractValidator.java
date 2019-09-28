@@ -1,11 +1,11 @@
 package br.com.fluentvalidator;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
@@ -89,11 +89,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	 */
 	@Override
 	public List<ValidationResult> validate(final Collection<T> instances) {
-		final List<ValidationResult> results = new ArrayList<>();
-		for (final T instance : instances) {
-			results.add(this.validate(instance));
-		}
-		return Collections.unmodifiableList(results);
+		return Collections.unmodifiableList(instances.stream().map(this::validate).collect(Collectors.toList()));
 	}
 
 	/**
@@ -101,11 +97,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 	 */
 	@Override
 	public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> resultTransform) {
-		final List<E> results = new ArrayList<>();
-		for (final ValidationResult validationResult : validate(instances)) {
-			results.add(resultTransform.transform(validationResult));
-		}
-		return results;
+		return Collections.unmodifiableList(instances.stream().map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
 	}
 
 	/**
