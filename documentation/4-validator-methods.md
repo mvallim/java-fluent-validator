@@ -32,6 +32,14 @@
 
 * `ruleFor(final Function<T, P> function)`
 
-## 4.9 `ruleForEach` collection
+## 4.9 `ruleFor` instance with field name
+
+* `ruleFor(final String fieldName, final Function<T, P> function)`
+
+## 4.10 `ruleForEach` collection
 
 * `ruleForEach(final Function<T, Collection<P>> function)`
+
+## 4.11 `ruleForEach` collection with field name
+
+* `ruleForEach(final String fieldName, final Function<T, Collection<P>> function)`
