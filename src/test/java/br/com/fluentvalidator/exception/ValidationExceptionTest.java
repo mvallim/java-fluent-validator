@@ -1,21 +1,27 @@
 package br.com.fluentvalidator.exception;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.Test;
 
 public class ValidationExceptionTest {
-	
-	@Test(expected = ValidationSampleException.class)
-	public void testSuccess() {
-		
-		throw ValidationException.create(ValidationSampleException.class);
-		
-	}
-	
-	@Test(expected = RuntimeException.class)
-	public void testFail() {
-		
-		throw ValidationException.create(ValidationSampleInvalidException.class);
-		
-	}
+
+    @Test
+    public void testSuccess() {
+
+        assertThatThrownBy(() -> {
+            throw ValidationException.create(ValidationSampleException.class);
+        }).isInstanceOf(ValidationSampleException.class);
+
+    }
+
+    @Test
+    public void testFail() {
+
+        assertThatThrownBy(() -> {
+            throw ValidationException.create(ValidationSampleInvalidException.class);
+        }).isInstanceOf(RuntimeException.class);
+
+    }
 
 }

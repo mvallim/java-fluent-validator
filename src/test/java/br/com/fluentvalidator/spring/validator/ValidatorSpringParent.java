@@ -29,89 +29,50 @@ import br.com.fluentvalidator.predicate.PredicateBuilder;
 @Component
 public class ValidatorSpringParent extends AbstractValidator<Parent> {
 
-	@Autowired
-	ValidatorSpringChild validatorChild;
-	
-	@Autowired
-	ValidatorSpringId validatorId;
+    @Autowired
+    ValidatorSpringChild validatorChild;
 
-	@Autowired
-	ValidatorSpringGirl validatorGirl;
+    @Autowired
+    ValidatorSpringId validatorId;
 
-	@Autowired
-	ValidatorSpringBoy validatorBoy;
+    @Autowired
+    ValidatorSpringGirl validatorGirl;
 
-	@Override
-	protected void rules() {
-		
-		setPropertyOnContext("parent");
-		
-		ruleForEach(Parent::getChildren)
-			.must(not(nullValue()))
-				.withMessage("parent's children cannot be null")
-				.withCode("555")
-				.withFieldName("children")
-			.must(not(empty()))
-				.when(not(nullValue()))
-				.withMessage("parent must have at least one child")
-				.withFieldName("children")		
-			.whenever(not(nullValue()))
-				.withValidator(validatorChild)
-				.critical(ValidationSampleException.class);
-	
-		ruleFor(Parent::getId)
-			.whenever(not(nullValue()))
-				.withValidator(validatorId)
-				.critical(ValidationSampleInvalidException.class);
+    @Autowired
+    ValidatorSpringBoy validatorBoy;
 
-		ruleFor(Parent::getAge)
-			.must(greaterThanOrEqual(5))
-				.when(not(nullValue()))
-				.withMessage("age must be greater than or equal to 10")
-				.withFieldName("age")
-			.must(lessThanOrEqual(7))
-				.when(not(nullValue()))
-				.withMessage("age must be less than or equal to 7")
-				.withCode("666")
-				.withFieldName("age");
+    @Override
+    public void rules() {
 
-		ruleFor(Parent::getCities)
-			.must(hasSize(10))
-				.when(not(nullValue()))
-				.withMessage("cities size must be 10")
-				.withFieldName("cities");
+        setPropertyOnContext("parent");
 
-		ruleFor(Parent::getName)
-			.must(stringContains("John"))
-				.when(not(stringEmptyOrNull()))
-				.withMessage("name must contains key John")
-				.withFieldName("name");
+        ruleForEach(Parent::getChildren).must(not(nullValue())).withMessage("parent's children cannot be null").withCode("555").withFieldName("children").must(not(empty()))
+                .when(not(nullValue())).withMessage("parent must have at least one child").withFieldName("children").whenever(not(nullValue())).withValidator(validatorChild)
+                .critical(ValidationSampleException.class);
 
-		ruleForEach(parent -> extractGirls(parent.getChildren()))
-			.whenever(PredicateBuilder.<Collection<Girl>>from(not(nullValue())).and(not(empty())))
-				.withValidator(validatorGirl);
-		
-		ruleForEach(parent -> extractBoys(parent.getChildren()))
-			.whenever(PredicateBuilder.<Collection<Boy>>from(not(nullValue())).and(not(empty())))
-				.withValidator(validatorBoy)
-				.critical();
+        ruleFor(Parent::getId).whenever(not(nullValue())).withValidator(validatorId).critical(ValidationSampleInvalidException.class);
 
-	}
-	
-	private Collection<Girl> extractGirls(Collection<Child> children) {
-		return Optional.ofNullable(children).orElseGet(ArrayList::new)
-				.stream()
-				.filter(Girl.class::isInstance)
-				.map(Girl.class::cast)
-				.collect(Collectors.toList());
-	}
+        ruleFor(Parent::getAge).must(greaterThanOrEqual(5)).when(not(nullValue())).withMessage("age must be greater than or equal to 10").withFieldName("age")
+                .must(lessThanOrEqual(7)).when(not(nullValue())).withMessage("age must be less than or equal to 7").withCode("666").withFieldName("age");
 
-	private Collection<Boy> extractBoys(Collection<Child> children) {
-		return Optional.ofNullable(children).orElseGet(ArrayList::new)
-				.stream()
-				.filter(Boy.class::isInstance)
-				.map(Boy.class::cast)
-				.collect(Collectors.toList());
-	}
+        ruleFor(Parent::getCities).must(hasSize(10)).when(not(nullValue())).withMessage("cities size must be 10").withFieldName("cities");
+
+        ruleFor(Parent::getName).must(stringContains("John")).when(not(stringEmptyOrNull())).withMessage("name must contains key John").withFieldName("name");
+
+        ruleForEach(parent -> extractGirls(parent.getChildren())).whenever(PredicateBuilder.<Collection<Girl>>from(not(nullValue())).and(not(empty())))
+                .withValidator(validatorGirl);
+
+        ruleForEach(parent -> extractBoys(parent.getChildren())).whenever(PredicateBuilder.<Collection<Boy>>from(not(nullValue())).and(not(empty()))).withValidator(validatorBoy)
+                .critical();
+
+    }
+
+    private Collection<Girl> extractGirls(final Collection<Child> children) {
+        return Optional.ofNullable(children).orElseGet(ArrayList::new).stream().filter(Girl.class::isInstance).map(Girl.class::cast).collect(Collectors.toList());
+    }
+
+    private Collection<Boy> extractBoys(final Collection<Child> children) {
+        return Optional.ofNullable(children).orElseGet(ArrayList::new).stream().filter(Boy.class::isInstance).map(Boy.class::cast).collect(Collectors.toList());
+    }
 
 }
