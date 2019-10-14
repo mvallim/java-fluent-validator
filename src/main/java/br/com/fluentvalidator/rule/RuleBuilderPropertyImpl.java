@@ -10,6 +10,7 @@ import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
+import br.com.fluentvalidator.builder.HandleInvalidField;
 import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
@@ -17,6 +18,7 @@ import br.com.fluentvalidator.builder.WhenProperty;
 import br.com.fluentvalidator.builder.WithValidator;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationException;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, WhenProperty<T, P>> implements RuleBuilderProperty<T, P>, WhenProperty<T, P>, Rule<T> {
 
@@ -83,6 +85,12 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
         this.currentValidation.critical(clazz);
         return this;
     }
+    
+	@Override
+	public HandleInvalidField<T, P, WhenProperty<T, P>> handleInvalidField(final HandlerInvalidField<P> handlerInvalidField) {
+		this.currentValidation.withHandleInvalidField(handlerInvalidField);
+		return this;
+	}
 
     @Override
     public WithValidator<T, P, WhenProperty<T, P>> withValidator(final Validator<P> validator) {
