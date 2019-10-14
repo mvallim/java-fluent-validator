@@ -291,7 +291,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>pit-test</id>
+			<id>pi-test</id>
 			<build>
 				<plugins>
 					<plugin>

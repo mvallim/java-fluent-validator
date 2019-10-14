@@ -4,25 +4,28 @@ import java.util.function.Predicate;
 
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 interface ValidationRule<T, P> extends Rule<P> {
 
-    void when(final Predicate<P> when);
+	void when(final Predicate<P> when);
 
-    void must(final Predicate<P> must);
+	void must(final Predicate<P> must);
 
-    void withFieldName(final String fieldName);
+	void withFieldName(final String fieldName);
 
-    void withMessage(final String message);
+	void withMessage(final String message);
 
-    void withCode(final String code);
+	void withCode(final String code);
 
-    void critical();
+	void withHandlerInvalidField(final HandlerInvalidField<P> handleInvalid);
 
-    void critical(final Class<? extends ValidationException> clazz);
+	void critical();
 
-    void whenever(final Predicate<P> whenever);
+	void critical(final Class<? extends ValidationException> clazz);
 
-    void withValidator(final Validator<T> validator);
+	void whenever(final Predicate<P> whenever);
+
+	void withValidator(final Validator<T> validator);
 
 }
