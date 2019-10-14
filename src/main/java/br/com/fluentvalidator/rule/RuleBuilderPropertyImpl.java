@@ -88,8 +88,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 	}
 
 	@Override
-	public HandleInvalidField<T, P, WhenProperty<T, P>> handlerInvalidField(
-			final HandlerInvalidField<P> handlerInvalidField) {
+	public HandleInvalidField<T, P, WhenProperty<T, P>> handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField) {
 		this.currentValidation.withHandlerInvalidField(handlerInvalidField);
 		return this;
 	}
@@ -129,7 +128,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
 			final boolean apply = getMust().test(instance);
 
 			if (Boolean.FALSE.equals(apply)) {
-				ValidationContext.get().addError(this, instance);
+				ValidationContext.get().addErrors(getHandlerInvalid().handle(instance));
 			}
 
 			if (Objects.nonNull(getCriticalException()) && Boolean.FALSE.equals(apply)) {

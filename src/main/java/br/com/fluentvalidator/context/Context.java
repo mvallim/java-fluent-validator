@@ -1,12 +1,11 @@
 package br.com.fluentvalidator.context;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import br.com.fluentvalidator.rule.FieldDescriptor;
 
 public final class Context {
 
@@ -21,8 +20,8 @@ public final class Context {
 	 * @param code
 	 * @param attemptedValue
 	 */
-	public void addError(final FieldDescriptor fieldDescriptor, final Object attemptedValue) {
-		errors.add(Error.create(fieldDescriptor.getFieldName(), fieldDescriptor.getMessage(), fieldDescriptor.getCode(), attemptedValue));
+	public void addErrors(final Collection<Error> errs) {
+		errs.stream().forEach(errors::add);
 	}
 
 	/**

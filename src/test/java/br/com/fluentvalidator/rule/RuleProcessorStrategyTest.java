@@ -177,7 +177,7 @@ public class RuleProcessorStrategyTest {
             final boolean apply = getMust().test(instance);
 
             if (Boolean.FALSE.equals(apply)) {
-                ValidationContext.get().addError(this, instance);
+                ValidationContext.get().addErrors(getHandlerInvalid().handle(instance));
             }
 
             return !(Boolean.TRUE.equals(isCritical()) && Boolean.FALSE.equals(apply));
