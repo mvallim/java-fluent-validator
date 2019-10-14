@@ -25,6 +25,6 @@ public interface Must<T, P, W extends When<T, P, W>> {
 	 * @param handlerInvalidField
 	 * @return
 	 */
-	HandleInvalidField<T, P, W> handleInvalidField(final HandlerInvalidField<P> handlerInvalidField);
+	HandleInvalidField<T, P, W> handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField);
 
 }

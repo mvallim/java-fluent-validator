@@ -4,9 +4,10 @@ import java.util.function.Predicate;
 
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
+import br.com.fluentvalidator.handler.DefaultHandlerInvalidField;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
-abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P> {
+abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, FieldDescriptor {
 
 	private Predicate<P> whenever = w -> true;
 
@@ -26,7 +27,7 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P> {
 
 	private Validator<T> validator;
 
-	private HandlerInvalidField<P> handlerInvalidField;
+	private HandlerInvalidField<P> handlerInvalidField = new DefaultHandlerInvalidField<>();
 
 	public Predicate<P> getWhenever() {
 		return this.whenever;
@@ -48,14 +49,17 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P> {
 		return this.validator;
 	}
 
+	@Override
 	public String getMessage() {
 		return this.message;
 	}
 
+	@Override
 	public String getCode() {
 		return this.code;
 	}
 
+	@Override
 	public String getFieldName() {
 		return this.fieldName;
 	}
@@ -94,7 +98,7 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P> {
 	}
 
 	@Override
-	public void withHandleInvalidField(final HandlerInvalidField<P> handlerInvalidField) {
+	public void withHandlerInvalidField(final HandlerInvalidField<P> handlerInvalidField) {
 		this.handlerInvalidField = handlerInvalidField;
 	}
 

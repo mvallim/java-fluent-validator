@@ -18,7 +18,7 @@ interface ValidationRule<T, P> extends Rule<P> {
 
 	void withCode(final String code);
 
-	void withHandleInvalidField(final HandlerInvalidField<P> handleInvalid);
+	void withHandlerInvalidField(final HandlerInvalidField<P> handleInvalid);
 
 	void critical();
 

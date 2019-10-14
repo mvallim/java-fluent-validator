@@ -80,11 +80,21 @@ public class ValidatorParent extends AbstractValidator<Parent> {
     }
 
     private Collection<Girl> extractGirls(final Collection<Child> children) {
-        return Optional.ofNullable(children).orElseGet(ArrayList::new).stream().filter(Girl.class::isInstance).map(Girl.class::cast).collect(Collectors.toList());
+        return Optional.ofNullable(children)
+    			.orElseGet(ArrayList::new)
+    			.stream()
+    			.filter(Girl.class::isInstance)
+    			.map(Girl.class::cast)
+    			.collect(Collectors.toList());
     }
 
     private Collection<Boy> extractBoys(final Collection<Child> children) {
-        return Optional.ofNullable(children).orElseGet(ArrayList::new).stream().filter(Boy.class::isInstance).map(Boy.class::cast).collect(Collectors.toList());
+        return Optional.ofNullable(children)
+    			.orElseGet(ArrayList::new)
+    			.stream()
+    			.filter(Boy.class::isInstance)
+    			.map(Boy.class::cast)
+    			.collect(Collectors.toList());
     }
 
 }

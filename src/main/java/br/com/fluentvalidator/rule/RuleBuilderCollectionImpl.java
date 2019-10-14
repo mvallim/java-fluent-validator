@@ -81,8 +81,9 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 	}
 
 	@Override
-	public HandleInvalidField<T, Collection<P>, WhenCollection<T, P>> handleInvalidField(final HandlerInvalidField<Collection<P>> handlerInvalidField) {
-		this.currentValidation.withHandleInvalidField(handlerInvalidField);
+	public HandleInvalidField<T, Collection<P>, WhenCollection<T, P>> handlerInvalidField(
+			final HandlerInvalidField<Collection<P>> handlerInvalidField) {
+		this.currentValidation.withHandlerInvalidField(handlerInvalidField);
 		return this;
 	}
 
@@ -128,7 +129,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 			final boolean apply = getMust().test(instance);
 
 			if (Boolean.FALSE.equals(apply)) {
-				ValidationContext.get().addError(getFieldName(), getMessage(), getCode(), instance);
+				ValidationContext.get().addError(this, instance);
 			}
 
 			if (Objects.nonNull(getCriticalException()) && Boolean.FALSE.equals(apply)) {
