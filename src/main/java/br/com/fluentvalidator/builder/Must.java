@@ -1,6 +1,7 @@
 package br.com.fluentvalidator.builder;
 
 import java.util.function.Predicate;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 public interface Must<T, P, W extends When<T, P, W>> {
 
@@ -17,5 +18,12 @@ public interface Must<T, P, W extends When<T, P, W>> {
    * @return
    */
   Message<T, P, W> withMessage(final String message);
+
+  /**
+   *
+   * @param handlerInvalidField
+   * @return
+   */
+  HandleInvalidField<T, P, W> handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField);
 
 }

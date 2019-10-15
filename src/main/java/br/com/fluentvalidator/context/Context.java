@@ -1,5 +1,6 @@
 package br.com.fluentvalidator.context;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
@@ -25,6 +26,17 @@ public final class Context {
 
   /**
    *
+   * @param field
+   * @param message
+   * @param code
+   * @param attemptedValue
+   */
+  public void addErrors(final Collection<Error> errs) {
+    errs.stream().forEach(errors::add);
+  }
+
+  /**
+   *
    * @param property
    * @param value
    */
@@ -36,21 +48,21 @@ public final class Context {
 
   /**
    *
+   * @return
+   */
+  public ValidationResult getValidationResult() {
+    ValidationContext.remove();
+    return errors.isEmpty() ? ValidationResult.ok() : ValidationResult.fail(errors);
+  }
+
+  /**
+   *
    * @param property
    * @param clazz
    * @return
    */
   public <P> P getProperty(final String property, final Class<P> clazz) {
     return clazz.cast(properties.getOrDefault(property, null));
-  }
-
-  /**
-   *
-   * @return
-   */
-  public ValidationResult getValidationResult() {
-    ValidationContext.remove();
-    return errors.isEmpty() ? ValidationResult.ok() : ValidationResult.fail(errors);
   }
 
 }

@@ -3,6 +3,7 @@ package br.com.fluentvalidator.rule;
 import java.util.function.Predicate;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 interface ValidationRule<T, P> extends Rule<P> {
 
@@ -15,6 +16,8 @@ interface ValidationRule<T, P> extends Rule<P> {
   void withMessage(final String message);
 
   void withCode(final String code);
+
+  void withHandlerInvalidField(final HandlerInvalidField<P> handleInvalid);
 
   void critical();
 

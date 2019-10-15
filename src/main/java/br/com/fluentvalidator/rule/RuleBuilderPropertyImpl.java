@@ -9,6 +9,7 @@ import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
+import br.com.fluentvalidator.builder.HandleInvalidField;
 import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
@@ -16,6 +17,7 @@ import br.com.fluentvalidator.builder.WhenProperty;
 import br.com.fluentvalidator.builder.WithValidator;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationException;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, WhenProperty<T, P>> implements RuleBuilderProperty<T, P>, WhenProperty<T, P>, Rule<T> {
 
@@ -84,6 +86,12 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
   }
 
   @Override
+  public HandleInvalidField<T, P, WhenProperty<T, P>> handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField) {
+    this.currentValidation.withHandlerInvalidField(handlerInvalidField);
+    return this;
+  }
+
+  @Override
   public WithValidator<T, P, WhenProperty<T, P>> withValidator(final Validator<P> validator) {
     this.currentValidation.withValidator(validator);
     return this;
@@ -118,7 +126,7 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
       final boolean apply = getMust().test(instance);
 
       if (Boolean.FALSE.equals(apply)) {
-        ValidationContext.get().addError(getFieldName(), getMessage(), getCode(), instance);
+        ValidationContext.get().addErrors(getHandlerInvalid().handle(instance));
       }
 
       if (Objects.nonNull(getCriticalException()) && Boolean.FALSE.equals(apply)) {

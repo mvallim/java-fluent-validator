@@ -9,6 +9,7 @@ import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
+import br.com.fluentvalidator.builder.HandleInvalidField;
 import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
@@ -16,6 +17,7 @@ import br.com.fluentvalidator.builder.WhenCollection;
 import br.com.fluentvalidator.builder.WithValidator;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationException;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>> implements RuleBuilderCollection<T, P>, WhenCollection<T, P>, Rule<T> {
 
@@ -77,6 +79,12 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
   }
 
   @Override
+  public HandleInvalidField<T, Collection<P>, WhenCollection<T, P>> handlerInvalidField(final HandlerInvalidField<Collection<P>> handlerInvalidField) {
+    this.currentValidation.withHandlerInvalidField(handlerInvalidField);
+    return this;
+  }
+
+  @Override
   public Critical<T, Collection<P>, WhenCollection<T, P>> critical() {
     this.currentValidation.critical();
     return this;
@@ -118,7 +126,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
       final boolean apply = getMust().test(instance);
 
       if (Boolean.FALSE.equals(apply)) {
-        ValidationContext.get().addError(getFieldName(), getMessage(), getCode(), instance);
+        ValidationContext.get().addErrors(getHandlerInvalid().handle(instance));
       }
 
       if (Objects.nonNull(getCriticalException()) && Boolean.FALSE.equals(apply)) {

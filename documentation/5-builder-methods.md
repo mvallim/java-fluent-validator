@@ -4,7 +4,7 @@
 
 * `when(final Predicate<T> when)`
 
-## 5.2 `must` condition to valid
+## 5.2 `must` valid condition
 
 * `must(final Predicate<T> must)`
 

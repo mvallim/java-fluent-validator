@@ -1,6 +1,7 @@
 package br.com.fluentvalidator.builder;
 
 import br.com.fluentvalidator.exception.ValidationException;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 public interface When<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P, W> {
 
@@ -37,5 +38,12 @@ public interface When<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P, W
    * @return
    */
   Critical<T, P, W> critical(final Class<? extends ValidationException> clazz);
+
+  /**
+   *
+   * @param handlerInvalidField
+   * @return
+   */
+  HandleInvalidField<T, P, W> handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField);
 
 }
