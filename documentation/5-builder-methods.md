@@ -29,8 +29,8 @@ handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField)
             .handlerInvalidField(new HandlerInvalidField<Entity>() {
                 @Override
                 public Collection<Error> handle(final Entity instance) {
-                    final Erro field1 = Error.create("field1", "field1 cannot be null", "404", instance.getField1());
-                    final Erro field2 = Error.create("field2", "field1 cannot be null", "404", instance.getField2());
+                    final Erro field1 = Error.create("field1", "field1 must be equal field2", "404", instance.getField1());
+                    final Erro field2 = Error.create("field2", "field2 must be equal field1", "404", instance.getField2());
                     return Arrays.asList(field1, field2);
                 }
             })
