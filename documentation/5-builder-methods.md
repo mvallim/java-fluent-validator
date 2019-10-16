@@ -25,7 +25,7 @@ handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField)
     ```java
         ruleFor(entity -> entity)
             .must(stringEquals(Entity::getField1, Entity::getField2))
-            .when(not(stringEmptyOrNull(Entity::getProperty01)).and(not(stringEmptyOrNull(Entity::getProperty01))))
+            .when(not(stringEmptyOrNull(Entity::getField1)).and(not(stringEmptyOrNull(Entity::getField2))))
             .handlerInvalidField(new HandlerInvalidField<Entity>() {
                 @Override
                 public Collection<Error> handle(final Entity instance) {
