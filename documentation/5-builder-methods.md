@@ -1,37 +1,91 @@
 # 5. Chain methods
 
-## 5.1 `when` condition to validate
+## 5.1 `critical` path in chain validation
 
-* `when(final Predicate<T> when)`
+```java
+critical()
+```
 
-## 5.2 `must` valid condition
+## 5.2 `critical` rise exception path in chain validation
 
-* `must(final Predicate<T> must)`
+```java
+critical(final Class<? extends ValidationException> clazz)
+```
 
-## 5.3 `withMessage` when `must` condition not be true
+## 5.3 `handlerInvalidField` customize generated error to invalid field
 
-* `withMessage(final String message)`
+```java
+handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField)
+```
 
-## 5.4 `withCode` when `must` condition not be true
+## 5.4 `must` valid condition
 
-* `withCode(final String code)`
+```java
+must(final Predicate<P> predicate)
+```
 
-## 5.5 `withFieldName` when `must` condition not be true
+## 5.5 `when` condition to validate
 
-* `withFieldName(final String fieldName)`
+```java
+when(final Predicate<P> when)
+```
 
 ## 5.6 `whenever` to validator
 
-* `whenever(final Predicate<T> whenever)`
+```java
+whenever(final Predicate<P> predicate)
+```
 
-## 5.7 `withValidator` to validate object
+## 5.7 `withAttempedValue` when `must` condition not be true, using object property
 
-* `withValidator(final Validator<P> validator)`
+```java
+withAttempedValue(final Function<T, P> attemptedValue)
+```
 
-## 5.8 `critical` path in chain validation
+## 5.8 `withAttempedValue` when `must` condition not be true
 
-* `critical()`
+```java
+withAttempedValue(final P attemptedValue)
+```
 
-## 5.9 `critical` rise exception path in chain validation
+## 5.9 `withCode` when `must` condition not be true, using object property
 
-* `critical(final Class<? extends ValidationException> clazz)`
+```java
+withCode(final Function<T, String> code)
+```
+
+## 5.10 `withCode` when `must` condition not be true
+
+```java
+withCode(final String code)
+```
+
+## 5.11 `withFieldName` when `must` condition not be true, using object property
+
+```java
+withFieldName(final Function<T, String> fieldName)
+```
+
+## 5.12 `withFieldName` when `must` condition not be true
+
+```java
+withFieldName(final String fieldName)
+```
+
+## 5.13 `withMessage` when `must` condition not be true, using object property
+
+```java
+withMessage(final Function<T, String> message)
+```
+
+## 5.14 `withMessage` when `must` condition not be true
+
+```java
+withMessage(final String message)
+```
+
+## 5.15 `withValidator` to validate object
+
+```java
+withValidator(final Validator<P> validator)
+```

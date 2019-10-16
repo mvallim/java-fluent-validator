@@ -95,19 +95,35 @@ stringEmptyOrNull(final Function<T, String> source)
 ```
 
 ```java
+stringEquals(final Function<T, String> source, final Function<T, String> target)
+```
+
+```java
+stringEquals(final Function<T, String> source, final String value)
+```
+
+```java
+stringEquals(final String value)
+```
+
+```java
+stringEqualsIgnoreCase(final Function<T, String> source, final Function<T, String> target)
+```
+
+```java
+stringEqualsIgnoreCase(final Function<T, String> source, final String value)
+```
+
+```java
+stringEqualsIgnoreCase(final String value)
+```
+
+```java
 stringMatches(final Function<T, String> source, final String regex)
 ```
 
 ```java
 stringMatches(final String regex)
-```
-
-```java
-stringSizeBetween(final Function<T, String> source, final Integer minSize, final Integer maxSize)
-```
-
-```java
-stringSizeBetween(final Integer minSize, final Integer maxSize)
 ```
 
 ```java
@@ -120,6 +136,14 @@ stringSize(final Function<T, String> source, final Integer size)
 
 ```java
 stringSize(final Integer size)
+```
+
+```java
+stringSizeBetween(final Function<T, String> source, final Integer minSize, final Integer maxSize)
+```
+
+```java
+stringSizeBetween(final Integer minSize, final Integer maxSize)
 ```
 
 ```java
@@ -289,7 +313,7 @@ dateBetween(final String dateStringMin, final String dateStringMax, final String
 ```
 
 ```java
-dateEqualTo(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+dateEqualTo(final Function<T, String> source, final Function<T, String> target, final String pattern)
 ```
 
 ```java
@@ -301,7 +325,7 @@ dateEqualTo(final String dateString, final String pattern)
 ```
 
 ```java
-dateGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern) {
+dateGreaterThan(final Function<T, String> source, final Function<T, String> target, final String pattern)
 ```
 
 ```java
