@@ -1,9 +1,11 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.StringPredicate.isAlpha;
+import static br.com.fluentvalidator.predicate.StringPredicate.*;
 import static br.com.fluentvalidator.predicate.StringPredicate.isAlphaNumeric;
+import static br.com.fluentvalidator.predicate.StringPredicate.isDate;
 import static br.com.fluentvalidator.predicate.StringPredicate.isNumber;
 import static br.com.fluentvalidator.predicate.StringPredicate.isNumeric;
+import static br.com.fluentvalidator.predicate.StringPredicate.isTime;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEquals;
@@ -20,6 +22,69 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class StringPredicateTest {
+
+  @Test
+  public void testEquals() {
+    assertTrue(stringEquals("xo").test("xo"));
+    assertFalse(stringEquals("xo").test("Xo"));
+    assertFalse(stringEquals("xo").test(null));
+    assertFalse(stringEquals(null).test("xo"));
+    assertFalse(stringEquals("xo").test("he"));
+  }
+
+  @Test
+  public void testIsDate() {
+    assertTrue(isDate("dd-MM-yyyy").test("28-02-2019"));
+    assertFalse(isDate("dd-MM-yyyy").test("28022019"));
+    assertFalse(isDate("dd-MM-yyyy").test(null));
+    assertFalse(isDate(null).test("28-02-2019"));
+    assertFalse(isDate("HH-MM-yyyy").test("28-02-2019"));
+  }
+
+  @Test
+  public void testObjectIsDate() {
+    assertTrue(isDate(ObjectFrom<String>::getSource, "dd-MM-yyyy").test(new ObjectFrom<>("28-02-2019", null)));
+    assertFalse(isDate(ObjectFrom<String>::getSource, "dd-MM-yyyy").test(new ObjectFrom<>("28022019", null)));
+    assertFalse(isDate(ObjectFrom<String>::getSource, "dd-MM-yyyy").test(null));
+    assertFalse(isDate(ObjectFrom<String>::getSource, null).test(new ObjectFrom<>("28-02-2019", null)));
+    assertFalse(isDate(ObjectFrom<String>::getSource, "HH-MM-yyyy").test(new ObjectFrom<>("28-02-2019", null)));
+  }
+
+  @Test
+  public void testIsTime() {
+    assertTrue(isTime("HH:mm:ss").test("23:59:59"));
+    assertFalse(isTime("HH:mm:ss").test("235959"));
+    assertFalse(isTime("HH:mm:ss").test(null));
+    assertFalse(isTime(null).test("23:59:59"));
+    assertFalse(isTime("DD:mm:ss").test("23:59:59"));
+  }
+
+  @Test
+  public void testObjectIsTime() {
+    assertTrue(isTime(ObjectFrom<String>::getSource, "HH:mm:ss").test(new ObjectFrom<>("23:59:59", null)));
+    assertFalse(isTime(ObjectFrom<String>::getSource, "HH:mm:ss").test(new ObjectFrom<>("235959", null)));
+    assertFalse(isTime(ObjectFrom<String>::getSource, "HH:mm:ss").test(null));
+    assertFalse(isTime(ObjectFrom<String>::getSource, null).test(new ObjectFrom<>("23:59:59", null)));
+    assertFalse(isTime(ObjectFrom<String>::getSource, "DD:mm:ss").test(new ObjectFrom<>("23:59:59", null)));
+  }
+
+  @Test
+  public void testIsDateTime() {
+    assertTrue(isDateTime("dd-MM-yyyy HH:mm:ss").test("28-02-2019 23:59:59"));
+    assertFalse(isDateTime("dd-MM-yyyy HH:mm:ss").test("28-02-2019 235959"));
+    assertFalse(isDateTime("dd-MM-yyyy HH:mm:ss").test(null));
+    assertFalse(isDateTime(null).test("23:59:59"));
+    assertFalse(isDateTime("BB-MM-yyyy HH:mm:ss").test("28-02-2019 23:59:59"));
+  }
+
+  @Test
+  public void testObjectIsDateTime() {
+    assertTrue(isDateTime(ObjectFrom<String>::getSource, "dd-MM-yyyy HH:mm:ss").test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
+    assertFalse(isDateTime(ObjectFrom<String>::getSource, "dd-MM-yyyy HH:mm:ss").test(new ObjectFrom<>("28-02-2019 235959", null)));
+    assertFalse(isDateTime(ObjectFrom<String>::getSource, "dd-MM-yyyy HH:mm:ss").test(null));
+    assertFalse(isDateTime(ObjectFrom<String>::getSource, null).test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
+    assertFalse(isDateTime(ObjectFrom<String>::getSource, "BB-MM-yyyy HH:mm:ss").test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
+  }
 
   @Test
   public void testIsAlpha() {
@@ -144,46 +209,26 @@ public class StringPredicateTest {
   }
 
   @Test
-  public void testEquals() {
-    assertTrue(stringEquals("xo").test("xo"));
-    assertFalse(stringEquals("xo").test("Xo"));
-    assertFalse(stringEquals("xo").test(null));
-    assertFalse(stringEquals(null).test("xo"));
-    assertFalse(stringEquals("xo").test("he"));
-  }
-
-  @Test
-  public void testObjectEquals() {
-    assertTrue(stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>("xo", null)));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>("Xo", null)));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>(null, null)));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, (String)null).test(new ObjectFrom<>("xo", null)));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>("he", null)));
-  }
-
-  @Test
-  public void testObjectEqual2() {
-    assertTrue(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(new ObjectFrom<>("xo", "xo")));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(new ObjectFrom<>("xo", "Xo")));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(new ObjectFrom<>("xo", null)));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(new ObjectFrom<>(null, "xo")));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(new ObjectFrom<>(null, null)));
-  }
-
-  @Test
   public void testNullObjectEquals() {
     assertFalse(stringEquals(ObjectFrom<String>::getSource, "xo").test(null));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, (String)null).test(new ObjectFrom<>("helo", null)));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, (String)null).test(new ObjectFrom<>(null, null)));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>(null, null)));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, (String) null)
+        .test(new ObjectFrom<>("helo", null)));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, (String) null)
+        .test(new ObjectFrom<>(null, null)));
+    assertFalse(
+        stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>(null, null)));
   }
-  
+
   @Test
   public void testNullObjectEquals2() {
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(null));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(new ObjectFrom<>("helo", null)));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(new ObjectFrom<>(null, "hello")));
-    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(new ObjectFrom<>(null, null)));
+    assertFalse(
+        stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget).test(null));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget)
+        .test(new ObjectFrom<>("helo", null)));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget)
+        .test(new ObjectFrom<>(null, "hello")));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget)
+        .test(new ObjectFrom<>(null, null)));
   }
 
   @Test
@@ -375,6 +420,34 @@ public class StringPredicateTest {
     assertFalse(stringSizeLessThanOrEqual(1).test(null));
     assertFalse(stringSizeLessThanOrEqual(null).test(null));
     assertFalse(stringSizeLessThanOrEqual(null).test("xo"));
+  }
+
+  @Test
+  public void testObjectEqual2() {
+    assertTrue(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget)
+        .test(new ObjectFrom<>("xo", "xo")));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget)
+        .test(new ObjectFrom<>("xo", "Xo")));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget)
+        .test(new ObjectFrom<>("xo", null)));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget)
+        .test(new ObjectFrom<>(null, "xo")));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, ObjectFrom<String>::getTarget)
+        .test(new ObjectFrom<>(null, null)));
+  }
+
+  @Test
+  public void testObjectEquals() {
+    assertTrue(
+        stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>("xo", null)));
+    assertFalse(
+        stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>("Xo", null)));
+    assertFalse(
+        stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>(null, null)));
+    assertFalse(stringEquals(ObjectFrom<String>::getSource, (String) null)
+        .test(new ObjectFrom<>("xo", null)));
+    assertFalse(
+        stringEquals(ObjectFrom<String>::getSource, "xo").test(new ObjectFrom<>("he", null)));
   }
 
   @Test

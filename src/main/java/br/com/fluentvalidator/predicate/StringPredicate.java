@@ -7,6 +7,12 @@ import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -49,6 +55,64 @@ public final class StringPredicate {
   public static <T> Predicate<T> isAlphaNumeric(final Function<T, String> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(obj -> isAlphaNumeric().test(source.apply(obj)));
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param source
+   * @param pattern
+   * @return
+   */
+  public static <T> Predicate<T> isDate(final Function<T, String> source, final String pattern) {
+    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> isDate(pattern).test(source.apply(obj)));
+  }
+
+  /**
+   * 
+   * @param pattern
+   * @return
+   */
+  public static Predicate<String> isDate(final String pattern) {
+    return PredicateBuilder.<String>from(not(nullValue()))
+        .and(isDate -> not(stringEmptyOrNull()).test(pattern))
+        .and(isDate -> {
+          try {
+            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+            return Objects.nonNull(LocalDate.parse(isDate, dateFormat));
+          } catch (final IllegalArgumentException | DateTimeParseException ex) {
+            return false;
+          }
+        });
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param source
+   * @param pattern
+   * @return
+   */
+  public static <T> Predicate<T> isDateTime(final Function<T, String> source, final String pattern) {
+    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> isDateTime(pattern).test(source.apply(obj)));
+  }
+
+  /**
+   * 
+   * @param pattern
+   * @return
+   */
+  public static Predicate<String> isDateTime(final String pattern) {
+    return PredicateBuilder.<String>from(not(nullValue()))
+        .and(isDateTime -> not(stringEmptyOrNull()).test(pattern))
+        .and(isDateTime -> {
+          try {
+            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+            return Objects.nonNull(LocalDateTime.parse(isDateTime, dateFormat));
+          } catch (final IllegalArgumentException | DateTimeParseException ex) {
+            return false;
+          }
+        });
   }
 
   /**
@@ -95,6 +159,35 @@ public final class StringPredicate {
   public static <T> Predicate<T> isNumeric(final Function<T, String> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(obj -> isNumeric().test(source.apply(obj)));
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param source
+   * @param pattern
+   * @return
+   */
+  public static <T> Predicate<T> isTime(final Function<T, String> source, final String pattern) {
+    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> isTime(pattern).test(source.apply(obj)));
+  }
+
+  /**
+   * 
+   * @param pattern
+   * @return
+   */
+  public static Predicate<String> isTime(final String pattern) {
+    return PredicateBuilder.<String>from(not(nullValue()))
+        .and(isTime -> not(stringEmptyOrNull()).test(pattern))
+        .and(isTime -> {
+          try {
+            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+            return Objects.nonNull(LocalTime.parse(isTime, dateFormat));
+          } catch (final IllegalArgumentException | DateTimeParseException ex) {
+            return false;
+          }
+        });
   }
 
   /**
