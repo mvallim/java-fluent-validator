@@ -2,13 +2,16 @@ package br.com.fluentvalidator.rule;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.Error;
 import br.com.fluentvalidator.exception.ValidationException;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
-abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, FieldDescriptor {
+@SuppressWarnings("unchecked")
+abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, FieldDescriptor<Object, P> {
 
   private Predicate<P> whenever = w -> true;
 
@@ -16,11 +19,13 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
 
   private Predicate<P> must = m -> true;
 
-  private String message;
+  private Function<Object, String> message = obj -> null;
 
-  private String code;
+  private Function<Object, String> code = obj -> null;
 
-  private String fieldName;
+  private Function<Object, String> fieldName = obj -> null;
+
+  private Function<Object, P> attemptedValue;
 
   private boolean critical;
 
@@ -28,7 +33,7 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
 
   private Validator<T> validator;
 
-  private HandlerInvalidField<P> handlerInvalidField = new InternalHandlerInvalidField<>(this);
+  private HandlerInvalidField<P> handlerInvalidField = new InternalHandlerInvalidField(this);
 
   public Predicate<P> getWhenever() {
     return this.whenever;
@@ -51,18 +56,23 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   @Override
-  public String getMessage() {
-    return this.message;
+  public String getMessage(final Object instance) {
+    return this.message.apply(instance);
   }
 
   @Override
-  public String getCode() {
-    return this.code;
+  public String getCode(final Object instance) {
+    return this.code.apply(instance);
   }
 
   @Override
-  public String getFieldName() {
-    return this.fieldName;
+  public String getFieldName(final Object instance) {
+    return this.fieldName.apply(instance);
+  }
+
+  @Override
+  public P getAttemptedValue(final Object instance, final P defaultValue) {
+    return Objects.isNull(this.attemptedValue) ? defaultValue : this.attemptedValue.apply(instance);
   }
 
   public HandlerInvalidField<P> getHandlerInvalid() {
@@ -84,18 +94,23 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   @Override
-  public void withFieldName(final String fieldName) {
-    this.fieldName = fieldName;
+  public void withFieldName(final Function<?, String> fieldName) {
+    this.fieldName = (Function<Object, String>) fieldName;
   }
 
   @Override
-  public void withMessage(final String message) {
-    this.message = message;
+  public void withMessage(final Function<?, String> message) {
+    this.message = (Function<Object, String>) message;
   }
 
   @Override
-  public void withCode(final String code) {
-    this.code = code;
+  public void withCode(final Function<?, String> code) {
+    this.code = (Function<Object, String>) code;
+  }
+
+  @Override
+  public void withAttemptedValue(final Function<?, P> attemptedValue) {
+    this.attemptedValue = (Function<Object, P>) attemptedValue;
   }
 
   @Override
@@ -124,18 +139,19 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
     this.validator = validator;
   }
 
-  private class InternalHandlerInvalidField<E> implements HandlerInvalidField<E> {
+  private class InternalHandlerInvalidField implements HandlerInvalidField<P> {
 
-    private final FieldDescriptor fieldDescriptor;
+    private final FieldDescriptor<Object, P> fieldDescriptor;
 
-    public InternalHandlerInvalidField(final FieldDescriptor fieldDescriptor) {
+    public InternalHandlerInvalidField(final FieldDescriptor<Object, P> fieldDescriptor) {
       this.fieldDescriptor = fieldDescriptor;
     }
 
     @Override
-    public Collection<Error> handle(final E object) {
-      return Collections.singletonList(Error.create(fieldDescriptor.getFieldName(),
-          fieldDescriptor.getMessage(), fieldDescriptor.getCode(), object));
+    public Collection<Error> handle(final Object instance, final P attemptedValue) {
+      return Collections.singletonList(Error.create(fieldDescriptor.getFieldName(instance),
+          fieldDescriptor.getMessage(instance), fieldDescriptor.getCode(instance),
+          fieldDescriptor.getAttemptedValue(instance, attemptedValue)));
     }
 
   }

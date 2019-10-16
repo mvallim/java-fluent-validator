@@ -20,17 +20,6 @@ public final class Context {
    * @param code
    * @param attemptedValue
    */
-  public void addError(final String field, final String message, final String code, final Object attemptedValue) {
-    errors.add(Error.create(field, message, code, attemptedValue));
-  }
-
-  /**
-   *
-   * @param field
-   * @param message
-   * @param code
-   * @param attemptedValue
-   */
   public void addErrors(final Collection<Error> errs) {
     errs.stream().forEach(errors::add);
   }

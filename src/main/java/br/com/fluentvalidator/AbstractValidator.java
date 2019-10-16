@@ -108,15 +108,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
   public boolean apply(final T instance) {
     this.initialize.run();
     ValidationContext.get().setProperty(this.property, instance);
-    return ruleProcessor.process(instance, rules);
-  }
-
-  /**
-   * {@link #support(Object) AbstractValidator}
-   */
-  @Override
-  public boolean support(final T instance) {
-    return true;
+    return ruleProcessor.process(instance, instance, rules);
   }
 
   /**

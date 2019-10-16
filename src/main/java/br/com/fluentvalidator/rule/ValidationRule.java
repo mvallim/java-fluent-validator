@@ -1,5 +1,6 @@
 package br.com.fluentvalidator.rule;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.exception.ValidationException;
@@ -11,11 +12,13 @@ interface ValidationRule<T, P> extends Rule<P> {
 
   void must(final Predicate<P> must);
 
-  void withFieldName(final String fieldName);
+  void withFieldName(final Function<?, String> fieldName);
 
-  void withMessage(final String message);
+  void withMessage(final Function<?, String> message);
 
-  void withCode(final String code);
+  void withCode(final Function<?, String> code);
+
+  void withAttemptedValue(final Function<?, P> attemptedValue);
 
   void withHandlerInvalidField(final HandlerInvalidField<P> handleInvalid);
 

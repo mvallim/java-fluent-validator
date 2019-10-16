@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import br.com.fluentvalidator.Validator;
+import br.com.fluentvalidator.builder.AttemptedValue;
 import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
 import br.com.fluentvalidator.builder.FieldName;
@@ -38,12 +39,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
   @Override
   public boolean apply(final T instance) {
     final Collection<P> value = Objects.nonNull(instance) ? function.apply(instance) : null;
-    return ruleProcessor.process(value, rules);
-  }
-
-  @Override
-  public boolean support(final T instance) {
-    return true;
+    return ruleProcessor.process(instance, value, rules);
   }
 
   @Override
@@ -62,19 +58,49 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 
   @Override
   public Message<T, Collection<P>, WhenCollection<T, P>> withMessage(final String message) {
+    this.currentValidation.withMessage(obj -> message);
+    return this;
+  }
+
+  @Override
+  public Message<T, Collection<P>, WhenCollection<T, P>> withMessage(final Function<T, String> message) {
     this.currentValidation.withMessage(message);
     return this;
   }
 
   @Override
   public Code<T, Collection<P>, WhenCollection<T, P>> withCode(final String code) {
+    this.currentValidation.withCode(obj -> code);
+    return this;
+  }
+
+  @Override
+  public Code<T, Collection<P>, WhenCollection<T, P>> withCode(final Function<T, String> code) {
     this.currentValidation.withCode(code);
     return this;
   }
 
   @Override
   public FieldName<T, Collection<P>, WhenCollection<T, P>> withFieldName(final String fieldName) {
+    this.currentValidation.withFieldName(obj -> fieldName);
+    return this;
+  }
+
+  @Override
+  public FieldName<T, Collection<P>, WhenCollection<T, P>> withFieldName(final Function<T, String> fieldName) {
     this.currentValidation.withFieldName(fieldName);
+    return this;
+  }
+
+  @Override
+  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>> withAttempedValue(final Collection<P> attemptedValue) {
+    this.currentValidation.withAttemptedValue(obj -> attemptedValue);
+    return this;
+  }
+
+  @Override
+  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>> withAttempedValue(final Function<T, Collection<P>> attemptedValue) {
+    this.currentValidation.withAttemptedValue(attemptedValue);
     return this;
   }
 
@@ -110,7 +136,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
 
   class ValidationRuleInternal extends AbstractValidationRule<P, Collection<P>> {
 
-    ValidationRuleInternal(final String fieldName, final Predicate<Collection<P>> must) {
+    ValidationRuleInternal(final Function<T, String> fieldName, final Predicate<Collection<P>> must) {
       super.must(must);
       super.withFieldName(fieldName);
     }
@@ -121,12 +147,12 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
     }
 
     @Override
-    public boolean apply(final Collection<P> instance) {
+    public boolean apply(final Object obj, final Collection<P> instance) {
 
       final boolean apply = getMust().test(instance);
 
       if (Boolean.FALSE.equals(apply)) {
-        ValidationContext.get().addErrors(getHandlerInvalid().handle(instance));
+        ValidationContext.get().addErrors(getHandlerInvalid().handle(obj, instance));
       }
 
       if (Objects.nonNull(getCriticalException()) && Boolean.FALSE.equals(apply)) {
@@ -134,13 +160,14 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
       }
 
       return !(Boolean.TRUE.equals(isCritical()) && Boolean.FALSE.equals(apply));
+
     }
 
   }
 
   class ValidatorRuleInternal extends AbstractValidationRule<P, Collection<P>> {
 
-    ValidatorRuleInternal(final String fieldName, final Predicate<Collection<P>> whenever) {
+    ValidatorRuleInternal(final Function<T, String> fieldName, final Predicate<Collection<P>> whenever) {
       super.whenever(whenever);
       super.withFieldName(fieldName);
     }
@@ -151,9 +178,9 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
     }
 
     @Override
-    public boolean apply(final Collection<P> instance) {
+    public boolean apply(final Object obj, final Collection<P> instance) {
 
-      final boolean apply = ruleProcessor.process(instance, getValidator());
+      final boolean apply = ruleProcessor.process(obj, instance, getValidator());
 
       if (Objects.nonNull(getCriticalException()) && Boolean.FALSE.equals(apply)) {
         throw ValidationException.create(getCriticalException());
@@ -163,5 +190,7 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
     }
 
   }
+
+
 
 }

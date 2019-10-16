@@ -8,13 +8,14 @@ import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import br.com.fluentvalidator.AbstractValidator;
+import br.com.fluentvalidator.context.Error;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 import br.com.fluentvalidator.model.Boy;
 import br.com.fluentvalidator.model.Child;
 import br.com.fluentvalidator.model.Girl;
@@ -29,17 +30,20 @@ public class ValidatorParent extends AbstractValidator<Parent> {
         setPropertyOnContext("parent");
 
         ruleForEach(Parent::getChildren)
-        	.must(not(nullValue()))
-	        	.withMessage("parent's children cannot be null")
-	        	.withCode("555")
-	        	.withFieldName("children")
-        	.must(not(empty()))
-                .when(not(nullValue()))
-                .withMessage("parent must have at least one child")
-                .withFieldName("children")
-            .whenever(not(nullValue()))
-            	.withValidator(new ValidatorChild())
-                .critical();
+          .must(not(nullValue()))
+            .handlerInvalidField(new HandlerInvalidField<Collection<Child>>() {
+              @Override
+              public Collection<Error> handle(final Collection<Child> attemptedValue) {
+                return Collections.singletonList(Error.create("children", "parent's children cannot be null", "555", attemptedValue));
+              }
+            })
+          .must(not(empty()))
+            .when(not(nullValue()))
+            .withMessage("parent must have at least one child")
+            .withFieldName("children")
+          .whenever(not(nullValue()))
+            .withValidator(new ValidatorChild())
+            .critical();
 
         ruleFor(Parent::getId)
         	.whenever(not(nullValue()))

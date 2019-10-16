@@ -1,21 +1,20 @@
 package br.com.fluentvalidator.builder;
 
-import java.util.function.Predicate;
+import br.com.fluentvalidator.exception.ValidationException;
 
-public interface HandleInvalidField<T, P, W extends When<T, P, W>> {
-
-  /**
-   *
-   * @param when
-   * @return
-   */
-  When<T, P, W> when(final Predicate<P> when);
+public interface HandleInvalidField<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P, W> {
 
   /**
    *
-   * @param predicate
    * @return
    */
-  Must<T, P, W> must(final Predicate<P> predicate);
+  Critical<T, P, W> critical();
+
+  /**
+   *
+   * @param clazz
+   * @return
+   */
+  Critical<T, P, W> critical(final Class<? extends ValidationException> clazz);
 
 }
