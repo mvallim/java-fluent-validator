@@ -63,6 +63,30 @@ isAlphaNumeric(final Function<T, String> source)
 ```
 
 ```java
+isDate(final Function<T, String> source, final String pattern)
+```
+
+```java
+isDate(final String pattern)
+```
+
+```java
+isDateTime(final Function<T, String> source, final String pattern)
+```
+
+```java
+isDateTime(final String pattern)
+```
+
+```java
+isTime(final Function<T, String> source, final String pattern)
+```
+
+```java
+isTime(final String pattern)
+```
+
+```java
 isNumber()
 ```
 
