@@ -33,8 +33,10 @@ handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField)
                     final Erro field2 = Error.create("field2", "field2 must be equal field1", "404", instance.getField2());
                     return Arrays.asList(field1, field2);
                 }
-            })
+            });
     ```
+
+    The result when was error produce two custom errors.
 
 * Using property
 
@@ -47,8 +49,10 @@ handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField)
                 public Collection<Error> handle(final Collection<String> instance) {
                     return Collections.singletonList(Error.create("collection", "collection must be size 1", "404", instance.getCollection()));
                 }
-            })
+            });
     ```
+
+    The result when was error produce one custom error.
 
 * Using property and access main object
 
@@ -62,8 +66,10 @@ handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField)
                     final Entity entity = Entity.class.cast(instance);
                     return Collections.singletonList(Error.create("entity", "entity property collection must be size 1", "404", entity));
                 }
-            })
+            });
     ```
+
+    The result when was error produce one custom error.
 
 ## 5.4 `must` valid condition
 
