@@ -18,6 +18,53 @@ critical(final Class<? extends ValidationException> clazz)
 handlerInvalidField(final HandlerInvalidField<P> handlerInvalidField)
 ```
 
+### Examples
+
+* Using full object
+
+    ```java
+        ruleFor(entity -> entity)
+            .must(stringEquals(Entity::getField1, Entity::getField2))
+            .when(not(stringEmptyOrNull(Entity::getProperty01)).and(not(stringEmptyOrNull(Entity::getProperty01))))
+            .handlerInvalidField(new HandlerInvalidField<Entity>() {
+                @Override
+                public Collection<Error> handle(final Entity instance) {
+                    final Erro field1 = Error.create("field1", "field1 cannot be null", "404", instance.getField1());
+                    final Erro field2 = Error.create("field2", "field1 cannot be null", "404", instance.getField2());
+                    return Arrays.asList(field1, field2);
+                }
+            })
+    ```
+
+* Using property
+
+    ```java
+        ruleFor(Entity::getCollection)
+            .must(hasSize(1))
+            .when(not(empty()))
+            .handlerInvalidField(new HandlerInvalidField<Collection<String>>() {
+                @Override
+                public Collection<Error> handle(final Collection<String> instance) {
+                    return Collections.singletonList(Error.create("collection", "collection must be size 1", "404", instance.getCollection()));
+                }
+            })
+    ```
+
+* Using property and access main object
+
+    ```java
+        ruleFor(Entity::getCollection)
+            .must(hasSize(1))
+            .when(not(empty()))
+            .handlerInvalidField(new HandlerInvalidField<Collection<String>>() {
+                @Override
+                public Collection<Error> handle(final Object instance, final Collection<String> value) {
+                    final Entity entity = Entity.class.cast(instance);
+                    return Collections.singletonList(Error.create("entity", "entity property collection must be size 1", "404", entity));
+                }
+            })
+    ```
+
 ## 5.4 `must` valid condition
 
 ```java
