@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -78,7 +79,7 @@ public final class StringPredicate {
         .and(isDate -> not(stringEmptyOrNull()).test(pattern))
         .and(isDate -> {
           try {
-            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern).withResolverStyle(ResolverStyle.STRICT);
             return Objects.nonNull(LocalDate.parse(isDate, dateFormat));
           } catch (final IllegalArgumentException | DateTimeParseException ex) {
             return false;
@@ -107,7 +108,7 @@ public final class StringPredicate {
         .and(isDateTime -> not(stringEmptyOrNull()).test(pattern))
         .and(isDateTime -> {
           try {
-            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern).withResolverStyle(ResolverStyle.STRICT);
             return Objects.nonNull(LocalDateTime.parse(isDateTime, dateFormat));
           } catch (final IllegalArgumentException | DateTimeParseException ex) {
             return false;
@@ -182,7 +183,7 @@ public final class StringPredicate {
         .and(isTime -> not(stringEmptyOrNull()).test(pattern))
         .and(isTime -> {
           try {
-            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);
+            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern).withResolverStyle(ResolverStyle.STRICT);
             return Objects.nonNull(LocalTime.parse(isTime, dateFormat));
           } catch (final IllegalArgumentException | DateTimeParseException ex) {
             return false;

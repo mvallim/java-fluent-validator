@@ -1,8 +1,9 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.StringPredicate.*;
+import static br.com.fluentvalidator.predicate.StringPredicate.isAlpha;
 import static br.com.fluentvalidator.predicate.StringPredicate.isAlphaNumeric;
 import static br.com.fluentvalidator.predicate.StringPredicate.isDate;
+import static br.com.fluentvalidator.predicate.StringPredicate.isDateTime;
 import static br.com.fluentvalidator.predicate.StringPredicate.isNumber;
 import static br.com.fluentvalidator.predicate.StringPredicate.isNumeric;
 import static br.com.fluentvalidator.predicate.StringPredicate.isTime;
@@ -34,7 +35,11 @@ public class StringPredicateTest {
 
   @Test
   public void testIsDate() {
-    assertTrue(isDate("dd-MM-yyyy").test("28-02-2019"));
+    assertTrue(isDate("dd-MM-uuuu").test("28-02-2019"));
+    assertTrue(isDate("dd-MM-uuuu").test("29-02-2020"));
+    assertFalse(isDate("dd-MM-yyyy").test("32-02-2020"));
+    assertFalse(isDate("dd-MM-yyyy").test("29-02-2019"));
+    assertFalse(isDate("dd-MM-yyyy").test("31-02-2019"));
     assertFalse(isDate("dd-MM-yyyy").test("28022019"));
     assertFalse(isDate("dd-MM-yyyy").test(null));
     assertFalse(isDate(null).test("28-02-2019"));
@@ -43,11 +48,15 @@ public class StringPredicateTest {
 
   @Test
   public void testObjectIsDate() {
-    assertTrue(isDate(ObjectFrom<String>::getSource, "dd-MM-yyyy").test(new ObjectFrom<>("28-02-2019", null)));
-    assertFalse(isDate(ObjectFrom<String>::getSource, "dd-MM-yyyy").test(new ObjectFrom<>("28022019", null)));
+    assertTrue(isDate(ObjectFrom<String>::getSource, "dd-MM-uuuu")
+        .test(new ObjectFrom<>("28-02-2019", null)));
+    assertFalse(isDate(ObjectFrom<String>::getSource, "dd-MM-yyyy")
+        .test(new ObjectFrom<>("28022019", null)));
     assertFalse(isDate(ObjectFrom<String>::getSource, "dd-MM-yyyy").test(null));
-    assertFalse(isDate(ObjectFrom<String>::getSource, null).test(new ObjectFrom<>("28-02-2019", null)));
-    assertFalse(isDate(ObjectFrom<String>::getSource, "HH-MM-yyyy").test(new ObjectFrom<>("28-02-2019", null)));
+    assertFalse(
+        isDate(ObjectFrom<String>::getSource, null).test(new ObjectFrom<>("28-02-2019", null)));
+    assertFalse(isDate(ObjectFrom<String>::getSource, "HH-MM-yyyy")
+        .test(new ObjectFrom<>("28-02-2019", null)));
   }
 
   @Test
@@ -56,21 +65,25 @@ public class StringPredicateTest {
     assertFalse(isTime("HH:mm:ss").test("235959"));
     assertFalse(isTime("HH:mm:ss").test(null));
     assertFalse(isTime(null).test("23:59:59"));
-    assertFalse(isTime("DD:mm:ss").test("23:59:59"));
+    assertFalse(isTime("çç:mm:ss").test("23:59:59"));
   }
 
   @Test
   public void testObjectIsTime() {
-    assertTrue(isTime(ObjectFrom<String>::getSource, "HH:mm:ss").test(new ObjectFrom<>("23:59:59", null)));
-    assertFalse(isTime(ObjectFrom<String>::getSource, "HH:mm:ss").test(new ObjectFrom<>("235959", null)));
+    assertTrue(
+        isTime(ObjectFrom<String>::getSource, "HH:mm:ss").test(new ObjectFrom<>("23:59:59", null)));
+    assertFalse(
+        isTime(ObjectFrom<String>::getSource, "HH:mm:ss").test(new ObjectFrom<>("235959", null)));
     assertFalse(isTime(ObjectFrom<String>::getSource, "HH:mm:ss").test(null));
-    assertFalse(isTime(ObjectFrom<String>::getSource, null).test(new ObjectFrom<>("23:59:59", null)));
-    assertFalse(isTime(ObjectFrom<String>::getSource, "DD:mm:ss").test(new ObjectFrom<>("23:59:59", null)));
+    assertFalse(
+        isTime(ObjectFrom<String>::getSource, null).test(new ObjectFrom<>("23:59:59", null)));
+    assertFalse(
+        isTime(ObjectFrom<String>::getSource, "çç:mm:ss").test(new ObjectFrom<>("23:59:59", null)));
   }
 
   @Test
   public void testIsDateTime() {
-    assertTrue(isDateTime("dd-MM-yyyy HH:mm:ss").test("28-02-2019 23:59:59"));
+    assertTrue(isDateTime("dd-MM-uuuu HH:mm:ss").test("28-02-2019 23:59:59"));
     assertFalse(isDateTime("dd-MM-yyyy HH:mm:ss").test("28-02-2019 235959"));
     assertFalse(isDateTime("dd-MM-yyyy HH:mm:ss").test(null));
     assertFalse(isDateTime(null).test("23:59:59"));
@@ -79,11 +92,15 @@ public class StringPredicateTest {
 
   @Test
   public void testObjectIsDateTime() {
-    assertTrue(isDateTime(ObjectFrom<String>::getSource, "dd-MM-yyyy HH:mm:ss").test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
-    assertFalse(isDateTime(ObjectFrom<String>::getSource, "dd-MM-yyyy HH:mm:ss").test(new ObjectFrom<>("28-02-2019 235959", null)));
+    assertTrue(isDateTime(ObjectFrom<String>::getSource, "dd-MM-uuuu HH:mm:ss")
+        .test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
+    assertFalse(isDateTime(ObjectFrom<String>::getSource, "dd-MM-yyyy HH:mm:ss")
+        .test(new ObjectFrom<>("28-02-2019 235959", null)));
     assertFalse(isDateTime(ObjectFrom<String>::getSource, "dd-MM-yyyy HH:mm:ss").test(null));
-    assertFalse(isDateTime(ObjectFrom<String>::getSource, null).test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
-    assertFalse(isDateTime(ObjectFrom<String>::getSource, "BB-MM-yyyy HH:mm:ss").test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
+    assertFalse(isDateTime(ObjectFrom<String>::getSource, null)
+        .test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
+    assertFalse(isDateTime(ObjectFrom<String>::getSource, "BB-MM-yyyy HH:mm:ss")
+        .test(new ObjectFrom<>("28-02-2019 23:59:59", null)));
   }
 
   @Test
