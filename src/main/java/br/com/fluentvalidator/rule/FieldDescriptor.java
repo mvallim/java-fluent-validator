@@ -1,11 +1,13 @@
 package br.com.fluentvalidator.rule;
 
-public interface FieldDescriptor {
+interface FieldDescriptor<T, P> {
 
-	String getMessage();
+  String getMessage(final T instance);
 
-	String getCode();
+  String getCode(final T instance);
 
-	String getFieldName();
+  String getFieldName(final T instance);
+
+  P getAttemptedValue(final T instance, final P defaultValue);
 
 }

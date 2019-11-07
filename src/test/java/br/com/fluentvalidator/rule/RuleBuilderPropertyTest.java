@@ -7,13 +7,15 @@ import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeLessThan;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
+import java.util.Collection;
+import java.util.Collections;
 import org.junit.After;
 import org.junit.Test;
-
 import br.com.fluentvalidator.AbstractValidator;
+import br.com.fluentvalidator.context.Error;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationSampleException;
+import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 public class RuleBuilderPropertyTest {
 
@@ -156,6 +158,32 @@ public class RuleBuilderPropertyTest {
                 .when(not(nullValue())).withMessage("rule 4");
 
         assertFalse(builder.apply("o"));
+    }
+    
+    @Test
+    public void testSuccessDynamicProperties() {
+
+      final RuleBuilderPropertyImpl<String, String> builder = new RuleBuilderPropertyImpl<>("test", String::toUpperCase);
+
+      builder
+        .must(nullValue())
+          .withMessage(String::intern)
+        .must(nullValue())
+          .withCode(String::intern)
+        .must(nullValue())
+          .withFieldName(String::intern)
+        .must(nullValue())
+          .withAttempedValue(String::toLowerCase)
+        .must(nullValue())
+          .withAttempedValue(new String())
+        .must(nullValue())
+          .handlerInvalidField(new HandlerInvalidField<String>() {
+            public Collection<Error> handle(final String attemptedValue) {
+              return Collections.emptyList();
+            };
+          });
+
+      assertTrue(builder.apply("oo"));
     }
 
     @Test

@@ -3,7 +3,7 @@ package br.com.fluentvalidator.builder;
 import java.util.function.Function;
 import br.com.fluentvalidator.exception.ValidationException;
 
-public interface Message<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P, W> {
+public interface AttemptedValue<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P, W> {
 
   /**
    *
@@ -21,6 +21,20 @@ public interface Message<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P
 
   /**
    *
+   * @param message
+   * @return
+   */
+  Message<T, P, W> withMessage(final String message);
+
+  /**
+   *
+   * @param message
+   * @return
+   */
+  Message<T, P, W> withMessage(final Function<T, String> message);
+
+  /**
+   *
    * @param fieldName
    * @return
    */
@@ -35,20 +49,6 @@ public interface Message<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P
 
   /**
    *
-   * @param fieldName
-   * @return
-   */
-  AttemptedValue<T, P, W> withAttempedValue(final P attemptedValue);
-
-  /**
-   *
-   * @param fieldName
-   * @return
-   */
-  AttemptedValue<T, P, W> withAttempedValue(final Function<T, P> attemptedValue);
-
-  /**
-   *
    * @return
    */
   Critical<T, P, W> critical();
@@ -59,5 +59,6 @@ public interface Message<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P
    * @return
    */
   Critical<T, P, W> critical(final Class<? extends ValidationException> clazz);
+
 
 }

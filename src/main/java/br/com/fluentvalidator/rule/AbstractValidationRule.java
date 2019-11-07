@@ -2,142 +2,158 @@ package br.com.fluentvalidator.rule;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
-
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.Error;
 import br.com.fluentvalidator.exception.ValidationException;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
-abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, FieldDescriptor {
+@SuppressWarnings("unchecked")
+abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, FieldDescriptor<Object, P> {
 
-	private Predicate<P> whenever = w -> true;
+  private Predicate<P> whenever = w -> true;
 
-	private Predicate<P> when = w -> true;
+  private Predicate<P> when = w -> true;
 
-	private Predicate<P> must = m -> true;
+  private Predicate<P> must = m -> true;
 
-	private String message;
+  private Function<Object, String> message = obj -> null;
 
-	private String code;
+  private Function<Object, String> code = obj -> null;
 
-	private String fieldName;
+  private Function<Object, String> fieldName = obj -> null;
 
-	private boolean critical;
+  private Function<Object, P> attemptedValue;
 
-	private Class<? extends ValidationException> criticalException;
+  private boolean critical;
 
-	private Validator<T> validator;
+  private Class<? extends ValidationException> criticalException;
 
-	private HandlerInvalidField<P> handlerInvalidField = new InternalHandlerInvalidField<>(this);
+  private Validator<T> validator;
 
-	public Predicate<P> getWhenever() {
-		return this.whenever;
-	}
+  private HandlerInvalidField<P> handlerInvalidField = new InternalHandlerInvalidField(this);
 
-	public Predicate<P> getWhen() {
-		return this.when;
-	}
+  public Predicate<P> getWhenever() {
+    return this.whenever;
+  }
 
-	public Predicate<P> getMust() {
-		return this.must;
-	}
+  public Predicate<P> getWhen() {
+    return this.when;
+  }
 
-	public Class<? extends ValidationException> getCriticalException() {
-		return this.criticalException;
-	}
+  public Predicate<P> getMust() {
+    return this.must;
+  }
 
-	public Validator<T> getValidator() {
-		return this.validator;
-	}
+  public Class<? extends ValidationException> getCriticalException() {
+    return this.criticalException;
+  }
 
-	@Override
-	public String getMessage() {
-		return this.message;
-	}
+  public Validator<T> getValidator() {
+    return this.validator;
+  }
 
-	@Override
-	public String getCode() {
-		return this.code;
-	}
+  @Override
+  public String getMessage(final Object instance) {
+    return this.message.apply(instance);
+  }
 
-	@Override
-	public String getFieldName() {
-		return this.fieldName;
-	}
+  @Override
+  public String getCode(final Object instance) {
+    return this.code.apply(instance);
+  }
 
-	public HandlerInvalidField<P> getHandlerInvalid() {
-		return handlerInvalidField;
-	}
+  @Override
+  public String getFieldName(final Object instance) {
+    return this.fieldName.apply(instance);
+  }
 
-	public boolean isCritical() {
-		return this.critical;
-	}
+  @Override
+  public P getAttemptedValue(final Object instance, final P defaultValue) {
+    return Objects.isNull(this.attemptedValue) ? defaultValue : this.attemptedValue.apply(instance);
+  }
 
-	@Override
-	public void when(final Predicate<P> when) {
-		this.when = when;
-	}
+  public HandlerInvalidField<P> getHandlerInvalid() {
+    return handlerInvalidField;
+  }
 
-	@Override
-	public void must(final Predicate<P> must) {
-		this.must = must;
-	}
+  public boolean isCritical() {
+    return this.critical;
+  }
 
-	@Override
-	public void withFieldName(final String fieldName) {
-		this.fieldName = fieldName;
-	}
+  @Override
+  public void when(final Predicate<P> when) {
+    this.when = when;
+  }
 
-	@Override
-	public void withMessage(final String message) {
-		this.message = message;
-	}
+  @Override
+  public void must(final Predicate<P> must) {
+    this.must = must;
+  }
 
-	@Override
-	public void withCode(final String code) {
-		this.code = code;
-	}
+  @Override
+  public void withFieldName(final Function<?, String> fieldName) {
+    this.fieldName = (Function<Object, String>) fieldName;
+  }
 
-	@Override
-	public void withHandlerInvalidField(final HandlerInvalidField<P> handlerInvalidField) {
-		this.handlerInvalidField = handlerInvalidField;
-	}
+  @Override
+  public void withMessage(final Function<?, String> message) {
+    this.message = (Function<Object, String>) message;
+  }
 
-	@Override
-	public void critical() {
-		this.critical = true;
-	}
+  @Override
+  public void withCode(final Function<?, String> code) {
+    this.code = (Function<Object, String>) code;
+  }
 
-	@Override
-	public void critical(final Class<? extends ValidationException> clazz) {
-		this.critical = true;
-		this.criticalException = clazz;
-	}
+  @Override
+  public void withAttemptedValue(final Function<?, P> attemptedValue) {
+    this.attemptedValue = (Function<Object, P>) attemptedValue;
+  }
 
-	@Override
-	public void whenever(final Predicate<P> whenever) {
-		this.whenever = whenever;
-	}
+  @Override
+  public void withHandlerInvalidField(final HandlerInvalidField<P> handlerInvalidField) {
+    this.handlerInvalidField = handlerInvalidField;
+  }
 
-	@Override
-	public void withValidator(final Validator<T> validator) {
-		this.validator = validator;
-	}
+  @Override
+  public void critical() {
+    this.critical = true;
+  }
 
-	private class InternalHandlerInvalidField<E> implements HandlerInvalidField<E> {
+  @Override
+  public void critical(final Class<? extends ValidationException> clazz) {
+    this.critical = true;
+    this.criticalException = clazz;
+  }
 
-		private final FieldDescriptor fieldDescriptor;
+  @Override
+  public void whenever(final Predicate<P> whenever) {
+    this.whenever = whenever;
+  }
 
-		public InternalHandlerInvalidField(final FieldDescriptor fieldDescriptor) {
-			this.fieldDescriptor = fieldDescriptor;
-		}
+  @Override
+  public void withValidator(final Validator<T> validator) {
+    this.validator = validator;
+  }
 
-		@Override
-		public Collection<Error> handle(final E object) {
-			return Collections.singletonList(Error.create(fieldDescriptor.getFieldName(), fieldDescriptor.getMessage(), fieldDescriptor.getCode(), object));
-		}
+  private class InternalHandlerInvalidField implements HandlerInvalidField<P> {
 
-	}
+    private final FieldDescriptor<Object, P> fieldDescriptor;
+
+    public InternalHandlerInvalidField(final FieldDescriptor<Object, P> fieldDescriptor) {
+      this.fieldDescriptor = fieldDescriptor;
+    }
+
+    @Override
+    public Collection<Error> handle(final Object instance, final P attemptedValue) {
+      return Collections.singletonList(Error.create(fieldDescriptor.getFieldName(instance),
+          fieldDescriptor.getMessage(instance), fieldDescriptor.getCode(instance),
+          fieldDescriptor.getAttemptedValue(instance, attemptedValue)));
+    }
+
+  }
 
 }
