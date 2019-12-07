@@ -229,6 +229,14 @@ between(final Function<T, E> source, final E min, final E max)
 ```
 
 ```java
+betweenInclusive(final E min, final E max)
+```
+
+```java
+betweenInclusive(final Function<T, E> source, final E min, final E max)
+```
+
+```java
 equalTo(final E value)
 ```
 
