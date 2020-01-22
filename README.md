@@ -15,7 +15,7 @@ Validating data is a common task that occurs throughout any application, especia
 ## Sample
 
 ```java
-public class ValidatorBoy extends AbstractValidator<Boy>{
+public class ValidatorBoy extends AbstractValidator<Boy> {
 
     @Override
     protected void rules() {
