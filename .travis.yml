@@ -15,5 +15,5 @@ script:
   - mvn test
 
 after_success:
-  - mvn sonar:sonar -Dsonar.projectKey=java-fluent-validator
+  - mvn clean verify sonar:sonar -Dsonar.projectKey=java-fluent-validator
 
