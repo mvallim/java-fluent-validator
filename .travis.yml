@@ -15,7 +15,7 @@ script:
   - mvn test
 
 install:
-  - git fetch --unshallow --tags
+  - git fetch --unshallow
 
 after_success:
   - mvn clean verify sonar:sonar -Dsonar.projectKey=java-fluent-validator
