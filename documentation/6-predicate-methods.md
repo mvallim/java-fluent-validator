@@ -331,6 +331,10 @@ hasSize(final Function<T, Collection<E>> source, final Integer size)
 ```
 
 ```java
+hasSize(final Function<T, Collection<E>> source, final Function<T, Integer> size)
+```
+
+```java
 hasSize(final Integer size)
 ```
 
