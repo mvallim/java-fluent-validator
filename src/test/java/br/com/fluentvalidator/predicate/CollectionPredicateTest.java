@@ -120,8 +120,17 @@ public class CollectionPredicateTest {
     @Test
     public void testObjectNullCollectionHasSize() {
         assertFalse(hasSize(TestClass::getSource, 1).test(null));
-        assertFalse(hasSize(TestClass::getSource, null).test(null));
-        assertFalse(hasSize(TestClass::getSource, null).test(new TestClass(Arrays.asList(1))));
+        assertFalse(hasSize(TestClass::getSource, (Integer)null).test(null));
+        assertFalse(hasSize(TestClass::getSource, (Integer)null).test(new TestClass(Arrays.asList(1))));
+        assertFalse(hasSize(TestClass::getSource, (Integer)null).test(new TestClass(null)));
+    }
+    
+    @Test
+    public void testObjectNullCollectionHasSize2() {
+        assertFalse(hasSize(TestClass::getSource, fn -> 1).test(null));
+        assertFalse(hasSize(TestClass::getSource, TestClass::getSize).test(null));
+        assertFalse(hasSize(TestClass::getSource, TestClass::getSize).test(new TestClass(Arrays.asList(1))));
+        assertFalse(hasSize(TestClass::getSource, TestClass::getSize).test(new TestClass(null)));
     }
 
     @Test
@@ -157,16 +166,32 @@ public class CollectionPredicateTest {
         assertFalse(hasSize(TestClass::getSource, 1).test(new TestClass(Arrays.asList())));
     }
 
+    @Test
+    public void testObjectCollectionHasSize2() {
+        assertTrue(hasSize(TestClass::getSource, TestClass::getSize).test(new TestClass(Arrays.asList(1), 1)));
+        assertFalse(hasSize(TestClass::getSource, TestClass::getSize).test(new TestClass(Arrays.asList(), 1)));
+    }
+
     class TestClass {
 
+    	private final Integer size;
         private final Collection<Integer> source;
 
-        private TestClass(final Collection<Integer> source) {
+        private TestClass(final Collection<Integer> source, final Integer size) {
             this.source = source;
+            this.size = size;
+        }
+
+        private TestClass(final Collection<Integer> source) {
+        	this(source, null);
         }
 
         public Collection<Integer> getSource() {
             return source;
+        }
+        
+        public Integer getSize() {
+        	return size;
         }
 
     }

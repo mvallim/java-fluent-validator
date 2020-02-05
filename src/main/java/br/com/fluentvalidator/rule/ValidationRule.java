@@ -18,7 +18,7 @@ interface ValidationRule<T, P> extends Rule<P> {
 
   void withCode(final Function<?, String> code);
 
-  void withAttemptedValue(final Function<?, P> attemptedValue);
+  void withAttemptedValue(final Function<?, Object> attemptedValue);
 
   void withHandlerInvalidField(final HandlerInvalidField<P> handleInvalid);
 

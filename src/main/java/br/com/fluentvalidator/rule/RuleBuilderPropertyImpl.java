@@ -94,13 +94,13 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
   }
 
   @Override
-  public AttemptedValue<T, P, WhenProperty<T, P>> withAttempedValue(final P attemptedValue) {
+  public AttemptedValue<T, P, WhenProperty<T, P>> withAttempedValue(final Object attemptedValue) {
     this.currentValidation.withAttemptedValue(obj -> attemptedValue);
     return this;
   }
 
   @Override
-  public AttemptedValue<T, P, WhenProperty<T, P>> withAttempedValue(final Function<T, P> attemptedValue) {
+  public AttemptedValue<T, P, WhenProperty<T, P>> withAttempedValue(final Function<T, Object> attemptedValue) {
     this.currentValidation.withAttemptedValue(attemptedValue);
     return this;
   }
