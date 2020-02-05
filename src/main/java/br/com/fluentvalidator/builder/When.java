@@ -53,14 +53,14 @@ public interface When<T, P, W extends When<T, P, W>> extends RuleBuilder<T, P, W
    * @param fieldName
    * @return
    */
-  AttemptedValue<T, P, W> withAttempedValue(final P attemptedValue);
+  AttemptedValue<T, P, W> withAttempedValue(final Object attemptedValue);
 
   /**
    *
    * @param fieldName
    * @return
    */
-  AttemptedValue<T, P, W> withAttempedValue(final Function<T, P> attemptedValue);
+  AttemptedValue<T, P, W> withAttempedValue(final Function<T, Object> attemptedValue);
 
   /**
    *

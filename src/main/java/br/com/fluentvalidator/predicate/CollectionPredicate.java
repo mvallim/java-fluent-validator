@@ -177,7 +177,23 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
+		.and(obj -> not(nullValue(source)).test(obj))
         .and(obj -> equalTo(size).test(source.apply(obj).size()));
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param <E>
+   * @param source
+   * @param size
+   * @return
+   */
+  public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Function<T, Integer> size) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+    	.and(obj -> not(nullValue(size)).test(obj))
+    	.and(obj -> not(nullValue(source)).test(obj))
+        .and(obj -> equalTo(size.apply(obj)).test(source.apply(obj).size()));
   }
 
   /**

@@ -93,13 +93,13 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
   }
 
   @Override
-  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>> withAttempedValue(final Collection<P> attemptedValue) {
+  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>> withAttempedValue(final Object attemptedValue) {
     this.currentValidation.withAttemptedValue(obj -> attemptedValue);
     return this;
   }
 
   @Override
-  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>> withAttempedValue(final Function<T, Collection<P>> attemptedValue) {
+  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>> withAttempedValue(final Function<T, Object> attemptedValue) {
     this.currentValidation.withAttemptedValue(attemptedValue);
     return this;
   }

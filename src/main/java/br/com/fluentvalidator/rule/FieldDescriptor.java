@@ -8,6 +8,6 @@ interface FieldDescriptor<T, P> {
 
   String getFieldName(final T instance);
 
-  P getAttemptedValue(final T instance, final P defaultValue);
+  Object getAttemptedValue(final T instance, final P defaultValue);
 
 }

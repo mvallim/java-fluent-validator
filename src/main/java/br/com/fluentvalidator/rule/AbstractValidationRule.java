@@ -25,7 +25,7 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
 
   private Function<Object, String> fieldName = obj -> null;
 
-  private Function<Object, P> attemptedValue;
+  private Function<Object, Object> attemptedValue;
 
   private boolean critical;
 
@@ -71,7 +71,7 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   @Override
-  public P getAttemptedValue(final Object instance, final P defaultValue) {
+  public Object getAttemptedValue(final Object instance, final P defaultValue) {
     return Objects.isNull(this.attemptedValue) ? defaultValue : this.attemptedValue.apply(instance);
   }
 
@@ -109,8 +109,8 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   @Override
-  public void withAttemptedValue(final Function<?, P> attemptedValue) {
-    this.attemptedValue = (Function<Object, P>) attemptedValue;
+  public void withAttemptedValue(final Function<?, Object> attemptedValue) {
+    this.attemptedValue = (Function<Object, Object>) attemptedValue;
   }
 
   @Override
