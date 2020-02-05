@@ -4,6 +4,7 @@ import static br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Function;
@@ -42,7 +43,7 @@ public final class CollectionPredicate {
    */
   public static <E, T extends Collection<E>> Predicate<T> hasAny(final Collection<E> objects) {
     return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(objects))
-        .and(hasAny -> hasAny.stream().anyMatch(item -> objects.contains(item)));
+        .and(hasAny -> hasAny.stream().anyMatch(objects::contains));
   }
 
   /**
@@ -176,7 +177,23 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
+		.and(obj -> not(nullValue(source)).test(obj))
         .and(obj -> equalTo(size).test(source.apply(obj).size()));
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param <E>
+   * @param source
+   * @param size
+   * @return
+   */
+  public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Function<T, Integer> size) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+    	.and(obj -> not(nullValue(size)).test(obj))
+    	.and(obj -> not(nullValue(source)).test(obj))
+        .and(obj -> equalTo(size.apply(obj)).test(source.apply(obj).size()));
   }
 
   /**

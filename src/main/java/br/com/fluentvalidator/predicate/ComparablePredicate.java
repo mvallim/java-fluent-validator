@@ -8,6 +8,10 @@ import java.util.function.Predicate;
 public final class ComparablePredicate {
 
   private static final Integer ZERO = 0;
+  
+  private ComparablePredicate() {
+    super();
+  }
 
   /**
    *
@@ -31,8 +35,32 @@ public final class ComparablePredicate {
    * @return
    */
   public static <T, E extends Comparable<E>> Predicate<T> between(final Function<T, E> source, final E min, final E max) {
-    return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> between(min, max).test(source.apply(obj)));
+    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> between(min, max).test(source.apply(obj)));
+  }
+
+  /**
+   *
+   * @param <E>
+   * @param <T>
+   * @param min
+   * @param max
+   * @return
+   */
+  public static <E, T extends Comparable<E>> Predicate<T> betweenInclusive(final E min, final E max) {
+    return PredicateBuilder.<T>from(not(nullValue())).and(lessThanOrEqual(max).and(greaterThanOrEqual(min)));
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param <E>
+   * @param source
+   * @param min
+   * @param max
+   * @return
+   */
+  public static <T, E extends Comparable<E>> Predicate<T> betweenInclusive(final Function<T, E> source, final E min, final E max) {
+    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> betweenInclusive(min, max).test(source.apply(obj)));
   }
 
   /**
@@ -43,8 +71,7 @@ public final class ComparablePredicate {
    * @return
    */
   public static <E, T extends Comparable<E>> Predicate<T> equalTo(final E value) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(equalTo -> not(nullValue()).test(value))
-        .and(equalTo -> equalTo.compareTo(value) == ZERO);
+    return PredicateBuilder.<T>from(not(nullValue())).and(equalTo -> not(nullValue()).test(value)).and(equalTo -> equalTo.compareTo(value) == ZERO);
   }
 
   /**
@@ -56,8 +83,7 @@ public final class ComparablePredicate {
    * @return
    */
   public static <T, E extends Comparable<E>> Predicate<T> equalTo(final Function<T, E> source, final E value) {
-    return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> equalTo(value).test(source.apply(obj)));
+    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> equalTo(value).test(source.apply(obj)));
   }
 
   /**
@@ -68,8 +94,7 @@ public final class ComparablePredicate {
    * @return
    */
   public static <E, T extends Comparable<E>> Predicate<T> greaterThan(final E min) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(greaterThan -> not(nullValue()).test(min))
-        .and(greaterThan -> greaterThan.compareTo(min) > ZERO);
+    return PredicateBuilder.<T>from(not(nullValue())).and(greaterThan -> not(nullValue()).test(min)).and(greaterThan -> greaterThan.compareTo(min) > ZERO);
   }
 
   /**
@@ -81,8 +106,7 @@ public final class ComparablePredicate {
    * @return
    */
   public static <T, E extends Comparable<E>> Predicate<T> greaterThan(final Function<T, E> source, final E min) {
-    return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> greaterThan(min).test(source.apply(obj)));
+    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> greaterThan(min).test(source.apply(obj)));
   }
 
   /**
@@ -116,8 +140,7 @@ public final class ComparablePredicate {
    * @return
    */
   public static <E, T extends Comparable<E>> Predicate<T> lessThan(final E max) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(lessThan -> not(nullValue()).test(max))
-        .and(lessThan -> lessThan.compareTo(max) < ZERO);
+    return PredicateBuilder.<T>from(not(nullValue())).and(lessThan -> not(nullValue()).test(max)).and(lessThan -> lessThan.compareTo(max) < ZERO);
   }
 
   /**
@@ -129,8 +152,7 @@ public final class ComparablePredicate {
    * @return
    */
   public static <T, E extends Comparable<E>> Predicate<T> lessThan(final Function<T, E> source, final E max) {
-    return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> lessThan(max).test(source.apply(obj)));
+    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> lessThan(max).test(source.apply(obj)));
   }
 
   /**
@@ -154,10 +176,6 @@ public final class ComparablePredicate {
    */
   public static <T, E extends Comparable<E>> Predicate<T> lessThanOrEqual(final Function<T, E> source, final E max) {
     return PredicateBuilder.<T>from(lessThan(source, max).or(equalTo(source, max)));
-  }
-
-  private ComparablePredicate() {
-    super();
   }
 
 }

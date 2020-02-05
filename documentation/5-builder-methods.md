@@ -92,13 +92,13 @@ whenever(final Predicate<P> predicate)
 ## 5.7 `withAttempedValue` when `must` condition not be true, using object property
 
 ```java
-withAttempedValue(final Function<T, P> attemptedValue)
+withAttempedValue(final Function<T, Object> attemptedValue)
 ```
 
 ## 5.8 `withAttempedValue` when `must` condition not be true
 
 ```java
-withAttempedValue(final P attemptedValue)
+withAttempedValue(final Object attemptedValue)
 ```
 
 ## 5.9 `withCode` when `must` condition not be true, using object property

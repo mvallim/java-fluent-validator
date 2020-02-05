@@ -14,6 +14,9 @@ script:
   - mvn clean compile
   - mvn test
 
+install:
+  - git fetch --unshallow
+
 after_success:
-  - mvn sonar:sonar -Dsonar.projectKey=java-fluent-validator
+  - mvn clean test jacoco:report org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.projectKey=java-fluent-validator
 

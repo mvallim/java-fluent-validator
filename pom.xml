@@ -3,7 +3,7 @@
 
 	<groupId>com.github.mvallim</groupId>
 	<artifactId>java-fluent-validator</artifactId>
-	<version>1.7.6-SNAPSHOT</version>
+	<version>1.7.8-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<properties>

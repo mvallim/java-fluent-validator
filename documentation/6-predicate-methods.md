@@ -229,6 +229,14 @@ between(final Function<T, E> source, final E min, final E max)
 ```
 
 ```java
+betweenInclusive(final E min, final E max)
+```
+
+```java
+betweenInclusive(final Function<T, E> source, final E min, final E max)
+```
+
+```java
 equalTo(final E value)
 ```
 
@@ -320,6 +328,10 @@ hasItems(final Function<T, Collection<E>> source, final E[] objects)
 
 ```java
 hasSize(final Function<T, Collection<E>> source, final Integer size)
+```
+
+```java
+hasSize(final Function<T, Collection<E>> source, final Function<T, Integer> size)
 ```
 
 ```java
