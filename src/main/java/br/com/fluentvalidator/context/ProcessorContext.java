@@ -1,7 +1,8 @@
 package br.com.fluentvalidator.context;
 
+import java.util.Deque;
 import java.util.Objects;
-import java.util.Stack;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ProcessorContext {
@@ -35,7 +36,7 @@ public final class ProcessorContext {
    */
   public static final class Context {
 
-    private final Stack<AtomicInteger> stackCounter = new Stack<>();
+    private final Deque<AtomicInteger> stackCounter = new ConcurrentLinkedDeque<>();
 
     public void create() {
       stackCounter.add(new AtomicInteger(0));
@@ -43,18 +44,18 @@ public final class ProcessorContext {
 
     public void remove() {
       if (!stackCounter.isEmpty()) {
-        stackCounter.remove(stackCounter.firstElement());
+        stackCounter.removeFirst();
       }
     }
 
     public void inc() {
       if (!stackCounter.isEmpty()) {
-        stackCounter.firstElement().incrementAndGet();
+        stackCounter.getFirst().incrementAndGet();
       }
     }
 
     public Integer get() {
-      return stackCounter.isEmpty() ? 0 : stackCounter.firstElement().get();
+      return stackCounter.isEmpty() ? 0 : stackCounter.getFirst().get();
     }
 
   }
