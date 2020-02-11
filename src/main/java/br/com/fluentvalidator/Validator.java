@@ -3,6 +3,7 @@ package br.com.fluentvalidator;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
+
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.context.ValidationResult;
@@ -20,6 +21,12 @@ public interface Validator<T> extends Rule<T> {
    *
    */
   void failFastRule();
+
+  /**
+   *
+   * @return Current count element on collection
+   */
+  Integer getCounter();
 
   /**
    *
