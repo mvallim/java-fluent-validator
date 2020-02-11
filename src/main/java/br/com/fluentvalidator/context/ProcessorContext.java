@@ -39,23 +39,23 @@ public final class ProcessorContext {
     private final Deque<AtomicInteger> stackCounter = new ConcurrentLinkedDeque<>();
 
     public void create() {
-      stackCounter.add(new AtomicInteger(0));
+      stackCounter.push(new AtomicInteger(0));
     }
 
     public void remove() {
       if (!stackCounter.isEmpty()) {
-        stackCounter.removeFirst();
+        stackCounter.pop();
       }
     }
 
     public void inc() {
       if (!stackCounter.isEmpty()) {
-        stackCounter.getFirst().incrementAndGet();
+        stackCounter.peek().incrementAndGet();
       }
     }
 
     public Integer get() {
-      return stackCounter.isEmpty() ? 0 : stackCounter.getFirst().get();
+      return stackCounter.isEmpty() ? 0 : stackCounter.peek().get();
     }
 
   }
