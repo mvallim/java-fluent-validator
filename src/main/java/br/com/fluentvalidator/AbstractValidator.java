@@ -6,8 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
+import br.com.fluentvalidator.context.ProcessorContext;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.rule.Rule;
@@ -51,6 +53,14 @@ public abstract class AbstractValidator<T> implements Validator<T> {
   }
 
   /**
+   * {@link #getCounter() AbstractValidator}
+   */
+  @Override
+  public Integer getCounter() {
+    return ProcessorContext.get().get();
+  }
+
+  /**
    * {@link #setPropertyOnContext(String) AbstractValidator }
    */
   @Override
@@ -88,8 +98,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   @Override
   public List<ValidationResult> validate(final Collection<T> instances) {
-    return Collections
-        .unmodifiableList(instances.stream().map(this::validate).collect(Collectors.toList()));
+    return Collections.unmodifiableList(instances.stream().map(this::validate).collect(Collectors.toList()));
   }
 
   /**
@@ -97,8 +106,8 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   @Override
   public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> resultTransform) {
-    return Collections.unmodifiableList(instances.stream()
-        .map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
+    return Collections.unmodifiableList(
+        instances.stream().map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
   }
 
   /**
@@ -135,9 +144,9 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    * {@link #ruleForEach(String, Function) AbstractValidator}
    */
   @Override
-  public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName, final Function<T, Collection<P>> function) {
-    final RuleBuilderCollectionImpl<T, P> rule =
-        new RuleBuilderCollectionImpl<>(fieldName, function);
+  public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName,
+      final Function<T, Collection<P>> function) {
+    final RuleBuilderCollectionImpl<T, P> rule = new RuleBuilderCollectionImpl<>(fieldName, function);
     this.rules.add(rule);
     return rule;
   }
