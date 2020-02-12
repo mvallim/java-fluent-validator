@@ -36,18 +36,13 @@ public interface RuleProcessorStrategy {
   }
 
   default <E> boolean process(final Object obj, final E value, final Collection<Rule<E>> rules) {
-    ProcessorContext.get().create();
-    final boolean allMatch = rules.stream().map(rule -> {
-      ProcessorContext.get().inc();
-      return this.process(obj, value, rule);
-    }).collect(Collectors.toList()).stream().allMatch(result -> result);
-    ProcessorContext.get().remove();
-    return allMatch;
+    return rules.stream().map(rule -> this.process(obj, value, rule)).collect(Collectors.toList()).stream()
+      .allMatch(result -> result);
   }
 
   default <E> boolean process(final E value, final Collection<Rule<E>> rules) {
     return rules.stream().map(rule -> this.process(value, rule)).collect(Collectors.toList()).stream()
-        .allMatch(result -> result);
+      .allMatch(result -> result);
   }
 
   public static RuleProcessorStrategy getFailFast() {
