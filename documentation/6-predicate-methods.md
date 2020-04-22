@@ -327,11 +327,27 @@ hasItems(final Function<T, Collection<E>> source, final E[] objects)
 ```
 
 ```java
-hasSize(final Function<T, Collection<E>> source, final Integer size)
+hasSizeBetween(final Function<T, Collection<E>> source, final Integer min, final Integer max)
+```
+
+```java
+hasSizeBetween(final Integer min, final Integer max)
+```
+
+```java
+hasSizeBetweenInclusive(final Function<T, Collection<E>> source, final Integer min, final Integer max)
+```
+
+```java
+hasSizeBetweenInclusive(final Integer min, final Integer max)
 ```
 
 ```java
 hasSize(final Function<T, Collection<E>> source, final Function<T, Integer> size)
+```
+
+```java
+hasSize(final Function<T, Collection<E>> source, final Integer size)
 ```
 
 ```java
