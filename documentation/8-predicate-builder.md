@@ -8,6 +8,6 @@ Example:
 
 ```java
 private static Predicate<Child> isGirl() {
-    return PredicateBuilder.from(not(nullValue)).and(child -> child.isAssignableFrom(Girl.class));
+    return PredicateBuilder.from(not(nullValue)).and(instanceOf(Girl.class));
 }
 ```
