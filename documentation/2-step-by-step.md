@@ -1,6 +1,6 @@
 # 2. Basic validation step by step
 
-Java Fluent Valiator is inspired by [Fluent Interface](https://www.martinfowler.com/bliki/FluentInterface.html) and [.Net FluentValidation](https://fluentvalidation.net/) which defined an inner-DSL within Java language for programmers to use. A fluent interface implies that its primary goal is to make it easy to SPEAK and UNDERSTAND. And that is what Java Fluent Valiator is dedicated to do, to provide more readable code for you.
+Java Fluent Validator is inspired by [Fluent Interface](https://www.martinfowler.com/bliki/FluentInterface.html) and [.Net FluentValidation](https://fluentvalidation.net/) which defined an inner-DSL within Java language for programmers to use. A fluent interface implies that its primary goal is to make it easy to SPEAK and UNDERSTAND. And that is what Java Fluent Valiator is dedicated to do, to provide more readable code for you.
 
 ## 2.1 Create validators
 
