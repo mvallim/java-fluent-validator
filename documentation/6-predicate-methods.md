@@ -11,7 +11,15 @@ isTrue()
 ```
 
 ```java
+isTrue(final Function<T, Boolean> function)
+```
+
+```java
 isFalse()
+```
+
+```java
+isFalse(final Function<T, Boolean> function)
 ```
 
 ```java
@@ -21,11 +29,15 @@ not(final Predicate<T> predicate)
 ## 6.2 Object
 
 ```java
-equalTo(final Function<T, Object> source, final Function<T, Object> target)
+equalObject(final Function<T, Object> source, final Function<T, Object> target)
 ```
 
 ```java
-equalTo(final T obj)
+equalObject(final Function<T, Object> source, final Object target)
+```
+
+```java
+equalObject(final T obj)
 ```
 
 ```java
