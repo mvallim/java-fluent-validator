@@ -4,7 +4,7 @@ import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThan;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThan;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
-import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.equalObject;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -354,7 +354,7 @@ public final class StringPredicate {
   public static Predicate<String> stringSize(final Integer size) {
     return PredicateBuilder.<String>from(not(nullValue()))
         .and(stringSize -> not(nullValue()).test(size))
-        .and(stringSize -> equalTo(size).test(stringSize.length()));
+        .and(stringSize -> equalObject(size).test(stringSize.length()));
   }
 
   /**
