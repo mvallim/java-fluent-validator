@@ -235,11 +235,11 @@ public class RuleBuilderCollectionTest {
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
 
-    builder.must(isFalse()).when(isTrue()).withMessage("ever enter here").withCode("666")
-        .withFieldName("size").must(isTrue()).when(isTrue()).withMessage("never enter here")
-        .withCode("666").withFieldName("size").must(isTrue()).when(isFalse())
-        .withMessage("never enter here").withCode("666").withFieldName("size").must(isFalse())
-        .when(isFalse()).withMessage("never enter here").withCode("666").withFieldName("size");
+    builder.must(isFalse(fn -> false)).when(isTrue(fn -> true)).withMessage("ever enter here").withCode("666")
+        .withFieldName("size").must(isTrue(fn -> true)).when(isTrue(fn -> true)).withMessage("never enter here")
+        .withCode("666").withFieldName("size").must(isTrue(fn -> true)).when(isFalse(fn -> false))
+        .withMessage("never enter here").withCode("666").withFieldName("size").must(isFalse(fn -> false))
+        .when(isFalse(fn -> false)).withMessage("never enter here").withCode("666").withFieldName("size");
 
     assertTrue(builder.apply(Arrays.asList("o")));
   }

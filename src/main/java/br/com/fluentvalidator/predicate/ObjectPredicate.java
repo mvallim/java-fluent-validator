@@ -14,11 +14,25 @@ public final class ObjectPredicate {
    * @param target
    * @return
    */
-  public static <T> Predicate<T> equalTo(final Function<T, Object> source, final Function<T, Object> target) {
+  public static <T> Predicate<T> equalObject(final Function<T, Object> source, final Function<T, Object> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> not(nullValue()).test(source.apply(obj)))
-        .and(obj -> not(nullValue()).test(target.apply(obj)))
-        .and(obj -> equalTo(source.apply(obj)).test(target.apply(obj)));
+        .and(not(nullValue(source)))
+        .and(not(nullValue(target)))
+        .and(obj -> Objects.equals(source.apply(obj), target.apply(obj)));
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param source
+   * @param target
+   * @return
+   */
+  public static <T> Predicate<T> equalObject(final Function<T, Object> source, final Object target) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(nullValue(source)))
+        .and(not(nullValue(obj -> target)))
+        .and(obj -> Objects.equals(source.apply(obj), target));
   }
 
   /**
@@ -27,8 +41,9 @@ public final class ObjectPredicate {
    * @param obj
    * @return
    */
-  public static <T> Predicate<T> equalTo(final T obj) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(equalTo -> equalTo.equals(obj));
+  public static <T> Predicate<T> equalObject(final Object target) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(obj -> Objects.equals(obj, target));
   }
 
   /**
@@ -39,8 +54,8 @@ public final class ObjectPredicate {
    */
   public static <T> Predicate<T> instanceOf(final Class<?> clazz) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(instanceOf -> not(nullValue()).test(clazz))
-        .and(instanceOf -> clazz.isAssignableFrom(instanceOf.getClass()));
+        .and(not(nullValue(fn -> clazz)))
+        .and(instanceOf -> clazz.isInstance(instanceOf));
   }
 
   /**
@@ -52,7 +67,9 @@ public final class ObjectPredicate {
    */
   public static <T> Predicate<T> instanceOf(final Function<T, Object> source, final Class<?> clazz) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(instanceOf -> instanceOf(clazz).test(source.apply(instanceOf)));
+        .and(not(nullValue(source)))
+        .and(not(nullValue(fn -> clazz)))
+        .and(instanceOf -> clazz.isInstance(source.apply(instanceOf)));
   }
 
   /**
@@ -72,7 +89,7 @@ public final class ObjectPredicate {
    */
   public static <T> Predicate<T> nullValue(final Function<T, ?> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> nullValue().test(source.apply(obj)));
+        .and(obj -> Objects.isNull(source) || Objects.isNull(source.apply(obj)));
   }
 
   private ObjectPredicate() {
