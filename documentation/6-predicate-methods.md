@@ -45,7 +45,7 @@ instanceOf(final Class<?> clazz)
 ```
 
 ```java
-instanceOf(final Function<T, Object> source, final Class<?> clazz)
+instanceOf(final Function<T, ?> source, final Class<?> clazz)
 ```
 
 ```java
