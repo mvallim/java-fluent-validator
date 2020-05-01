@@ -67,7 +67,7 @@ public final class ObjectPredicate {
    * @param clazz
    * @return
    */
-  public static <T> Predicate<T> instanceOf(final Function<T, Object> source, final Class<?> clazz) {
+  public static <T> Predicate<T> instanceOf(final Function<T, ?> source, final Class<?> clazz) {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(not(nullValue(source)))
         .and(obj -> instanceOf(clazz).test(source.apply(obj)));
