@@ -47,9 +47,14 @@ public class ObjectPredicateTest {
 
   @Test
   public void testObjectNullValue() {
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue(ObjectFrom::getSource)).test(null));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue(null)).test(null));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue(null)).test(new ObjectFrom<>(null, null)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue(fn -> null)).test(null));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue(fn -> null)).test(new ObjectFrom<>(null, null)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue((Function<ObjectFrom<Integer>, Integer>) null)).test(null));
     assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue((Function<ObjectFrom<Integer>, Integer>) null)).test(new ObjectFrom<>(null, null)));
     assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue(ObjectFrom::getSource)).test(new ObjectFrom<>(null, null)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue(ObjectFrom::getSource)).test(null));
     assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(nullValue(ObjectFrom::getSource)).test(new ObjectFrom<>(1, null)));
   }
 
