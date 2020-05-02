@@ -1,19 +1,34 @@
 package br.com.fluentvalidator.predicate;
 
+import static br.com.fluentvalidator.function.FunctionBuilder.of;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.between;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.betweenInclusive;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThan;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThanOrEqual;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThan;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.lessThanOrEqual;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.function.Function;
+
 import org.junit.Test;
 
 public class ComparablePredicateTest {
+
+  @Test
+  public void testNullComparableIntegerEqualTo() {
+    assertFalse(equalTo(fn -> 1, 1).test(null));
+    assertFalse(equalTo(fn -> 2, (Integer) null).test(2));
+    assertFalse(equalTo(fn -> 2, (Integer) null).test(null));
+    assertFalse(equalTo(null, 1).test(2));
+    assertFalse(equalTo(null, (Integer) null).test(2));
+    assertFalse(equalTo(null, (Integer) null).test(null));
+  }
 
   @Test
   public void testNullComparableGreaterThan() {
@@ -46,15 +61,48 @@ public class ComparablePredicateTest {
   @Test
   public void testNullComparableBetween() {
     assertFalse(between(1, 1).test(null));
-    assertFalse(between(null, null).test(null));
+
+    assertFalse(between((Integer) null, 1).test(null));
+    assertFalse(between(1, (Integer) null).test(null));
+    assertFalse(between((Integer) null, (Integer) null).test(null));
+
+    assertFalse(between((Integer) null, 1).test(1));
+    assertFalse(between(1, (Integer) null).test(1));
     assertFalse(between((Integer) null, (Integer) null).test(1));
+
+    assertFalse(between(of((final Integer fn) -> 1), (Integer) null).test(1));
+    assertFalse(between(of((final Integer fn) -> null), (Integer) null).test(1));
+
+    assertFalse(between((Function<Integer, Integer>) null, (Integer) null).test(1));
+    assertFalse(between((Integer) null, (Function<Integer, Integer>) null).test(1));
+
+    assertFalse(between(of((final Integer fn) -> 1), of((final Integer fn) -> null)).test(1));
+
+    assertFalse(between((Function<Integer, Integer>) null, of((final Integer fn) -> 1), of((final Integer fn) -> 1)).test(1));
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> 1), of((final Integer fn) -> 1)).test(null));
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> null), of((final Integer fn) -> 1)).test(1));
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> 1), of((final Integer fn) -> null)).test(1));
+
+    assertFalse(between(of((final Integer fn) -> fn), (Integer) null, of((final Integer fn) -> 1)).test(1));
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> 1), (Integer) null).test(1));
+    assertFalse(between(of((final Integer fn) -> fn), (Integer) null, (Integer) null).test(1));
+
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> 1), 1).test(1));
+    assertFalse(between(of((final Integer fn) -> fn), 1, of((final Integer fn) -> 1)).test(1));
+
   }
 
   @Test
   public void testNullComparableBetweenInclusive() {
     assertFalse(betweenInclusive(1, 1).test(null));
-    assertFalse(betweenInclusive(null, null).test(null));
+    assertFalse(betweenInclusive((Integer) null, null).test(null));
     assertFalse(betweenInclusive((Integer) null, (Integer) null).test(1));
+  }
+
+  @Test
+  public void testComparableIntegerEqualTo() {
+    assertTrue(equalTo(fn -> 1, 1).test(1));
+    assertFalse(equalTo(fn -> 2, 1).test(2));
   }
 
   @Test
@@ -88,6 +136,35 @@ public class ComparablePredicateTest {
     assertTrue(between(0, 5).test(2));
     assertFalse(between(5, 0).test(5));
     assertFalse(between(0, 0).test(5));
+
+    assertTrue(between(of(fn -> 0), 5).test(2));
+    assertFalse(between(of(fn -> 5), 0).test(5));
+    assertFalse(between(of(fn -> 0), 0).test(5));
+
+    assertTrue(between(0, of((final Integer fn) -> 5)).test(2));
+    assertFalse(between(5, of((final Integer fn) -> 0)).test(5));
+    assertFalse(between(0, of((final Integer fn) -> 0)).test(5));
+
+    assertTrue(between(of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(2));
+    assertFalse(between(of((final Integer fn) -> 5), of((final Integer fn) -> 0)).test(5));
+    assertFalse(between(of((final Integer fn) -> 0), of((final Integer fn) -> 0)).test(5));
+
+    assertTrue(between(of((final Integer fn) -> fn), 0, 5).test(2));
+    assertFalse(between(of((final Integer fn) -> fn), 5, 0).test(5));
+    assertFalse(between(of((final Integer fn) -> fn), 0, 0).test(5));
+
+    assertTrue(between(of((final Integer fn) -> fn), 0, of((final Integer fn) -> 5)).test(2));
+    assertFalse(between(of((final Integer fn) -> fn), 5, of((final Integer fn) -> 0)).test(5));
+    assertFalse(between(of((final Integer fn) -> fn), 0, of((final Integer fn) -> 0)).test(5));
+
+    assertTrue(between(of((final Integer fn) -> fn), of((final Integer fn) -> 0), 5).test(2));
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> 5), 0).test(5));
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> 0), 0).test(5));
+
+    assertTrue(between(of((final Integer fn) -> fn), of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(2));
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> 5), of((final Integer fn) -> 0)).test(5));
+    assertFalse(between(of((final Integer fn) -> fn), of((final Integer fn) -> 0), of((final Integer fn) -> 0)).test(5));
+
   }
 
   @Test
@@ -98,6 +175,62 @@ public class ComparablePredicateTest {
     assertFalse(betweenInclusive(5, 0).test(5));
     assertFalse(betweenInclusive(5, 0).test(0));
     assertFalse(betweenInclusive(0, 0).test(5));
+
+    assertTrue(betweenInclusive(of(fn -> 0), 5).test(2));
+    assertTrue(betweenInclusive(of(fn -> 0), 5).test(0));
+    assertTrue(betweenInclusive(of(fn -> 0), 5).test(5));
+    assertFalse(betweenInclusive(of(fn -> 5), 0).test(5));
+    assertFalse(betweenInclusive(of(fn -> 5), 0).test(0));
+    assertFalse(betweenInclusive(of(fn -> 0), 0).test(5));
+
+    assertTrue(betweenInclusive(0, of((final Integer fn) -> 5)).test(2));
+    assertTrue(betweenInclusive(0, of((final Integer fn) -> 5)).test(0));
+    assertTrue(betweenInclusive(0, of((final Integer fn) -> 5)).test(5));
+    assertFalse(betweenInclusive(5, of((final Integer fn) -> 0)).test(5));
+    assertFalse(betweenInclusive(5, of((final Integer fn) -> 0)).test(0));
+    assertFalse(betweenInclusive(0, of((final Integer fn) -> 0)).test(5));
+
+    assertTrue(betweenInclusive(of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(2));
+    assertTrue(betweenInclusive(of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(0));
+    assertTrue(betweenInclusive(of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> 5), of((final Integer fn) -> 0)).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> 5), of((final Integer fn) -> 0)).test(0));
+    assertFalse(betweenInclusive(of((final Integer fn) -> 0), of((final Integer fn) -> 0)).test(5));
+
+    assertTrue(betweenInclusive(of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(2));
+    assertTrue(betweenInclusive(of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(0));
+    assertTrue(betweenInclusive(of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> 5), of((final Integer fn) -> 0)).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> 5), of((final Integer fn) -> 0)).test(0));
+    assertFalse(betweenInclusive(of((final Integer fn) -> 0), of((final Integer fn) -> 0)).test(5));
+
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), 0, 5).test(2));
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), 0, 5).test(0));
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), 0, 5).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), 5, 0).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), 5, 0).test(0));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), 0, 0).test(5));
+
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), 0, of((final Integer fn) -> 5)).test(2));
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), 0, of((final Integer fn) -> 5)).test(0));
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), 0, of((final Integer fn) -> 5)).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), 5, of((final Integer fn) -> 0)).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), 5, of((final Integer fn) -> 0)).test(0));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), 0, of((final Integer fn) -> 0)).test(5));
+
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 0), 5).test(2));
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 0), 5).test(0));
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 0), 5).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 5), 0).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 5), 0).test(0));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 0), 0).test(5));
+
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(2));
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(0));
+    assertTrue(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 0), of((final Integer fn) -> 5)).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 5), of((final Integer fn) -> 0)).test(5));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 5), of((final Integer fn) -> 0)).test(0));
+    assertFalse(betweenInclusive(of((final Integer fn) -> fn), of((final Integer fn) -> 0), of((final Integer fn) -> 0)).test(5));
   }
 
   @Test
@@ -252,126 +385,78 @@ public class ComparablePredicateTest {
 
   @Test
   public void testComparableLocalDateLessThanOrEqual() {
-    assertTrue(
-        PredicateBuilder.<LocalDate>from(lessThanOrEqual(LocalDate.now())).test(LocalDate.now()));
-    assertTrue(PredicateBuilder.<LocalDate>from(lessThanOrEqual(LocalDate.now()))
-        .test(LocalDate.now().minusYears(10)));
-    assertFalse(PredicateBuilder.<LocalDate>from(lessThanOrEqual(LocalDate.now()))
-        .test(LocalDate.now().plusYears(10)));
+    assertTrue(PredicateBuilder.<LocalDate>from(lessThanOrEqual(LocalDate.now())).test(LocalDate.now()));
+    assertTrue(PredicateBuilder.<LocalDate>from(lessThanOrEqual(LocalDate.now())).test(LocalDate.now().minusYears(10)));
+    assertFalse(PredicateBuilder.<LocalDate>from(lessThanOrEqual(LocalDate.now())).test(LocalDate.now().plusYears(10)));
   }
 
   @Test
   public void testObjectComparableGreaterThan() {
-    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 1))
-        .test(new ObjectFrom<Integer>(2, 1)));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 2))
-        .test(new ObjectFrom<>(2, 2)));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 3))
-        .test(new ObjectFrom<>(2, 3)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 1)).test(new ObjectFrom<Integer>(2, 1)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(2, 2)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 3)).test(new ObjectFrom<>(2, 3)));
   }
 
   @Test
   public void testNullObjectComparableGreaterThan() {
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 0))
-        .test(null));
-    assertFalse(PredicateBuilder
-        .<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, (Integer) null))
-        .test(new ObjectFrom<>(2, null)));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 2))
-        .test(new ObjectFrom<>(null, 2)));
-    assertFalse(PredicateBuilder
-        .<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, (Integer) null))
-        .test(new ObjectFrom<>(null, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 0)).test(null));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(2, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(null, 2)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThan(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(null, null)));
   }
 
   @Test
   public void testObjectComparableGreaterThanOrEqual() {
-    assertTrue(
-        PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 1))
-            .test(new ObjectFrom<>(2, 1)));
-    assertTrue(
-        PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 2))
-            .test(new ObjectFrom<>(2, 2)));
-    assertFalse(
-        PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 3))
-            .test(new ObjectFrom<>(2, 3)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(2, 1)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(2, 2)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 3)).test(new ObjectFrom<>(2, 3)));
   }
 
   @Test
   public void testNullObjectComparableGreaterThanOrEqual() {
-    assertFalse(PredicateBuilder
-        .<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 0)).test(null));
-    assertFalse(PredicateBuilder
-        .<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, (Integer) null))
-        .test(new ObjectFrom<>(2, null)));
-    assertFalse(
-        PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 2))
-            .test(new ObjectFrom<>(null, 2)));
-    assertFalse(PredicateBuilder
-        .<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, (Integer) null))
-        .test(new ObjectFrom<>(null, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 0)).test(null));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(2, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(null, 2)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(greaterThanOrEqual(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(null, null)));
   }
 
   @Test
   public void testObjectComparableLessThan() {
-    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 2))
-        .test(new ObjectFrom<>(1, 2)));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 1))
-        .test(new ObjectFrom<>(1, 1)));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 0))
-        .test(new ObjectFrom<>(1, 0)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(1, 2)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(1, 1)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 0)).test(new ObjectFrom<>(1, 0)));
   }
 
   @Test
   public void testNullObjectComparableLessThan() {
-    assertFalse(
-        PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 0)).test(null));
-    assertFalse(
-        PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, (Integer) null))
-            .test(new ObjectFrom<>(1, null)));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 1))
-        .test(new ObjectFrom<>(null, 1)));
-    assertFalse(
-        PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, (Integer) null))
-            .test(new ObjectFrom<>(null, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 0)).test(null));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(1, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(null, 1)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThan(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(null, null)));
   }
 
   @Test
   public void testObjectComparableLessThanOrEqual() {
-    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 2))
-        .test(new ObjectFrom<>(1, 2)));
-    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 1))
-        .test(new ObjectFrom<>(1, 1)));
-    assertFalse(
-        PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 0))
-            .test(new ObjectFrom<>(1, 0)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 2)).test(new ObjectFrom<>(1, 2)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(1, 1)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 0)).test(new ObjectFrom<>(1, 0)));
   }
 
   @Test
   public void testNullObjectComparableLessThanOrEqual() {
-    assertFalse(PredicateBuilder
-        .<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 0)).test(null));
-    assertFalse(PredicateBuilder
-        .<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, (Integer) null))
-        .test(new ObjectFrom<>(1, null)));
-    assertFalse(
-        PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 1))
-            .test(new ObjectFrom<>(null, 1)));
-    assertFalse(PredicateBuilder
-        .<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, (Integer) null))
-        .test(new ObjectFrom<>(null, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 0)).test(null));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(1, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, 1)).test(new ObjectFrom<>(null, 1)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(lessThanOrEqual(ObjectFrom::getSource, (Integer) null)).test(new ObjectFrom<>(null, null)));
   }
 
   @Test
   public void testObjectComparableBetween() {
-    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 0, 2))
-        .test(new ObjectFrom<>(1, 2)));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 1, 2))
-        .test(new ObjectFrom<>(1, 2)));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 2, 2))
-        .test(new ObjectFrom<>(1, 2)));
+    assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 0, 2)).test(new ObjectFrom<>(1, 2)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 1, 2)).test(new ObjectFrom<>(1, 2)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 2, 2)).test(new ObjectFrom<>(1, 2)));
   }
-  
+
   @Test
   public void testObjectComparableBetweenInclusive() {
     assertTrue(PredicateBuilder.<ObjectFrom<Integer>>from(betweenInclusive(ObjectFrom::getSource, 0, 2)).test(new ObjectFrom<>(1, 2)));
@@ -383,10 +468,8 @@ public class ComparablePredicateTest {
 
   @Test
   public void testNullObjectComparableBetween() {
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 0, 2))
-        .test(null));
-    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 0, 2))
-        .test(new ObjectFrom<>(null, null)));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 0, 2)).test(null));
+    assertFalse(PredicateBuilder.<ObjectFrom<Integer>>from(between(ObjectFrom::getSource, 0, 2)).test(new ObjectFrom<>(null, null)));
   }
 
   @Test
