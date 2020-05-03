@@ -237,7 +237,31 @@ between(final E min, final E max)
 ```
 
 ```java
+between(final E min, final Function<T, E> max)
+```
+
+```java
+between(final Function<T, E> min, final E max)
+```
+
+```java
+between(final Function<T, E> min, final Function<T, E> max)
+```
+
+```java
 between(final Function<T, E> source, final E min, final E max)
+```
+
+```java
+between(final Function<T, E> source, final E min, final Function<T, E> max)
+```
+
+```java
+between(final Function<T, E> source, final Function<T, E> min, final E max)
+```
+
+```java
+between(final Function<T, E> source, final Function<T, E> min, final Function<T, E> max)
 ```
 
 ```java
@@ -245,7 +269,31 @@ betweenInclusive(final E min, final E max)
 ```
 
 ```java
+betweenInclusive(final E min, final Function<T, E>  max)
+```
+
+```java
+betweenInclusive(final Function<T, E>  min, final E max)
+```
+
+```java
+betweenInclusive(final Function<T, E>  min, final Function<T, E> max)
+```
+
+```java
 betweenInclusive(final Function<T, E> source, final E min, final E max)
+```
+
+```java
+betweenInclusive(final Function<T, E> source, final E min, final Function<T, E> max)
+```
+
+```java
+betweenInclusive(final Function<T, E> source, final Function<T, E> min, final E max)
+```
+
+```java
+betweenInclusive(final Function<T, E> source, final Function<T, E> min, final Function<T, E> max)
 ```
 
 ```java
@@ -257,11 +305,19 @@ equalTo(final Function<T, E> source, final E value)
 ```
 
 ```java
+equalTo(final Function<T, E> source, final Function<T, E> target)
+```
+
+```java
 greaterThan(final E min)
 ```
 
 ```java
 greaterThan(final Function<T, E> source, final E min)
+```
+
+```java
+greaterThan(final Function<T, E> source, final Function<T, E> target)
 ```
 
 ```java
@@ -273,6 +329,10 @@ greaterThanOrEqual(final Function<T, E> source, final E min)
 ```
 
 ```java
+greaterThanOrEqual(final Function<T, E> source, final Function<T, E> target)
+```
+
+```java
 lessThan(final E max)
 ```
 
@@ -281,11 +341,19 @@ lessThan(final Function<T, E> source, final E max)
 ```
 
 ```java
+lessThan(final Function<T, E> source, final Function<T, E> target)
+```
+
+```java
 lessThanOrEqual(final E max)
 ```
 
 ```java
 lessThanOrEqual(final Function<T, E> source, final E max)
+```
+
+```java
+lessThanOrEqual(final Function<T, E> source, final Function<T, E> target)
 ```
 
 ## 6.5 Collection
