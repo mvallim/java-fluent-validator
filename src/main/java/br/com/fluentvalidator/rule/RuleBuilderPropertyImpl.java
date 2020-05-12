@@ -20,7 +20,7 @@ import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationException;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
-public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, WhenProperty<T, P>> implements RuleBuilderProperty<T, P>, WhenProperty<T, P>, Rule<T> {
+public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, WhenProperty<T, P>> implements RuleBuilderProperty<T, P>, WhenProperty<T, P> {
 
   private final Collection<Rule<P>> rules = new LinkedList<>();
 
