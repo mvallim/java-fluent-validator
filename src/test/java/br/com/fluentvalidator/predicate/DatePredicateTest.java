@@ -1,24 +1,18 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.DatePredicate.dateBetween;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateEqualTo;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateGreaterThan;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateGreaterThanOrEqual;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateLessThan;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateLessThanOrEqual;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import static br.com.fluentvalidator.predicate.DatePredicate.*;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.*;
 
 public class DatePredicateTest {
 
@@ -384,6 +378,95 @@ public class DatePredicateTest {
 
 		for (final Boolean result : resultsOne) {
 			assertTrue(result);
+		}
+	}
+
+	//// dateIsAfterToday()
+
+	@Test
+	public void testDateIsAfterToday() {
+		assertFalse(dateIsAfterToday().test(LocalDate.now()));
+		assertFalse(dateIsAfterToday().test(LocalDate.now().minusDays(1)));
+		assertFalse(dateIsAfterToday().test(LocalDate.now().minusMonths(1)));
+		assertFalse(dateIsAfterToday().test(LocalDate.now().minusYears(1)));
+		assertTrue(dateIsAfterToday().test(LocalDate.now().plusDays(1)));
+		assertTrue(dateIsAfterToday().test(LocalDate.now().plusMonths(1)));
+		assertTrue(dateIsAfterToday().test(LocalDate.now().plusYears(1)));
+	}
+
+	@Test
+	public void testNullObjectDateIsAfterToday() {
+		assertFalse(dateIsAfterToday().test((LocalDate) null));
+	}
+
+	//// dateIsBeforeToday()
+
+	@Test
+	public void testDateIsBeforeToday() {
+		assertFalse(dateIsBeforeToday().test(LocalDate.now()));
+		assertTrue(dateIsBeforeToday().test(LocalDate.now().minusDays(1)));
+		assertTrue(dateIsBeforeToday().test(LocalDate.now().minusMonths(1)));
+		assertTrue(dateIsBeforeToday().test(LocalDate.now().minusYears(1)));
+		assertFalse(dateIsBeforeToday().test(LocalDate.now().plusDays(1)));
+		assertFalse(dateIsBeforeToday().test(LocalDate.now().plusMonths(1)));
+		assertFalse(dateIsBeforeToday().test(LocalDate.now().plusYears(1)));
+	}
+
+	@Test
+	public void testNullObjectDateIsBeforeToday() {
+		assertFalse(dateIsBeforeToday().test((LocalDate) null));
+	}
+
+	//// dateIsAfterThan(Function)
+
+	@Test
+	public void testDateIsAfterThan() {
+		TestClass testClass = new TestClass();
+
+		assertFalse(dateIsAfterThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+
+		testClass.setTarget(LocalDate.now().plusDays(1));
+		assertFalse(dateIsAfterThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+
+		testClass.setTarget(LocalDate.now().minusDays(1));
+		assertTrue(dateIsAfterThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+	}
+
+	//// dateIsBeforeThan(Function)
+
+	@Test
+	public void testDateIsBeforeThan() {
+		TestClass testClass = new TestClass();
+
+		assertFalse(dateIsBeforeThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+
+		testClass.setTarget(LocalDate.now().plusDays(1));
+		assertTrue(dateIsBeforeThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+
+		testClass.setTarget(LocalDate.now().minusDays(1));
+		assertFalse(dateIsBeforeThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+	}
+
+
+
+	class TestClass {
+		private LocalDate source = LocalDate.now();
+		private LocalDate target = LocalDate.now();
+
+		public LocalDate getSource() {
+			return source;
+		}
+
+		public void setSource(LocalDate source) {
+			this.source = source;
+		}
+
+		public LocalDate getTarget() {
+			return target;
+		}
+
+		public void setTarget(LocalDate target) {
+			this.target = target;
 		}
 	}
 
