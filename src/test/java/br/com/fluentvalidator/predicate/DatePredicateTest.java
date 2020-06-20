@@ -161,7 +161,7 @@ public class DatePredicateTest {
 		assertFalse(dateBetween("2019-09-19", null, null).test(null));
 		assertFalse(dateBetween(null, "2019-09-19", null).test(null));
 		assertFalse(dateBetween(null, null, YYYY_MM_DD).test(null));
-		assertFalse(dateBetween(null, null, null).test("2019-09-19"));
+		assertFalse(dateBetween((String) null, null, null).test("2019-09-19"));
 		assertFalse(dateBetween("2019-09-19", "2019-09-19", null).test(null));
 		assertFalse(dateBetween(null, "2019-09-19", YYYY_MM_DD).test(null));
 		assertFalse(dateBetween(null, null, YYYY_MM_DD).test("2019-09-19"));
@@ -381,93 +381,119 @@ public class DatePredicateTest {
 		}
 	}
 
-	//// dateIsAfterToday()
+	//// dateAfterToday()
 
 	@Test
-	public void testDateIsAfterToday() {
-		assertFalse(dateIsAfterToday().test(LocalDate.now()));
-		assertFalse(dateIsAfterToday().test(LocalDate.now().minusDays(1)));
-		assertFalse(dateIsAfterToday().test(LocalDate.now().minusMonths(1)));
-		assertFalse(dateIsAfterToday().test(LocalDate.now().minusYears(1)));
-		assertTrue(dateIsAfterToday().test(LocalDate.now().plusDays(1)));
-		assertTrue(dateIsAfterToday().test(LocalDate.now().plusMonths(1)));
-		assertTrue(dateIsAfterToday().test(LocalDate.now().plusYears(1)));
+	public void testDateAfterToday() {
+		assertFalse(dateAfterToday().test(LocalDate.now()));
+
+		assertFalse(dateAfterToday().test(LocalDate.now().minusDays(1)));
+		assertFalse(dateAfterToday().test(LocalDate.now().minusMonths(1)));
+		assertFalse(dateAfterToday().test(LocalDate.now().minusYears(1)));
+
+		assertTrue(dateAfterToday().test(LocalDate.now().plusDays(1)));
+		assertTrue(dateAfterToday().test(LocalDate.now().plusMonths(1)));
+		assertTrue(dateAfterToday().test(LocalDate.now().plusYears(1)));
+
+		assertFalse(dateAfterToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now(), LocalDate.now())));
+
+		assertFalse(dateAfterToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().minusDays(1), LocalDate.now())));
+		assertFalse(dateAfterToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().minusMonths(1), LocalDate.now())));
+		assertFalse(dateAfterToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().minusYears(1), LocalDate.now())));
+
+		assertTrue(dateAfterToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().plusDays(1), LocalDate.now())));
+		assertTrue(dateAfterToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().plusMonths(1), LocalDate.now())));
+		assertTrue(dateAfterToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().plusYears(1), LocalDate.now())));
 	}
 
 	@Test
-	public void testNullObjectDateIsAfterToday() {
-		assertFalse(dateIsAfterToday().test((LocalDate) null));
+	public void testNullObjectDateAfterToday() {
+		assertFalse(dateAfterToday().test((LocalDate) null));
+		assertFalse(dateAfterToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(null, null)));
 	}
 
-	//// dateIsBeforeToday()
+	//// dateBeforeToday()
 
 	@Test
-	public void testDateIsBeforeToday() {
-		assertFalse(dateIsBeforeToday().test(LocalDate.now()));
-		assertTrue(dateIsBeforeToday().test(LocalDate.now().minusDays(1)));
-		assertTrue(dateIsBeforeToday().test(LocalDate.now().minusMonths(1)));
-		assertTrue(dateIsBeforeToday().test(LocalDate.now().minusYears(1)));
-		assertFalse(dateIsBeforeToday().test(LocalDate.now().plusDays(1)));
-		assertFalse(dateIsBeforeToday().test(LocalDate.now().plusMonths(1)));
-		assertFalse(dateIsBeforeToday().test(LocalDate.now().plusYears(1)));
+	public void testDateBeforeToday() {
+		assertFalse(dateBeforeToday().test(LocalDate.now()));
+
+		assertTrue(dateBeforeToday().test(LocalDate.now().minusDays(1)));
+		assertTrue(dateBeforeToday().test(LocalDate.now().minusMonths(1)));
+		assertTrue(dateBeforeToday().test(LocalDate.now().minusYears(1)));
+
+		assertFalse(dateBeforeToday().test(LocalDate.now().plusDays(1)));
+		assertFalse(dateBeforeToday().test(LocalDate.now().plusMonths(1)));
+		assertFalse(dateBeforeToday().test(LocalDate.now().plusYears(1)));
+
+		assertFalse(dateBeforeToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now(), LocalDate.now())));
+
+		assertTrue(dateBeforeToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().minusDays(1), LocalDate.now())));
+		assertTrue(dateBeforeToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().minusMonths(1), LocalDate.now())));
+		assertTrue(dateBeforeToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().minusYears(1), LocalDate.now())));
+
+		assertFalse(dateBeforeToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().plusDays(1), LocalDate.now())));
+		assertFalse(dateBeforeToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().plusMonths(1), LocalDate.now())));
+		assertFalse(dateBeforeToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(LocalDate.now().plusYears(1), LocalDate.now())));
 	}
 
 	@Test
-	public void testNullObjectDateIsBeforeToday() {
-		assertFalse(dateIsBeforeToday().test((LocalDate) null));
+	public void testNullObjectDateBeforeToday() {
+		assertFalse(dateBeforeToday().test((LocalDate) null));
+		assertFalse(dateBeforeToday(ObjectFrom<LocalDate>::getSource).test(new ObjectFrom<LocalDate>(null, null)));
 	}
 
-	//// dateIsAfterThan(Function)
+	//// dateAfter(Function)
 
 	@Test
-	public void testDateIsAfterThan() {
-		TestClass testClass = new TestClass();
+	public void testDateAfter() {
+		assertFalse(dateAfter(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now(), LocalDate.now())));
 
-		assertFalse(dateIsAfterThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+		assertTrue(dateAfter(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().plusDays(1), LocalDate.now())));
+		assertTrue(dateAfter(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().plusMonths(1), LocalDate.now())));
+		assertTrue(dateAfter(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().plusYears(1), LocalDate.now())));
 
-		testClass.setTarget(LocalDate.now().plusDays(1));
-		assertFalse(dateIsAfterThan(TestClass::getSource, TestClass::getTarget).test(testClass));
-
-		testClass.setTarget(LocalDate.now().minusDays(1));
-		assertTrue(dateIsAfterThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+		assertFalse(dateAfter(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().minusDays(1), LocalDate.now())));
+		assertFalse(dateAfter(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().minusMonths(1), LocalDate.now())));
+		assertFalse(dateAfter(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().minusYears(1), LocalDate.now())));
 	}
-
-	//// dateIsBeforeThan(Function)
 
 	@Test
-	public void testDateIsBeforeThan() {
-		TestClass testClass = new TestClass();
-
-		assertFalse(dateIsBeforeThan(TestClass::getSource, TestClass::getTarget).test(testClass));
-
-		testClass.setTarget(LocalDate.now().plusDays(1));
-		assertTrue(dateIsBeforeThan(TestClass::getSource, TestClass::getTarget).test(testClass));
-
-		testClass.setTarget(LocalDate.now().minusDays(1));
-		assertFalse(dateIsBeforeThan(TestClass::getSource, TestClass::getTarget).test(testClass));
+	public void testNullObjectDateAfter() {
+		assertFalse(dateAfter(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(null));
 	}
 
+	//// dateBefore(Function)
 
+	@Test
+	public void testDateBefore() {
+		assertFalse(dateBefore(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now(), LocalDate.now())));
 
-	class TestClass {
-		private LocalDate source = LocalDate.now();
-		private LocalDate target = LocalDate.now();
+		assertFalse(dateBefore(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().plusDays(1), LocalDate.now())));
+		assertFalse(dateBefore(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().plusMonths(1), LocalDate.now())));
+		assertFalse(dateBefore(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().plusYears(1), LocalDate.now())));
 
-		public LocalDate getSource() {
-			return source;
-		}
+		assertTrue(dateBefore(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().minusDays(1), LocalDate.now())));
+		assertTrue(dateBefore(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().minusMonths(1), LocalDate.now())));
+		assertTrue(dateBefore(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(new ObjectFrom<LocalDate>(LocalDate.now().minusYears(1), LocalDate.now())));
+	}
 
-		public void setSource(LocalDate source) {
-			this.source = source;
-		}
+	@Test
+	public void testNullObjectDateBefore() {
+		assertFalse(dateBefore(ObjectFrom<LocalDate>::getSource, ObjectFrom<LocalDate>::getTarget).test(null));
+	}
 
-		public LocalDate getTarget() {
-			return target;
-		}
+	//// dateBetween(Function, LocalDate,LocalDate)
 
-		public void setTarget(LocalDate target) {
-			this.target = target;
-		}
+	@Test
+	public void testDateBetweenLocalDate() {
+		assertTrue(dateBetween(ObjectFrom<LocalDate>::getSource, LocalDate.now().minusDays(1), LocalDate.now().plusDays(1)).test(new ObjectFrom<LocalDate>(LocalDate.now(), LocalDate.now())));
+
+		assertTrue(dateBetween(ObjectFrom<LocalDate>::getSource, LocalDate.now(), LocalDate.now().plusDays(1)).test(new ObjectFrom<LocalDate>(LocalDate.now(), LocalDate.now())));
+		assertTrue(dateBetween(ObjectFrom<LocalDate>::getSource, LocalDate.now().minusDays(1), LocalDate.now()).test(new ObjectFrom<LocalDate>(LocalDate.now(), LocalDate.now())));
+
+		assertFalse(dateBetween(ObjectFrom<LocalDate>::getSource, LocalDate.now().minusDays(1), LocalDate.now().plusDays(1)).test(new ObjectFrom<LocalDate>(LocalDate.now().minusDays(2), LocalDate.now())));
+		assertFalse(dateBetween(ObjectFrom<LocalDate>::getSource, LocalDate.now().minusDays(1), LocalDate.now().plusDays(1)).test(new ObjectFrom<LocalDate>(LocalDate.now().plusDays(2), LocalDate.now())));
 	}
 
 }

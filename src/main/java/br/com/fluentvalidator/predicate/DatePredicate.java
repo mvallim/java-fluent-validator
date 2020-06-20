@@ -1,6 +1,7 @@
 package br.com.fluentvalidator.predicate;
 
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.equalObject;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 import java.time.LocalDate;
@@ -252,25 +253,48 @@ public final class DatePredicate {
         .<String>from(dateLessThan(dateString, pattern).or(dateEqualTo(dateString, pattern)));
   }
 
-  /**
-   *
-   * @param <T>
-   * @return
-   */
-  public static <T extends LocalDate> Predicate<T> dateIsAfterToday() {
-    return PredicateBuilder.<T>from(not(nullValue()))
-        .and(localDate -> localDate.isAfter(LocalDate.now()));
-  }
 
   /**
    *
    * @param <T>
    * @return
    */
-  public static <T extends LocalDate> Predicate<T> dateIsBeforeToday() {
+  public static <T extends LocalDate> Predicate<T> dateAfterToday() {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(localDate -> localDate.isAfter(LocalDate.now()));
+  }
+
+  /**
+   *
+   * @param source
+   * @param <T>
+   * @return
+   */
+  public static <T> Predicate<T> dateAfterToday(final Function<T, LocalDate> source){
+    return PredicateBuilder.<T>from(obj -> dateAfterToday().test(source.apply(obj)));
+  }
+
+
+  /**
+   *
+   * @param <T>
+   * @return
+   */
+  public static <T extends LocalDate> Predicate<T> dateBeforeToday() {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(localDate -> localDate.isBefore(LocalDate.now()));
   }
+
+  /**
+   *
+   * @param source
+   * @param <T>
+   * @return
+   */
+  public static <T> Predicate<T> dateBeforeToday(final Function<T, LocalDate> source) {
+    return PredicateBuilder.<T>from(obj -> dateBeforeToday().test(source.apply(obj)));
+  }
+
 
   /**
    *
@@ -279,7 +303,7 @@ public final class DatePredicate {
    * @param <T>
    * @return
    */
-  public static <T> Predicate<T> dateIsAfterThan(final Function<T, LocalDate> source, final Function<T, LocalDate> target) {
+  public static <T> Predicate<T> dateAfter(final Function<T, LocalDate> source, final Function<T, LocalDate> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(obj -> {
           final LocalDate sourceDate = source.apply(obj);
@@ -295,13 +319,27 @@ public final class DatePredicate {
    * @param <T>
    * @return
    */
-  public static <T> Predicate<T> dateIsBeforeThan(final Function<T, LocalDate> source, final Function<T, LocalDate> target) {
+  public static <T> Predicate<T> dateBefore(final Function<T, LocalDate> source, final Function<T, LocalDate> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(obj -> {
           final LocalDate sourceDate = source.apply(obj);
           final LocalDate targetDate = target.apply(obj);
           return sourceDate.isBefore(targetDate);
         });
+  }
+
+  /**
+   *
+   * @param source
+   * @param min
+   * @param max
+   * @param <T>
+   * @return
+   */
+  public static <T> Predicate<T> dateBetween(final Function<T, LocalDate> source, final LocalDate min, final LocalDate max) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(obj -> source.apply(obj).isAfter(min)).or(obj -> source.apply(obj).equals(min))
+        .and(obj -> source.apply(obj).isBefore(max)).or(obj -> source.apply(obj).equals(max));
   }
 
   private DatePredicate() {
