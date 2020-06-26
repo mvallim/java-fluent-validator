@@ -38,7 +38,7 @@ public class ValidatorBill extends AbstractValidator<Bill> {
           .withFieldName("dueDate")
           .withAttempedValue(Bill::getDueDate)
           .critical()
-        .must(LocalDatePredicate.localDateBetween(Bill::getDueDate, LocalDate.now(), LocalDate.now().plusYears(3)))
+        .must(LocalDatePredicate.localDateBetweenOrEqual(Bill::getDueDate, LocalDate.now(), LocalDate.now().plusYears(3)))
           .withMessage("Max due date is 3 years ahead")
           .withFieldName("dueDate")
           .withAttempedValue(Bill::getDueDate);
