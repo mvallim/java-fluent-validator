@@ -10,10 +10,9 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,6 +23,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import br.com.fluentvalidator.context.Error;
+import br.com.fluentvalidator.model.Bill;
+import br.com.fluentvalidator.validator.ValidatorBill;
 import org.junit.Test;
 
 import br.com.fluentvalidator.context.ValidationResult;
@@ -502,6 +504,156 @@ public class ValidatorTest {
         assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("group 1 rule 1"))));
         assertThat(result.getErrors(), hasItem(hasProperty("field", containsString("collection"))));
     }
+
+    @Test
+    public void testSuccessWhenBillIsCorrect() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now().plusDays(1));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertTrue(validate.isValid());
+    }
+
+    @Test
+    public void testFailWhenBillDescriptionIsNull() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill(null, (float) 100.00, LocalDate.now().plusDays(1));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertFalse(validate.isValid());
+        assertThat(validate.getErrors().size(), equalTo(1));
+
+        final Error error = validate.getErrors().iterator().next();
+
+        assertThat(error.getMessage(), containsString("description is required"));
+        assertThat(error.getField(), equalTo("description"));
+    }
+
+    @Test
+    public void testFailWhenBillDescriptionIsEmpty() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("", (float) 100.00, LocalDate.now().plusDays(1));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertFalse(validate.isValid());
+        assertThat(validate.getErrors().size(), equalTo(1));
+
+        final Error error = validate.getErrors().iterator().next();
+
+        assertThat(error.getMessage(), containsString("description is required"));
+        assertThat(error.getField(), equalTo("description"));
+    }
+
+    @Test
+    public void testFailWhenBillValueIsNull() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("Energy bill", null, LocalDate.now().plusDays(1));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertFalse(validate.isValid());
+        assertThat(validate.getErrors().size(), equalTo(1));
+
+        final Error error = validate.getErrors().iterator().next();
+
+        assertThat(error.getMessage(), containsString("value must be provided"));
+        assertThat(error.getField(), equalTo("value"));
+    }
+
+    @Test
+    public void testFailWhenBillValueIsZero() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("Energy bill", (float) 0, LocalDate.now().plusDays(1));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertFalse(validate.isValid());
+        assertThat(validate.getErrors().size(), equalTo(1));
+
+        final Error error = validate.getErrors().iterator().next();
+
+        assertThat(error.getMessage(), containsString("value must be greather than 0"));
+        assertThat(error.getField(), equalTo("value"));
+    }
+
+    @Test
+    public void testFailWhenBillValueIsNegative() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("Energy bill", (float) -1, LocalDate.now().plusDays(1));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertFalse(validate.isValid());
+        assertThat(validate.getErrors().size(), equalTo(1));
+
+        final Error error = validate.getErrors().iterator().next();
+
+        assertThat(error.getMessage(), containsString("value must be greather than 0"));
+        assertThat(error.getField(), equalTo("value"));
+    }
+
+    @Test
+    public void testFailWhenBillDueDateIsToday() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now());
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertFalse(validate.isValid());
+        assertThat(validate.getErrors().size(), equalTo(1));
+
+        final Error error = validate.getErrors().iterator().next();
+
+        assertThat(error.getMessage(), equalTo("Only future bills are allowed"));
+        assertThat(error.getField(), equalTo("dueDate"));
+    }
+
+    @Test
+    public void testFailWhenBillDueDateIsPast() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now().minusDays(1));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertFalse(validate.isValid());
+        assertThat(validate.getErrors().size(), equalTo(1));
+
+        final Error error = validate.getErrors().iterator().next();
+
+        assertThat(error.getMessage(), equalTo("Only future bills are allowed"));
+        assertThat(error.getField(), equalTo("dueDate"));
+    }
+
+    @Test
+    public void testFailWhenBillDueDateIsFarTooAhead() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now().plusYears(4));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertFalse(validate.isValid());
+        assertThat(validate.getErrors().size(), equalTo(1));
+
+        final Error error = validate.getErrors().iterator().next();
+
+        assertThat(error.getMessage(), equalTo("Max due date is 3 years ahead"));
+        assertThat(error.getField(), equalTo("dueDate"));
+    }
+
+    @Test
+    public void testSuccessWhenBillDueDateIsExactlyThreeYears() {
+        final ValidatorBill validatorBill = new ValidatorBill();
+        final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now().plusYears(3));
+
+        final ValidationResult validate = validatorBill.validate(bill);
+
+        assertTrue(validate.isValid());
+    }
+
+
 
     class StringValidator extends AbstractValidator<String> {
 
