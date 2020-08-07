@@ -3,8 +3,7 @@ language: java
 addons:
   sonarcloud:
     organization: "mvallim"
-    token:
-      secure: ${SONAR_TOKEN} 
+    token: ${SONAR_TOKEN} 
 
 cache:
   directories:
