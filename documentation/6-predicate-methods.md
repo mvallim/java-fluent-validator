@@ -23,7 +23,7 @@ isFalse(final Function<T, Boolean> function)
 ```
 
 ```java
-not(final Predicate<T> predicate)
+not(final predicate)
 ```
 
 ## 6.2 Object
