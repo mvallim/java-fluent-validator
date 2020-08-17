@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - name: Artifact
-      run: mvn deploy -Dregistry=https://maven.pkg.github.com/mvallim -Dtoken=GH_TOKEN
+    - name: Compile with Maven
+      run: mvn clean compile --file pom.xml
+    - name: Test with Maven
+      run: mvn test --file pom.xml
