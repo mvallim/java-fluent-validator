@@ -647,27 +647,11 @@ timeBetween(final String timeStringMin, final String timeStringMax, final String
 ## 6.9 LocalDate
 
 ```java
-localDateAfter(final Function<T, LocalDate> source, final Function<T, LocalDate> target)
+localDateAfterToday()
 ```
 
 ```java
-localDateAfter(final Function<T, LocalDate> source, final LocalDate target)
-```
-
-```java
-localDateAfter(final LocalDate target)
-```
-
-```java
-localDateAfterOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> target)
-```
-
-```java
-localDateAfterOrEqual(final Function<T, LocalDate> source, final LocalDate target)
-```
-
-```java
-localDateAfterOrEqual(final LocalDate target)
+localDateAfterToday(final Function<T, LocalDate> source)
 ```
 
 ```java
@@ -679,35 +663,11 @@ localDateAfterOrEqualToday(final Function<T, LocalDate> source)
 ```
 
 ```java
-localDateAfterToday()
+localDateBeforeToday()
 ```
 
 ```java
-localDateAfterToday(final Function<T, LocalDate> source)
-```
-
-```java
-localDateBefore(final Function<T, LocalDate> source, final Function<T, LocalDate> target)
-```
-
-```java
-localDateBefore(final Function<T, LocalDate> source, final LocalDate target)
-```
-
-```java
-localDateBefore(final LocalDate target)
-```
-
-```java
-localDateBeforeOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> target)
-```
-
-```java
-localDateBeforeOrEqual(final Function<T, LocalDate> source, final LocalDate target)
-```
-
-```java
-localDateBeforeOrEqual(final LocalDate target)
+localDateBeforeToday(final Function<T, LocalDate> source)
 ```
 
 ```java
@@ -719,15 +679,75 @@ localDateBeforeOrEqualToday(final Function<T, LocalDate> source)
 ```
 
 ```java
-localDateBeforeToday()
+localDateIsToday()
 ```
 
 ```java
-localDateBeforeToday(final Function<T, LocalDate> source)
+localDateIsToday(final Function<T, LocalDate> source)
 ```
 
 ```java
-localDateBetween(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final Function<T, LocalDate> max)
+localDateEqualTo(final LocalDate localDate)
+```
+
+```java
+localDateEqualTo(final Function<T, LocalDate> source, final LocalDate localDate)
+```
+
+```java
+localDateAfter(final LocalDate target)
+```
+
+```java
+localDateAfter(final Function<T, LocalDate> source, final LocalDate target)
+```
+
+```java
+localDateAfter(final Function<T, LocalDate> source, final Function<T, LocalDate> target)
+```
+
+```java
+localDateAfterOrEqual(final LocalDate target)
+```
+
+```java
+localDateAfterOrEqual(final Function<T, LocalDate> source, final LocalDate target)
+```
+
+```java
+localDateAfterOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> target)
+```
+
+```java
+localDateBefore(final LocalDate target)
+```
+
+```java
+localDateBefore(final Function<T, LocalDate> source, final LocalDate target)
+```
+
+```java
+localDateBefore(final Function<T, LocalDate> source, final Function<T, LocalDate> target)
+```
+
+```java
+localDateBeforeOrEqual(final LocalDate target)
+```
+
+```java
+localDateBeforeOrEqual(final Function<T, LocalDate> source, final LocalDate target)
+```
+
+```java
+localDateBeforeOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> target)
+```
+
+```java
+localDateBetween(final LocalDate min, final LocalDate max)
+```
+
+```java
+localDateBetween(final Function<T, LocalDate> source, final LocalDate min, final LocalDate max)
 ```
 
 ```java
@@ -739,15 +759,15 @@ localDateBetween(final Function<T, LocalDate> source, final LocalDate min, final
 ```
 
 ```java
-localDateBetween(final Function<T, LocalDate> source, final LocalDate min, final LocalDate max)
+localDateBetween(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final Function<T, LocalDate> max)
 ```
 
 ```java
-localDateBetween(final LocalDate min, final LocalDate max)
+localDateBetweenOrEqual(final LocalDate min, final LocalDate max)
 ```
 
 ```java
-localDateBetweenOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final Function<T, LocalDate> max)
+localDateBetweenOrEqual(final Function<T, LocalDate> source, final LocalDate min, final LocalDate max)
 ```
 
 ```java
@@ -759,25 +779,274 @@ localDateBetweenOrEqual(final Function<T, LocalDate> source, final LocalDate min
 ```
 
 ```java
-localDateBetweenOrEqual(final Function<T, LocalDate> source, final LocalDate min, final LocalDate max)
+localDateBetweenOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final Function<T, LocalDate> max)
+```
+
+## 6.10 LocalDateTime
+
+```java
+localDateTimeAfterToday()
 ```
 
 ```java
-localDateBetweenOrEqual(final LocalDate min, final LocalDate max)
+localDateTimeAfterToday(final Function<T, LocalDateTime> source)
 ```
 
 ```java
-localDateEqualTo(final Function<T, LocalDate> source, final LocalDate localDate)
+localDateTimeAfterOrEqualToday()
 ```
 
 ```java
-localDateEqualTo(final LocalDate localDate)
+localDateTimeAfterOrEqualToday(final Function<T, LocalDateTime> source)
 ```
 
 ```java
-localDateIsToday()
+localDateTimeBeforeToday()
 ```
 
 ```java
-localDateIsToday(final Function<T, LocalDate> source)
+localDateTimeBeforeToday(final Function<T, LocalDateTime> source)
+```
+
+```java
+localDateTimeBeforeOrEqualToday()
+```
+
+```java
+localDateTimeBeforeOrEqualToday(final Function<T, LocalDateTime> source)
+```
+
+```java
+localDateTimeIsToday()
+```
+
+```java
+localDateTimeIsToday(final Function<T, LocalDateTime> source)
+```
+
+```java
+localDateTimeAfterNow()
+```
+
+```java
+localDateTimeAfterNow(final Function<T, LocalDateTime> source)
+```
+
+```java
+localDateTimeBeforeNow()
+```
+
+```java
+localDateTimeBeforeNow(final Function<T, LocalDateTime> source)
+```
+
+```java
+localDateTimeEqualTo(final LocalDateTime localDateTime)
+```
+
+```java
+localDateTimeEqualTo(final Function<T, LocalDateTime> source, final LocalDateTime localDateTime)
+```
+
+```java
+localDateTimeAfter(final LocalDateTime target)
+```
+
+```java
+localDateTimeAfter(final Function<T, LocalDateTime> source, final LocalDateTime target)
+```
+
+```java
+localDateTimeAfter(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> target)
+```
+
+```java
+localDateTimeAfterOrEqual(final LocalDateTime target)
+```
+
+```java
+localDateTimeAfterOrEqual(final Function<T, LocalDateTime> source, final LocalDateTime target)
+```
+
+```java
+localDateTimeAfterOrEqual(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> target)
+```
+
+```java
+localDateTimeBefore(final LocalDateTime target)
+```
+
+```java
+localDateTimeBefore(final Function<T, LocalDateTime> source, final LocalDateTime target)
+```
+
+```java
+localDateTimeBefore(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> target)
+```
+
+```java
+localDateTimeBeforeOrEqual(final LocalDateTime target)
+```
+
+```java
+localDateTimeBeforeOrEqual(final Function<T, LocalDateTime> source, final LocalDateTime target)
+```
+
+```java
+localDateTimeBeforeOrEqual(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> target)
+```
+
+```java
+localDateTimeBetween(final LocalDateTime min, final LocalDateTime max)
+```
+
+```java
+localDateTimeBetween(final Function<T, LocalDateTime> source, final LocalDateTime min, final LocalDateTime max)
+```
+
+```java
+localDateTimeBetween(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> min, final LocalDateTime max)
+```
+
+```java
+localDateTimeBetween(final Function<T, LocalDateTime> source, final LocalDateTime min, final Function<T, LocalDateTime> max)
+```
+
+```java
+localDateTimeBetween(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> min, final Function<T, LocalDateTime> max)
+```
+
+```java
+localDateTimeBetweenOrEqual(final LocalDateTime min, final LocalDateTime max)
+```
+
+```java
+localDateTimeBetweenOrEqual(final Function<T, LocalDateTime> source, final LocalDateTime min, final LocalDateTime max)
+```
+
+```java
+localDateTimeBetweenOrEqual(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> min, final LocalDateTime max)
+```
+
+```java
+localDateTimeBetweenOrEqual(final Function<T, LocalDateTime> source, final LocalDateTime min, final Function<T, LocalDateTime> max)
+```
+
+```java
+localDateTimeBetweenOrEqual(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> min, final Function<T, LocalDateTime> max)
+```
+
+## 6.11 LocalTime
+
+
+```java
+localTimeAfterNow()
+```
+
+```java
+localTimeAfterNow(final Function<T, LocalTime> source)
+```
+
+```java
+localTimeBeforeNow()
+```
+
+```java
+localTimeBeforeNow(final Function<T, LocalTime> source)
+```
+
+```java
+localTimeEqualTo(final LocalTime localTime)
+```
+
+```java
+localTimeEqualTo(final Function<T, LocalTime> source, final LocalTime localTime)
+```
+
+```java
+localTimeAfter(final LocalTime target)
+```
+
+```java
+localTimeAfter(final Function<T, LocalTime> source, final LocalTime target)
+```
+
+```java
+localTimeAfter(final Function<T, LocalTime> source, final Function<T, LocalTime> target)
+```
+
+```java
+localTimeAfterOrEqual(final LocalTime target)
+```
+
+```java
+localTimeAfterOrEqual(final Function<T, LocalTime> source, final LocalTime target)
+```
+
+```java
+localTimeAfterOrEqual(final Function<T, LocalTime> source, final Function<T, LocalTime> target)
+```
+
+```java
+localTimeBefore(final LocalTime target)
+```
+
+```java
+localTimeBefore(final Function<T, LocalTime> source, final LocalTime target)
+```
+
+```java
+localTimeBefore(final Function<T, LocalTime> source, final Function<T, LocalTime> target)
+```
+
+```java
+localTimeBeforeOrEqual(final LocalTime target)
+```
+
+```java
+localTimeBeforeOrEqual(final Function<T, LocalTime> source, final LocalTime target)
+```
+
+```java
+localTimeBeforeOrEqual(final Function<T, LocalTime> source, final Function<T, LocalTime> target)
+```
+
+```java
+localTimeBetween(final LocalTime min, final LocalTime max)
+```
+
+```java
+localTimeBetween(final Function<T, LocalTime> source, final LocalTime min, final LocalTime max)
+```
+
+```java
+localTimeBetween(final Function<T, LocalTime> source, final Function<T, LocalTime> min, final LocalTime max)
+```
+
+```java
+localTimeBetween(final Function<T, LocalTime> source, final LocalTime min, final Function<T, LocalTime> max)
+```
+
+```java
+localTimeBetween(final Function<T, LocalTime> source, final Function<T, LocalTime> min, final Function<T, LocalTime> max)
+```
+
+```java
+localTimeBetweenOrEqual(final LocalTime min, final LocalTime max)
+```
+
+```java
+localTimeBetweenOrEqual(final Function<T, LocalTime> source, final LocalTime min, final LocalTime max)
+```
+
+```java
+localTimeBetweenOrEqual(final Function<T, LocalTime> source, final Function<T, LocalTime> min, final LocalTime max)
+```
+
+```java
+localTimeBetweenOrEqual(final Function<T, LocalTime> source, final LocalTime min, final Function<T, LocalTime> max)
+```
+
+```java
+localTimeBetweenOrEqual(final Function<T, LocalTime> source, final Function<T, LocalTime> min, final Function<T, LocalTime> max)
 ```
