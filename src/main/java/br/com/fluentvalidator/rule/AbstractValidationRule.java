@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.Error;
 import br.com.fluentvalidator.exception.ValidationException;
@@ -31,7 +33,7 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
 
   private Class<? extends ValidationException> criticalException;
 
-  private Validator<T> validator;
+  private Validator<T> validator = new InternalValidator();
 
   private HandlerInvalidField<P> handlerInvalidField = new InternalHandlerInvalidField(this);
 
@@ -139,6 +141,13 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
     this.validator = validator;
   }
 
+  private class InternalValidator extends AbstractValidator<T> {
+    @Override
+    public void rules() {
+      // Do nothing
+    }
+  }
+
   private class InternalHandlerInvalidField implements HandlerInvalidField<P> {
 
     private final FieldDescriptor<Object, P> fieldDescriptor;
@@ -149,9 +158,7 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
 
     @Override
     public Collection<Error> handle(final Object instance, final P attemptedValue) {
-      return Collections.singletonList(Error.create(fieldDescriptor.getFieldName(instance),
-          fieldDescriptor.getMessage(instance), fieldDescriptor.getCode(instance),
-          fieldDescriptor.getAttemptedValue(instance, attemptedValue)));
+      return Collections.singletonList(Error.create(fieldDescriptor.getFieldName(instance), fieldDescriptor.getMessage(instance), fieldDescriptor.getCode(instance), fieldDescriptor.getAttemptedValue(instance, attemptedValue)));
     }
 
   }
