@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.builder.AttemptedValue;
 import br.com.fluentvalidator.builder.Code;
@@ -15,12 +16,13 @@ import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.WhenCollection;
+import br.com.fluentvalidator.builder.WheneverCollection;
 import br.com.fluentvalidator.builder.WithValidator;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationException;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
-public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>> implements RuleBuilderCollection<T, P>, WhenCollection<T, P> {
+public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> implements RuleBuilderCollection<T, P>, WhenCollection<T, P>, WheneverCollection<T, P> {
 
   private final Collection<Rule<Collection<P>>> rules = new LinkedList<>();
 
@@ -43,87 +45,87 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
   }
 
   @Override
-  public WhenCollection<T, P> whenever(final Predicate<Collection<P>> whenever) {
+  public WheneverCollection<T, P> whenever(final Predicate<Collection<P>> whenever) {
     this.currentValidation = new ValidatorRuleInternal(fieldName, whenever);
     this.rules.add(this.currentValidation);
     return this;
   }
 
   @Override
-  public Must<T, Collection<P>, WhenCollection<T, P>> must(final Predicate<Collection<P>> must) {
+  public Must<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> must(final Predicate<Collection<P>> must) {
     this.currentValidation = new ValidationRuleInternal(fieldName, must);
     this.rules.add(this.currentValidation);
     return this;
   }
 
   @Override
-  public Message<T, Collection<P>, WhenCollection<T, P>> withMessage(final String message) {
+  public Message<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withMessage(final String message) {
     this.currentValidation.withMessage(obj -> message);
     return this;
   }
 
   @Override
-  public Message<T, Collection<P>, WhenCollection<T, P>> withMessage(final Function<T, String> message) {
+  public Message<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withMessage(final Function<T, String> message) {
     this.currentValidation.withMessage(message);
     return this;
   }
 
   @Override
-  public Code<T, Collection<P>, WhenCollection<T, P>> withCode(final String code) {
+  public Code<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withCode(final String code) {
     this.currentValidation.withCode(obj -> code);
     return this;
   }
 
   @Override
-  public Code<T, Collection<P>, WhenCollection<T, P>> withCode(final Function<T, String> code) {
+  public Code<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withCode(final Function<T, String> code) {
     this.currentValidation.withCode(code);
     return this;
   }
 
   @Override
-  public FieldName<T, Collection<P>, WhenCollection<T, P>> withFieldName(final String fieldName) {
+  public FieldName<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withFieldName(final String fieldName) {
     this.currentValidation.withFieldName(obj -> fieldName);
     return this;
   }
 
   @Override
-  public FieldName<T, Collection<P>, WhenCollection<T, P>> withFieldName(final Function<T, String> fieldName) {
+  public FieldName<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withFieldName(final Function<T, String> fieldName) {
     this.currentValidation.withFieldName(fieldName);
     return this;
   }
 
   @Override
-  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>> withAttempedValue(final Object attemptedValue) {
+  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withAttempedValue(final Object attemptedValue) {
     this.currentValidation.withAttemptedValue(obj -> attemptedValue);
     return this;
   }
 
   @Override
-  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>> withAttempedValue(final Function<T, Object> attemptedValue) {
+  public AttemptedValue<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withAttempedValue(final Function<T, Object> attemptedValue) {
     this.currentValidation.withAttemptedValue(attemptedValue);
     return this;
   }
 
   @Override
-  public HandleInvalidField<T, Collection<P>, WhenCollection<T, P>> handlerInvalidField(final HandlerInvalidField<Collection<P>> handlerInvalidField) {
+  public HandleInvalidField<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> handlerInvalidField(final HandlerInvalidField<Collection<P>> handlerInvalidField) {
     this.currentValidation.withHandlerInvalidField(handlerInvalidField);
     return this;
   }
 
   @Override
-  public Critical<T, Collection<P>, WhenCollection<T, P>> critical() {
+  public Critical<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> critical() {
     this.currentValidation.critical();
     return this;
   }
 
   @Override
-  public Critical<T, Collection<P>, WhenCollection<T, P>> critical(final Class<? extends ValidationException> clazz) {
+  public Critical<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> critical(final Class<? extends ValidationException> clazz) {
     this.currentValidation.critical(clazz);
     return this;
   }
 
   @Override
-  public WithValidator<T, Collection<P>, WhenCollection<T, P>> withValidator(final Validator<P> validator) {
+  public WithValidator<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withValidator(final Validator<P> validator) {
     this.currentValidation.withValidator(validator);
     return this;
   }
@@ -190,7 +192,5 @@ public class RuleBuilderCollectionImpl<T, P> extends AbstractRuleBuilder<T, Coll
     }
 
   }
-
-
 
 }

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import br.com.fluentvalidator.Validator;
 
-public interface WhenCollection<T, P> extends When<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> {
+public interface WheneverCollection<T, P> extends Whenever<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> {
 
   /**
    *

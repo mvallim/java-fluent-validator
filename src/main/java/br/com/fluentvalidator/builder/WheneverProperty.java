@@ -2,7 +2,7 @@ package br.com.fluentvalidator.builder;
 
 import br.com.fluentvalidator.Validator;
 
-public interface WhenProperty<T, P> extends When<T, P, WhenProperty<T, P>, WheneverProperty<T, P>> {
+public interface WheneverProperty<T, P> extends Whenever<T, P, WhenProperty<T, P>, WheneverProperty<T, P>> {
 
   /**
    *
