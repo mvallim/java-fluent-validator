@@ -1,5 +1,7 @@
 package br.com.fluentvalidator.predicate;
 
+import static br.com.fluentvalidator.predicate.ComparablePredicate.between;
+import static br.com.fluentvalidator.predicate.ComparablePredicate.betweenInclusive;
 import static br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
@@ -19,7 +21,8 @@ public final class CollectionPredicate {
    * @return
    */
   public static <E, T extends Collection<E>> Predicate<T> empty() {
-    return PredicateBuilder.<T>from(is(nullValue())).or(Collection::isEmpty);
+    return PredicateBuilder.<T>from(is(nullValue()))
+      .or(Collection::isEmpty);
   }
 
   /**
@@ -31,7 +34,8 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> empty(final Function<T, Collection<E>> source) {
     return PredicateBuilder.<T>from(is(nullValue()))
-        .or(obj -> is(nullValue()).test(source.apply(obj))).or(obj -> source.apply(obj).isEmpty());
+      .or(obj -> is(nullValue()).test(source.apply(obj)))
+      .or(obj -> source.apply(obj).isEmpty());
   }
 
   /**
@@ -42,8 +46,9 @@ public final class CollectionPredicate {
    * @return
    */
   public static <E, T extends Collection<E>> Predicate<T> hasAny(final Collection<E> objects) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(objects))
-        .and(hasAny -> hasAny.stream().anyMatch(objects::contains));
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> not(nullValue()).test(objects))
+      .and(hasAny -> hasAny.stream().anyMatch(objects::contains));
   }
 
   /**
@@ -54,8 +59,9 @@ public final class CollectionPredicate {
    * @return
    */
   public static <E, T extends Collection<E>> Predicate<T> hasAny(final E[] objects) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(objects))
-        .and(obj -> hasAny(Arrays.asList(objects)).test(obj));
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> not(nullValue()).test(objects))
+      .and(obj -> hasAny(Arrays.asList(objects)).test(obj));
   }
 
   /**
@@ -68,7 +74,7 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> hasAny(final Function<T, Collection<E>> source, final Collection<E> objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> hasAny(objects).test(source.apply(obj)));
+      .and(obj -> hasAny(objects).test(source.apply(obj)));
   }
 
   /**
@@ -81,27 +87,29 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> hasAny(final Function<T, Collection<E>> source, final E[] objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> hasAny(objects).test(source.apply(obj)));
+      .and(obj -> hasAny(objects).test(source.apply(obj)));
   }
 
   /**
-   * Creates a predicate for {@link Collection} that only matches when a single pass over the
-   * examined {@link Collection} yields at least one item that is equal to the specified
-   * <code>object</code>. Whilst matching, the traversal of the examined {@link Collection} will
-   * stop as soon as a matching item is found.
+   * Creates a predicate for {@link Collection} that only matches when a single
+   * pass over the examined {@link Collection} yields at least one item that is
+   * equal to the specified <code>object</code>. Whilst matching, the traversal of
+   * the examined {@link Collection} will stop as soon as a matching item is
+   * found.
    *
    * <pre>
    * ruleForEach(Parent::getNames).must(hasItem("John"));
    * </pre>
    *
-   * @param <E> type of object
-   * @param <T> type of exam class
-   * @param object the object to compare against the objects provided by the examined
-   *        {@link Collection}
+   * @param <E>    type of object
+   * @param <T>    type of exam class
+   * @param object the object to compare against the objects provided by the
+   *               examined {@link Collection}
    * @return {@link Predicate}
    */
   public static <E, T extends Collection<E>> Predicate<T> hasItem(final E object) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> obj.contains(object));
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> obj.contains(object));
   }
 
   /**
@@ -114,7 +122,7 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> hasItem(final Function<T, Collection<E>> source, final E object) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> hasItem(object).test(source.apply(obj)));
+      .and(obj -> hasItem(object).test(source.apply(obj)));
   }
 
   /**
@@ -125,8 +133,9 @@ public final class CollectionPredicate {
    * @return
    */
   public static <E, T extends Collection<E>> Predicate<T> hasItems(final Collection<E> objects) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(objects))
-        .and(obj -> obj.containsAll(objects));
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> not(nullValue()).test(objects))
+      .and(obj -> obj.containsAll(objects));
   }
 
   /**
@@ -137,8 +146,9 @@ public final class CollectionPredicate {
    * @return
    */
   public static <E, T extends Collection<E>> Predicate<T> hasItems(final E[] objects) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> not(nullValue()).test(objects))
-        .and(obj -> hasItems(Arrays.asList(objects)).test(obj));
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> not(nullValue()).test(objects))
+      .and(obj -> hasItems(Arrays.asList(objects)).test(obj));
   }
 
   /**
@@ -151,7 +161,7 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> hasItems(final Function<T, Collection<E>> source, final Collection<E> objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> hasItems(objects).test(source.apply(obj)));
+      .and(obj -> hasItems(objects).test(source.apply(obj)));
   }
 
   /**
@@ -164,7 +174,22 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> hasItems(final Function<T, Collection<E>> source, final E[] objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> hasItems(objects).test(source.apply(obj)));
+      .and(obj -> hasItems(objects).test(source.apply(obj)));
+  }
+
+  /**
+   *
+   * @param <T>
+   * @param <E>
+   * @param source
+   * @param size
+   * @return
+   */
+  public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Function<T, Integer> size) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> not(nullValue(size)).test(obj))
+      .and(obj -> not(nullValue(source)).test(obj))
+      .and(obj -> equalTo(size.apply(obj)).test(source.apply(obj).size()));
   }
 
   /**
@@ -177,23 +202,8 @@ public final class CollectionPredicate {
    */
   public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
-		.and(obj -> not(nullValue(source)).test(obj))
-        .and(obj -> equalTo(size).test(source.apply(obj).size()));
-  }
-
-  /**
-   * 
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param size
-   * @return
-   */
-  public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Function<T, Integer> size) {
-    return PredicateBuilder.<T>from(not(nullValue()))
-    	.and(obj -> not(nullValue(size)).test(obj))
-    	.and(obj -> not(nullValue(source)).test(obj))
-        .and(obj -> equalTo(size.apply(obj)).test(source.apply(obj).size()));
+      .and(obj -> not(nullValue(source)).test(obj))
+      .and(obj -> equalTo(size).test(source.apply(obj).size()));
   }
 
   /**
@@ -204,7 +214,64 @@ public final class CollectionPredicate {
    * @return
    */
   public static <E, T extends Collection<E>> Predicate<T> hasSize(final Integer size) {
-    return PredicateBuilder.<T>from(not(nullValue())).and(obj -> equalTo(size).test(obj.size()));
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> equalTo(size).test(obj.size()));
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param <E>
+   * @param source
+   * @param min
+   * @param max
+   * @return
+   */
+  public static <T, E> Predicate<T> hasSizeBetween(final Function<T, Collection<E>> source, final Integer min, final Integer max) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> not(nullValue(source)).test(obj))
+      .and(obj -> between(min, max).test(source.apply(obj).size()));
+  }
+
+  /**
+   * 
+   * @param <E>
+   * @param <T>
+   * @param min
+   * @param max
+   * @return
+   */
+  public static <E, T extends Collection<E>> Predicate<T> hasSizeBetween(final Integer min, final Integer max) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(between(Collection::size, min, max));
+  }
+
+  /**
+   *
+   * @param <T>
+   * @param <E>
+   * @param source
+   * @param min
+   * @param max
+   * @return
+   */
+  public static <T, E> Predicate<T> hasSizeBetweenInclusive(final Function<T, Collection<E>> source, final Integer min, final Integer max) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(obj -> not(nullValue(source)).test(obj))
+      .and(obj -> betweenInclusive(min, max).test(source.apply(obj).size()));
+  }
+
+  /**
+   *
+   * @param <E>
+   * @param <T>
+   * @param min
+   * @param max
+   * @return
+   */
+  public static <E, T extends Collection<E>> Predicate<T> hasSizeBetweenInclusive(final Integer min, final Integer max) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+      .and(betweenInclusive(Collection::size, min, max));
   }
 
   private CollectionPredicate() {

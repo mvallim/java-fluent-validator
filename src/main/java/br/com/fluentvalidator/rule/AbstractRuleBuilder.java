@@ -9,9 +9,10 @@ import br.com.fluentvalidator.builder.HandleInvalidField;
 import br.com.fluentvalidator.builder.Message;
 import br.com.fluentvalidator.builder.Must;
 import br.com.fluentvalidator.builder.When;
+import br.com.fluentvalidator.builder.Whenever;
 import br.com.fluentvalidator.builder.WithValidator;
 
-abstract class AbstractRuleBuilder<T, P, W extends When<T, P, W>> implements When<T, P, W>, Must<T, P, W>, Message<T, P, W>, FieldName<T, P, W>, Code<T, P, W>, Critical<T, P, W>, WithValidator<T, P, W>, HandleInvalidField<T, P, W>, AttemptedValue<T, P, W>, Rule<T> {
+abstract class AbstractRuleBuilder<T, P, W extends When<T, P, W, N>, N extends Whenever<T, P, W, N>> implements Must<T, P, W, N>, Message<T, P, W, N>, FieldName<T, P, W, N>, Code<T, P, W, N>, Critical<T, P, W, N>, WithValidator<T, P, W, N>, HandleInvalidField<T, P, W, N>, AttemptedValue<T, P, W, N>, Rule<T> {
 
   protected final Function<T, String> fieldName;
 

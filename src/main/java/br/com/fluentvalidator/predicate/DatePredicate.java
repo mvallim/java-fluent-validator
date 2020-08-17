@@ -1,13 +1,14 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
-import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 
 public final class DatePredicate {
 
@@ -251,6 +252,7 @@ public final class DatePredicate {
     return PredicateBuilder
         .<String>from(dateLessThan(dateString, pattern).or(dateEqualTo(dateString, pattern)));
   }
+
 
   private DatePredicate() {
     super();

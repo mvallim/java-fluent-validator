@@ -1,24 +1,18 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.DatePredicate.dateBetween;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateEqualTo;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateGreaterThan;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateGreaterThanOrEqual;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateLessThan;
-import static br.com.fluentvalidator.predicate.DatePredicate.dateLessThanOrEqual;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import static br.com.fluentvalidator.predicate.DatePredicate.*;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.*;
 
 public class DatePredicateTest {
 
@@ -167,7 +161,7 @@ public class DatePredicateTest {
 		assertFalse(dateBetween("2019-09-19", null, null).test(null));
 		assertFalse(dateBetween(null, "2019-09-19", null).test(null));
 		assertFalse(dateBetween(null, null, YYYY_MM_DD).test(null));
-		assertFalse(dateBetween(null, null, null).test("2019-09-19"));
+		assertFalse(dateBetween((String) null, null, null).test("2019-09-19"));
 		assertFalse(dateBetween("2019-09-19", "2019-09-19", null).test(null));
 		assertFalse(dateBetween(null, "2019-09-19", YYYY_MM_DD).test(null));
 		assertFalse(dateBetween(null, null, YYYY_MM_DD).test("2019-09-19"));

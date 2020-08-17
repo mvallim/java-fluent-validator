@@ -44,7 +44,9 @@ public class ValidatorBoy extends AbstractValidator<Boy> {
 3. [Builder](documentation/5-builder-methods.md)
 4. [Predicate](documentation/6-predicate-methods.md)
 5. [ValidationResult](documentation/7-validation-methods.md)
-6. Examples
+6. [PredicateBuilder](documentation/8-predicate-builder.md)
+7. [FunctionBuilder](documentation/9-function-builder.md)
+8. Examples
    - [Samples](src/test/java/br/com/fluentvalidator/ValidatorTest.java)
    - [Spring support samples](src/test/java/br/com/fluentvalidator/spring/ValidatorSpringTest.java)
 

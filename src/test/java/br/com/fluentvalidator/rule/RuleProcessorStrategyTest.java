@@ -1,7 +1,7 @@
 package br.com.fluentvalidator.rule;
 
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
-import static br.com.fluentvalidator.predicate.ObjectPredicate.equalTo;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.equalObject;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
@@ -25,7 +25,7 @@ public class RuleProcessorStrategyTest {
   public void testDefaultSuccessSingleRule() {
 
     final StringValidationRule rule = new StringValidationRule();
-    rule.must(equalTo("o"));
+    rule.must(equalObject("o"));
 
     assertTrue(RuleProcessorStrategy.getDefault().process("o", rule));
 
@@ -38,7 +38,7 @@ public class RuleProcessorStrategyTest {
   public void testDefaultSuccessSingleRuleWithCritical() {
 
     final StringValidationRule rule = new StringValidationRule();
-    rule.must(equalTo("o"));
+    rule.must(equalObject("o"));
     rule.critical();
 
     assertFalse(RuleProcessorStrategy.getDefault().process("oo", rule));
@@ -73,7 +73,7 @@ public class RuleProcessorStrategyTest {
     final Collection<Rule<String>> rules = new LinkedList<>();
 
     final StringValidationRule stringValidationRule = new StringValidationRule();
-    stringValidationRule.must(equalTo("o"));
+    stringValidationRule.must(equalObject("o"));
     stringValidationRule.critical();
 
     rules.add(new StringValidationRule());
@@ -94,7 +94,7 @@ public class RuleProcessorStrategyTest {
   public void testDefaultSuccessSinleRulesAndMultipleValues() {
 
     final StringValidationRule rule = new StringValidationRule();
-    rule.must(equalTo("o"));
+    rule.must(equalObject("o"));
 
     final Collection<String> values = Arrays.asList("o", "oo");
 
@@ -133,16 +133,16 @@ public class RuleProcessorStrategyTest {
     final Collection<Rule<String>> rules = new LinkedList<>();
 
     final StringValidationRule stringValidationRule1 = new StringValidationRule();
-    stringValidationRule1.must(equalTo("o"));
+    stringValidationRule1.must(equalObject("o"));
     stringValidationRule1.withMessage(obj -> "Rule non critical 1");
 
     final StringValidationRule stringValidationRuleCritical = new StringValidationRule();
-    stringValidationRuleCritical.must(equalTo("o"));
+    stringValidationRuleCritical.must(equalObject("o"));
     stringValidationRuleCritical.withMessage(obj -> "Rule critical 1");
     stringValidationRuleCritical.critical();
 
     final StringValidationRule stringValidationRule2 = new StringValidationRule();
-    stringValidationRule2.must(equalTo("o"));
+    stringValidationRule2.must(equalObject("o"));
     stringValidationRule2.withMessage(obj -> "Rule non critical 2");
 
     rules.add(stringValidationRule1);
