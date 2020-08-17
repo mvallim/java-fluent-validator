@@ -60,7 +60,8 @@ We use [GitHub](https://github.com/mvallim/java-fluent-validator) for versioning
 
 ## Authors
 
-* **Marcos Vallim** - *Initial work, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
+* **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
+* **Paulo Sergio** - *Development, Test, Documentation* - [pspjnsu](https://github.com/pspjnsu)
 
 See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
 
