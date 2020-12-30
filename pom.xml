@@ -11,7 +11,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aspectj.version>1.9.7</aspectj.version>
+		<aspectj.version>1.9.6</aspectj.version>
 		<sonar.exclusions>**/test/**</sonar.exclusions>
 	</properties>
 
