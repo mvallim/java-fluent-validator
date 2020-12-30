@@ -72,6 +72,7 @@
 				<artifactId>aspectj-maven-plugin</artifactId>
 				<version>1.11</version>
 		        <configuration>
+		        	<Xlint>adviceDidNotMatch=ignore</Xlint>
 					<complianceLevel>${java.version}</complianceLevel>
 					<source>${java.version}</source>
 					<target>${java.version}</target>

@@ -9,8 +9,8 @@ import br.com.fluentvalidator.context.ValidationContext;
 @Aspect
 public class ValidationExceptionAdvice {
 
-  @AfterThrowing("@annotation(cleanValidationContextException)")
-  public void afterThrowing(final CleanValidationContextException cleanValidationContextException) throws Throwable {
+  @AfterThrowing("execution(public br.com.fluentvalidator.context.ValidationResult br.com.fluentvalidator.AbstractValidator+.validate(**)) && @annotation(cleanValidationContextException)")
+  public void afterThrowing(final CleanValidationContextException cleanValidationContextException) {
     ValidationContext.remove();
   }
 
