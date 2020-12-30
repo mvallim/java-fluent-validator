@@ -23,6 +23,7 @@ jobs:
       run: mvn -T 1C clean generate-sources compile --file pom.xml
 
   test:
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -32,3 +33,4 @@ jobs:
         java-version: 1.8   
     - name: Test with Maven
       run: mvn -T 1C test-compile test --file pom.xml
+      
