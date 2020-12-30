@@ -44,7 +44,7 @@ jobs:
       with:
         java-version: 1.8
     - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v1.4
+      run: mvn clean test jacoco:report org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.projectKey=java-fluent-validator -Dsonar.organization=mvallim -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
