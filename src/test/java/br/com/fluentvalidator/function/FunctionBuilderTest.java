@@ -2,7 +2,7 @@ package br.com.fluentvalidator.function;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.function.Function;
 
@@ -28,8 +28,7 @@ public class FunctionBuilderTest {
 
     functionalTest.setFunctionalTestInner(functionalTestInner01);
 
-    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02)
-        .andThen(FunctionalTestInner02::getValue);
+    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02).andThen(FunctionalTestInner02::getValue);
 
     assertThat(function.apply(functionalTest), equalTo(1));
 
@@ -50,8 +49,7 @@ public class FunctionBuilderTest {
 
     functionalTest.setFunctionalTestInner(functionalTestInner01);
 
-    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02)
-        .compose(FunctionalTest::getFunctionalTestInner01);
+    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02).compose(FunctionalTest::getFunctionalTestInner01);
 
     assertThat(function.apply(functionalTest), equalTo(1));
 
@@ -66,8 +64,7 @@ public class FunctionBuilderTest {
 
     functionalTest.setFunctionalTestInner(functionalTestInner01);
 
-    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02)
-        .andThen(FunctionalTestInner02::getValue);
+    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02).andThen(FunctionalTestInner02::getValue);
 
     assertThat(function.apply(functionalTest), nullValue());
 
@@ -76,8 +73,7 @@ public class FunctionBuilderTest {
   @Test
   public void testSuccessAndThenWhenNullValueInChain02() {
 
-    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02)
-        .andThen(FunctionalTestInner02::getValue);
+    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02).andThen(FunctionalTestInner02::getValue);
 
     assertThat(function.apply(null), nullValue());
 
@@ -88,8 +84,7 @@ public class FunctionBuilderTest {
 
     final FunctionalTest functionalTest = new FunctionalTest();
 
-    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02)
-        .andThen(FunctionalTestInner02::getValue);
+    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02).andThen(FunctionalTestInner02::getValue);
 
     assertThat(function.apply(functionalTest), nullValue());
 
@@ -104,8 +99,7 @@ public class FunctionBuilderTest {
 
     functionalTest.setFunctionalTestInner(functionalTestInner01);
 
-    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02)
-        .compose(FunctionalTest::getFunctionalTestInner01);
+    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02).compose(FunctionalTest::getFunctionalTestInner01);
 
     assertThat(function.apply(functionalTest), nullValue());
 
@@ -114,8 +108,7 @@ public class FunctionBuilderTest {
   @Test
   public void testSuccessComposeWhenNullValueInChain02() {
 
-    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02)
-        .compose(FunctionalTest::getFunctionalTestInner01);
+    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02).compose(FunctionalTest::getFunctionalTestInner01);
 
     assertThat(function.apply(null), nullValue());
 
@@ -126,8 +119,7 @@ public class FunctionBuilderTest {
 
     final FunctionalTest functionalTest = new FunctionalTest();
 
-    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02)
-        .compose(FunctionalTest::getFunctionalTestInner01);
+    final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02).compose(FunctionalTest::getFunctionalTestInner01);
 
     assertThat(function.apply(functionalTest), nullValue());
 
