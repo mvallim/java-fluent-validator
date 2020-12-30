@@ -8,7 +8,7 @@ public interface Rule<T> {
 
   /**
    *
-   * @param obj
+   * @param instance
    * @param value
    * @return
    */
