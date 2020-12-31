@@ -106,8 +106,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   @Override
   public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> resultTransform) {
-    return Collections.unmodifiableList(
-        instances.stream().map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
+    return Collections.unmodifiableList(instances.stream().map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
   }
 
   /**
@@ -144,8 +143,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    * {@link #ruleForEach(String, Function) AbstractValidator}
    */
   @Override
-  public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName,
-      final Function<T, Collection<P>> function) {
+  public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName, final Function<T, Collection<P>> function) {
     final RuleBuilderCollectionImpl<T, P> rule = new RuleBuilderCollectionImpl<>(fieldName, function);
     this.rules.add(rule);
     return rule;

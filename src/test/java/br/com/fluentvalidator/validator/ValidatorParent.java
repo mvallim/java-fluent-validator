@@ -8,11 +8,13 @@ import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.context.Error;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
@@ -43,7 +45,8 @@ public class ValidatorParent extends AbstractValidator<Parent> {
             .withFieldName("children")
           .whenever(not(nullValue()))
             .withValidator(new ValidatorChild())
-            .critical();
+            .critical()
+          .whenever(not(nullValue()));
 
         ruleFor(Parent::getId)
         	.whenever(not(nullValue()))

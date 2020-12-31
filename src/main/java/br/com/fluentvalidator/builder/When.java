@@ -5,7 +5,7 @@ import java.util.function.Function;
 import br.com.fluentvalidator.exception.ValidationException;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
-public interface When<T, P, W extends When<T, P, W, N>, N extends Whenever<T, P, W, N>> extends RuleBuilder<T, P, W, N> {
+public interface When<T, P, W extends When<T, P, W, N>, N extends Whenever<T, P, W, N>> {
 
   /**
    *
