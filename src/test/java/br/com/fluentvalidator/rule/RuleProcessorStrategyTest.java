@@ -3,6 +3,7 @@ package br.com.fluentvalidator.rule;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.equalObject;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
@@ -10,12 +11,14 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+
 import org.junit.Test;
+
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.context.ValidationResult;
 
@@ -158,12 +161,9 @@ public class RuleProcessorStrategyTest {
     assertThat(validationResult.getErrors(), not(empty()));
     assertThat(validationResult.getErrors(), hasSize(2));
 
-    assertThat(validationResult.getErrors(),
-        hasItem(hasProperty("message", containsString("Rule non critical 1"))));
-    assertThat(validationResult.getErrors(),
-        hasItem(hasProperty("message", containsString("Rule critical 1"))));
-    assertThat(validationResult.getErrors(),
-        hasItem(hasProperty("message", not(containsString("Rule critical 2")))));
+    assertThat(validationResult.getErrors(), hasItem(hasProperty("message", containsString("Rule non critical 1"))));
+    assertThat(validationResult.getErrors(), hasItem(hasProperty("message", containsString("Rule critical 1"))));
+    assertThat(validationResult.getErrors(), hasItem(hasProperty("message", not(containsString("Rule critical 2")))));
   }
 
   class StringValidationRule extends AbstractValidationRule<String, String> {

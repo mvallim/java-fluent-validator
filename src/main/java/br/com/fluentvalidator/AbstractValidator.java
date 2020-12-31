@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import br.com.fluentvalidator.annotation.CleanValidationContextException;
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.context.ProcessorContext;
@@ -80,6 +81,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    * {@link #validate(Object) AbstractValidator }
    */
   @Override
+  @CleanValidationContextException
   public ValidationResult validate(final T instance) {
     ruleProcessor.process(instance, this);
     return ValidationContext.get().getValidationResult();
@@ -106,8 +108,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   @Override
   public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> resultTransform) {
-    return Collections.unmodifiableList(
-        instances.stream().map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
+    return Collections.unmodifiableList(instances.stream().map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
   }
 
   /**
@@ -144,8 +145,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    * {@link #ruleForEach(String, Function) AbstractValidator}
    */
   @Override
-  public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName,
-      final Function<T, Collection<P>> function) {
+  public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName, final Function<T, Collection<P>> function) {
     final RuleBuilderCollectionImpl<T, P> rule = new RuleBuilderCollectionImpl<>(fieldName, function);
     this.rules.add(rule);
     return rule;

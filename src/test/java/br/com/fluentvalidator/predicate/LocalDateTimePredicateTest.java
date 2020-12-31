@@ -1,8 +1,25 @@
 package br.com.fluentvalidator.predicate;
 
-import org.junit.Test;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfter;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfterNow;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfterOrEqual;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfterOrEqualToday;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfterToday;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBefore;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBeforeNow;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBeforeOrEqual;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBeforeOrEqualToday;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBeforeToday;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBetween;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBetweenOrEqual;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeEqualTo;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeIsToday;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -11,16 +28,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import static br.com.fluentvalidator.predicate.LocalDatePredicate.localDateBetween;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.*;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfter;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class LocalDateTimePredicateTest {
 
-  //region localDateTimeAfterToday
+  // region localDateTimeAfterToday
 
   @Test
   public void testLocalDateTimeAfterToday() {
@@ -43,9 +55,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeAfterToday(ObjectFromLocalDateTime::getSource).test(new ObjectFromLocalDateTime(null, LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateAfterOrEqualToday
+  // region localDateAfterOrEqualToday
 
   @Test
   public void testLocalDateTimeAfterOrEqualToday() {
@@ -68,9 +80,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeAfterOrEqualToday(ObjectFromLocalDateTime::getSource).test(new ObjectFromLocalDateTime(null, LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateTimeBeforeToday
+  // region localDateTimeBeforeToday
 
   @Test
   public void testLocalDateTimeBeforeToday() {
@@ -93,9 +105,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeBeforeToday(ObjectFromLocalDateTime::getSource).test(new ObjectFromLocalDateTime(null, LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateBeforeOrEqualToday
+  // region localDateBeforeOrEqualToday
 
   @Test
   public void testLocalDateTimeBeforeOrEqualToday() {
@@ -118,9 +130,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeBeforeOrEqualToday(ObjectFromLocalDateTime::getSource).test(new ObjectFromLocalDateTime(null, LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateIsEqualToday
+  // region localDateIsEqualToday
 
   @Test
   public void testLocalDateTimeIsToday() {
@@ -143,9 +155,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeIsToday(ObjectFromLocalDateTime::getSource).test(new ObjectFromLocalDateTime(null, LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateIsEqualToday
+  // region localDateIsEqualToday
 
   @Test
   public void testLocalDateTimeEqualTo() {
@@ -177,9 +189,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeEqualTo(ObjectFromLocalDateTime::getSource, null).test(new ObjectFromLocalDateTime(null, LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateTimeAfterNow
+  // region localDateTimeAfterNow
 
   @Test
   public void testLocalDateTimeAfterNow() {
@@ -201,9 +213,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeAfterNow(ObjectFromLocalDateTime::getSource).test(new ObjectFromLocalDateTime(null, LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateTimeBeforeNow
+  // region localDateTimeBeforeNow
 
   @Test
   public void testLocalDateTimeBeforeNow() {
@@ -226,9 +238,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeBeforeNow(ObjectFromLocalDateTime::getSource).test(new ObjectFromLocalDateTime(null, LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateAfter
+  // region localDateAfter
 
   @Test
   public void testLocalDateTimeAfter() {
@@ -256,9 +268,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeAfter(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(new ObjectFromLocalDateTime(LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateTimeAfterOrEqual
+  // region localDateTimeAfterOrEqual
 
   @Test
   public void testLocalDateTimeAfterOrEqual() {
@@ -286,9 +298,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeAfterOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(new ObjectFromLocalDateTime(LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateBefore
+  // region localDateBefore
 
   @Test
   public void testLocalDateTimeBefore() {
@@ -316,9 +328,9 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeBefore(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(new ObjectFromLocalDateTime(LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateTimeBeforeOrEqual
+  // region localDateTimeBeforeOrEqual
 
   @Test
   public void testLocalDateTimeBeforeOrEqual() {
@@ -346,46 +358,46 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeBeforeOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(new ObjectFromLocalDateTime(LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now())));
   }
 
-  //endregion
+  // endregion
 
-  //region localDateBetween
+  // region localDateBetween
 
   @Test
   public void testLocalDateTimeBetween() {
     final LocalDateTime now = LocalDateTime.now();
 
-    assertFalse(localDateTimeBetween(now,now).test(now));
-    assertFalse(localDateTimeBetween(now.minusNanos(1),now).test(now));
-    assertFalse(localDateTimeBetween(now,now.plusNanos(1)).test(now));
-    assertTrue (localDateTimeBetween(now.minusNanos(1),now.plusNanos(1)).test(now));
-    assertFalse(localDateTimeBetween(now.minusNanos(1),now.plusNanos(1)).test(now.plusNanos(2)));
-    assertFalse(localDateTimeBetween(now.minusNanos(1),now.plusNanos(1)).test(now.minusNanos(2)));
+    assertFalse(localDateTimeBetween(now, now).test(now));
+    assertFalse(localDateTimeBetween(now.minusNanos(1), now).test(now));
+    assertFalse(localDateTimeBetween(now, now.plusNanos(1)).test(now));
+    assertTrue(localDateTimeBetween(now.minusNanos(1), now.plusNanos(1)).test(now));
+    assertFalse(localDateTimeBetween(now.minusNanos(1), now.plusNanos(1)).test(now.plusNanos(2)));
+    assertFalse(localDateTimeBetween(now.minusNanos(1), now.plusNanos(1)).test(now.minusNanos(2)));
 
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now, now).test(new ObjectFromLocalDateTime(now, now, now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now).test(new ObjectFromLocalDateTime(now, now, now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now, now)));
-    assertTrue (localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now, now)));
+    assertTrue(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now, now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now.plusNanos(1)).test(new ObjectFromLocalDateTime(now.plusNanos(2), now, now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now.plusNanos(1)).test(new ObjectFromLocalDateTime(now.minusNanos(2), now, now)));
 
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now).test(new ObjectFromLocalDateTime(now, now, now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now, now)));
-    assertTrue (localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now)));
+    assertTrue(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now.plusNanos(2), now.minusNanos(1), now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now.minusNanos(2), now.minusNanos(1), now)));
 
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now.plusNanos(1))));
-    assertTrue (localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now.plusNanos(1))));
+    assertTrue(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now.plusNanos(1))));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now.plusNanos(2), now, now.plusNanos(1))));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now.minusNanos(2), now, now.plusNanos(1))));
 
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now)));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now.plusNanos(1))));
-    assertTrue (localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now.plusNanos(1))));
+    assertTrue(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now.plusNanos(1))));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now.plusNanos(2), now.minusNanos(1), now.plusNanos(1))));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now.minusNanos(2), now.minusNanos(1), now.plusNanos(1))));
 
@@ -400,21 +412,21 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeBetween(null, now).test(now));
     assertFalse(localDateTimeBetween(now, now).test(null));
 
-    assertFalse(localDateTimeBetween((Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null, (LocalDateTime) null).test(null));
+    assertFalse(localDateTimeBetween((Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null, (LocalDateTime) null).test(null));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, (LocalDateTime) null, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetween((Function<ObjectFromLocalDateTime, LocalDateTime>)null, now, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetween((Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null, now).test(null));
+    assertFalse(localDateTimeBetween((Function<ObjectFromLocalDateTime, LocalDateTime>) null, now, (LocalDateTime) null).test(null));
+    assertFalse(localDateTimeBetween((Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null, now).test(null));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, now, (LocalDateTime) null).test(null));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, (LocalDateTime) null, now).test(null));
-    assertFalse(localDateTimeBetween((Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null, (LocalDateTime) null).test(new ObjectFromLocalDateTime(now, now, now)));
+    assertFalse(localDateTimeBetween((Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null, (LocalDateTime) null).test(new ObjectFromLocalDateTime(now, now, now)));
 
-    assertFalse(localDateTimeBetween(null, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null).test(null));
+    assertFalse(localDateTimeBetween(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null).test(null));
+    assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null).test(null));
     assertFalse(localDateTimeBetween(null, ObjectFromLocalDateTime::getMin, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetween(null, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, now).test(null));
+    assertFalse(localDateTimeBetween(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, now).test(null));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, now).test(null));
-    assertFalse(localDateTimeBetween(null, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null).test(new ObjectFromLocalDateTime(now, now, now)));
+    assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, now).test(null));
+    assertFalse(localDateTimeBetween(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null).test(new ObjectFromLocalDateTime(now, now, now)));
 
     assertFalse(localDateTimeBetween(null, (LocalDateTime) null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(null));
     assertFalse(localDateTimeBetween(ObjectFromLocalDateTime::getSource, (LocalDateTime) null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(null));
@@ -434,46 +446,46 @@ public class LocalDateTimePredicateTest {
 
   }
 
-  //endregion
+  // endregion
 
-  //region localDateBetweenOrEqual
+  // region localDateBetweenOrEqual
 
   @Test
   public void testLocalDateTimeBetweenOrEqual() {
     final LocalDateTime now = LocalDateTime.now();
 
-    assertTrue(localDateTimeBetweenOrEqual(now,now).test(now));
-    assertTrue(localDateTimeBetweenOrEqual(now.minusNanos(1),now).test(now));
-    assertTrue(localDateTimeBetweenOrEqual(now,now.plusNanos(1)).test(now));
-    assertTrue (localDateTimeBetweenOrEqual(now.minusNanos(1),now.plusNanos(1)).test(now));
-    assertFalse(localDateTimeBetweenOrEqual(now.minusNanos(1),now.plusNanos(1)).test(now.plusNanos(2)));
-    assertFalse(localDateTimeBetweenOrEqual(now.minusNanos(1),now.plusNanos(1)).test(now.minusNanos(2)));
+    assertTrue(localDateTimeBetweenOrEqual(now, now).test(now));
+    assertTrue(localDateTimeBetweenOrEqual(now.minusNanos(1), now).test(now));
+    assertTrue(localDateTimeBetweenOrEqual(now, now.plusNanos(1)).test(now));
+    assertTrue(localDateTimeBetweenOrEqual(now.minusNanos(1), now.plusNanos(1)).test(now));
+    assertFalse(localDateTimeBetweenOrEqual(now.minusNanos(1), now.plusNanos(1)).test(now.plusNanos(2)));
+    assertFalse(localDateTimeBetweenOrEqual(now.minusNanos(1), now.plusNanos(1)).test(now.minusNanos(2)));
 
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now, now).test(new ObjectFromLocalDateTime(now, now, now)));
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now).test(new ObjectFromLocalDateTime(now, now, now)));
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now, now)));
-    assertTrue (localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now, now)));
+    assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now, now)));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now.plusNanos(1)).test(new ObjectFromLocalDateTime(now.plusNanos(2), now, now)));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), now.plusNanos(1)).test(new ObjectFromLocalDateTime(now.minusNanos(2), now, now)));
 
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now).test(new ObjectFromLocalDateTime(now, now, now)));
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now)));
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now, now)));
-    assertTrue (localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now)));
+    assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now)));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now.plusNanos(2), now.minusNanos(1), now)));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, now.plusNanos(1)).test(new ObjectFromLocalDateTime(now.minusNanos(2), now.minusNanos(1), now)));
 
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now)));
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now)));
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now.plusNanos(1))));
-    assertTrue (localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now.plusNanos(1))));
+    assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now.plusNanos(1))));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now.plusNanos(2), now, now.plusNanos(1))));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now.minusNanos(1), ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now.minusNanos(2), now, now.plusNanos(1))));
 
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now)));
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now)));
     assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now, now.plusNanos(1))));
-    assertTrue (localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now.plusNanos(1))));
+    assertTrue(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now, now.minusNanos(1), now.plusNanos(1))));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now.plusNanos(2), now.minusNanos(1), now.plusNanos(1))));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, ObjectFromLocalDateTime::getMax).test(new ObjectFromLocalDateTime(now.minusNanos(2), now.minusNanos(1), now.plusNanos(1))));
 
@@ -488,21 +500,21 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeBetweenOrEqual(null, now).test(now));
     assertFalse(localDateTimeBetweenOrEqual(now, now).test(null));
 
-    assertFalse(localDateTimeBetweenOrEqual((Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null, (LocalDateTime) null).test(null));
+    assertFalse(localDateTimeBetweenOrEqual((Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null, (LocalDateTime) null).test(null));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, (LocalDateTime) null, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetweenOrEqual((Function<ObjectFromLocalDateTime, LocalDateTime>)null, now, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetweenOrEqual((Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null, now).test(null));
+    assertFalse(localDateTimeBetweenOrEqual((Function<ObjectFromLocalDateTime, LocalDateTime>) null, now, (LocalDateTime) null).test(null));
+    assertFalse(localDateTimeBetweenOrEqual((Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null, now).test(null));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, now, (LocalDateTime) null).test(null));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, (LocalDateTime) null, now).test(null));
-    assertFalse(localDateTimeBetweenOrEqual((Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null, (LocalDateTime) null).test(new ObjectFromLocalDateTime(now, now, now)));
+    assertFalse(localDateTimeBetweenOrEqual((Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null, (LocalDateTime) null).test(new ObjectFromLocalDateTime(now, now, now)));
 
-    assertFalse(localDateTimeBetweenOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null).test(null));
+    assertFalse(localDateTimeBetweenOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null).test(null));
+    assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null).test(null));
     assertFalse(localDateTimeBetweenOrEqual(null, ObjectFromLocalDateTime::getMin, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetweenOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, now).test(null));
+    assertFalse(localDateTimeBetweenOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, now).test(null));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin, (LocalDateTime) null).test(null));
-    assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, now).test(null));
-    assertFalse(localDateTimeBetweenOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>)null, (LocalDateTime) null).test(new ObjectFromLocalDateTime(now, now, now)));
+    assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, now).test(null));
+    assertFalse(localDateTimeBetweenOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, (LocalDateTime) null).test(new ObjectFromLocalDateTime(now, now, now)));
 
     assertFalse(localDateTimeBetweenOrEqual(null, (LocalDateTime) null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(null));
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, (LocalDateTime) null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(null));
@@ -522,11 +534,9 @@ public class LocalDateTimePredicateTest {
 
   }
 
-  //endregion
+  // endregion
 
-
-
-  //region multi thread test
+  // region multi thread test
 
   @Test
   public void testLocalDatePredicateMultiThreadMustBeTrue() throws InterruptedException {
@@ -557,15 +567,15 @@ public class LocalDateTimePredicateTest {
     }
   }
 
-  //endregion
+  // endregion
 
   private static class ObjectFromLocalDateTime extends ObjectFrom<LocalDateTime> {
 
-    private LocalDateTime min;
+    private final LocalDateTime min;
 
-    private LocalDateTime max;
+    private final LocalDateTime max;
 
-    public ObjectFromLocalDateTime(LocalDateTime source, LocalDateTime min, LocalDateTime max) {
+    public ObjectFromLocalDateTime(final LocalDateTime source, final LocalDateTime min, final LocalDateTime max) {
       super(source, null);
       this.min = min;
       this.max = max;
