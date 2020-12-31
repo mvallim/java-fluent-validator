@@ -45,13 +45,13 @@ public class ValidationExceptionAdviceTest {
 
     @Override
     public void rules() {
+
       ruleFor(str -> str)
+        .must(str -> str == "123" || str == "456")
+          .withCode("fail")
         .must(str -> {
-          if (str == "123") {
+          if (str != "321") {
             return true;
-          }
-          if (str == "456") {
-            return false;
           }
           throw new RuntimeException();
         });
