@@ -67,7 +67,7 @@
 				<version>2.22.2</version>
 				<configuration>
 					<useSystemClassLoader>false</useSystemClassLoader>
-					<argLine>${surefire.argLine} -Dfile.encoding=${project.build.sourceEncoding}</argLine>
+					<argLine>${jacoco.argLine} -Dfile.encoding=${project.build.sourceEncoding}</argLine>
 				</configuration>
 			</plugin>
 
@@ -122,7 +122,7 @@
 							<goal>prepare-agent</goal>
 						</goals>
 						<configuration>
-							<propertyName>surefire.argLine</propertyName>
+							<propertyName>jacoco.argLine</propertyName>
 						</configuration>
 					</execution>
 					<execution>
