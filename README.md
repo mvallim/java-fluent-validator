@@ -28,7 +28,7 @@ import br.com.fluentvalidator.model.Gender;
 
 import br.com.fluentvalidator.AbstractValidator;
 
-public class ValidatorBoy extends AbstractValidator<Boy> {
+public class JavaValidatorBoy extends AbstractValidator<Boy> {
 
 	@Override
 	protected void rules() {
@@ -63,7 +63,7 @@ import br.com.fluentvalidator.model.Gender;
 
 import br.com.fluentvalidator.AbstractValidator;
 
-class KotlinValidator : AbstractValidator<Boy> {
+class KotlinValidatorBoy : AbstractValidator<Boy> {
 	
 	constructor() : super();
 
