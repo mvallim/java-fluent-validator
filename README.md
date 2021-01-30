@@ -28,22 +28,22 @@ import br.com.fluentvalidator.AbstractValidator;
 
 public class ValidatorBoy extends AbstractValidator<Boy> {
 
-    @Override
-    protected void rules() {
+	@Override
+	protected void rules() {
 
-        ruleFor(Boy::getGender)
-            .must(equalTo(Gender.MALE))
-                .when(not(nullValue()))
-                .withMessage("gender of boy must be MALE")
-                .withFieldName("gender")
-                .critical();
+		ruleFor(Boy::getGender)
+			.must(equalTo(Gender.MALE))
+				.when(not(nullValue()))
+				.withMessage("gender of boy must be MALE")
+				.withFieldName("gender")
+				.critical();
 
-        ruleFor(Boy::getName)
-            .must(stringContains("John"))
-                .when(not(stringEmptyOrNull()))
-                .withMessage("child name must contains key John")
-                .withFieldName("name");
-    }
+		ruleFor(Boy::getName)
+			.must(stringContains("John"))
+				.when(not(stringEmptyOrNull()))
+				.withMessage("child name must contains key John")
+				.withFieldName("name");
+	}
 
 }
 ```
@@ -64,22 +64,21 @@ import br.com.fluentvalidator.AbstractValidator;
 class KotlinValidator : AbstractValidator<Boy> {
 	
 	constructor() : super();
-	
-	override fun rules() {
-		
-        ruleFor(Boy::getGender)
-            .must(equalTo(Gender.MALE))
-                .`when`(not(nullValue()))
-                .withMessage("gender of boy must be MALE")
-                .withFieldName("gender")
-                .critical();
 
-        ruleFor(Boy::getName)
-            .must(stringContains("John"))
-                .`when`(not(stringEmptyOrNull()))
-                .withMessage("child name must contains key John")
-                .withFieldName("name");
-		
+	override fun rules() {
+
+		ruleFor(Boy::getGender)
+			.must(equalTo(Gender.MALE))
+				.`when`(not(nullValue()))
+				.withMessage("gender of boy must be MALE")
+				.withFieldName("gender")
+				.critical();
+
+		ruleFor(Boy::getName)
+			.must(stringContains("John"))
+				.`when`(not(stringEmptyOrNull()))
+				.withMessage("child name must contains key John")
+				.withFieldName("name");
 	}
 	
 }
