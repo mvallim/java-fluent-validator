@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     /**
      * This method cause Race Condition. We are using Compare And Swap (CAS)
      * <p>
-     * {@link https://en.wikipedia.org/wiki/Race_condition} 
+     * {@link https://en.wikipedia.org/wiki/Race_condition}
      * {@link https://en.wikipedia.org/wiki/Compare-and-swap}
      */
     public void init() {
@@ -62,9 +63,9 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     }
 
   }
-  
+
   protected AbstractValidator() {
-    this.initialize = new Initializer<T>();
+    this.initialize = new Initializer<>(this);
   }
 
   /**
