@@ -10,6 +10,8 @@
 
 Validating data is a common task that occurs throughout any application, especially the business logic layer. As for some quite complex scenarios, often the same or similar validations are scattered everywhere, thus it is hard to reuse code and break the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule.
 
+_**Compatible JDK 8, 11 and 15**_
+
 This library supports **`Kotlin`** aswell
 
 ## Sample
