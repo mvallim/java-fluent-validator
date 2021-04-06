@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,26 +23,49 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 
   private final List<Rule<T>> rules = new LinkedList<>();
 
-  private final Runnable initialize;
+  private final Initializer<T> initialize;
 
   private String property;
 
   private RuleProcessorStrategy ruleProcessor = RuleProcessorStrategy.getDefault();
 
-  protected AbstractValidator() {
-    this.initialize = new Runnable() {
+  private static class Initializer<T> {
 
-      private boolean initialized;
+    private final AtomicReference<Boolean> atomicReference = new AtomicReference<>(Boolean.FALSE);
 
-      @Override
-      public synchronized void run() {
-        if (!initialized) {
-          rules();
-          this.initialized = true;
+    private final Validator<T> validator;
+
+    Initializer(final Validator<T> validator) {
+      this.validator = validator;
+    }
+
+    /**
+     * This method cause Race Condition. We are using Compare And Swap (CAS)
+     * <p>
+     * {@link https://en.wikipedia.org/wiki/Race_condition}
+     * {@link https://en.wikipedia.org/wiki/Compare-and-swap}
+     */
+    public void init() {
+      if (isNotInitialized()) {
+        synchronized (atomicReference) {
+          if (isNotInitialized()) { // double check if was initialized
+            validator.rules();
+            final Boolean oldValue = atomicReference.get();
+            final Boolean newValue = Boolean.TRUE;
+            atomicReference.compareAndSet(oldValue, newValue);
+          }
         }
       }
+    }
 
-    };
+    private boolean isNotInitialized() {
+      return Boolean.FALSE.equals(atomicReference.get());
+    }
+
+  }
+
+  protected AbstractValidator() {
+    this.initialize = new Initializer<>(this);
   }
 
   /**
@@ -106,8 +130,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   @Override
   public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> resultTransform) {
-    return Collections.unmodifiableList(
-        instances.stream().map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
+    return Collections.unmodifiableList(instances.stream().map(instance -> this.validate(instance, resultTransform)).collect(Collectors.toList()));
   }
 
   /**
@@ -115,7 +138,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   @Override
   public boolean apply(final T instance) {
-    this.initialize.run();
+    this.initialize.init();
     ValidationContext.get().setProperty(this.property, instance);
     return ruleProcessor.process(instance, instance, rules);
   }
@@ -144,8 +167,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    * {@link #ruleForEach(String, Function) AbstractValidator}
    */
   @Override
-  public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName,
-      final Function<T, Collection<P>> function) {
+  public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName, final Function<T, Collection<P>> function) {
     final RuleBuilderCollectionImpl<T, P> rule = new RuleBuilderCollectionImpl<>(fieldName, function);
     this.rules.add(rule);
     return rule;
