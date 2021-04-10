@@ -13,6 +13,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -520,6 +521,49 @@ public final class StringPredicate {
     return PredicateBuilder.<String>from(not(nullValue()))
         .and(stringSizeLessThan(size).or(stringSize(size)));
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  public static <T extends String> Predicate<T> stringInCollection(final Collection<String> collection) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(obj -> not(nullValue()).test(collection))
+        .and(collection::contains);
+  }
+
+  public static <T> Predicate<T> stringInCollection(final Function<T, String> source, final Collection<String> collection) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(nullValue(source)))
+        .and(obj -> not(nullValue()).test(collection))
+        .and(obj -> stringInCollection(collection).test(source.apply(obj)));
+  }
+
+  public static <T> Predicate<T> stringInCollection(final String source, final Function<T, Collection<String>> target) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(nullValue(target)))
+        .and(obj -> stringInCollection(target.apply(obj)).test(source));
+  }
+
+  public static <T> Predicate<T> stringInCollection(final Function<T, String> source, final Function<T, Collection<String>> target) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(nullValue(source)))
+        .and(not(nullValue(target)))
+        .and(obj -> stringInCollection(target.apply(obj)).test(source.apply(obj)));
+  }
+
+
+
+
+
+
 
   private StringPredicate() {
     super();
