@@ -10,28 +10,81 @@
 
 Validating data is a common task that occurs throughout any application, especially the business logic layer. As for some quite complex scenarios, often the same or similar validations are scattered everywhere, thus it is hard to reuse code and break the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule.
 
+_**Compatible JDK 8, 11 and 15**_
+
+This library supports **`Kotlin`** aswell
+
 ## Sample
 
+Java
+
 ```java
-public class ValidatorBoy extends AbstractValidator<Boy> {
+import static br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 
-    @Override
-    protected void rules() {
+import br.com.fluentvalidator.model.Boy
+import br.com.fluentvalidator.model.Gender;
 
-        ruleFor(Boy::getGender)
-            .must(equalTo(Gender.MALE))
-                .when(not(nullValue()))
-                .withMessage("gender of boy must be MALE")
-                .withFieldName("gender")
-                .critical();
+import br.com.fluentvalidator.AbstractValidator;
 
-        ruleFor(Boy::getName)
-            .must(stringContains("John"))
-                .when(not(stringEmptyOrNull()))
-                .withMessage("child name must contains key John")
-                .withFieldName("name");
-    }
+public class JavaValidatorBoy extends AbstractValidator<Boy> {
 
+	@Override
+	protected void rules() {
+
+		ruleFor(Boy::getGender)
+			.must(equalTo(Gender.MALE))
+				.when(not(nullValue()))
+				.withMessage("gender of boy must be MALE")
+				.withFieldName("gender")
+				.critical();
+
+		ruleFor(Boy::getName)
+			.must(stringContains("John"))
+				.when(not(stringEmptyOrNull()))
+				.withMessage("child name must contains key John")
+				.withFieldName("name");
+	}
+
+}
+```
+Kotlin
+
+```kotlin
+import br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
+import br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+import br.com.fluentvalidator.predicate.StringPredicate.stringContains;
+import br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
+
+import br.com.fluentvalidator.model.Boy
+import br.com.fluentvalidator.model.Gender;
+
+import br.com.fluentvalidator.AbstractValidator;
+
+class KotlinValidatorBoy : AbstractValidator<Boy> {
+	
+	constructor() : super();
+
+	override fun rules() {
+
+		ruleFor(Boy::getGender)
+			.must(equalTo(Gender.MALE))
+				.`when`(not(nullValue()))
+				.withMessage("gender of boy must be MALE")
+				.withFieldName("gender")
+				.critical();
+
+		ruleFor(Boy::getName)
+			.must(stringContains("John"))
+				.`when`(not(stringEmptyOrNull()))
+				.withMessage("child name must contains key John")
+				.withFieldName("name");
+	}
+	
 }
 ```
 
