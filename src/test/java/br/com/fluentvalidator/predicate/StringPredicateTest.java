@@ -1,26 +1,12 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.StringPredicate.isAlpha;
-import static br.com.fluentvalidator.predicate.StringPredicate.isAlphaNumeric;
-import static br.com.fluentvalidator.predicate.StringPredicate.isDate;
-import static br.com.fluentvalidator.predicate.StringPredicate.isDateTime;
-import static br.com.fluentvalidator.predicate.StringPredicate.isNumber;
-import static br.com.fluentvalidator.predicate.StringPredicate.isNumeric;
-import static br.com.fluentvalidator.predicate.StringPredicate.isTime;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringContains;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringEquals;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringEqualsIgnoreCase;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringMatches;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringSize;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeBetween;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeGreaterThan;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeGreaterThanOrEqual;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeLessThan;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeLessThanOrEqual;
+import static br.com.fluentvalidator.predicate.StringPredicate.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+
+import java.util.*;
+import java.util.function.Function;
 
 public class StringPredicateTest {
 
@@ -807,6 +793,176 @@ public class StringPredicateTest {
   public void testStringSizeLessThanOrEqual() {
     assertTrue(stringSizeLessThanOrEqual(5).test("hello"));
     assertFalse(stringSizeLessThanOrEqual(4).test("hello"));
+  }
+
+  @Test
+  public void testStringInCollectionUsingList() {
+    final List<String> list = new ArrayList<>(2);
+    list.add("foo");
+    list.add("bar");
+
+    assertTrue(stringInCollection(list).test("foo"));
+    assertFalse(stringInCollection(list).test("test"));
+    assertFalse(stringInCollection(list).test(""));
+
+    assertTrue(stringInCollection(CollectionTestObject::getSource, list).test(new CollectionTestObject("foo", list)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, list).test(new CollectionTestObject("test", list)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, list).test(new CollectionTestObject("", list)));
+
+    assertTrue(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test (new CollectionTestObject("foo", list)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("test", list)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("", list)));
+
+    assertTrue(stringInCollection("foo", CollectionTestObject::getTarget).test (new CollectionTestObject("foo", list)));
+    assertFalse(stringInCollection("test", CollectionTestObject::getTarget).test(new CollectionTestObject("test", list)));
+    assertFalse(stringInCollection("", CollectionTestObject::getTarget).test(new CollectionTestObject("", list)));
+  }
+
+  @Test
+  public void testStringInCollectionUsingSet() {
+    final Set<String> set = new HashSet<>(2);
+    set.add("foo");
+    set.add("bar");
+
+    assertTrue(stringInCollection(set).test("foo"));
+    assertFalse(stringInCollection(set).test("test"));
+    assertFalse(stringInCollection(set).test(""));
+
+    assertTrue(stringInCollection(CollectionTestObject::getSource, set).test(new CollectionTestObject("foo", set)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, set).test(new CollectionTestObject("test", set)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, set).test(new CollectionTestObject("", set)));
+
+    assertTrue(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test (new CollectionTestObject("foo", set)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("test", set)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("", set)));
+
+    assertTrue(stringInCollection("foo", CollectionTestObject::getTarget).test (new CollectionTestObject("foo", set)));
+    assertFalse(stringInCollection("test", CollectionTestObject::getTarget).test(new CollectionTestObject("test", set)));
+    assertFalse(stringInCollection("", CollectionTestObject::getTarget).test(new CollectionTestObject("", set)));
+  }
+
+  @Test
+  public void testStringInCollectionUsingQueue() {
+    final Queue<String> queue = new PriorityQueue<>(2);
+    queue.add("foo");
+    queue.add("bar");
+
+    assertTrue(stringInCollection(queue).test("foo"));
+    assertFalse(stringInCollection(queue).test("test"));
+    assertFalse(stringInCollection(queue).test(""));
+
+    assertTrue(stringInCollection(CollectionTestObject::getSource, queue).test(new CollectionTestObject("foo", queue)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, queue).test(new CollectionTestObject("test", queue)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, queue).test(new CollectionTestObject("", queue)));
+
+    assertTrue(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test (new CollectionTestObject("foo", queue)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("test", queue)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("", queue)));
+
+    assertTrue(stringInCollection("foo", CollectionTestObject::getTarget).test (new CollectionTestObject("foo", queue)));
+    assertFalse(stringInCollection("test", CollectionTestObject::getTarget).test(new CollectionTestObject("test", queue)));
+    assertFalse(stringInCollection("", CollectionTestObject::getTarget).test(new CollectionTestObject("", queue)));
+  }
+
+  @Test
+  public void testNullValuesForStringInCollectionUsingList() {
+    final List<String> list = new ArrayList<>(2);
+    list.add("foo");
+    list.add("bar");
+
+    assertFalse(stringInCollection(list).test(null));
+
+    assertFalse(stringInCollection(CollectionTestObject::getSource, list).test(new CollectionTestObject(null, list)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, list).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Collection<String>) null).test(new CollectionTestObject("foo", list)));
+    assertFalse(stringInCollection(null, list).test(new CollectionTestObject(null, list)));
+    assertFalse(stringInCollection(null, list).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection(null, (Collection<String>) null).test(new CollectionTestObject(null, list)));
+
+    assertFalse(stringInCollection("foo", CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection("foo", null).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((String) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, list)));
+    assertFalse(stringInCollection((String) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((String) null, null).test(new CollectionTestObject(null, null)));
+
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject(null, list)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, list)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, CollectionTestObject::getTarget).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject(null, list)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject(null, list)));
+  }
+
+  @Test
+  public void testNullValuesForStringInCollectionUsingSet() {
+    final Set<String> set = new HashSet<>(2);
+    set.add("foo");
+    set.add("bar");
+
+    assertFalse(stringInCollection(set).test(null));
+
+    assertFalse(stringInCollection(CollectionTestObject::getSource, set).test(new CollectionTestObject(null, set)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, set).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Collection<String>) null).test(new CollectionTestObject("foo", set)));
+    assertFalse(stringInCollection(null, set).test(new CollectionTestObject(null, set)));
+    assertFalse(stringInCollection(null, set).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection(null, (Collection<String>) null).test(new CollectionTestObject(null, set)));
+
+    assertFalse(stringInCollection("foo", CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection("foo", null).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((String) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, set)));
+    assertFalse(stringInCollection((String) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((String) null, null).test(new CollectionTestObject(null, null)));
+
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject(null, set)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, set)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, CollectionTestObject::getTarget).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject(null, set)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject(null, set)));
+  }
+
+  @Test
+  public void testNullValuesForStringInCollectionUsingQueue() {
+    final Queue<String> queue = new PriorityQueue<>(2);
+    queue.add("foo");
+    queue.add("bar");
+
+    assertFalse(stringInCollection(queue).test(null));
+
+    assertFalse(stringInCollection(CollectionTestObject::getSource, queue).test(new CollectionTestObject(null, queue)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, queue).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Collection<String>) null).test(new CollectionTestObject("foo", queue)));
+    assertFalse(stringInCollection(null, queue).test(new CollectionTestObject(null, queue)));
+    assertFalse(stringInCollection(null, queue).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection(null, (Collection<String>) null).test(new CollectionTestObject(null, queue)));
+
+    assertFalse(stringInCollection("foo", CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection("foo", null).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((String) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, queue)));
+    assertFalse(stringInCollection((String) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((String) null, null).test(new CollectionTestObject(null, null)));
+
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject(null, queue)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, CollectionTestObject::getTarget).test(new CollectionTestObject(null, null)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, CollectionTestObject::getTarget).test(new CollectionTestObject(null, queue)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, CollectionTestObject::getTarget).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject("foo", null)));
+    assertFalse(stringInCollection(CollectionTestObject::getSource, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject(null, queue)));
+    assertFalse(stringInCollection((Function<CollectionTestObject, String>) null, (Function<CollectionTestObject, Collection<String>>) null).test(new CollectionTestObject(null, queue)));
+  }
+
+  private static class CollectionTestObject extends ComplexObjectFrom<String, Collection<String>> {
+
+    public CollectionTestObject(String source, Collection<String> target) {
+      super(source, target);
+    }
+
   }
 
 }
