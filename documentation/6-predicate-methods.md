@@ -230,6 +230,22 @@ stringSizeLessThanOrEqual(final Function<T, String> source, final Integer size)
 stringSizeLessThanOrEqual(final Integer size)
 ```
 
+```java
+stringInCollection(final Collection<String> collection)
+```
+
+```java
+stringInCollection(final Function<T, String> source, final Collection<String> collection)
+```
+
+```java
+stringInCollection(final String source, final Function<T, Collection<String>> target)
+```
+
+```java
+stringInCollection(final Function<T, String> source, final Function<T, Collection<String>> target)
+```
+
 ## 6.4 Comparable
 
 ```java
