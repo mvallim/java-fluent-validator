@@ -1,11 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.mvallim</groupId>
 	<artifactId>java-fluent-validator</artifactId>
-	<version>1.9.3-SNAPSHOT</version>
+	<version>1.9.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -72,9 +73,9 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
+				<groupId>com.nickwongdev</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.11</version>
+				<version>1.12.6</version>
 				<configuration>
 					<Xlint>adviceDidNotMatch=ignore</Xlint>
 					<complianceLevel>${java.version}</complianceLevel>
@@ -107,7 +108,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.5</version>
+				<version>0.8.6</version>
 				<configuration>
 					<excludes>
 						<exclude>**/test/**</exclude>
