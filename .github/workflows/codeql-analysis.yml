@@ -29,9 +29,7 @@ jobs:
         languages: ${{ matrix.language }}
 
     - name: Compile with Maven
-      run: |
-        make bootstrap
-        make release
+      run: mvn -T 1C clean package --file pom.xml
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
