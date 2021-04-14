@@ -41,6 +41,7 @@ jobs:
       run: mvn -T 1C test-compile test --file pom.xml
   
   sonarcloud:
+    environment: sonarcloud
     runs-on: ubuntu-latest
     needs: [build, test]
     steps:
