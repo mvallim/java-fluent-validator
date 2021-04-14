@@ -39,6 +39,11 @@
 			<email>tischer@gmail.com</email>
 			<timezone>-3</timezone>
 		</developer>
+		<developer>
+			<name>Paulo Sergio</name>
+			<email>paulosergio.jnr@gmail.com</email>
+			<timezone>-3</timezone>
+		</developer>
 	</developers>
 
 	<licenses>
