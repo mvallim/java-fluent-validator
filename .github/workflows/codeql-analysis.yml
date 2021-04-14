@@ -23,14 +23,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: ${{ matrix.language }}
 
     - name: Compile with Maven
-      run: mvn -T 1C clean generate-sources compile --file pom.xml
+      run: |
+        make bootstrap
+        make release
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
