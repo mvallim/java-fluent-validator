@@ -51,6 +51,7 @@ public class JavaValidatorBoy extends AbstractValidator<Boy> {
 
 }
 ```
+
 Kotlin
 
 ```kotlin
