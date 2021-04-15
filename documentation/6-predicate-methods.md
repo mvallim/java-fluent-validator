@@ -450,7 +450,33 @@ hasSize(final Function<T, Collection<E>> source, final Integer size)
 hasSize(final Integer size)
 ```
 
-## 6.6 Date
+## 6.6 Map
+
+```java
+mapGet(final K key, final Predicate<V> predicate)
+```
+
+```java
+mapGet(final Function<T, K> key, final Predicate<V> predicate)
+```
+
+```java
+containsKey(final K key)
+```
+
+```java
+containsKey(final Function<T, K> key)
+```
+
+```java
+containsValue(final V value)
+```
+
+```java
+containsValue(final Function<T, V> value)
+```
+
+## 6.7 Date
 
 ```java
 dateBetween(final Function<T, String> source, final String dateStringMin, final String dateStringMax, final String pattern)
@@ -520,7 +546,7 @@ dateLessThanOrEqual(final Function<T, String> source, final String target, final
 dateLessThanOrEqual(final String dateString, final String pattern)
 ```
 
-## 6.7 DateTime
+## 6.8 DateTime
 
 ```java
 dateTimeBetween(final Function<T, String> source, final String dateStringMin, final String dateStringMax, final String pattern)
@@ -590,7 +616,7 @@ dateTimeLessThanOrEqual(final Function<T, String> source, final String target, f
 dateTimeLessThanOrEqual(final String dateString, final String pattern)
 ```
 
-## 6.8 Time
+## 6.9 Time
 
 ```java
 timeEqualTo(final Function<T, String> source, final Function<T, String> target, final String pattern)
@@ -660,7 +686,7 @@ timeLessThanOrEqual(final String timeString, final String pattern)
 timeBetween(final String timeStringMin, final String timeStringMax, final String pattern)
 ```
 
-## 6.9 LocalDate
+## 6.10 LocalDate
 
 ```java
 localDateAfterToday()
@@ -798,7 +824,7 @@ localDateBetweenOrEqual(final Function<T, LocalDate> source, final LocalDate min
 localDateBetweenOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final Function<T, LocalDate> max)
 ```
 
-## 6.10 LocalDateTime
+## 6.11 LocalDateTime
 
 ```java
 localDateTimeAfterToday()
@@ -952,7 +978,7 @@ localDateTimeBetweenOrEqual(final Function<T, LocalDateTime> source, final Local
 localDateTimeBetweenOrEqual(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> min, final Function<T, LocalDateTime> max)
 ```
 
-## 6.11 LocalTime
+## 6.12 LocalTime
 
 
 ```java

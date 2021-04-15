@@ -16,7 +16,7 @@ This library supports **`Kotlin`** aswell
 
 ## Sample
 
-Java
+### Java
 
 ```java
 import static br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
@@ -32,26 +32,27 @@ import br.com.fluentvalidator.AbstractValidator;
 
 public class JavaValidatorBoy extends AbstractValidator<Boy> {
 
-	@Override
-	protected void rules() {
+  @Override
+  protected void rules() {
 
-		ruleFor(Boy::getGender)
-			.must(equalTo(Gender.MALE))
-				.when(not(nullValue()))
-				.withMessage("gender of boy must be MALE")
-				.withFieldName("gender")
-				.critical();
+    ruleFor(Boy::getGender)
+      .must(equalTo(Gender.MALE))
+      .when(not(nullValue()))
+        .withMessage("gender of boy must be MALE")
+        .withFieldName("gender")
+        .critical();
 
-		ruleFor(Boy::getName)
-			.must(stringContains("John"))
-				.when(not(stringEmptyOrNull()))
-				.withMessage("child name must contains key John")
-				.withFieldName("name");
-	}
+    ruleFor(Boy::getName)
+      .must(stringContains("John"))
+      .when(not(stringEmptyOrNull()))
+        .withMessage("child name must contains key John")
+        .withFieldName("name");
+  }
 
 }
 ```
-Kotlin
+
+### Kotlin
 
 ```kotlin
 import br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
@@ -67,24 +68,24 @@ import br.com.fluentvalidator.AbstractValidator;
 
 class KotlinValidatorBoy : AbstractValidator<Boy> {
 	
-	constructor() : super();
+  constructor() : super();
 
-	override fun rules() {
+  override fun rules() {
 
-		ruleFor(Boy::getGender)
-			.must(equalTo(Gender.MALE))
-				.`when`(not(nullValue()))
-				.withMessage("gender of boy must be MALE")
-				.withFieldName("gender")
-				.critical();
+    ruleFor(Boy::getGender)
+      .must(equalTo(Gender.MALE))
+      .`when`(not(nullValue()))
+        .withMessage("gender of boy must be MALE")
+        .withFieldName("gender")
+        .critical();
 
-		ruleFor(Boy::getName)
-			.must(stringContains("John"))
-				.`when`(not(stringEmptyOrNull()))
-				.withMessage("child name must contains key John")
-				.withFieldName("name");
-	}
-	
+    ruleFor(Boy::getName)
+      .must(stringContains("John"))
+      .`when`(not(stringEmptyOrNull()))
+        .withMessage("child name must contains key John")
+        .withFieldName("name");
+  }
+
 }
 ```
 
