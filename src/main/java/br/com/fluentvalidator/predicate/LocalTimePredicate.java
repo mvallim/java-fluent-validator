@@ -1,13 +1,12 @@
 package br.com.fluentvalidator.predicate;
 
-import java.time.LocalTime;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
-import static br.com.fluentvalidator.predicate.LocalDatePredicate.*;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
+
+import java.time.LocalTime;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public final class LocalTimePredicate {
 

@@ -10,13 +10,13 @@
 
 Validating data is a common task that occurs throughout any application, especially the business logic layer. As for some quite complex scenarios, often the same or similar validations are scattered everywhere, thus it is hard to reuse code and break the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule.
 
-_**Compatible JDK 8, 11 and 15**_
+_**Compatible JDK 8, 11, 15, 16 and 17**_
 
 This library supports **`Kotlin`** aswell
 
 ## Sample
 
-Java
+### Java
 
 ```java
 import static br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
@@ -32,26 +32,27 @@ import br.com.fluentvalidator.AbstractValidator;
 
 public class JavaValidatorBoy extends AbstractValidator<Boy> {
 
-	@Override
-	protected void rules() {
+  @Override
+  protected void rules() {
 
-		ruleFor(Boy::getGender)
-			.must(equalTo(Gender.MALE))
-				.when(not(nullValue()))
-				.withMessage("gender of boy must be MALE")
-				.withFieldName("gender")
-				.critical();
+    ruleFor(Boy::getGender)
+      .must(equalTo(Gender.MALE))
+      .when(not(nullValue()))
+        .withMessage("gender of boy must be MALE")
+        .withFieldName("gender")
+        .critical();
 
-		ruleFor(Boy::getName)
-			.must(stringContains("John"))
-				.when(not(stringEmptyOrNull()))
-				.withMessage("child name must contains key John")
-				.withFieldName("name");
-	}
+    ruleFor(Boy::getName)
+      .must(stringContains("John"))
+      .when(not(stringEmptyOrNull()))
+        .withMessage("child name must contains key John")
+        .withFieldName("name");
+  }
 
 }
 ```
-Kotlin
+
+### Kotlin
 
 ```kotlin
 import br.com.fluentvalidator.predicate.ComparablePredicate.equalTo;
@@ -67,24 +68,24 @@ import br.com.fluentvalidator.AbstractValidator;
 
 class KotlinValidatorBoy : AbstractValidator<Boy> {
 	
-	constructor() : super();
+  constructor() : super();
 
-	override fun rules() {
+  override fun rules() {
 
-		ruleFor(Boy::getGender)
-			.must(equalTo(Gender.MALE))
-				.`when`(not(nullValue()))
-				.withMessage("gender of boy must be MALE")
-				.withFieldName("gender")
-				.critical();
+    ruleFor(Boy::getGender)
+      .must(equalTo(Gender.MALE))
+      .`when`(not(nullValue()))
+        .withMessage("gender of boy must be MALE")
+        .withFieldName("gender")
+        .critical();
 
-		ruleFor(Boy::getName)
-			.must(stringContains("John"))
-				.`when`(not(stringEmptyOrNull()))
-				.withMessage("child name must contains key John")
-				.withFieldName("name");
-	}
-	
+    ruleFor(Boy::getName)
+      .must(stringContains("John"))
+      .`when`(not(stringEmptyOrNull()))
+        .withMessage("child name must contains key John")
+        .withFieldName("name");
+  }
+
 }
 ```
 
@@ -114,7 +115,7 @@ We use [GitHub](https://github.com/mvallim/java-fluent-validator) for versioning
 ## Authors
 
 * **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
-* **Paulo Sergio** - *Development, Test, Documentation* - [pspjnsu](https://github.com/pspjnsu)
+* **Paulo Sergio** - *Manteiner, Development, Test, Documentation* - [paulosergio-jnr](https://github.com/paulosergio-jnr)
 
 See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
 
