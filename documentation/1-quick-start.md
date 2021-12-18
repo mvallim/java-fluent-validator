@@ -12,7 +12,7 @@ You can pull it from the central Maven repositories:
 <dependency>
     <groupId>com.github.mvallim</groupId>
     <artifactId>java-fluent-validator</artifactId>
-    <version>1.9.3</version>
+    <version>1.10.0</version>
 </dependency>
 ```
 
@@ -27,6 +27,23 @@ If you want to try a snapshot version, add the following repository:
         <enabled>true</enabled>
     </snapshots>
 </repository>
+```
+
+
+#### Gradle
+
+```groovy
+implementation 'com.github.mvallim:java-fluent-validator:1.10.0'
+```
+
+If you want to try a snapshot version, add the following repository:
+
+```groovy
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
 ```
 
 ## 1.2 Create a domain model
