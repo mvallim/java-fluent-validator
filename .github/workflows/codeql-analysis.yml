@@ -79,4 +79,4 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
       env:
-        JAVA_TOOL_OPTIONS: -javaagent:${{ github.workspace }}/.m2/repository/org/aspectj/aspectjweaver/1.9.6/aspectjweaver-1.9.6.jar
+        JAVA_TOOL_OPTIONS: -javaagent:/home/runner/.m2/repository/org/aspectj/aspectjweaver/1.9.6/aspectjweaver-1.9.6.jar
