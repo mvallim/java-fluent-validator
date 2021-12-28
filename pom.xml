@@ -158,7 +158,6 @@
 					<optimize>true</optimize>
 					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
-					<useIncrementalCompilation>false</useIncrementalCompilation>
 				</configuration>
 			</plugin>
 
@@ -167,8 +166,6 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.0.2</version>
 				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
@@ -178,9 +175,6 @@
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.2.1</version>
 				<inherited>true</inherited>
-				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
 				<executions>
 					<execution>
 						<id>attach-source</id>
