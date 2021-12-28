@@ -76,12 +76,14 @@
 			</plugin>
 
 			<plugin>
-				<groupId>com.nickwongdev</groupId>
+				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.12.6</version>
+				<version>1.7</version>
 				<configuration>
-					<Xlint>adviceDidNotMatch=ignore</Xlint>
+					<Xlint>ignore</Xlint>
 					<complianceLevel>${java.version}</complianceLevel>
+					<showWeaveInfo>false</showWeaveInfo>
+					<verbose>false</verbose>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
@@ -158,6 +160,7 @@
 					<optimize>true</optimize>
 					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
+					<useIncrementalCompilation>false</useIncrementalCompilation>
 				</configuration>
 			</plugin>
 
