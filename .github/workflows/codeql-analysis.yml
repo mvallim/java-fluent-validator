@@ -42,9 +42,7 @@ jobs:
         languages: ${{ matrix.language }}
 
     - name: Compile with Maven
-      run: mvn -T 1C clean generate-sources compile --file pom.xml
+      run: mvn -T 1C clean compile --file pom.xml
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
-      env:
-        JAVA_TOOL_OPTIONS: -javaagent:/home/runner/.m2/repository/org/aspectj/aspectjweaver/1.9.6/aspectjweaver-1.9.6.jar
