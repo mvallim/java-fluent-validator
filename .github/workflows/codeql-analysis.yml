@@ -1,0 +1,50 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
+      - '**/CONTRIBUTING.md'
+      - '**/CONTRIBUTORS.txt'
+      - '**/CODE_OF_CONDUCT.md'
+      - '**/LICENSE'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
+      - '**/CONTRIBUTING.md'
+      - '**/CONTRIBUTORS.txt'
+      - '**/CODE_OF_CONDUCT.md'
+      - '**/LICENSE'
+  schedule:
+    - cron: '28 19 * * 5'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+     
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Compile with Maven
+      run: mvn -T 1C clean compile -Pcode-ql --file pom.xml
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1

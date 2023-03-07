@@ -6,8 +6,18 @@ name: Java CI with Maven
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
+      - '**/CONTRIBUTING.md'
+      - '**/CONTRIBUTORS.txt'
+      - '**/LICENSE'
   pull_request:
     branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
+      - '**/CONTRIBUTING.md'
+      - '**/CONTRIBUTORS.txt'
+      - '**/LICENSE'
 
 jobs:
 
