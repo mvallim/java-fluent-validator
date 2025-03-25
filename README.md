@@ -8,6 +8,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=java-fluent-validator&metric=coverage)](https://sonarcloud.io/dashboard?id=java-fluent-validator)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/java-fluent-validator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/java-fluent-validator)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![libs.tech recommends](https://libs.tech/project/201566896/badge.svg)](https://libs.tech/project/201566896/java-fluent-validator)
 
 Validating data is a common task that occurs throughout any application, especially the business logic layer. As for some quite complex scenarios, often the same or similar validations are scattered everywhere, thus it is hard to reuse code and break the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule.
 
