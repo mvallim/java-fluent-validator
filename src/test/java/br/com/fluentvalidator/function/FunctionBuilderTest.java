@@ -22,15 +22,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.function.Function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import br.com.fluentvalidator.function.FunctionBuilderTest.FunctionalTest.FunctionalTestInner01;
 import br.com.fluentvalidator.function.FunctionBuilderTest.FunctionalTest.FunctionalTestInner01.FunctionalTestInner02;
 
-public class FunctionBuilderTest {
+class FunctionBuilderTest {
 
   @Test
-  public void testSuccessAndThen() {
+  void testSuccessAndThen() {
 
     final FunctionalTest functionalTest = new FunctionalTest();
 
@@ -51,7 +51,7 @@ public class FunctionBuilderTest {
   }
 
   @Test
-  public void testSuccessCompose() {
+  void testSuccessCompose() {
 
     final FunctionalTest functionalTest = new FunctionalTest();
 
@@ -72,7 +72,7 @@ public class FunctionBuilderTest {
   }
 
   @Test
-  public void testSuccessAndThenWhenNullValueInChain01() {
+  void testSuccessAndThenWhenNullValueInChain01() {
 
     final FunctionalTest functionalTest = new FunctionalTest();
 
@@ -87,7 +87,7 @@ public class FunctionBuilderTest {
   }
 
   @Test
-  public void testSuccessAndThenWhenNullValueInChain02() {
+  void testSuccessAndThenWhenNullValueInChain02() {
 
     final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTest::getFunctionalTestInner01).andThen(FunctionalTestInner01::getFunctionalTestInner02).andThen(FunctionalTestInner02::getValue);
 
@@ -96,7 +96,7 @@ public class FunctionBuilderTest {
   }
 
   @Test
-  public void testSuccessAndThenWhenNullValueInChain03() {
+  void testSuccessAndThenWhenNullValueInChain03() {
 
     final FunctionalTest functionalTest = new FunctionalTest();
 
@@ -107,7 +107,7 @@ public class FunctionBuilderTest {
   }
 
   @Test
-  public void testSuccessComposeWhenNullValueInChain01() {
+  void testSuccessComposeWhenNullValueInChain01() {
 
     final FunctionalTest functionalTest = new FunctionalTest();
 
@@ -122,7 +122,7 @@ public class FunctionBuilderTest {
   }
 
   @Test
-  public void testSuccessComposeWhenNullValueInChain02() {
+  void testSuccessComposeWhenNullValueInChain02() {
 
     final Function<FunctionalTest, Integer> function = FunctionBuilder.of(FunctionalTestInner02::getValue).compose(FunctionalTestInner01::getFunctionalTestInner02).compose(FunctionalTest::getFunctionalTestInner01);
 
@@ -131,7 +131,7 @@ public class FunctionBuilderTest {
   }
 
   @Test
-  public void testSuccessComposeWhenNullValueInChain03() {
+  void testSuccessComposeWhenNullValueInChain03() {
 
     final FunctionalTest functionalTest = new FunctionalTest();
 

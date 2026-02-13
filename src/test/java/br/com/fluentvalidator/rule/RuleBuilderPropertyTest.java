@@ -22,12 +22,16 @@ import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeLessThan;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Collection;
 import java.util.Collections;
-import org.junit.After;
-import org.junit.Test;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.Error;
@@ -36,15 +40,15 @@ import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.exception.ValidationSampleException;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
-public class RuleBuilderPropertyTest {
+class RuleBuilderPropertyTest {
 
-  @After
+  @AfterEach
   public void tearDown() {
     ValidationContext.remove();
   }
 
   @Test
-  public void testFailWhenApplyNullValue() {
+  void testFailWhenApplyNullValue() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -55,7 +59,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testSuccessValidValue() {
+  void testSuccessValidValue() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -66,7 +70,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testSuccessInvalidSingleRuleWithoutCritical() {
+  void testSuccessInvalidSingleRuleWithoutCritical() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -77,7 +81,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testSuccessInvalidMultipleRuleWithoutCritical() {
+  void testSuccessInvalidMultipleRuleWithoutCritical() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -91,7 +95,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testSuccessRuleWithCritical() {
+  void testSuccessRuleWithCritical() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -103,7 +107,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testFailRuleWithCritical() {
+  void testFailRuleWithCritical() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -115,7 +119,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testSuccessRuleWithCriticalException() {
+  void testSuccessRuleWithCriticalException() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -127,8 +131,8 @@ public class RuleBuilderPropertyTest {
     assertTrue(builder.apply("o"));
   }
 
-  @Test(expected = ValidationSampleException.class)
-  public void testFailRuleWithCriticalException() {
+  @Test
+  void testFailRuleWithCriticalException() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -137,11 +141,13 @@ public class RuleBuilderPropertyTest {
         .must(stringSizeLessThan(1)).when(not(nullValue())).withMessage("rule 2")
         .critical(ValidationSampleException.class);
 
-    assertFalse(builder.apply("o"));
+    final ValidationSampleException exception = assertThrows(ValidationSampleException.class, () -> builder.apply("o"));
+    
+    assertFalse(exception.getValidationResult().isValid());
   }
 
   @Test
-  public void testSuccessRuleValidator() {
+  void testSuccessRuleValidator() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -152,7 +158,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testFailRuleValidatorWithCritical() {
+  void testFailRuleValidatorWithCritical() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -162,8 +168,8 @@ public class RuleBuilderPropertyTest {
     assertFalse(builder.apply("oo"));
   }
 
-  @Test(expected = ValidationSampleException.class)
-  public void testFailRuleValidatorWithCriticalException() {
+  @Test
+  void testFailRuleValidatorWithCriticalException() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -171,11 +177,13 @@ public class RuleBuilderPropertyTest {
     builder.whenever(not(nullValue())).withValidator(new ValidatorIdTest())
         .critical(ValidationSampleException.class);
 
-    assertFalse(builder.apply("o"));
+    final ValidationSampleException exception = assertThrows(ValidationSampleException.class, () -> builder.apply("o"));
+    
+    assertFalse(exception.getValidationResult().isValid());
   }
 
   @Test
-  public void testFailInvalidMultipleRuleWithCritical() {
+  void testFailInvalidMultipleRuleWithCritical() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -188,8 +196,8 @@ public class RuleBuilderPropertyTest {
     assertFalse(builder.apply("o"));
   }
 
-  @Test(expected = ValidationSampleException.class)
-  public void testFailInvalidMultipleRuleWithCriticalException() {
+  @Test
+  void testFailInvalidMultipleRuleWithCriticalException() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -200,11 +208,13 @@ public class RuleBuilderPropertyTest {
         .critical(ValidationSampleException.class).must(stringSizeLessThan(2))
         .when(not(nullValue())).withMessage("rule 4");
 
-    assertFalse(builder.apply("o"));
+    final ValidationSampleException exception = assertThrows(ValidationSampleException.class, () -> builder.apply("o"));
+    
+    assertFalse(exception.getValidationResult().isValid());
   }
 
   @Test
-  public void testSuccessDynamicProperties() {
+  void testSuccessDynamicProperties() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>("test", String::toUpperCase);
@@ -223,7 +233,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testSuccessValidAndInvalidMultipleRule() {
+  void testSuccessValidAndInvalidMultipleRule() {
 
     final RuleBuilderPropertyImpl<String, String> builder =
         new RuleBuilderPropertyImpl<>(String::new);
@@ -249,7 +259,7 @@ public class RuleBuilderPropertyTest {
   }
 
   @Test
-  public void testSuccesInnerClass() {
+  void testSuccesInnerClass() {
 
     final Validator<ClassTest.InnerClass> builder = new InnerClassValidator();
 

@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.Error;
@@ -41,10 +41,10 @@ import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
 import br.com.fluentvalidator.validator.ValidatorParent;
 
-public class ValidationResultTransformTest {
+class ValidationResultTransformTest {
 
   @Test
-  public void validationTransformMustBeSuccess() {
+  void validationTransformMustBeSuccess() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -60,7 +60,7 @@ public class ValidationResultTransformTest {
   }
 
   @Test
-  public void validationTransformMustBeFailWhenFieldOfParentAreInvalid() {
+  void validationTransformMustBeFailWhenFieldOfParentAreInvalid() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -79,7 +79,7 @@ public class ValidationResultTransformTest {
   }
 
   @Test
-  public void validationTransformCollectionParentMustBeSuccess() {
+  void validationTransformCollectionParentMustBeSuccess() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent1 = new Parent();
@@ -107,7 +107,7 @@ public class ValidationResultTransformTest {
   }
 
   @Test
-  public void validationTransformMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
+  void validationTransformMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
 
     final int CONCURRENT_RUNNABLE = 100000;
 

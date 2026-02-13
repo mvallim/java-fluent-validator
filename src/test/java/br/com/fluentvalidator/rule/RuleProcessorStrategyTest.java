@@ -26,22 +26,22 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.context.ValidationResult;
 
-public class RuleProcessorStrategyTest {
+class RuleProcessorStrategyTest {
 
   @Test
-  public void testDefaultSuccessSingleRule() {
+  void testDefaultSuccessSingleRule() {
 
     final StringValidationRule rule = new StringValidationRule();
     rule.must(equalObject("o"));
@@ -54,7 +54,7 @@ public class RuleProcessorStrategyTest {
   }
 
   @Test
-  public void testDefaultSuccessSingleRuleWithCritical() {
+  void testDefaultSuccessSingleRuleWithCritical() {
 
     final StringValidationRule rule = new StringValidationRule();
     rule.must(equalObject("o"));
@@ -71,7 +71,7 @@ public class RuleProcessorStrategyTest {
   }
 
   @Test
-  public void testDefaultSuccessMultipleRules() {
+  void testDefaultSuccessMultipleRules() {
 
     final Collection<Rule<String>> rules = new LinkedList<>();
 
@@ -87,7 +87,7 @@ public class RuleProcessorStrategyTest {
   }
 
   @Test
-  public void testDefaultFailMultipleRulesWithCritical() {
+  void testDefaultFailMultipleRulesWithCritical() {
 
     final Collection<Rule<String>> rules = new LinkedList<>();
 
@@ -110,7 +110,7 @@ public class RuleProcessorStrategyTest {
   }
 
   @Test
-  public void testDefaultSuccessSinleRulesAndMultipleValues() {
+  void testDefaultSuccessSinleRulesAndMultipleValues() {
 
     final StringValidationRule rule = new StringValidationRule();
     rule.must(equalObject("o"));
@@ -128,7 +128,7 @@ public class RuleProcessorStrategyTest {
   }
 
   @Test
-  public void testDefaultSuccessCritical() {
+  void testDefaultSuccessCritical() {
 
     final StringValidationRule rule = new StringValidationRule();
     rule.must(not(nullValue()));
@@ -147,7 +147,7 @@ public class RuleProcessorStrategyTest {
   }
 
   @Test
-  public void testFailFastFailMultipleRulesWithCritical() {
+  void testFailFastFailMultipleRulesWithCritical() {
 
     final Collection<Rule<String>> rules = new LinkedList<>();
 
