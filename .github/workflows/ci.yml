@@ -1,0 +1,44 @@
+name: Build and Pull Request
+
+on:
+  push:
+    branches:
+      - feature/**
+      - fix/**
+
+env:
+  TYPE: ${{ startsWith(github.ref_name, 'feature') && 'Feature' || 'Fix'}}
+  LABELS: ${{ startsWith(github.ref_name, 'feature') && 'automatic,feature' || 'automatic,fix' }}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  variables:
+    runs-on: ubuntu-latest
+    outputs:
+      type: ${{ steps.environment.outputs.type }}
+      labels: ${{ steps.environment.outputs.labels }}
+    steps:
+      - id: environment
+        name: Set output environment passed to the reusable workflow
+        run: |
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+          echo "labels=$LABELS" >> $GITHUB_OUTPUT
+
+  ci:
+    needs: variables
+    uses: ./.github/workflows/ci-maven.yml
+    secrets: inherit
+ 
+  pull-request:
+    needs: [ci, variables]
+    if: success()
+    uses: ./.github/workflows/ci-pull-request.yml
+    secrets: inherit
+    with:
+      type: ${{ needs.variables.outputs.type }}
+      labels: ${{ needs.variables.outputs.labels }}
+      source-branch: ${{ github.ref_name }}
+      target-branch: develop

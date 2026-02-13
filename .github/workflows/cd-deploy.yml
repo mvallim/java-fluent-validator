@@ -1,0 +1,79 @@
+name: Publish package to the Maven Central Repository
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: Environment
+        type: string
+        required: true
+
+jobs:
+  publish:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 8
+          distribution: 'corretto'
+          server-id: sonatype-central
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_TOKEN
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-deploy-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-deploy-${{ hashFiles('**/pom.xml') }}
+
+      - name: Configure Git user
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Publish Snapshot to the Maven Central Repository
+        if: ${{ inputs.environment == 'snapshot' }}
+        run: |
+          mvn deploy -P snapshot
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+
+      - id: release-vars
+        if: ${{ inputs.environment == 'release' }}
+        name: Set output variables
+        run: |
+          RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | grep -e '^[^\[]' | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+          RELEASE_TAG=v${RELEASE_VERSION}
+
+          echo "release-version=$RELEASE_VERSION" >> $GITHUB_OUTPUT
+          echo "release-tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Publish Release to the Maven Central Repository
+        if: ${{ inputs.environment == 'release' }}
+        run: |
+          mvn -B release:prepare -P release
+          git push origin tag $RELEASE_TAG
+          mvn -B release:perform -P release
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          RELEASE_VERSION: ${{ steps.release-vars.outputs.release-version }}
+          RELEASE_TAG: ${{ steps.release-vars.outputs.release-tag }}
+
+      - name: Create Release
+        if: ${{ inputs.environment == 'release' }}
+        run: |
+          gh release create ${RELEASE_TAG} --generate-notes  
+        env:
+          RELEASE_TAG: ${{ steps.release-vars.outputs.release-tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
