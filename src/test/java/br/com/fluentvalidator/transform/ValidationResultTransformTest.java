@@ -19,7 +19,7 @@ package br.com.fluentvalidator.transform;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
 
 import java.util.Arrays;
@@ -56,7 +56,7 @@ class ValidationResultTransformTest {
 
     final String result = validatorParent.validate(parent, new ValidationResultTestTransform());
 
-    assertThat(result, isEmptyString());
+    assertThat(result, emptyString());
   }
 
   @Test
@@ -72,7 +72,7 @@ class ValidationResultTransformTest {
 
     final String result = validatorParent.validate(parent, new ValidationResultTestTransform());
 
-    assertThat(result, not(isEmptyString()));
+    assertThat(result, not(emptyString()));
     assertThat(result, containsString("age must be less than or equal to 7"));
     assertThat(result, containsString("cities size must be 10"));
     assertThat(result, containsString("name must contains key John"));
@@ -98,9 +98,9 @@ class ValidationResultTransformTest {
 
     final List<String> result = validatorParent.validate(Arrays.asList(parent1, parent2), new ValidationResultTestTransform());
 
-    assertThat(result.get(0), isEmptyString());
+    assertThat(result.get(0), emptyString());
 
-    assertThat(result.get(1), not(isEmptyString()));
+    assertThat(result.get(1), not(emptyString()));
     assertThat(result.get(1), containsString("age must be less than or equal to 7"));
     assertThat(result.get(1), containsString("cities size must be 10"));
     assertThat(result.get(1), containsString("name must contains key John"));
@@ -163,11 +163,11 @@ class ValidationResultTransformTest {
     assertThat(resultsTwo, hasSize(CONCURRENT_RUNNABLE));
 
     for (final String result : resultsOne) {
-      assertThat(result, isEmptyString());
+      assertThat(result, emptyString());
     }
 
     for (final String result : resultsTwo) {
-      assertThat(result, not(isEmptyString()));
+      assertThat(result, not(emptyString()));
       assertThat(result, containsString("age must be less than or equal to 7"));
       assertThat(result, containsString("cities size must be 10"));
       assertThat(result, containsString("name must contains key John"));
