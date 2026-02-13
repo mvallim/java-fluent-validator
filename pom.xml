@@ -375,7 +375,7 @@
 			<properties>
 				<java.version>8</java.version>
 				<aspectj.version>1.9.7</aspectj.version>
-				<aspectj-maven-plugin.version>1.11.0</aspectj-maven-plugin.version>
+				<aspectj-maven-plugin.version>1.14.0</aspectj-maven-plugin.version>
 			</properties>
 		</profile>
 
@@ -387,7 +387,7 @@
 			<properties>
 				<java.version>11</java.version>
 				<aspectj.version>1.9.7</aspectj.version>
-				<aspectj-maven-plugin.version>1.11.0</aspectj-maven-plugin.version>
+				<aspectj-maven-plugin.version>1.14.0</aspectj-maven-plugin.version>
 			</properties>
 		</profile>
 
