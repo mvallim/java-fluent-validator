@@ -27,8 +27,8 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,11 +40,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.fluentvalidator.context.Error;
 import br.com.fluentvalidator.context.ValidationResult;
@@ -54,15 +54,15 @@ import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
 import br.com.fluentvalidator.spring.validator.ValidatorSpringParent;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ValidatorSpringConfig.class)
-public class ValidatorSpringTest {
+class ValidatorSpringTest {
 
   @Autowired
-  ValidatorSpringParent validatorParent;
+  private ValidatorSpringParent validatorParent;
 
   @Test
-  public void validationMustBeSuccess() {
+  void validationMustBeSuccess() {
     final Parent parent = new Parent();
 
     parent.setAge(6);
@@ -77,7 +77,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMustBeFailWhenFieldOfParentAreInvalid() {
+  void validationMustBeFailWhenFieldOfParentAreInvalid() {
     final Parent parent = new Parent();
 
     parent.setAge(10);
@@ -106,7 +106,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMustBeFailWhenFieldOfParentAreInvalidCriticalValidation() {
+  void validationMustBeFailWhenFieldOfParentAreInvalidCriticalValidation() {
     final Parent parent = new Parent();
 
     parent.setId("invalid");
@@ -124,7 +124,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMustBeFailWhenChildAgeGreateThanParentAgeInvalid() {
+  void validationMustBeFailWhenChildAgeGreateThanParentAgeInvalid() {
     final Parent parent = new Parent();
 
     parent.setAge(6);
@@ -153,7 +153,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationTwiceDiferentParentMustBeSuccess() {
+  void validationTwiceDiferentParentMustBeSuccess() {
     final Parent parent1 = new Parent();
 
     parent1.setAge(6);
@@ -193,7 +193,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationCollectionParentMustBeSuccess() {
+  void validationCollectionParentMustBeSuccess() {
     final Parent parent1 = new Parent();
 
     parent1.setAge(6);
@@ -232,7 +232,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenChildrenIsNull() {
+  void validationMustBeFalseWhenChildrenIsNull() {
     final Parent parent = new Parent();
 
     parent.setAge(6);
@@ -252,7 +252,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenChildrenIsEmpty() {
+  void validationMustBeFalseWhenChildrenIsEmpty() {
     final Parent parent = new Parent();
 
     parent.setAge(6);
@@ -272,7 +272,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenChildrenIsInvalid() {
+  void validationMustBeFalseWhenChildrenIsInvalid() {
     final Parent parent = new Parent();
 
     parent.setAge(6);
@@ -296,7 +296,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenParentAndChildrenIsInvalid() {
+  void validationMustBeFalseWhenParentAndChildrenIsInvalid() {
     final Parent parent = new Parent();
 
     parent.setAge(10);
@@ -333,7 +333,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenParentAndChildrenIsCriticalInvalid() {
+  void validationMustBeFalseWhenParentAndChildrenIsCriticalInvalid() {
     final Parent parent = new Parent();
 
     parent.setAge(6);
@@ -362,7 +362,7 @@ public class ValidatorSpringTest {
   }
 
   @Test
-  public void validationMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
+  void validationMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
 
     final int CONCURRENT_RUNNABLE = 100000;
 

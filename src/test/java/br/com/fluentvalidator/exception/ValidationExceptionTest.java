@@ -18,9 +18,9 @@ package br.com.fluentvalidator.exception;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ValidationExceptionTest {
+class ValidationExceptionTest {
 
     @Test
     public void testSuccess() {

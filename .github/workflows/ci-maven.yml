@@ -28,7 +28,7 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ hashFiles('**/pom.xml') }}-${{ matrix.java-version }}
 
       - name: Compile with Maven
-        run: mvn -T 2C clean generate-sources compile --file pom.xml
+        run: mvn clean generate-sources compile --file pom.xml
 
   test:
     runs-on: ubuntu-latest
@@ -54,4 +54,4 @@ jobs:
           restore-keys: ${{ runner.os }}-test-${{ hashFiles('**/pom.xml') }}-${{ matrix.java-version }}
 
       - name: Test with Maven
-        run: mvn -T 2C test-compile test --file pom.xml
+        run: mvn test-compile test --file pom.xml
