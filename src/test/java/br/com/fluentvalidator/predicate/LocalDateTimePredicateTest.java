@@ -33,8 +33,8 @@ import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateT
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -44,14 +44,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class LocalDateTimePredicateTest {
+class LocalDateTimePredicateTest {
 
   // region localDateTimeAfterToday
 
   @Test
-  public void testLocalDateTimeAfterToday() {
+  void testLocalDateTimeAfterToday() {
     assertFalse(localDateTimeAfterToday().test(LocalDateTime.now()));
     assertTrue(localDateTimeAfterToday().test(LocalDateTime.now().plusDays(1)));
     assertFalse(localDateTimeAfterToday().test(LocalDateTime.now().minusDays(1)));
@@ -62,7 +62,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeAfterTodayNullValues() {
+  void testLocalDateTimeAfterTodayNullValues() {
     assertFalse(localDateTimeAfterToday().test(null));
 
     assertFalse(localDateTimeAfterToday(null).test(null));
@@ -76,7 +76,7 @@ public class LocalDateTimePredicateTest {
   // region localDateAfterOrEqualToday
 
   @Test
-  public void testLocalDateTimeAfterOrEqualToday() {
+  void testLocalDateTimeAfterOrEqualToday() {
     assertTrue(localDateTimeAfterOrEqualToday().test(LocalDateTime.now()));
     assertTrue(localDateTimeAfterOrEqualToday().test(LocalDateTime.now().plusDays(1)));
     assertFalse(localDateTimeAfterOrEqualToday().test(LocalDateTime.now().minusDays(1)));
@@ -87,7 +87,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeAfterOrEqualTodayNullValues() {
+  void testLocalDateTimeAfterOrEqualTodayNullValues() {
     assertFalse(localDateTimeAfterOrEqualToday().test(null));
 
     assertFalse(localDateTimeAfterOrEqualToday(null).test(null));
@@ -101,7 +101,7 @@ public class LocalDateTimePredicateTest {
   // region localDateTimeBeforeToday
 
   @Test
-  public void testLocalDateTimeBeforeToday() {
+  void testLocalDateTimeBeforeToday() {
     assertFalse(localDateTimeBeforeToday().test(LocalDateTime.now()));
     assertFalse(localDateTimeBeforeToday().test(LocalDateTime.now().plusDays(1)));
     assertTrue(localDateTimeBeforeToday().test(LocalDateTime.now().minusDays(1)));
@@ -112,7 +112,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeBeforeTodayNullValues() {
+  void testLocalDateTimeBeforeTodayNullValues() {
     assertFalse(localDateTimeBeforeToday().test(null));
 
     assertFalse(localDateTimeBeforeToday(null).test(null));
@@ -126,7 +126,7 @@ public class LocalDateTimePredicateTest {
   // region localDateBeforeOrEqualToday
 
   @Test
-  public void testLocalDateTimeBeforeOrEqualToday() {
+  void testLocalDateTimeBeforeOrEqualToday() {
     assertTrue(localDateTimeBeforeOrEqualToday().test(LocalDateTime.now()));
     assertFalse(localDateTimeBeforeOrEqualToday().test(LocalDateTime.now().plusDays(1)));
     assertTrue(localDateTimeBeforeOrEqualToday().test(LocalDateTime.now().minusDays(1)));
@@ -137,7 +137,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeBeforeOrEqualTodayNullValues() {
+  void testLocalDateTimeBeforeOrEqualTodayNullValues() {
     assertFalse(localDateTimeBeforeOrEqualToday().test(null));
 
     assertFalse(localDateTimeBeforeOrEqualToday(null).test(null));
@@ -151,7 +151,7 @@ public class LocalDateTimePredicateTest {
   // region localDateIsEqualToday
 
   @Test
-  public void testLocalDateTimeIsToday() {
+  void testLocalDateTimeIsToday() {
     assertTrue(localDateTimeIsToday().test(LocalDateTime.now()));
     assertFalse(localDateTimeIsToday().test(LocalDateTime.now().plusDays(1)));
     assertFalse(localDateTimeIsToday().test(LocalDateTime.now().minusDays(1)));
@@ -162,7 +162,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeIsTodayNullValues() {
+  void testLocalDateTimeIsTodayNullValues() {
     assertFalse(localDateTimeBeforeOrEqualToday().test(null));
 
     assertFalse(localDateTimeIsToday(null).test(null));
@@ -176,7 +176,7 @@ public class LocalDateTimePredicateTest {
   // region localDateIsEqualToday
 
   @Test
-  public void testLocalDateTimeEqualTo() {
+  void testLocalDateTimeEqualTo() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertTrue(localDateTimeEqualTo(now).test(now));
@@ -189,7 +189,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeEqualToNullValues() {
+  void testLocalDateTimeEqualToNullValues() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertFalse(localDateTimeEqualTo(now).test(null));
@@ -210,7 +210,7 @@ public class LocalDateTimePredicateTest {
   // region localDateTimeAfterNow
 
   @Test
-  public void testLocalDateTimeAfterNow() {
+  void testLocalDateTimeAfterNow() {
     assertTrue(localDateTimeAfterNow().test(LocalDateTime.now().plusSeconds(1)));
     assertFalse(localDateTimeAfterNow().test(LocalDateTime.now().minusSeconds(1)));
 
@@ -220,7 +220,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeAfterNowNullValues() {
+  void testLocalDateTimeAfterNowNullValues() {
     assertFalse(localDateTimeAfterNow().test(null));
 
     assertFalse(localDateTimeAfterNow(null).test(null));
@@ -234,7 +234,7 @@ public class LocalDateTimePredicateTest {
   // region localDateTimeBeforeNow
 
   @Test
-  public void testLocalDateTimeBeforeNow() {
+  void testLocalDateTimeBeforeNow() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertFalse(localDateTimeBeforeNow().test(now.plusSeconds(1)));
@@ -245,7 +245,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeBeforeNowNullValues() {
+  void testLocalDateTimeBeforeNowNullValues() {
     assertFalse(localDateTimeBeforeNow().test(null));
 
     assertFalse(localDateTimeBeforeNow(null).test(null));
@@ -259,7 +259,7 @@ public class LocalDateTimePredicateTest {
   // region localDateAfter
 
   @Test
-  public void testLocalDateTimeAfter() {
+  void testLocalDateTimeAfter() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertFalse(localDateTimeAfter(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin).test(new ObjectFromLocalDateTime(now, now, now)));
@@ -268,7 +268,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeAfterNullValues() {
+  void testLocalDateTimeAfterNullValues() {
     assertFalse(localDateTimeAfter(null).test(null));
     assertFalse(localDateTimeAfter(null).test(LocalDateTime.now()));
     assertFalse(localDateTimeAfter(LocalDateTime.now()).test(null));
@@ -289,7 +289,7 @@ public class LocalDateTimePredicateTest {
   // region localDateTimeAfterOrEqual
 
   @Test
-  public void testLocalDateTimeAfterOrEqual() {
+  void testLocalDateTimeAfterOrEqual() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertTrue(localDateTimeAfterOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin).test(new ObjectFromLocalDateTime(now, now, now)));
@@ -298,7 +298,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeAfterOrEqualNullValues() {
+  void testLocalDateTimeAfterOrEqualNullValues() {
     assertFalse(localDateTimeAfterOrEqual(null).test(null));
     assertFalse(localDateTimeAfterOrEqual(null).test(LocalDateTime.now()));
     assertFalse(localDateTimeAfterOrEqual(LocalDateTime.now()).test(null));
@@ -319,7 +319,7 @@ public class LocalDateTimePredicateTest {
   // region localDateBefore
 
   @Test
-  public void testLocalDateTimeBefore() {
+  void testLocalDateTimeBefore() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertFalse(localDateTimeBefore(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin).test(new ObjectFromLocalDateTime(now, now, now)));
@@ -328,7 +328,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeBeforeNullValues() {
+  void testLocalDateTimeBeforeNullValues() {
     assertFalse(localDateTimeBefore(null).test(null));
     assertFalse(localDateTimeBefore(null).test(LocalDateTime.now()));
     assertFalse(localDateTimeBefore(LocalDateTime.now()).test(null));
@@ -349,7 +349,7 @@ public class LocalDateTimePredicateTest {
   // region localDateTimeBeforeOrEqual
 
   @Test
-  public void testLocalDateTimeBeforeOrEqual() {
+  void testLocalDateTimeBeforeOrEqual() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertTrue(localDateTimeBeforeOrEqual(ObjectFromLocalDateTime::getSource, ObjectFromLocalDateTime::getMin).test(new ObjectFromLocalDateTime(now, now, now)));
@@ -358,7 +358,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeBeforeOrEqualNullValues() {
+  void testLocalDateTimeBeforeOrEqualNullValues() {
     assertFalse(localDateTimeBeforeOrEqual(null).test(null));
     assertFalse(localDateTimeBeforeOrEqual(null).test(LocalDateTime.now()));
     assertFalse(localDateTimeBeforeOrEqual(LocalDateTime.now()).test(null));
@@ -379,7 +379,7 @@ public class LocalDateTimePredicateTest {
   // region localDateBetween
 
   @Test
-  public void testLocalDateTimeBetween() {
+  void testLocalDateTimeBetween() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertFalse(localDateTimeBetween(now, now).test(now));
@@ -420,7 +420,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeBetweenNullValues() {
+  void testLocalDateTimeBetweenNullValues() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertFalse(localDateTimeBetween(null, null).test(null));
@@ -467,7 +467,7 @@ public class LocalDateTimePredicateTest {
   // region localDateBetweenOrEqual
 
   @Test
-  public void testLocalDateTimeBetweenOrEqual() {
+  void testLocalDateTimeBetweenOrEqual() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertTrue(localDateTimeBetweenOrEqual(now, now).test(now));
@@ -508,7 +508,7 @@ public class LocalDateTimePredicateTest {
   }
 
   @Test
-  public void testLocalDateTimeBetweenOrEqualNullValues() {
+  void testLocalDateTimeBetweenOrEqualNullValues() {
     final LocalDateTime now = LocalDateTime.now();
 
     assertFalse(localDateTimeBetweenOrEqual(null, null).test(null));
@@ -555,7 +555,7 @@ public class LocalDateTimePredicateTest {
   // region multi thread test
 
   @Test
-  public void testLocalDatePredicateMultiThreadMustBeTrue() throws InterruptedException {
+  void testLocalDatePredicateMultiThreadMustBeTrue() throws InterruptedException {
     final int CONCURRENT_RUNNABLE = 100_000;
     final Collection<Boolean> resultsOne = new ConcurrentLinkedQueue<>();
     final ExecutorService executorService = Executors.newFixedThreadPool(10);

@@ -16,16 +16,16 @@
 
 package br.com.fluentvalidator.validator;
 
-import br.com.fluentvalidator.AbstractValidator;
-import br.com.fluentvalidator.model.Bill;
-import br.com.fluentvalidator.predicate.LocalDatePredicate;
-
-import java.time.LocalDate;
-
 import static br.com.fluentvalidator.predicate.ComparablePredicate.greaterThan;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
+
+import java.time.LocalDate;
+
+import br.com.fluentvalidator.AbstractValidator;
+import br.com.fluentvalidator.model.Bill;
+import br.com.fluentvalidator.predicate.LocalDatePredicate;
 
 public class ValidatorBill extends AbstractValidator<Bill> {
 

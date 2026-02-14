@@ -18,17 +18,17 @@ package br.com.fluentvalidator.rule;
 
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import br.com.fluentvalidator.context.ValidationContext;
 
-public class ValidationRuleTest {
+class ValidationRuleTest {
 
-    @After
+    @AfterEach
     public void tearDown() {
         ValidationContext.remove();
     }

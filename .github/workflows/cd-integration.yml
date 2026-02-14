@@ -1,0 +1,58 @@
+name: Build, Gates and Pull Request
+
+on:
+  pull_request:
+    branches: 
+      - develop
+    types:
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  variables:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.environment.outputs.version }}
+      target-branch: ${{ steps.environment.outputs.target-branch }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: "corretto"
+          cache: "maven"
+
+      - id: environment
+        name: Set output environment passed to the reusable workflow
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | grep -e '^[^\[]' | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "target-branch=release/$VERSION" >> $GITHUB_OUTPUT
+
+  ci:
+    needs: variables
+    uses: ./.github/workflows/ci-maven.yml
+    secrets: inherit
+
+  gates:
+    needs: ci
+    if: success()
+    uses: ./.github/workflows/ci-gates.yml
+    secrets: inherit
+
+  pull-request:
+    needs: [gates, variables]
+    uses: ./.github/workflows/ci-pull-request.yml
+    secrets: inherit
+    with:
+      type: Snapshot
+      labels: automatic,snapshot
+      source-branch: master
+      target-branch: ${{ needs.variables.outputs.target-branch }}

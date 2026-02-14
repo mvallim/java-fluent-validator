@@ -18,8 +18,8 @@ package br.com.fluentvalidator.playground;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.ValidationResult;
@@ -28,18 +28,18 @@ import br.com.fluentvalidator.playground.validator.StudentValidatorAnotherWay01;
 import br.com.fluentvalidator.playground.validator.StudentValidatorAnotherWay02;
 import br.com.fluentvalidator.playground.validator.StudentValidatorAnotherWay03;
 
-public class StudentValidatorTest {
+class StudentValidatorTest {
 
   private Student.Builder studentBuilder;
   private Student student;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     studentBuilder = Student.Builder.newInstance();
   }
 
   @Test
-  public void shouldValidateStudentValidatorAnotherWay01() {
+  void shouldValidateStudentValidatorAnotherWay01() {
 
     final Validator<Student> studentValidator = new StudentValidatorAnotherWay01();
 
@@ -49,7 +49,7 @@ public class StudentValidatorTest {
   }
 
   @Test
-  public void shouldValidateStudentValidatorAnotherWay02() {
+  void shouldValidateStudentValidatorAnotherWay02() {
 
     final Validator<Student> studentValidator = new StudentValidatorAnotherWay02();
 
@@ -59,7 +59,7 @@ public class StudentValidatorTest {
   }
 
   @Test
-  public void shouldValidateStudentValidatorAnotherWay03() {
+  void shouldValidateStudentValidatorAnotherWay03() {
 
     final Validator<Student> studentValidator = new StudentValidatorAnotherWay03();
 
