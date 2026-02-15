@@ -23,7 +23,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import br.com.fluentvalidator.Validator;
-import br.com.fluentvalidator.annotation.CleanValidationContextException;
 import br.com.fluentvalidator.builder.AttemptedValue;
 import br.com.fluentvalidator.builder.Code;
 import br.com.fluentvalidator.builder.Critical;
@@ -166,7 +165,6 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
     }
 
     @Override
-    @CleanValidationContextException
     public boolean apply(final Object obj, final P instance) {
 
       final boolean apply = getMust().test(instance);
@@ -198,7 +196,6 @@ public class RuleBuilderPropertyImpl<T, P> extends AbstractRuleBuilder<T, P, Whe
     }
 
     @Override
-    @CleanValidationContextException
     public boolean apply(final Object obj, final P instance) {
 
       final boolean apply = ruleProcessor.process(obj, instance, getValidator());
