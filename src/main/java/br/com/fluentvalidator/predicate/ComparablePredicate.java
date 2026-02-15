@@ -456,8 +456,13 @@ public final class ComparablePredicate {
         .and(lessThan(source, target).or(equalTo(source, target)));
   }
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private ComparablePredicate() {
     super();
   }
 
 }
+
+

@@ -23,17 +23,38 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * Utility class for managing validation context using thread-local storage.
+ * <p>
+ * Provides access to a thread-local {@link Context} instance, which holds validation properties and errors.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link #get()} - Retrieves the current thread's validation context, creating one if necessary.</li>
+ *   <li>{@link #remove()} - Removes the validation context from the current thread.</li>
+ * </ul>
+ *
+ * <p>
+ * The nested {@link Context} class allows storing arbitrary properties and collecting validation errors.
+ * </p>
+ */
 public final class ValidationContext {
 
   private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
 
+  /**
+   * Private constructor to prevent instantiation of {@code ValidationContext}.
+   * This ensures that the class can only be used in a static context or through controlled access.
+   */
   private ValidationContext() {
     super();
   }
 
   /**
+   * Retrieves the current {@link Context} instance associated with the calling thread.
+   * If no instance exists, a new {@link Context} is created and associated with the thread.
    *
-   * @return
+   * @return the {@link Context} instance for the current thread
    */
   public static Context get() {
     if (Objects.isNull(threadLocal.get())) {
@@ -43,14 +64,31 @@ public final class ValidationContext {
   }
 
   /**
-   *
+   * Removes the current {@link ValidationContext} instance from the thread-local storage.
+   * This method should be called to clean up resources and avoid memory leaks
+   * after validation operations are completed in the current thread.
    */
   public static void remove() {
     threadLocal.remove();
   }
 
   /**
-   * Context of validation
+   * Represents a validation context for storing properties and errors during validation.
+   * <p>
+   * This class maintains a thread-safe map of properties and a queue of validation errors.
+   * It provides methods to add errors, set and retrieve properties, and obtain the validation result.
+   * </p>
+   *
+   * <ul>
+   *   <li>{@link #addErrors(Collection)} - Adds a collection of validation errors to the context.</li>
+   *   <li>{@link #setProperty(String, Object)} - Sets a property in the context.</li>
+   *   <li>{@link #getProperty(String, Class)} - Retrieves a property from the context, cast to the specified type.</li>
+   *   <li>{@link #getValidationResult()} - Returns the validation result based on the collected errors.</li>
+   * </ul>
+   *
+   * <p>
+   * This class is intended for internal use within the validation framework.
+   * </p>
    */
   public static final class Context {
 
@@ -59,20 +97,20 @@ public final class ValidationContext {
     private final Queue<Error> errors = new ConcurrentLinkedQueue<>();
 
     /**
+     * Adds a collection of {@link Error} objects to the current list of errors.
      *
-     * @param field
-     * @param message
-     * @param code
-     * @param attemptedValue
+     * @param errs the collection of errors to be added
      */
     public void addErrors(final Collection<Error> errs) {
       errs.stream().forEach(errors::add);
     }
 
     /**
+     * Sets a property in the validation context with the specified key and value.
+     * If the property key is not {@code null}, it will be added or updated in the context.
      *
-     * @param property
-     * @param value
+     * @param property the key of the property to set; must not be {@code null}
+     * @param value the value to associate with the property key
      */
     public void setProperty(final String property, final Object value) {
       if (Objects.nonNull(property)) {
@@ -81,8 +119,14 @@ public final class ValidationContext {
     }
 
     /**
+     * Retrieves the validation result for the current context.
+     * <p>
+     * This method clears the thread-local validation context and returns a {@link ValidationResult}
+     * indicating whether validation errors were found. If no errors are present, {@link ValidationResult#ok()}
+     * is returned; otherwise, {@link ValidationResult#fail(java.util.List)} is returned with the list of errors.
+     * </p>
      *
-     * @return
+     * @return the {@link ValidationResult} representing the outcome of the validation.
      */
     public ValidationResult getValidationResult() {
       ValidationContext.remove();
@@ -90,10 +134,13 @@ public final class ValidationContext {
     }
 
     /**
+     * Retrieves the value of a property by its name and casts it to the specified type.
      *
-     * @param property
-     * @param clazz
-     * @return
+     * @param property the name of the property to retrieve
+     * @param clazz the class object representing the desired return type
+     * @param <P> the type of the property value
+     * @return the property value cast to the specified type, or {@code null} if the property does not exist
+     * @throws ClassCastException if the property value cannot be cast to the specified type
      */
     public <P> P getProperty(final String property, final Class<P> clazz) {
       return clazz.cast(properties.getOrDefault(property, null));
