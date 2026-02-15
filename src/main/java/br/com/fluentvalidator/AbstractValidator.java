@@ -28,6 +28,7 @@ import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.context.ProcessorContext;
 import br.com.fluentvalidator.context.ValidationContext;
+import br.com.fluentvalidator.context.ValidationContext.Context;
 import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.rule.Rule;
 import br.com.fluentvalidator.rule.RuleBuilderCollectionImpl;
@@ -121,8 +122,10 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   @Override
   public ValidationResult validate(final T instance) {
-    ruleProcessor.process(instance, this);
-    return ValidationContext.get().getValidationResult();
+    try (final Context context = ValidationContext.get()) {
+      ruleProcessor.process(instance, this);
+      return context.getValidationResult();
+    }
   }
 
   /**

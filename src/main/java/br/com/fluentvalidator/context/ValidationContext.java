@@ -52,7 +52,7 @@ public final class ValidationContext {
   /**
    * Context of validation
    */
-  public static final class Context {
+  public static final class Context implements AutoCloseable {
 
     private final Map<String, Object> properties = new ConcurrentHashMap<>();
 
@@ -99,6 +99,10 @@ public final class ValidationContext {
       return clazz.cast(properties.getOrDefault(property, null));
     }
 
+    @Override
+    public void close() {
+      ValidationContext.remove();
+    }
   }
 
 }

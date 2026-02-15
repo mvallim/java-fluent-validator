@@ -16,19 +16,17 @@
 
 package br.com.fluentvalidator;
 
-import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
-import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import br.com.fluentvalidator.context.Error;
+import br.com.fluentvalidator.context.ProcessorContext;
+import br.com.fluentvalidator.context.ValidationResult;
+import br.com.fluentvalidator.model.Bill;
+import br.com.fluentvalidator.model.Boy;
+import br.com.fluentvalidator.model.Girl;
+import br.com.fluentvalidator.model.Parent;
+import br.com.fluentvalidator.validator.ValidatorBill;
+import br.com.fluentvalidator.validator.ValidatorErrorPredicate;
+import br.com.fluentvalidator.validator.ValidatorParent;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -41,16 +39,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.Test;
-
-import br.com.fluentvalidator.context.Error;
-import br.com.fluentvalidator.context.ValidationResult;
-import br.com.fluentvalidator.model.Bill;
-import br.com.fluentvalidator.model.Boy;
-import br.com.fluentvalidator.model.Girl;
-import br.com.fluentvalidator.model.Parent;
-import br.com.fluentvalidator.validator.ValidatorBill;
-import br.com.fluentvalidator.validator.ValidatorParent;
+import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
+import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ValidatorTest {
 
@@ -671,7 +674,44 @@ class ValidatorTest {
     assertTrue(validate.isValid());
   }
 
-  class StringValidator extends AbstractValidator<String> {
+  @Test
+  public void testSuccessWhenBrokenPredicate() {
+    final Validator<Bill> validator = new ValidatorErrorPredicate();
+
+    // First validation: bill with null description causes NullPointerException
+    // This simulates a corrupted or incomplete data scenario
+    final Bill billWithNullDescription = new Bill(null, 0F, LocalDate.now());
+
+    assertThrows(NullPointerException.class, () -> validator.validate(billWithNullDescription));
+
+    // Second validation: valid electricity bill with numeric code
+    // ValidationContext and ProcessorContext should be clean after the exception
+    final Bill electricityBill = new Bill("12345", 150.75F, LocalDate.now().plusDays(30));
+
+    assertTrue(validator.validate(electricityBill).isValid());
+
+  }
+
+  @Test
+  public void testSuccessWhenBrokenCollectionPredicate() {
+    final Validator<Bill> validator = new ValidatorErrorPredicate();
+
+    // First validation: bill with non-numeric description causes NumberFormatException
+    // when the validator tries to parse it as integer in the collection rule
+    final Bill billWithInvalidCodes = new Bill("WATER-BILL", 85.50F, LocalDate.now());
+
+    assertThrows(NumberFormatException.class, () -> validator.validate(billWithInvalidCodes));
+
+    // Second validation: valid bill with numeric service codes separated by comma
+    // ValidationContext and ProcessorContext should be clean after the exception
+    final Bill billWithValidCodes = new Bill("100,200,300", 250.00F, LocalDate.now().plusDays(15));
+
+    assertEquals(0, (int) ProcessorContext.get().get());
+    assertTrue(validator.validate(billWithValidCodes).isValid());
+
+  }
+
+  static class StringValidator extends AbstractValidator<String> {
 
     @Override
     public void rules() {
@@ -687,7 +727,7 @@ class ValidatorTest {
 
   }
 
-  class String2Validator extends AbstractValidator<String> {
+  static class String2Validator extends AbstractValidator<String> {
 
     @Override
     public void rules() {
@@ -698,7 +738,7 @@ class ValidatorTest {
 
   }
 
-  class String3Validator extends AbstractValidator<Collection<String>> {
+  static class String3Validator extends AbstractValidator<Collection<String>> {
 
     @Override
     public void rules() {

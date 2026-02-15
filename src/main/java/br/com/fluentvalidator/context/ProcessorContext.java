@@ -50,7 +50,7 @@ public final class ProcessorContext {
   /**
    * Context of processor
    */
-  public static final class Context {
+  public static final class Context implements AutoCloseable {
 
     private final Deque<AtomicInteger> stackCounter = new ConcurrentLinkedDeque<>();
 
@@ -74,6 +74,10 @@ public final class ProcessorContext {
       return stackCounter.isEmpty() ? 0 : stackCounter.peek().get();
     }
 
+    @Override
+    public void close() {
+      ProcessorContext.remove();
+    }
   }
 
 }

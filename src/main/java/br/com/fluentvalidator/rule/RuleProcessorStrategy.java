@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import br.com.fluentvalidator.context.ProcessorContext;
+import br.com.fluentvalidator.context.ProcessorContext.Context;
 
 public interface RuleProcessorStrategy {
 
@@ -32,23 +33,21 @@ public interface RuleProcessorStrategy {
   }
 
   default <E> boolean process(final Object obj, final Collection<E> values, final Rule<E> rule) {
-    ProcessorContext.get().create();
-    final boolean allMatch = values.stream().map(value -> {
-      ProcessorContext.get().inc();
-      return this.process(obj, value, rule);
-    }).collect(Collectors.toList()).stream().allMatch(result -> result);
-    ProcessorContext.get().remove();
-    return allMatch;
+    try (final Context context = ProcessorContext.get()) {
+      return values.stream().map(value -> {
+        context.inc();
+        return this.process(obj, value, rule);
+      }).collect(Collectors.toList()).stream().allMatch(result -> result);
+    }
   }
 
   default <E> boolean process(final Collection<E> values, final Rule<E> rule) {
-    ProcessorContext.get().create();
-    final boolean allMatch = values.stream().map(value -> {
-      ProcessorContext.get().inc();
-      return this.process(value, rule);
-    }).collect(Collectors.toList()).stream().allMatch(result -> result);
-    ProcessorContext.get().remove();
-    return allMatch;
+    try (final Context context = ProcessorContext.get()) {
+      return values.stream().map(value -> {
+        context.inc();
+        return this.process(value, rule);
+      }).collect(Collectors.toList()).stream().allMatch(result -> result);
+    }
   }
 
   default <E> boolean process(final Object obj, final E value, final Collection<Rule<E>> rules) {
