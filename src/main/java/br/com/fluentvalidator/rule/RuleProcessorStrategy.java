@@ -19,7 +19,7 @@ package br.com.fluentvalidator.rule;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import br.com.fluentvalidator.context.ProcessorContext;
+import br.com.fluentvalidator.context.ProcessorContext.Context;
 
 public interface RuleProcessorStrategy {
 
@@ -32,7 +32,7 @@ public interface RuleProcessorStrategy {
   }
 
   default <E> boolean process(final Object obj, final Collection<E> values, final Rule<E> rule) {
-    try(ProcessorContext.Context context = ProcessorContext.get()) {
+    try (final Context context = ProcessorContext.get()) {
       return values.stream().map(value -> {
         context.inc();
         return this.process(obj, value, rule);
@@ -41,7 +41,7 @@ public interface RuleProcessorStrategy {
   }
 
   default <E> boolean process(final Collection<E> values, final Rule<E> rule) {
-    try(ProcessorContext.Context context = ProcessorContext.get()) {
+    try (final Context context = ProcessorContext.get()) {
       return values.stream().map(value -> {
         context.inc();
         return this.process(value, rule);
