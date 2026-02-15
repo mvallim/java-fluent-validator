@@ -67,7 +67,7 @@ public final class ProcessorContext {
    *   <li>{@link #get()} - Retrieves the value of the top counter, or zero if the stack is empty.</li>
    * </ul>
    */
-  public static final class Context {
+  public static final class Context implements AutoCloseable {
 
     private final Deque<AtomicInteger> stackCounter = new ConcurrentLinkedDeque<>();
 
@@ -113,6 +113,10 @@ public final class ProcessorContext {
       return stackCounter.isEmpty() ? 0 : stackCounter.peek().get();
     }
 
+    @Override
+    public void close() {
+      ProcessorContext.remove();
+    }
   }
 
 }

@@ -90,7 +90,7 @@ public final class ValidationContext {
    * This class is intended for internal use within the validation framework.
    * </p>
    */
-  public static final class Context {
+  public static final class Context implements AutoCloseable {
 
     private final Map<String, Object> properties = new ConcurrentHashMap<>();
 
@@ -146,6 +146,10 @@ public final class ValidationContext {
       return clazz.cast(properties.getOrDefault(property, null));
     }
 
+    @Override
+    public void close() {
+      ValidationContext.remove();
+    }
   }
 
 }

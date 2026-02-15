@@ -60,14 +60,14 @@ class MapPredicateTest {
 
   @Test
   void testMapGetFunctionOfTKPredicateOfV() {
-    assertThat(mapGet("a", stringSize(6)).test(map), equalTo(true));
-    assertThat(mapGet("a", isNumber()).test(map), equalTo(true));
-    assertThat(mapGet("a", not(stringEmptyOrNull())).test(map), equalTo(true));
-    assertThat(mapGet("b", stringSize(5)).test(map), equalTo(true));
-    assertThat(mapGet("b", isAlpha()).test(map), equalTo(true));
-    assertThat(mapGet("b", not(stringEmptyOrNull())).test(map), equalTo(true));
-    assertThat(mapGet("c", stringEmptyOrNull()).test(map), equalTo(true));
-    assertThat(mapGet("c", not(stringEmptyOrNull())).test(map), equalTo(false));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("a", stringSize(6)).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("a", isNumber()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("a", not(stringEmptyOrNull())).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("b", stringSize(5)).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("b", isAlpha()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("b", not(stringEmptyOrNull())).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("c", stringEmptyOrNull()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("c", not(stringEmptyOrNull())).test(map), equalTo(false));
     assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("a", null).test(map), equalTo(false));
     assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(null, not(stringEmptyOrNull())).test(map), equalTo(false));
   }
