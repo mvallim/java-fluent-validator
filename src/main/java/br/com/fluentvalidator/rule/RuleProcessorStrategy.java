@@ -19,6 +19,7 @@ package br.com.fluentvalidator.rule;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import br.com.fluentvalidator.context.ProcessorContext;
 import br.com.fluentvalidator.context.ProcessorContext.Context;
 
 public interface RuleProcessorStrategy {

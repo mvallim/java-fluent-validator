@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.context.ProcessorContext;
+import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.context.ValidationContext.Context;
 import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.rule.Rule;
