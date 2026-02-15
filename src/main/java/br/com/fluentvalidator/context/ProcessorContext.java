@@ -76,7 +76,7 @@ public final class ProcessorContext {
 
     @Override
     public void close() {
-      remove();
+      ProcessorContext.remove();
     }
   }
 
