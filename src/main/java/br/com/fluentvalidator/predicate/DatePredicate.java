@@ -269,7 +269,9 @@ public final class DatePredicate {
         .<String>from(dateLessThan(dateString, pattern).or(dateEqualTo(dateString, pattern)));
   }
 
-
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private DatePredicate() {
     super();
   }

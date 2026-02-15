@@ -390,7 +390,9 @@ public final class LocalTimePredicate {
         .and(obj -> localTimeBetweenOrEqual(source, min.apply(obj), max.apply(obj)).test(obj));
   }
 
-
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private LocalTimePredicate() {
     super();
   }

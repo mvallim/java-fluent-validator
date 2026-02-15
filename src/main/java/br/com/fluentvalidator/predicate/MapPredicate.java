@@ -24,11 +24,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public final class MapPredicate {
-
-  private MapPredicate() {
-    super();
-  }
-  
+ 
   public static <K, V, T extends Map<K, V>> Predicate<T> mapGet(final K key, final Predicate<V> predicate) {
     return PredicateBuilder.<T>from(not(nullValue()))
       .and(obj -> not(nullValue()).test(key))
@@ -66,6 +62,13 @@ public final class MapPredicate {
     return PredicateBuilder.<T>from(not(nullValue()))
       .and(obj -> not(nullValue()).test(value))
       .and(obj -> obj.containsValue(value.apply(obj)));
+  }
+
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
+  private MapPredicate() {
+    super();
   }
 
 }

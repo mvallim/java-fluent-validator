@@ -268,6 +268,9 @@ public final class TimePredicate {
         .<String>from(timeLessThan(timeString, pattern).or(timeEqualTo(timeString, pattern)));
   }
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */  
   private TimePredicate() {
     super();
   }
