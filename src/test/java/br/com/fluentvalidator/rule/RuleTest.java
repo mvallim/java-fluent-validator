@@ -16,13 +16,14 @@
 
 package br.com.fluentvalidator.rule;
 
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RuleTest {
+import org.junit.jupiter.api.Test;
+
+class RuleTest {
 
   @Test
-  public void testSuccessDefaultApply() {
+  void testSuccessDefaultApply() {
 
     final Rule<String> rule = new Rule<String>() {};
 
@@ -31,7 +32,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testSuccessDefaultApply2() {
+  void testSuccessDefaultApply2() {
 
     final Rule<String> rule = new Rule<String>() {};
 
@@ -40,7 +41,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testSuccessDefaultSupports() {
+  void testSuccessDefaultSupports() {
 
     final Rule<String> rule = new Rule<String>() {};
 

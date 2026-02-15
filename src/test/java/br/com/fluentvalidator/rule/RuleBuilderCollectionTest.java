@@ -24,29 +24,32 @@ import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringSizeLessThan;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.junit.After;
-import org.junit.Test;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
 import br.com.fluentvalidator.AbstractValidator;
 import br.com.fluentvalidator.context.Error;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.exception.ValidationSampleException;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
-public class RuleBuilderCollectionTest {
+class RuleBuilderCollectionTest {
 
-  @After
+  @AfterEach
   public void tearDown() {
     ValidationContext.remove();
   }
 
   @Test
-  public void testFailWhenApplyNullValue() {
+  void testFailWhenApplyNullValue() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -57,7 +60,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testSuccessValidValue() {
+  void testSuccessValidValue() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -68,7 +71,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testSuccessInvalidSingleRuleWithoutCritical() {
+  void testSuccessInvalidSingleRuleWithoutCritical() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -79,7 +82,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testSuccessInvalidMultipleRuleWithoutCritical() {
+  void testSuccessInvalidMultipleRuleWithoutCritical() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -92,7 +95,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testSuccessDynamicProperties() {
+  void testSuccessDynamicProperties() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder = new RuleBuilderCollectionImpl<>("test", Collections::unmodifiableList);
 
@@ -119,7 +122,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testSuccessInvalidSingleRuleWithCritical() {
+  void testSuccessInvalidSingleRuleWithCritical() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -130,7 +133,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testFailInvalidSingleRuleWithCritical() {
+  void testFailInvalidSingleRuleWithCritical() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -141,7 +144,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testSuccessInvalidSingleRuleWithCriticalException() {
+  void testSuccessInvalidSingleRuleWithCriticalException() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -153,7 +156,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testFailInvalidSingleRuleWithCriticalException() {
+  void testFailInvalidSingleRuleWithCriticalException() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -167,7 +170,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testFailRuleValidator() {
+  void testFailRuleValidator() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -178,7 +181,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testFailRuleValidatorWithCritical() {
+  void testFailRuleValidatorWithCritical() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -189,7 +192,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testFailRuleValidatorWithCriticalException() {
+  void testFailRuleValidatorWithCriticalException() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -203,7 +206,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testFailInvalidMultipleRuleWithCritical() {
+  void testFailInvalidMultipleRuleWithCritical() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -216,7 +219,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testFailInvalidSingleWithCriticalException() {
+  void testFailInvalidSingleWithCriticalException() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -230,7 +233,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testFailInvalidMultipleWithCriticalException() {
+  void testFailInvalidMultipleWithCriticalException() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);
@@ -246,7 +249,7 @@ public class RuleBuilderCollectionTest {
   }
 
   @Test
-  public void testSuccessValidAndInvalidMultipleRule() {
+  void testSuccessValidAndInvalidMultipleRule() {
 
     final RuleBuilderCollectionImpl<List<String>, String> builder =
         new RuleBuilderCollectionImpl<>(Collections::unmodifiableList);

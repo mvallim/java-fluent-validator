@@ -26,7 +26,7 @@ import br.com.fluentvalidator.model.Parent;
 import br.com.fluentvalidator.validator.ValidatorBill;
 import br.com.fluentvalidator.validator.ValidatorErrorPredicate;
 import br.com.fluentvalidator.validator.ValidatorParent;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -50,15 +50,15 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ValidatorTest {
+class ValidatorTest {
 
   @Test
-  public void validationMustBeSuccess() {
+  void validationMustBeSuccess() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -75,7 +75,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationMustBeFailWhenFieldOfParentAreInvalid() {
+  void validationMustBeFailWhenFieldOfParentAreInvalid() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -106,7 +106,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationMustBeFailWhenFieldOfParentAreInvalidCriticalValidation() {
+  void validationMustBeFailWhenFieldOfParentAreInvalidCriticalValidation() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -141,7 +141,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationMustBeFailWhenChildAgeGreateThanParentAgeInvalid() {
+  void validationMustBeFailWhenChildAgeGreateThanParentAgeInvalid() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -163,7 +163,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationTwiceDiferentParentMustBeSuccess() {
+  void validationTwiceDiferentParentMustBeSuccess() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent1 = new Parent();
@@ -205,7 +205,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationCollectionParentMustBeSuccess() {
+  void validationCollectionParentMustBeSuccess() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent1 = new Parent();
@@ -246,7 +246,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenChildrenIsNull() {
+  void validationMustBeFalseWhenChildrenIsNull() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -268,7 +268,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenChildrenIsEmpty() {
+  void validationMustBeFalseWhenChildrenIsEmpty() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -290,7 +290,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenChildrenIsInvalid() {
+  void validationMustBeFalseWhenChildrenIsInvalid() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -316,7 +316,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenParentAndChildrenIsInvalid() {
+  void validationMustBeFalseWhenParentAndChildrenIsInvalid() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -355,7 +355,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void validationMustBeFalseWhenParentAndChildrenIsCriticalInvalid() {
+  void validationMustBeFalseWhenParentAndChildrenIsCriticalInvalid() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -384,8 +384,8 @@ public class ValidatorTest {
     assertThat(result.getErrors(), hasItem(hasProperty("message", containsString("child name must contains key Ana"))));
   }
 
-//  @Test
-  public void validationMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
+  @Test
+  void validationMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
 
     final int CONCURRENT_RUNNABLE = 100000;
 
@@ -467,7 +467,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testSuccessWhenCriticalWasInDifferentRuleGroup() {
+  void testSuccessWhenCriticalWasInDifferentRuleGroup() {
 
     final StringValidator validator = new StringValidator();
 
@@ -482,7 +482,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testSuccessWhenCriticalWasInDifferentRuleGroupFailFast() {
+  void testSuccessWhenCriticalWasInDifferentRuleGroupFailFast() {
 
     final StringValidator validator = new StringValidator();
 
@@ -499,7 +499,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenValidatePropertyNullValue() {
+  void testFailWhenValidatePropertyNullValue() {
 
     final String2Validator validator = new String2Validator();
 
@@ -513,7 +513,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenValidateCollectionNullValue() {
+  void testFailWhenValidateCollectionNullValue() {
 
     final String3Validator validator = new String3Validator();
 
@@ -527,7 +527,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testSuccessWhenBillIsCorrect() {
+  void testSuccessWhenBillIsCorrect() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now().plusDays(1));
 
@@ -537,7 +537,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenBillDescriptionIsNull() {
+  void testFailWhenBillDescriptionIsNull() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill(null, (float) 100.00, LocalDate.now().plusDays(1));
 
@@ -553,7 +553,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenBillDescriptionIsEmpty() {
+  void testFailWhenBillDescriptionIsEmpty() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("", (float) 100.00, LocalDate.now().plusDays(1));
 
@@ -569,7 +569,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenBillValueIsNull() {
+  void testFailWhenBillValueIsNull() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("Energy bill", null, LocalDate.now().plusDays(1));
 
@@ -585,7 +585,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenBillValueIsZero() {
+  void testFailWhenBillValueIsZero() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("Energy bill", (float) 0, LocalDate.now().plusDays(1));
 
@@ -601,7 +601,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenBillValueIsNegative() {
+  void testFailWhenBillValueIsNegative() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("Energy bill", (float) -1, LocalDate.now().plusDays(1));
 
@@ -617,7 +617,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenBillDueDateIsToday() {
+  void testFailWhenBillDueDateIsToday() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now());
 
@@ -633,7 +633,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenBillDueDateIsPast() {
+  void testFailWhenBillDueDateIsPast() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now().minusDays(1));
 
@@ -649,7 +649,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testFailWhenBillDueDateIsFarTooAhead() {
+  void testFailWhenBillDueDateIsFarTooAhead() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now().plusYears(4));
 
@@ -665,7 +665,7 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testSuccessWhenBillDueDateIsExactlyThreeYears() {
+  void testSuccessWhenBillDueDateIsExactlyThreeYears() {
     final ValidatorBill validatorBill = new ValidatorBill();
     final Bill bill = new Bill("Energy bill", (float) 100.00, LocalDate.now().plusYears(3));
 
