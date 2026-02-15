@@ -121,8 +121,10 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   @Override
   public ValidationResult validate(final T instance) {
-    ruleProcessor.process(instance, this);
-    return ValidationContext.get().getValidationResult();
+    try (ValidationContext.Context context = ValidationContext.get()) {
+      ruleProcessor.process(instance, this);
+      return context.getValidationResult();
+    }
   }
 
   /**
