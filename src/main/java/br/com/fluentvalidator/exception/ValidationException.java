@@ -21,39 +21,84 @@ import java.lang.reflect.InvocationTargetException;
 import br.com.fluentvalidator.context.ValidationContext;
 import br.com.fluentvalidator.context.ValidationResult;
 
+/**
+ * Abstract base class for validation exceptions in the FluentValidator framework.
+ * <p>
+ * This class provides a foundation for creating custom validation exceptions that
+ * carry validation results. It extends {@link RuntimeException} and includes
+ * factory methods for creating instances of validation exception subclasses.
+ * </p>
+ */
 public abstract class ValidationException extends RuntimeException {
 
   private static final long serialVersionUID = 2274879814700248645L;
 
   private final transient ValidationResult validationResult;
 
+  /**
+   * Constructs a new ValidationException with the specified validation result.
+   * <p>
+   * The exception message is automatically generated from the validation result's
+   * string representation.
+   * </p>
+   *
+   * @param validationResult the validation result containing error details
+   * @throws NullPointerException if validationResult is null
+   */
   protected ValidationException(final ValidationResult validationResult) {
     super(validationResult.toString());
     this.validationResult = validationResult;
   }
 
   /**
+   * Returns the validation result associated with this exception.
+   * <p>
+   * The validation result contains detailed information about validation
+   * errors that occurred during the validation process.
+   * </p>
    *
-   * @return
+   * @return the validation result, never null
    */
   public ValidationResult getValidationResult() {
     return validationResult;
   }
 
   /**
+   * Creates a new instance of the specified validation exception class using
+   * the current validation context's result.
+   * <p>
+   * This is a convenience method that retrieves the validation result from
+   * the current {@link ValidationContext} and creates an exception instance.
+   * </p>
    *
-   * @param exceptionClass
-   * @return
+   * @param <T> the type of validation exception to create
+   * @param exceptionClass the class of the validation exception to instantiate
+   * @return a new RuntimeException instance of the specified type
+   * @throws RuntimeException if the exception class doesn't have the required constructor
+   *                         or if instantiation fails
+   * @see #create(Class, ValidationResult)
    */
   public static <T extends ValidationException> RuntimeException create(final Class<T> exceptionClass) {
     return create(exceptionClass, ValidationContext.get().getValidationResult());
   }
 
   /**
+   * Creates a new instance of the specified validation exception class with
+   * the provided validation result.
+   * <p>
+   * This method uses reflection to instantiate the exception class. The target
+   * class must have a constructor that accepts a single {@link ValidationResult}
+   * parameter.
+   * </p>
    *
-   * @param exceptionClass
-   * @param validationResult
-   * @return
+   * @param <T> the type of validation exception to create
+   * @param exceptionClass the class of the validation exception to instantiate
+   * @param validationResult the validation result to associate with the exception
+   * @return a new RuntimeException instance of the specified type
+   * @throws RuntimeException if the exception class doesn't have a constructor
+   *                         accepting ValidationResult, or if instantiation fails
+   *                         due to security restrictions, illegal access, or
+   *                         invocation target exceptions
    */
   public static <T extends ValidationException> RuntimeException create(final Class<T> exceptionClass, final ValidationResult validationResult) {
     try {

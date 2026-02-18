@@ -455,6 +455,9 @@ public final class LocalDatePredicate {
         .and(obj -> localDateIsToday().test(source.apply(obj)));
   }
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private LocalDatePredicate() {
     super();
   }

@@ -109,7 +109,10 @@ public final class ObjectPredicate {
         .or(obj -> Objects.isNull(source))
         .or(obj -> Objects.isNull(source.apply(obj)));
   }
-  
+
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private ObjectPredicate() {
     super();
   }

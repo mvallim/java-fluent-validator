@@ -24,7 +24,7 @@
 		<mockito.version>4.11.0</mockito.version>
 		<junit.jupiter.version>5.10.2</junit.jupiter.version>
 		<awaitility.version>4.2.2</awaitility.version>
-		<assertj-core.version>3.24.2</assertj-core.version>
+		<assertj-core.version>3.27.7</assertj-core.version>
 		<slf4j-api.version>2.0.6</slf4j-api.version>
 		<hamcrest.version>3.0</hamcrest.version>
 
@@ -34,10 +34,10 @@
 		<maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
 		<maven-install-plugin.version>3.1.0</maven-install-plugin.version>
 		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
-		<maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
+		<maven-resources-plugin.version>3.4.0</maven-resources-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
 		<maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
 		<sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
@@ -246,46 +246,10 @@
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>${aspectj-maven-plugin.version}</version>
-				<configuration>
-					<Xlint>ignore</Xlint>
-					<complianceLevel>${java.version}</complianceLevel>
-					<showWeaveInfo>false</showWeaveInfo>
-					<verbose>false</verbose>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjtools</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<phase>process-sources</phase>
-						<goals>
-							<goal>compile</goal>
-							<goal>test-compile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
-		</dependency>
-
 		<!-- Scope Test -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -373,8 +337,6 @@
 			</activation>
 			<properties>
 				<java.version>8</java.version>
-				<aspectj.version>1.9.7</aspectj.version>
-				<aspectj-maven-plugin.version>1.14.0</aspectj-maven-plugin.version>
 			</properties>
 		</profile>
 
@@ -385,8 +347,6 @@
 			</activation>
 			<properties>
 				<java.version>11</java.version>
-				<aspectj.version>1.9.7</aspectj.version>
-				<aspectj-maven-plugin.version>1.14.0</aspectj-maven-plugin.version>
 			</properties>
 		</profile>
 
@@ -397,8 +357,6 @@
 			</activation>
 			<properties>
 				<java.version>17</java.version>
-				<aspectj.version>1.9.25.1</aspectj.version>
-				<aspectj-maven-plugin.version>1.16.0</aspectj-maven-plugin.version>
 			</properties>
 		</profile>
 
@@ -409,8 +367,6 @@
 			</activation>
 			<properties>
 				<java.version>21</java.version>
-				<aspectj.version>1.9.25.1</aspectj.version>
-				<aspectj-maven-plugin.version>1.16.0</aspectj-maven-plugin.version>
 			</properties>
 		</profile>
 

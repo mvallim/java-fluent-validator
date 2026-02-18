@@ -269,6 +269,9 @@ public final class DateTimePredicate {
         dateTimeLessThan(dateString, pattern).or(dateTimeEqualTo(dateString, pattern)));
   }
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private DateTimePredicate() {
     super();
   }

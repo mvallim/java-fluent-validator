@@ -591,6 +591,9 @@ public final class StringPredicate {
         .and(obj -> stringInCollection(target.apply(obj)).test(source.apply(obj)));
   }
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private StringPredicate() {
     super();
   }
