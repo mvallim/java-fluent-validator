@@ -29,9 +29,8 @@ import br.com.fluentvalidator.exception.ValidationException;
 import br.com.fluentvalidator.handler.HandlerInvalidField;
 
 /**
- * Base abstract class for validation rules, providing default implementations for configuration methods
- * and field descriptor methods. This class handles storage of rule properties (message, code, field name, etc.)
- * and provides accessors for these properties.
+ * Abstract base class for validation rules.
+ * Implements common logic for when, must, whenever conditions and error handling.
  *
  * @param <T> the type of object being validated
  * @param <P> the type of the property being validated
@@ -62,84 +61,97 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   private HandlerInvalidField<P> handlerInvalidField = new InternalHandlerInvalidField(this);
 
   /**
-   * Returns the predicate that determines when this rule is active.
+   * Returns the whenever predicate that determines when this rule should be applied.
    *
    * @return the whenever predicate
    */
   public Predicate<P> getWhenever() {
-    return this.whenever;
+    return whenever;
   }
 
   /**
-   * Returns the predicate that determines when this rule should be applied.
+   * Returns the when predicate that must be true for validation to proceed.
    *
    * @return the when predicate
    */
   public Predicate<P> getWhen() {
-    return this.when;
+    return when;
   }
 
   /**
-   * Returns the predicate that defines the validation condition.
+   * Returns the must predicate that must be satisfied for validation to pass.
    *
    * @return the must predicate
    */
   public Predicate<P> getMust() {
-    return this.must;
+    return must;
   }
 
   /**
-   * Returns the exception class to throw if this rule is critical and validation fails.
+   * Returns the custom exception class for critical validation failures.
    *
-   * @return the critical exception class, or {@code null} if not set
+   * @return the critical exception class, or null if not set
    */
   public Class<? extends ValidationException> getCriticalException() {
-    return this.criticalException;
+    return criticalException;
   }
 
   /**
-   * Returns the nested validator associated with this rule, for validating complex property types.
+   * Returns the validator associated with this rule.
    *
-   * @return the nested validator
+   * @return the validator
    */
   public Validator<T> getValidator() {
-    return this.validator;
+    return validator;
   }
 
   /**
-   * {@inheritDoc}
+   * Returns the error message for the given instance.
+   *
+   * @param instance the instance to get the message for
+   * @return the error message
    */
   @Override
   public String getMessage(final Object instance) {
-    return this.message.apply(instance);
+    return message.apply(instance);
   }
 
   /**
-   * {@inheritDoc}
+   * Returns the error code for the given instance.
+   *
+   * @param instance the instance to get the code for
+   * @return the error code
    */
   @Override
   public String getCode(final Object instance) {
-    return this.code.apply(instance);
+    return code.apply(instance);
   }
 
   /**
-   * {@inheritDoc}
+   * Returns the field name for the given instance.
+   *
+   * @param instance the instance to get the field name for
+   * @return the field name
    */
   @Override
   public String getFieldName(final Object instance) {
-    return this.fieldName.apply(instance);
+    return fieldName.apply(instance);
   }
 
   /**
-   * {@inheritDoc}
+   * Returns the attempted value for the given instance.
+   *
+   * @param instance the instance to get the attempted value for
+   * @param defaultValue the default value to return if no attempted value function is set
+   * @return the attempted value
    */
   @Override
   public Object getAttemptedValue(final Object instance, final P defaultValue) {
-    return Objects.isNull(this.attemptedValue) ? defaultValue : this.attemptedValue.apply(instance);
+    return Objects.isNull(attemptedValue) ? defaultValue : attemptedValue.apply(instance);
   }
 
   /**
-   * Returns the handler for invalid field errors.
+   * Returns the handler for invalid field scenarios.
    *
    * @return the handler invalid field
    */
@@ -148,16 +160,18 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * Checks if this rule is marked as critical.
+   * Returns whether this rule is marked as critical.
    *
-   * @return {@code true} if critical, {@code false} otherwise
+   * @return true if critical, false otherwise
    */
   public boolean isCritical() {
-    return this.critical;
+    return critical;
   }
 
   /**
-   * {@inheritDoc}
+   * Sets the when predicate that must be true for validation to proceed.
+   *
+   * @param when the when predicate
    */
   @Override
   public void when(final Predicate<P> when) {
@@ -165,7 +179,9 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * {@inheritDoc}
+   * Sets the must predicate that must be satisfied for validation to pass.
+   *
+   * @param must the must predicate
    */
   @Override
   public void must(final Predicate<P> must) {
@@ -173,7 +189,9 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * {@inheritDoc}
+   * Sets the function to generate the field name for error reporting.
+   *
+   * @param fieldName the function to generate the field name
    */
   @Override
   public void withFieldName(final Function<?, String> fieldName) {
@@ -181,7 +199,9 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * {@inheritDoc}
+   * Sets the function to generate the error message for validation failures.
+   *
+   * @param message the function to generate the error message
    */
   @Override
   public void withMessage(final Function<?, String> message) {
@@ -189,7 +209,9 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * {@inheritDoc}
+   * Sets the function to generate the error code for validation failures.
+   *
+   * @param code the function to generate the error code
    */
   @Override
   public void withCode(final Function<?, String> code) {
@@ -197,7 +219,9 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * {@inheritDoc}
+   * Sets the function to generate the attempted value for error reporting.
+   *
+   * @param attemptedValue the function to generate the attempted value
    */
   @Override
   public void withAttemptedValue(final Function<?, Object> attemptedValue) {
@@ -205,7 +229,9 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * {@inheritDoc}
+   * Sets a custom handler for invalid field scenarios.
+   *
+   * @param handlerInvalidField the handler to process invalid field events
    */
   @Override
   public void withHandlerInvalidField(final HandlerInvalidField<P> handlerInvalidField) {
@@ -213,24 +239,28 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * {@inheritDoc}
+   * Marks the validation rule as critical, causing validation to stop on failure.
    */
   @Override
   public void critical() {
-    this.critical = true;
+    critical = true;
   }
 
   /**
-   * {@inheritDoc}
+   * Marks the validation rule as critical with a custom exception class.
+   *
+   * @param clazz the custom ValidationException class to be thrown on critical failure
    */
   @Override
   public void critical(final Class<? extends ValidationException> clazz) {
-    this.critical = true;
-    this.criticalException = clazz;
+    critical = true;
+    criticalException = clazz;
   }
 
   /**
-   * {@inheritDoc}
+   * Sets the whenever predicate that determines when this rule should be applied.
+   *
+   * @param whenever the whenever predicate
    */
   @Override
   public void whenever(final Predicate<P> whenever) {
@@ -238,7 +268,9 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * {@inheritDoc}
+   * Associates a validator to be applied to the property value.
+   *
+   * @param validator the validator to apply
    */
   @Override
   public void withValidator(final Validator<T> validator) {
@@ -246,7 +278,7 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * Internal validator that does not define any rules, used as a default when no nested validator is set.
+   * Internal validator that does nothing. Used as a default validator.
    */
   private class InternalValidator extends AbstractValidator<T> {
     @Override
@@ -256,16 +288,17 @@ abstract class AbstractValidationRule<T, P> implements ValidationRule<T, P>, Fie
   }
 
   /**
-   * Internal handler for invalid fields that generates error objects using the associated {@link FieldDescriptor}.
+   * Internal handler for invalid field scenarios.
+   * Creates an Error object based on the field descriptor.
    */
   private class InternalHandlerInvalidField implements HandlerInvalidField<P> {
 
     private final FieldDescriptor<Object, P> fieldDescriptor;
 
     /**
-     * Constructs a new InternalHandlerInvalidField with the given field descriptor.
+     * Constructs a new InternalHandlerInvalidField.
      *
-     * @param fieldDescriptor the field descriptor to use for generating error properties
+     * @param fieldDescriptor the field descriptor to use for error details
      */
     public InternalHandlerInvalidField(final FieldDescriptor<Object, P> fieldDescriptor) {
       this.fieldDescriptor = fieldDescriptor;

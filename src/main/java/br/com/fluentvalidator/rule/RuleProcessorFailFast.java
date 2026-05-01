@@ -19,21 +19,20 @@ package br.com.fluentvalidator.rule;
 import java.util.Collection;
 
 /**
- * Fail-fast implementation of {@link RuleProcessorStrategy} that stops processing validation rules
- * as soon as the first failure is encountered. This strategy is useful when you want to avoid
- * unnecessary processing after a validation error has been detected.
+ * Fail-fast implementation of RuleProcessorStrategy.
+ * This strategy stops validation on the first failure.
  */
 class RuleProcessorFailFast implements RuleProcessorStrategy {
 
   /**
-   * Processes a collection of rules against a value using fail-fast semantics.
-   * Stops processing on the first rule that fails.
+   * Processes rules against a value with an associated object.
+   * Stops processing on the first failure.
    *
-   * @param <E> the type of the value
-   * @param obj the context object (typically the parent object being validated)
+   * @param obj the parent object (used for context)
    * @param value the value to validate
    * @param rules the collection of rules to apply
-   * @return {@code true} if all rules pass, {@code false} otherwise
+   * @param <E> the type of the value
+   * @return true if all rules pass, false if any fails
    */
   @Override
   public <E> boolean process(final Object obj, final E value, final Collection<Rule<E>> rules) {
@@ -41,13 +40,13 @@ class RuleProcessorFailFast implements RuleProcessorStrategy {
   }
 
   /**
-   * Processes a collection of rules against a value without a parent context object, using fail-fast semantics.
-   * Stops processing on the first rule that fails.
+   * Processes rules against a value.
+   * Stops processing on the first failure.
    *
-   * @param <E> the type of the value
    * @param value the value to validate
    * @param rules the collection of rules to apply
-   * @return {@code true} if all rules pass, {@code false} otherwise
+   * @param <E> the type of the value
+   * @return true if all rules pass, false if any fails
    */
   @Override
   public <E> boolean process(final E value, final Collection<Rule<E>> rules) {
