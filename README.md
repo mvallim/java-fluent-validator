@@ -2,7 +2,7 @@
 
 # Java Fluent Validator
 
-[![Java CI with Maven](https://github.com/mvallim/java-fluent-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/mvallim/java-fluent-validator/actions/workflows/ci.yml)
+[![Snapshot && Release](https://github.com/mvallim/java-fluent-validator/actions/workflows/cd.yml/badge.svg)](https://github.com/mvallim/java-fluent-validator/actions/workflows/cd.yml?branch=develop)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=java-fluent-validator&metric=alert_status)](https://sonarcloud.io/dashboard?id=java-fluent-validator)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=java-fluent-validator&metric=coverage)](https://sonarcloud.io/dashboard?id=java-fluent-validator)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/java-fluent-validator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/java-fluent-validator)
