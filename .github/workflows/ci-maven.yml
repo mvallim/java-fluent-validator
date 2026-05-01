@@ -11,17 +11,17 @@ jobs:
         java-version: [8, 11, 17, 21]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java-version }}
           distribution: "corretto"
           cache: "maven"
 
       - name: Cache Maven packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.m2
           key: ${{ runner.os }}-build-${{ hashFiles('**/pom.xml') }}-${{ matrix.java-version }}
@@ -37,17 +37,17 @@ jobs:
         java-version: [8, 11, 17, 21]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java-version }}
           distribution: "corretto"
           cache: "maven"
 
       - name: Cache Maven packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.m2
           key: ${{ runner.os }}-test-${{ hashFiles('**/pom.xml') }}-${{ matrix.java-version }}
