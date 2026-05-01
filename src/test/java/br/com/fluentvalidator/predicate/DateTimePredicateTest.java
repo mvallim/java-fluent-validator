@@ -25,8 +25,8 @@ import static br.com.fluentvalidator.predicate.DateTimePredicate.dateTimeLessTha
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -34,16 +34,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class DateTimePredicateTest {
+class DateTimePredicateTest {
 
   private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
   //// dateTimeEqualTo
 
   @Test
-  public void testNullDateTimeEqualTo() {
+  void testNullDateTimeEqualTo() {
     assertFalse(dateTimeEqualTo(null, null).test(null));
     assertFalse(dateTimeEqualTo(null, null).test("2019-09-19 00:00:00"));
     assertFalse(dateTimeEqualTo(null, DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
@@ -54,7 +54,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeEqualToInvalid() {
+  void testDateTimeEqualToInvalid() {
     assertFalse(dateTimeEqualTo("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00"));
     assertFalse(dateTimeEqualTo("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
     assertFalse(dateTimeEqualTo("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
@@ -62,7 +62,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeEqualToDateTime() {
+  void testDateTimeEqualToDateTime() {
     assertTrue(dateTimeEqualTo("2019-09-19 03:03:03", DATE_TIME_FORMAT).test("2019-09-19 03:03:03"));
     assertFalse(dateTimeEqualTo("2019-09-19 03:03:03", DATE_TIME_FORMAT).test("2019-09-19 03:03:04"));
   }
@@ -70,7 +70,7 @@ public class DateTimePredicateTest {
   //// dateTimeGreaterThan
 
   @Test
-  public void testNullDateTimeGreaterThan() {
+  void testNullDateTimeGreaterThan() {
     assertFalse(dateTimeGreaterThan(null, null).test(null));
     assertFalse(dateTimeGreaterThan(null, null).test("2019-09-19 00:00:00"));
     assertFalse(dateTimeGreaterThan(null, DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
@@ -81,7 +81,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeGreaterThanInvalid() {
+  void testDateTimeGreaterThanInvalid() {
     assertFalse(dateTimeGreaterThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00"));
     assertFalse(dateTimeGreaterThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
     assertFalse(dateTimeGreaterThan("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
@@ -89,7 +89,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeGreaterThanDateTime() {
+  void testDateTimeGreaterThanDateTime() {
     assertTrue(dateTimeGreaterThan("2019-09-19 03:03:03", DATE_TIME_FORMAT).test("2019-09-19 03:03:04"));
     assertFalse(dateTimeGreaterThan("2019-09-19 03:03:04", DATE_TIME_FORMAT).test("2019-09-19 03:03:04"));
     assertFalse(dateTimeGreaterThan("2019-09-19 03:03:05", DATE_TIME_FORMAT).test("2019-09-19 03:03:04"));
@@ -98,7 +98,7 @@ public class DateTimePredicateTest {
   //// dateTimeLessThan
 
   @Test
-  public void testNullDateTimeLessThanThan() {
+  void testNullDateTimeLessThanThan() {
     assertFalse(dateTimeLessThan(null, null).test(null));
     assertFalse(dateTimeLessThan(null, null).test("2019-09-19 00:00:00"));
     assertFalse(dateTimeLessThan(null, DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
@@ -109,14 +109,14 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeLessThanInvalid() {
+  void testDateTimeLessThanInvalid() {
     assertFalse(dateTimeLessThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
     assertFalse(dateTimeLessThan("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
     assertFalse(dateTimeLessThan("2019/09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
   }
 
   @Test
-  public void testDateTimeLessThanDate() {
+  void testDateTimeLessThanDate() {
     assertTrue(dateTimeLessThan("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-18 00:00:00"));
     assertFalse(dateTimeLessThan("2019-09-18 00:00:00", DATE_TIME_FORMAT).test("2019-09-18 00:00:00"));
     assertFalse(dateTimeLessThan("2019-09-17 00:00:00", DATE_TIME_FORMAT).test("2019-09-18 00:00:00"));
@@ -125,7 +125,7 @@ public class DateTimePredicateTest {
   //// dateTimeGreaterThanOrEqual
 
   @Test
-  public void testNullDateTimeGreaterThanOrEqual() {
+  void testNullDateTimeGreaterThanOrEqual() {
     assertFalse(dateTimeGreaterThanOrEqual(null, null).test(null));
     assertFalse(dateTimeGreaterThanOrEqual(null, null).test("2019-09-19 00:00:00"));
     assertFalse(dateTimeGreaterThanOrEqual(null, DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
@@ -136,7 +136,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeGreaterThanOrEqualInvalid() {
+  void testDateTimeGreaterThanOrEqualInvalid() {
     assertFalse(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00"));
     assertFalse(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
     assertFalse(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
@@ -144,7 +144,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeGreaterThanOrEqual() {
+  void testDateTimeGreaterThanOrEqual() {
     assertTrue(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-20 00:00:00"));
     assertTrue(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
     assertFalse(dateTimeGreaterThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-18 00:00:00"));
@@ -153,7 +153,7 @@ public class DateTimePredicateTest {
   //// dateTimeLessThanOrEqual
 
   @Test
-  public void testNullDateTimeLessThanOrEqual() {
+  void testNullDateTimeLessThanOrEqual() {
     assertFalse(dateTimeLessThanOrEqual(null, null).test(null));
     assertFalse(dateTimeLessThanOrEqual(null, null).test("2019-09-19 00:00:00"));
     assertFalse(dateTimeLessThanOrEqual(null, DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
@@ -164,7 +164,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateLessTimeThanOrEqualInvalid() {
+  void testDateLessTimeThanOrEqualInvalid() {
     assertFalse(dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-40 00:00:00"));
     assertFalse(dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019/09-19 00:00:00"));
     assertFalse(dateTimeLessThanOrEqual("2019-09-19 00:00:00", "yyyy/MM-dd HH:mm:ss").test("2019-09-19 00:00:00"));
@@ -172,7 +172,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateLessTimeThanOrEqual() {
+  void testDateLessTimeThanOrEqual() {
     assertTrue(dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-18 00:00:00"));
     assertTrue(dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
     assertFalse(dateTimeLessThanOrEqual("2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-20 00:00:00"));
@@ -181,7 +181,7 @@ public class DateTimePredicateTest {
   //// dateTimeBetween
 
   @Test
-  public void testNullDateTimeBetween() {
+  void testNullDateTimeBetween() {
     assertFalse(dateTimeBetween("2019-09-19 00:00:00", null, null).test(null));
     assertFalse(dateTimeBetween(null, "2019-09-19 00:00:00", null).test(null));
     assertFalse(dateTimeBetween(null, null, DATE_TIME_FORMAT).test(null));
@@ -195,7 +195,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeBetweenInvalid() {
+  void testDateTimeBetweenInvalid() {
     assertFalse(dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00/00"));
     assertFalse(dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00:00", "HH:mm/ss").test("2019/09-19 00:00:00"));
     assertFalse(dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00/00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
@@ -205,7 +205,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testDateTimeBetween() {
+  void testDateTimeBetween() {
     assertTrue(dateTimeBetween("2019-09-19 00:00:00", "2019-09-19 00:00:00", DATE_TIME_FORMAT).test("2019-09-19 00:00:00"));
     assertTrue(dateTimeBetween("2019-09-18 00:00:00", "2019-09-20 00:00:00", DATE_TIME_FORMAT).test("2019-09-20 00:00:00"));
     assertTrue(dateTimeBetween("2019-09-18 00:00:00", "2019-09-20 00:00:00", DATE_TIME_FORMAT).test("2019-09-18 00:00:00"));
@@ -216,14 +216,14 @@ public class DateTimePredicateTest {
   //// dateTimeGreaterThan(Function, Function, pattern)
 
   @Test
-  public void testObjectDateTimeGreaterThan() {
+  void testObjectDateTimeGreaterThan() {
     assertTrue(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", "2019-09-18 00:00:00")));
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", "2019-09-18 00:00:00")));
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-17 00:00:00", "2019-09-18 00:00:00")));
   }
 
   @Test
-  public void testNullObjectDateTimeGreaterThan() {
+  void testNullObjectDateTimeGreaterThan() {
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(null));
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>(null, "2019-09-18 00:00:00")));
@@ -233,14 +233,14 @@ public class DateTimePredicateTest {
   //// dateTimeGreaterThan(Function, String, pattern)
 
   @Test
-  public void testObjectDateTimeGreaterThan2() {
+  void testObjectDateTimeGreaterThan2() {
     assertTrue(dateTimeGreaterThan(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", null)));
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-17 00:00:00", null)));
   }
 
   @Test
-  public void testNullObjectDateTimeGreaterThan2() {
+  void testNullObjectDateTimeGreaterThan2() {
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(null));
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, (String) null, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeGreaterThan(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>(null, "2019-09-18 00:00:00")));
@@ -250,14 +250,14 @@ public class DateTimePredicateTest {
   //// dateTimeGreaterThanOrEqual(Function, Function, pattern)
 
   @Test
-  public void testObjectDateTimeGreaterThanOrEqual() {
+  void testObjectDateTimeGreaterThanOrEqual() {
     assertTrue(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", "2019-09-18 00:00:00")));
     assertTrue(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", "2019-09-18 00:00:00")));
     assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-17 00:00:00", "2019-09-18 00:00:00")));
   }
 
   @Test
-  public void testNullObjectDateTimeGreaterThanOrEqual() {
+  void testNullObjectDateTimeGreaterThanOrEqual() {
     assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(null));
     assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>(null, "2019-09-18 00:00:00")));
@@ -267,14 +267,14 @@ public class DateTimePredicateTest {
   //// dateTimeGreaterThanOrEqual(Function, String, pattern)
 
   @Test
-  public void testObjectDateTimeGreaterThanOrEqual2() {
+  void testObjectDateTimeGreaterThanOrEqual2() {
     assertTrue(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", null)));
     assertTrue(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-17 00:00:00", null)));
   }
 
   @Test
-  public void testNullObjectDateTimeGreaterThanOrEqual2() {
+  void testNullObjectDateTimeGreaterThanOrEqual2() {
     assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(null));
     assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, (String) null, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeGreaterThanOrEqual(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>(null, "2019-09-18 00:00:00")));
@@ -284,14 +284,14 @@ public class DateTimePredicateTest {
   //// dateTimeLessThan(Function, Function, pattern)
 
   @Test
-  public void testObjectDateTimeLessThan() {
+  void testObjectDateTimeLessThan() {
     assertTrue(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", "2019-09-19 00:00:00")));
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", "2019-09-19 00:00:00")));
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-20 00:00:00", "2019-09-19 00:00:00")));
   }
 
   @Test
-  public void testNullObjectDateTimeLessThan() {
+  void testNullObjectDateTimeLessThan() {
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(null));
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>(null, "2019-09-18 00:00:00")));
@@ -301,14 +301,14 @@ public class DateTimePredicateTest {
   //// dateTimeLessThan(Function, String, pattern)
 
   @Test
-  public void testObjectDateTimeLessThan2() {
+  void testObjectDateTimeLessThan2() {
     assertTrue(dateTimeLessThan(ObjectFrom<String>::getSource, "2019-09-19 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", "2019-09-19 00:00:00")));
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, "2019-09-19 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", "2019-09-19 00:00:00")));
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, "2019-09-19 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-20 00:00:00", "2019-09-19 00:00:00")));
   }
 
   @Test
-  public void testNullObjectDateTimeLessThan2() {
+  void testNullObjectDateTimeLessThan2() {
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(null));
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, (String) null, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeLessThan(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>(null, "2019-09-18 00:00:00")));
@@ -318,14 +318,14 @@ public class DateTimePredicateTest {
   //// dateTimeLessThanOrEqual(Function, Function, pattern)
 
   @Test
-  public void testObjectDateTimeLessThanOrEqual() {
+  void testObjectDateTimeLessThanOrEqual() {
     assertTrue(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", "2019-09-19 00:00:00")));
     assertTrue(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", "2019-09-19 00:00:00")));
     assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-20 00:00:00", "2019-09-19 00:00:00")));
   }
 
   @Test
-  public void testNullObjectDateTimeLessThanOrEqual() {
+  void testNullObjectDateTimeLessThanOrEqual() {
     assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(null));
     assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, ObjectFrom::getTarget, DATE_TIME_FORMAT).test(new ObjectFrom<>(null, "2019-09-18 00:00:00")));
@@ -335,14 +335,14 @@ public class DateTimePredicateTest {
   //// dateTimeLessThanOrEqual(Function, String, pattern)
 
   @Test
-  public void testObjectDateTimeLessThanOrEqual2() {
+  void testObjectDateTimeLessThanOrEqual2() {
     assertTrue(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, "2019-09-19 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", "2019-09-19 00:00:00")));
     assertTrue(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, "2019-09-19 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", "2019-09-19 00:00:00")));
     assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, "2019-09-19 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-20 00:00:00", "2019-09-19 00:00:00")));
   }
 
   @Test
-  public void testNullObjectDateTimeLessThanOrEqual2() {
+  void testNullObjectDateTimeLessThanOrEqual2() {
     assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(null));
     assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, (String) null, DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-18 00:00:00", null)));
     assertFalse(dateTimeLessThanOrEqual(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>(null, "2019-09-18 00:00:00")));
@@ -352,7 +352,7 @@ public class DateTimePredicateTest {
   //// dateTimeBetween(Function, String, String, pattern)
 
   @Test
-  public void testNullObjectDateTimeBetween() {
+  void testNullObjectDateTimeBetween() {
     assertFalse(dateTimeBetween(ObjectFrom<String>::getSource, "2019-09-19 00:00:00", (String) null, (String) null).test(null));
     assertFalse(dateTimeBetween(ObjectFrom<String>::getSource, null, "2019-09-19 00:00:00", (String) null).test(new ObjectFrom<>("2019-09-19 00:00:00", null)));
     assertFalse(dateTimeBetween(ObjectFrom<String>::getSource, null, (String) null, DATE_TIME_FORMAT).test(new ObjectFrom<String>(null, null)));
@@ -366,7 +366,7 @@ public class DateTimePredicateTest {
   }
 
   @Test
-  public void testObjectDateTimeBetween() {
+  void testObjectDateTimeBetween() {
     assertTrue(dateTimeBetween(ObjectFrom<String>::getSource, "2019-09-19 00:00:00", "2019-09-19 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", null)));
     assertTrue(dateTimeBetween(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", "2019-09-20 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-20 00:00:00", null)));
     assertTrue(dateTimeBetween(ObjectFrom<String>::getSource, "2019-09-18 00:00:00", "2019-09-20 00:00:00", DATE_TIME_FORMAT).test(new ObjectFrom<>("2019-09-19 00:00:00", null)));
@@ -377,7 +377,7 @@ public class DateTimePredicateTest {
   //// multi thread test
 
   @Test
-  public void testDateTimePredicateMultiThreadMustBeTrue() throws InterruptedException {
+  void testDateTimePredicateMultiThreadMustBeTrue() throws InterruptedException {
 
     final int CONCURRENT_RUNNABLE = 100000;
 

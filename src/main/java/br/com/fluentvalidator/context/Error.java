@@ -16,6 +16,9 @@
 
 package br.com.fluentvalidator.context;
 
+/**
+ * Represents a validation error with details about the failed validation.
+ */
 public class Error {
 
   private final String message;
@@ -27,17 +30,26 @@ public class Error {
   private final String code;
 
   /**
+   * Creates a new validation error.
    *
-   * @param field
-   * @param message
-   * @param code
-   * @param attemptedValue
-   * @return
+   * @param field the name of the field that failed validation
+   * @param message the error message describing the validation failure
+   * @param code the error code for the validation failure
+   * @param attemptedValue the value that failed validation
+   * @return a new Error instance
    */
   public static Error create(final String field, final String message, final String code, final Object attemptedValue) {
     return new Error(field, message, code, attemptedValue);
   }
 
+  /**
+   * Protected constructor to create an Error instance.
+   *
+   * @param field the name of the field that failed validation
+   * @param message the error message
+   * @param code the error code
+   * @param attemptedValue the value that failed validation
+   */
   protected Error(final String field, final String message, final String code, final Object attemptedValue) {
     this.field = field;
     this.message = message;
@@ -46,32 +58,36 @@ public class Error {
   }
 
   /**
+   * Returns the name of the field that failed validation.
    *
-   * @return
+   * @return the field name
    */
   public String getField() {
     return field;
   }
 
   /**
+   * Returns the error message describing the validation failure.
    *
-   * @return
+   * @return the error message
    */
   public String getMessage() {
     return message;
   }
 
   /**
+   * Returns the error code for the validation failure.
    *
-   * @return
+   * @return the error code
    */
   public String getCode() {
     return code;
   }
 
   /**
+   * Returns the value that failed validation.
    *
-   * @return
+   * @return the attempted value
    */
   public Object getAttemptedValue() {
     return attemptedValue;

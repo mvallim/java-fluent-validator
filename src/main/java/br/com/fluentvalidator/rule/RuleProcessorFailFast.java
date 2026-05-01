@@ -18,13 +18,36 @@ package br.com.fluentvalidator.rule;
 
 import java.util.Collection;
 
+/**
+ * Fail-fast implementation of RuleProcessorStrategy.
+ * This strategy stops validation on the first failure.
+ */
 class RuleProcessorFailFast implements RuleProcessorStrategy {
 
+  /**
+   * Processes rules against a value with an associated object.
+   * Stops processing on the first failure.
+   *
+   * @param obj the parent object (used for context)
+   * @param value the value to validate
+   * @param rules the collection of rules to apply
+   * @param <E> the type of the value
+   * @return true if all rules pass, false if any fails
+   */
   @Override
   public <E> boolean process(final Object obj, final E value, final Collection<Rule<E>> rules) {
     return rules.stream().allMatch(rule -> this.process(obj, value, rule));
   }
 
+  /**
+   * Processes rules against a value.
+   * Stops processing on the first failure.
+   *
+   * @param value the value to validate
+   * @param rules the collection of rules to apply
+   * @param <E> the type of the value
+   * @return true if all rules pass, false if any fails
+   */
   @Override
   public <E> boolean process(final E value, final Collection<Rule<E>> rules) {
     return rules.stream().allMatch(rule -> this.process(value, rule));

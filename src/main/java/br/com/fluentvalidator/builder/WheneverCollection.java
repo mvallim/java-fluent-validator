@@ -20,12 +20,19 @@ import java.util.Collection;
 
 import br.com.fluentvalidator.Validator;
 
+/**
+ * Builder interface for defining whenever conditions on collection property validation rules.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of elements in the collection being validated
+ */
 public interface WheneverCollection<T, P> extends Whenever<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> {
 
   /**
+   * Associates a validator to be applied to each element in the collection.
    *
-   * @param validator
-   * @return
+   * @param validator the validator to apply to each element in the collection
+   * @return the WithValidator builder for chaining additional configuration
    */
   WithValidator<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> withValidator(final Validator<P> validator);
 

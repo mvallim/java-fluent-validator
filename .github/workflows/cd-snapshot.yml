@@ -1,0 +1,35 @@
+name: Build, Publish Snapshot and Pull Request
+
+on:
+  pull_request:
+    branches: 
+      - release/**
+    types:
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ci:
+    if: ${{ github.event.pull_request.merged == true }}
+    uses: ./.github/workflows/ci-maven.yml
+    secrets: inherit
+
+  snapshot:
+    needs: ci
+    uses: ./.github/workflows/cd-deploy.yml
+    secrets: inherit
+    with:
+      environment: snapshot
+
+  pull-request:
+    needs: snapshot
+    uses: ./.github/workflows/ci-pull-request.yml
+    secrets: inherit
+    with:
+      type: Release
+      labels: automatic,release
+      source-branch: master
+      target-branch: master

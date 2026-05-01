@@ -20,8 +20,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
+
 import br.com.fluentvalidator.exception.ValidationException;
 
+/**
+ * Represents the result of a validation operation.
+ * Contains information about whether the validation passed and any errors that occurred.
+ */
 public final class ValidationResult {
 
   private final boolean valid;
@@ -29,30 +34,41 @@ public final class ValidationResult {
   private final Collection<Error> errors;
 
   /**
+   * Creates a successful validation result with no errors.
    *
-   * @return
+   * @return a ValidationResult indicating success
    */
   public static ValidationResult ok() {
     return new ValidationResult(true, new ArrayList<>());
   }
 
   /**
+   * Creates a failed validation result with the specified errors.
    *
-   * @param messages
-   * @return
+   * @param messages the collection of validation errors
+   * @return a ValidationResult indicating failure with the given errors
    */
   public static ValidationResult fail(final Collection<Error> messages) {
     return new ValidationResult(false, Optional.ofNullable(messages).orElse(new ArrayList<>()));
   }
 
+  /**
+   * Private constructor to create a ValidationResult instance.
+   *
+   * @param valid whether the validation passed
+   * @param messages the collection of validation errors
+   */
   private ValidationResult(final boolean valid, final Collection<Error> messages) {
     this.valid = valid;
     errors = Collections.unmodifiableCollection(messages);
   }
 
   /**
+   * Throws a ValidationException if the validation result is invalid.
    *
-   * @param clazz
+   * @param <T> the type of ValidationException to throw
+   * @param clazz the class of the exception to throw
+   * @throws T if the validation result is invalid
    */
   public <T extends ValidationException> void isInvalidThrow(final Class<T> clazz) {
     if (!isValid()) {
@@ -61,16 +77,18 @@ public final class ValidationResult {
   }
 
   /**
+   * Returns whether the validation passed.
    *
-   * @return
+   * @return true if the validation passed, false otherwise
    */
   public boolean isValid() {
     return valid;
   }
 
   /**
+   * Returns the collection of validation errors.
    *
-   * @return
+   * @return an unmodifiable collection of validation errors
    */
   public Collection<Error> getErrors() {
     return errors;

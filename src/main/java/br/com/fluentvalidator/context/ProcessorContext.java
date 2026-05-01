@@ -21,17 +21,26 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Manages the thread-local processor context for tracking validation counters.
+ * Used to count the number of validations performed during the validation process.
+ */
 public final class ProcessorContext {
 
   private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
 
+  /**
+   * Private constructor to prevent instantiation.
+   */
   private ProcessorContext() {
     super();
   }
 
   /**
+   * Returns the current processor context for this thread.
+   * Creates a new context if one does not exist.
    *
-   * @return
+   * @return the current processor context
    */
   public static Context get() {
     if (Objects.isNull(threadLocal.get())) {
@@ -41,39 +50,61 @@ public final class ProcessorContext {
   }
 
   /**
-   *
+   * Removes the processor context for this thread.
    */
   public static void remove() {
     threadLocal.remove();
   }
 
   /**
-   * Context of processor
+   * The processor context that maintains a stack of counters for tracking validations.
+   * Implements AutoCloseable for use with try-with-resources.
    */
-  public static final class Context {
+  public static final class Context implements AutoCloseable {
 
     private final Deque<AtomicInteger> stackCounter = new ConcurrentLinkedDeque<>();
 
+    /**
+     * Creates a new counter and pushes it onto the stack.
+     */
     public void create() {
       stackCounter.push(new AtomicInteger(0));
     }
 
+    /**
+     * Removes the current counter from the stack.
+     */
     public void remove() {
       if (!stackCounter.isEmpty()) {
         stackCounter.pop();
       }
     }
 
+    /**
+     * Increments the current counter in the stack.
+     */
     public void inc() {
       if (!stackCounter.isEmpty()) {
         stackCounter.peek().incrementAndGet();
       }
     }
 
+    /**
+     * Returns the current counter value.
+     *
+     * @return the current counter value, or 0 if the stack is empty
+     */
     public Integer get() {
       return stackCounter.isEmpty() ? 0 : stackCounter.peek().get();
     }
 
+    /**
+     * Closes the context and removes it from the thread-local storage.
+     */
+    @Override
+    public void close() {
+      ProcessorContext.remove();
+    }
   }
 
 }

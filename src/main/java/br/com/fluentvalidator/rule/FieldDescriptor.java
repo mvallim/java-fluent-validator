@@ -16,14 +16,45 @@
 
 package br.com.fluentvalidator.rule;
 
+/**
+ * Interface for describing field information used in validation error reporting.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of the property being validated
+ */
 interface FieldDescriptor<T, P> {
 
+  /**
+   * Returns the error message for the given instance.
+   *
+   * @param instance the instance to get the message for
+   * @return the error message
+   */
   String getMessage(final T instance);
 
+  /**
+   * Returns the error code for the given instance.
+   *
+   * @param instance the instance to get the code for
+   * @return the error code
+   */
   String getCode(final T instance);
 
+  /**
+   * Returns the field name for the given instance.
+   *
+   * @param instance the instance to get the field name for
+   * @return the field name
+   */
   String getFieldName(final T instance);
 
+  /**
+   * Returns the attempted value for the given instance.
+   *
+   * @param instance the instance to get the attempted value for
+   * @param defaultValue the default value to return if no attempted value is set
+   * @return the attempted value, or defaultValue if not set
+   */
   Object getAttemptedValue(final T instance, final P defaultValue);
 
 }

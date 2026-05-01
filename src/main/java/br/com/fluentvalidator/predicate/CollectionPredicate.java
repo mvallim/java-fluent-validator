@@ -28,13 +28,22 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * Utility class providing predicates for testing {@link Collection} objects.
+ * <p>
+ * This class contains static factory methods that create {@link Predicate} instances
+ * for various collection operations, including empty checks, containment checks,
+ * and size comparisons.
+ * </p>
+ */
 public final class CollectionPredicate {
 
   /**
+   * Creates a predicate that tests if a collection is empty (null or has no elements).
    *
-   * @param <E>
-   * @param <T>
-   * @return
+   * @param <E> the type of elements in the collection
+   * @param <T> the type of collection that extends Collection&lt;E&gt;
+   * @return a predicate that returns true if the collection is null or empty
    */
   public static <E, T extends Collection<E>> Predicate<T> empty() {
     return PredicateBuilder.<T>from(is(nullValue()))
@@ -42,11 +51,12 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection extracted from an object is empty.
    *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @return
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @return a predicate that returns true if the extracted collection is null or empty
    */
   public static <T, E> Predicate<T> empty(final Function<T, Collection<E>> source) {
     return PredicateBuilder.<T>from(is(nullValue()))
@@ -55,11 +65,12 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection contains any of the specified objects.
    *
-   * @param <E>
-   * @param <T>
-   * @param objects
-   * @return
+   * @param <E> the type of elements in the collection
+   * @param <T> the type of collection that extends Collection&lt;E&gt;
+   * @param objects the collection of objects to check for
+   * @return a predicate that returns true if the collection contains any of the specified objects
    */
   public static <E, T extends Collection<E>> Predicate<T> hasAny(final Collection<E> objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -68,11 +79,12 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection contains any of the specified objects from an array.
    *
-   * @param <E>
-   * @param <T>
-   * @param objects
-   * @return
+   * @param <E> the type of elements in the collection
+   * @param <T> the type of collection that extends Collection&lt;E&gt;
+   * @param objects the array of objects to check for
+   * @return a predicate that returns true if the collection contains any of the specified objects
    */
   public static <E, T extends Collection<E>> Predicate<T> hasAny(final E[] objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -81,12 +93,13 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection extracted from an object contains any of the specified objects.
    *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param objects
-   * @return
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param objects the collection of objects to check for
+   * @return a predicate that returns true if the extracted collection contains any of the specified objects
    */
   public static <T, E> Predicate<T> hasAny(final Function<T, Collection<E>> source, final Collection<E> objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -94,12 +107,13 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection extracted from an object contains any of the specified objects from an array.
    *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param objects
-   * @return
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param objects the array of objects to check for
+   * @return a predicate that returns true if the extracted collection contains any of the specified objects
    */
   public static <T, E> Predicate<T> hasAny(final Function<T, Collection<E>> source, final E[] objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -121,7 +135,7 @@ public final class CollectionPredicate {
    * @param <T>    type of exam class
    * @param object the object to compare against the objects provided by the
    *               examined {@link Collection}
-   * @return {@link Predicate}
+   * @return {@link Predicate} that returns true if the collection contains the specified object
    */
   public static <E, T extends Collection<E>> Predicate<T> hasItem(final E object) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -129,12 +143,13 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection extracted from an object contains the specified item.
    *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param object
-   * @return
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param object the object to check for in the collection
+   * @return a predicate that returns true if the extracted collection contains the specified object
    */
   public static <T, E> Predicate<T> hasItem(final Function<T, Collection<E>> source, final E object) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -142,11 +157,12 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection contains all of the specified objects.
    *
-   * @param <E>
-   * @param <T>
-   * @param objects
-   * @return
+   * @param <E> the type of elements in the collection
+   * @param <T> the type of collection that extends Collection&lt;E&gt;
+   * @param objects the collection of objects that must all be present
+   * @return a predicate that returns true if the collection contains all specified objects
    */
   public static <E, T extends Collection<E>> Predicate<T> hasItems(final Collection<E> objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -155,11 +171,12 @@ public final class CollectionPredicate {
   }
 
   /**
-   *
-   * @param <E>
-   * @param <T>
-   * @param objects
-   * @return
+   * Creates a predicate that tests if a collection contains all of the specified objects from an array.
+   * 
+   * @param <E> the type of elements in the collection
+   * @param <T> the type of collection that extends Collection&lt;E&gt;
+   * @param objects the array of objects that must all be present
+   * @return a predicate that returns true if the collection contains all specified objects
    */
   public static <E, T extends Collection<E>> Predicate<T> hasItems(final E[] objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -168,12 +185,13 @@ public final class CollectionPredicate {
   }
 
   /**
-   *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param objects
-   * @return
+   * Creates a predicate that tests if a collection extracted from an object contains all of the specified objects.
+   * 
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param objects the collection of objects that must all be present
+   * @return a predicate that returns true if the extracted collection contains all specified objects
    */
   public static <T, E> Predicate<T> hasItems(final Function<T, Collection<E>> source, final Collection<E> objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -181,12 +199,13 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection extracted from an object contains all of the specified objects from an array.
    *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param objects
-   * @return
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param objects the array of objects that must all be present
+   * @return a predicate that returns true if the extracted collection contains all specified objects
    */
   public static <T, E> Predicate<T> hasItems(final Function<T, Collection<E>> source, final E[] objects) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -194,12 +213,13 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection extracted from an object has a size equal to a dynamically computed value.
    *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param size
-   * @return
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param size a function that computes the expected size from the object
+   * @return a predicate that returns true if the extracted collection has the computed size
    */
   public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Function<T, Integer> size) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -209,12 +229,13 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection extracted from an object has a specific size.
    *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param size
-   * @return
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param size the expected size of the collection
+   * @return a predicate that returns true if the extracted collection has the specified size
    */
   public static <T, E> Predicate<T> hasSize(final Function<T, Collection<E>> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -223,11 +244,12 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection has a specific size.
    *
-   * @param <E>
-   * @param <T>
-   * @param size
-   * @return
+   * @param <E> the type of elements in the collection
+   * @param <T> the type of collection that extends Collection&lt;E&gt;
+   * @param size the expected size of the collection
+   * @return a predicate that returns true if the collection has the specified size
    */
   public static <E, T extends Collection<E>> Predicate<T> hasSize(final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -235,13 +257,14 @@ public final class CollectionPredicate {
   }
 
   /**
-   * 
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param min
-   * @param max
-   * @return
+   * Creates a predicate that tests if a collection extracted from an object has a size between the specified bounds (exclusive).
+   *
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param min the minimum size (exclusive)
+   * @param max the maximum size (exclusive)
+   * @return a predicate that returns true if the extracted collection size is between min and max (exclusive)
    */
   public static <T, E> Predicate<T> hasSizeBetween(final Function<T, Collection<E>> source, final Integer min, final Integer max) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -250,12 +273,13 @@ public final class CollectionPredicate {
   }
 
   /**
-   * 
-   * @param <E>
-   * @param <T>
-   * @param min
-   * @param max
-   * @return
+   * Creates a predicate that tests if a collection has a size between the specified bounds (exclusive).
+   *
+   * @param <E> the type of elements in the collection
+   * @param <T> the type of collection that extends Collection&lt;E&gt;
+   * @param min the minimum size (exclusive)
+   * @param max the maximum size (exclusive)
+   * @return a predicate that returns true if the collection size is between min and max (exclusive)
    */
   public static <E, T extends Collection<E>> Predicate<T> hasSizeBetween(final Integer min, final Integer max) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -263,13 +287,14 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection extracted from an object has a size between the specified bounds (inclusive).
    *
-   * @param <T>
-   * @param <E>
-   * @param source
-   * @param min
-   * @param max
-   * @return
+   * @param <T> the type of the object being tested
+   * @param <E> the type of elements in the collection
+   * @param source a function that extracts a collection from the object
+   * @param min the minimum size (inclusive)
+   * @param max the maximum size (inclusive)
+   * @return a predicate that returns true if the extracted collection size is between min and max (inclusive)
    */
   public static <T, E> Predicate<T> hasSizeBetweenInclusive(final Function<T, Collection<E>> source, final Integer min, final Integer max) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -278,18 +303,22 @@ public final class CollectionPredicate {
   }
 
   /**
+   * Creates a predicate that tests if a collection has a size between the specified bounds (inclusive).
    *
-   * @param <E>
-   * @param <T>
-   * @param min
-   * @param max
-   * @return
+   * @param <E> the type of elements in the collection
+   * @param <T> the type of collection that extends Collection&lt;E&gt;
+   * @param min the minimum size (inclusive)
+   * @param max the maximum size (inclusive)
+   * @return a predicate that returns true if the collection size is between min and max (inclusive)
    */
   public static <E, T extends Collection<E>> Predicate<T> hasSizeBetweenInclusive(final Integer min, final Integer max) {
     return PredicateBuilder.<T>from(not(nullValue()))
       .and(betweenInclusive(Collection::size, min, max));
   }
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private CollectionPredicate() {
     super();
   }

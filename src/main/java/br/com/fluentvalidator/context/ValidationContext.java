@@ -23,17 +23,26 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * Manages the thread-local validation context.
+ * The context holds validation errors and properties during the validation process.
+ */
 public final class ValidationContext {
 
   private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
 
+  /**
+   * Private constructor to prevent instantiation.
+   */
   private ValidationContext() {
     super();
   }
 
   /**
+   * Returns the current validation context for this thread.
+   * Creates a new context if one does not exist.
    *
-   * @return
+   * @return the current validation context
    */
   public static Context get() {
     if (Objects.isNull(threadLocal.get())) {
@@ -43,36 +52,36 @@ public final class ValidationContext {
   }
 
   /**
-   *
+   * Removes the validation context for this thread.
    */
   public static void remove() {
     threadLocal.remove();
   }
 
   /**
-   * Context of validation
+   * The validation context that holds properties and collects validation errors.
+   * Implements AutoCloseable for use with try-with-resources.
    */
-  public static final class Context {
+  public static final class Context implements AutoCloseable {
 
     private final Map<String, Object> properties = new ConcurrentHashMap<>();
 
     private final Queue<Error> errors = new ConcurrentLinkedQueue<>();
 
     /**
+     * Adds a collection of errors to the context.
      *
-     * @param field
-     * @param message
-     * @param code
-     * @param attemptedValue
+     * @param errs the collection of errors to add
      */
     public void addErrors(final Collection<Error> errs) {
       errs.stream().forEach(errors::add);
     }
 
     /**
+     * Sets a property in the context for use during validation.
      *
-     * @param property
-     * @param value
+     * @param property the name of the property
+     * @param value the value of the property
      */
     public void setProperty(final String property, final Object value) {
       if (Objects.nonNull(property)) {
@@ -81,8 +90,10 @@ public final class ValidationContext {
     }
 
     /**
+     * Returns the validation result based on the collected errors.
+     * Removes the context after generating the result.
      *
-     * @return
+     * @return a ValidationResult indicating success or failure with errors
      */
     public ValidationResult getValidationResult() {
       ValidationContext.remove();
@@ -90,15 +101,24 @@ public final class ValidationContext {
     }
 
     /**
+     * Retrieves a property from the context.
      *
-     * @param property
-     * @param clazz
-     * @return
+     * @param property the name of the property
+     * @param clazz the expected class of the property value
+     * @param <P> the type of the property value
+     * @return the property value, or null if not found
      */
     public <P> P getProperty(final String property, final Class<P> clazz) {
       return clazz.cast(properties.getOrDefault(property, null));
     }
 
+    /**
+     * Closes the context and removes it from the thread-local storage.
+     */
+    @Override
+    public void close() {
+      ValidationContext.remove();
+    }
   }
 
 }

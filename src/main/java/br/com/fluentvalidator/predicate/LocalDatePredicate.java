@@ -24,437 +24,523 @@ import static br.com.fluentvalidator.predicate.LogicalPredicate.is;
 import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 
+/**
+ * Utility class providing predicates for LocalDate comparisons.
+ * <p>
+ * This class contains static factory methods that create {@link java.util.function.Predicate} instances
+ * for various LocalDate comparison operations, including after, before, between, and equality checks.
+ * All predicates support both direct LocalDate comparison and function-based extraction from objects.
+ * </p>
+ *
+ * @see java.time.LocalDate
+ * @see java.util.function.Predicate
+ */
 public final class LocalDatePredicate {
 
   /**
+   * Creates a predicate that checks if a source LocalDate is after a target LocalDate.
+   * Both source and target are functions that extract LocalDate values from the input object.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param target function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is after target date
+   * @throws NullPointerException if source or target is null
    */
   public static <T> Predicate<T> localDateAfter(final Function<T, LocalDate> source, final Function<T, LocalDate> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(target)))
-        .and(obj -> localDateAfter(source, target.apply(obj)).test(obj));
+      .and(not(nullValue(target)))
+      .and(obj -> localDateAfter(source, target.apply(obj)).test(obj));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is after a target LocalDate.
+   * Source is a function that extracts LocalDate from the input object, target is a fixed LocalDate.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param target fixed LocalDate to compare against
+   * @return predicate that evaluates to true if source date is after target date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateAfter(final Function<T, LocalDate> source, final LocalDate target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(source)))
-        .and(obj -> localDateAfter(target).test(source.apply(obj)));
+      .and(not(nullValue(source)))
+      .and(obj -> localDateAfter(target).test(source.apply(obj)));
   }
 
-
   /**
+   * Creates a predicate that checks if a LocalDate is after a target LocalDate.
    *
-   * @param target
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @param target fixed LocalDate to compare against
+   * @return predicate that evaluates to true if input date is after target date
+   * @throws NullPointerException if target is null
    */
   public static <T extends LocalDate> Predicate<T> localDateAfter(final LocalDate target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> not(nullValue()).test(target))
-        .and(obj -> obj.isAfter(target));
+      .and(obj -> not(nullValue()).test(target))
+      .and(obj -> obj.isAfter(target));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is after or equal to a target LocalDate.
+   * Both source and target are functions that extract LocalDate values from the input object.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param target function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is after or equal to target date
+   * @throws NullPointerException if source or target is null
    */
   public static <T> Predicate<T> localDateAfterOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(target)))
-        .and(obj -> localDateAfterOrEqual(source, target.apply(obj)).test(obj));
+      .and(not(nullValue(target)))
+      .and(obj -> localDateAfterOrEqual(source, target.apply(obj)).test(obj));
   }
 
-
   /**
+   * Creates a predicate that checks if a source LocalDate is after or equal to a target LocalDate.
+   * Source is a function that extracts LocalDate from the input object, target is a fixed LocalDate.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param target fixed LocalDate to compare against
+   * @return predicate that evaluates to true if source date is after or equal to target date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateAfterOrEqual(final Function<T, LocalDate> source, final LocalDate target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(source)))
-        .and(obj -> localDateAfterOrEqual(target).test(source.apply(obj)));
+      .and(not(nullValue(source)))
+      .and(obj -> localDateAfterOrEqual(target).test(source.apply(obj)));
   }
 
   /**
+   * Creates a predicate that checks if a LocalDate is after or equal to a target LocalDate.
    *
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @param target fixed LocalDate to compare against
+   * @return predicate that evaluates to true if input date is after or equal to target date
+   * @throws NullPointerException if target is null
    */
   public static <T extends LocalDate> Predicate<T> localDateAfterOrEqual(final LocalDate target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> not(nullValue()).test(target))
-        .and(is(localDateAfter(target)).or(localDateEqualTo(target)));
+      .and(obj -> not(nullValue()).test(target))
+      .and(is(localDateAfter(target)).or(localDateEqualTo(target)));
   }
 
-
   /**
+   * Creates a predicate that checks if a LocalDate is after or equal to today's date.
    *
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @return predicate that evaluates to true if input date is after or equal to today's date
    */
   public static <T extends LocalDate> Predicate<T> localDateAfterOrEqualToday() {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(localDate -> localDate.isAfter(LocalDate.now()) || localDate.isEqual(LocalDate.now()));
+      .and(localDate -> localDate.isAfter(LocalDate.now()) || localDate.isEqual(LocalDate.now()));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is after or equal to today's date.
    *
-   * @param source
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is after or equal to today's date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateAfterOrEqualToday(final Function<T, LocalDate> source){
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> localDateAfterOrEqualToday().test(source.apply(obj)));
+      .and(obj -> localDateAfterOrEqualToday().test(source.apply(obj)));
   }
 
-
   /**
+   * Creates a predicate that checks if a LocalDate is after today's date.
    *
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @return predicate that evaluates to true if input date is after today's date
    */
   public static <T extends LocalDate> Predicate<T> localDateAfterToday() {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(localDate -> localDate.isAfter(LocalDate.now()));
+      .and(localDate -> localDate.isAfter(LocalDate.now()));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is after today's date.
    *
-   * @param source
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is after today's date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateAfterToday(final Function<T, LocalDate> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> localDateAfterToday().test(source.apply(obj)));
+      .and(obj -> localDateAfterToday().test(source.apply(obj)));
   }
 
-
   /**
+   * Creates a predicate that checks if a source LocalDate is before a target LocalDate.
+   * Both source and target are functions that extract LocalDate values from the input object.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param target function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is before target date
+   * @throws NullPointerException if source or target is null
    */
   public static <T> Predicate<T> localDateBefore(final Function<T, LocalDate> source, final Function<T, LocalDate> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(target)))
-        .and(obj -> localDateBefore(source, target.apply(obj)).test(obj));
+      .and(not(nullValue(target)))
+      .and(obj -> localDateBefore(source, target.apply(obj)).test(obj));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is before a target LocalDate.
+   * Source is a function that extracts LocalDate from the input object, target is a fixed LocalDate.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param target fixed LocalDate to compare against
+   * @return predicate that evaluates to true if source date is before target date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateBefore(final Function<T, LocalDate> source, final LocalDate target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(source)))
-        .and(obj -> localDateBefore(target).test(source.apply(obj)));
+      .and(not(nullValue(source)))
+      .and(obj -> localDateBefore(target).test(source.apply(obj)));
   }
 
-
   /**
+   * Creates a predicate that checks if a LocalDate is before a target LocalDate.
    *
-   * @param target
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @param target fixed LocalDate to compare against
+   * @return predicate that evaluates to true if input date is before target date
+   * @throws NullPointerException if target is null
    */
   public static <T extends LocalDate> Predicate<T> localDateBefore(final LocalDate target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> not(nullValue()).test(target))
-        .and(obj -> obj.isBefore(target));
+      .and(obj -> not(nullValue()).test(target))
+      .and(obj -> obj.isBefore(target));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is before or equal to a target LocalDate.
+   * Both source and target are functions that extract LocalDate values from the input object.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param target function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is before or equal to target date
+   * @throws NullPointerException if source or target is null
    */
   public static <T> Predicate<T> localDateBeforeOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(target)))
-        .and(obj -> localDateBeforeOrEqual(source, target.apply(obj)).test(obj));
+      .and(not(nullValue(target)))
+      .and(obj -> localDateBeforeOrEqual(source, target.apply(obj)).test(obj));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is before or equal to a target LocalDate.
+   * Source is a function that extracts LocalDate from the input object, target is a fixed LocalDate.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param target fixed LocalDate to compare against
+   * @return predicate that evaluates to true if source date is before or equal to target date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateBeforeOrEqual(final Function<T, LocalDate> source, final LocalDate target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(source)))
-        .and(obj -> localDateBeforeOrEqual(target).test(source.apply(obj)));
+      .and(not(nullValue(source)))
+      .and(obj -> localDateBeforeOrEqual(target).test(source.apply(obj)));
   }
 
-
   /**
+   * Creates a predicate that checks if a LocalDate is before or equal to a target LocalDate.
    *
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @param target fixed LocalDate to compare against
+   * @return predicate that evaluates to true if input date is before or equal to target date
+   * @throws NullPointerException if target is null
    */
   public static <T extends LocalDate> Predicate<T> localDateBeforeOrEqual(final LocalDate target) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> not(nullValue()).test(target))
-        .and(is(localDateBefore(target)).or(localDateEqualTo(target)));
+      .and(obj -> not(nullValue()).test(target))
+      .and(is(localDateBefore(target)).or(localDateEqualTo(target)));
   }
 
   /**
+   * Creates a predicate that checks if a LocalDate is before or equal to today's date.
    *
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @return predicate that evaluates to true if input date is before or equal to today's date
    */
   public static <T extends LocalDate> Predicate<T> localDateBeforeOrEqualToday() {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(localDate -> localDate.isBefore(LocalDate.now())|| localDate.isEqual(LocalDate.now()));
+      .and(localDate -> localDate.isBefore(LocalDate.now())|| localDate.isEqual(LocalDate.now()));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is before or equal to today's date.
    *
-   * @param source
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is before or equal to today's date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateBeforeOrEqualToday(final Function<T, LocalDate> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> localDateBeforeOrEqualToday().test(source.apply(obj)));
+      .and(obj -> localDateBeforeOrEqualToday().test(source.apply(obj)));
   }
 
-
   /**
+   * Creates a predicate that checks if a LocalDate is before today's date.
    *
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @return predicate that evaluates to true if input date is before today's date
    */
   public static <T extends LocalDate> Predicate<T> localDateBeforeToday() {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(localDate -> localDate.isBefore(LocalDate.now()));
+      .and(localDate -> localDate.isBefore(LocalDate.now()));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is before today's date.
    *
-   * @param source
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is before today's date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateBeforeToday(final Function<T, LocalDate> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> localDateBeforeToday().test(source.apply(obj)));
+      .and(obj -> localDateBeforeToday().test(source.apply(obj)));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is between min and max dates (exclusive).
+   * Source, min, and max are functions that extract LocalDate values from the input object.
    *
-   * @param source
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param min function to extract minimum LocalDate from input object
+   * @param max function to extract maximum LocalDate from input object
+   * @return predicate that evaluates to true if source date is between min and max dates
+   * @throws NullPointerException if source, min, or max is null
    */
   public static <T> Predicate<T> localDateBetween(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final Function<T, LocalDate> max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(min)))
-        .and(not(nullValue(max)))
-        .and(obj -> localDateBetween(source, min.apply(obj), max.apply(obj)).test(obj));
+      .and(not(nullValue(min)))
+      .and(not(nullValue(max)))
+      .and(obj -> localDateBetween(source, min.apply(obj), max.apply(obj)).test(obj));
   }
 
-
   /**
+   * Creates a predicate that checks if a source LocalDate is between min and max dates (exclusive).
+   * Source and min are functions that extract LocalDate values from the input object, max is a fixed LocalDate.
    *
-   * @param source
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param min function to extract minimum LocalDate from input object
+   * @param max fixed maximum LocalDate to compare against
+   * @return predicate that evaluates to true if source date is between min and max dates
+   * @throws NullPointerException if source or min is null
    */
   public static <T> Predicate<T> localDateBetween(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final LocalDate max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(min)))
-        .and(obj -> localDateBetween(source, min.apply(obj), max).test(obj));
+      .and(not(nullValue(min)))
+      .and(obj -> localDateBetween(source, min.apply(obj), max).test(obj));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is between min and max dates (exclusive).
+   * Source and max are functions that extract LocalDate values from the input object, min is a fixed LocalDate.
    *
-   * @param source
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param min fixed minimum LocalDate to compare against
+   * @param max function to extract maximum LocalDate from input object
+   * @return predicate that evaluates to true if source date is between min and max dates
+   * @throws NullPointerException if source or max is null
    */
   public static <T> Predicate<T> localDateBetween(final Function<T, LocalDate> source, final LocalDate min, final Function<T, LocalDate> max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(max)))
-        .and(obj -> localDateBetween(source, min, max.apply(obj)).test(obj));
+      .and(not(nullValue(max)))
+      .and(obj -> localDateBetween(source, min, max.apply(obj)).test(obj));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is between min and max dates (exclusive).
+   * Source is a function that extracts LocalDate from the input object, min and max are fixed LocalDate values.
    *
-   * @param source
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param min fixed minimum LocalDate to compare against
+   * @param max fixed maximum LocalDate to compare against
+   * @return predicate that evaluates to true if source date is between min and max dates
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateBetween(final Function<T, LocalDate> source, final LocalDate min, final LocalDate max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(source)))
-        .and(obj -> localDateBetween(min, max).test(source.apply(obj)));
+      .and(not(nullValue(source)))
+      .and(obj -> localDateBetween(min, max).test(source.apply(obj)));
   }
 
-
   /**
+   * Creates a predicate that checks if a LocalDate is between min and max dates (exclusive).
    *
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @param min fixed minimum LocalDate to compare against
+   * @param max fixed maximum LocalDate to compare against
+   * @return predicate that evaluates to true if input date is between min and max dates
+   * @throws NullPointerException if min or max is null
    */
   public static <T extends LocalDate> Predicate<T> localDateBetween(final LocalDate min, final LocalDate max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(localDateAfter(min).and(localDateBefore(max)));
+      .and(localDateAfter(min).and(localDateBefore(max)));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is between min and max dates (inclusive).
+   * Source, min, and max are functions that extract LocalDate values from the input object.
    *
-   * @param source
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param min function to extract minimum LocalDate from input object
+   * @param max function to extract maximum LocalDate from input object
+   * @return predicate that evaluates to true if source date is between min and max dates (inclusive)
+   * @throws NullPointerException if source, min, or max is null
    */
   public static <T> Predicate<T> localDateBetweenOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final Function<T, LocalDate> max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(min)))
-        .and(not(nullValue(max)))
-        .and(obj -> localDateBetweenOrEqual(source, min.apply(obj), max.apply(obj)).test(obj));
+      .and(not(nullValue(min)))
+      .and(not(nullValue(max)))
+      .and(obj -> localDateBetweenOrEqual(source, min.apply(obj), max.apply(obj)).test(obj));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is between min and max dates (inclusive).
+   * Source and min are functions that extract LocalDate values from the input object, max is a fixed LocalDate.
    *
-   * @param source
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param min function to extract minimum LocalDate from input object
+   * @param max fixed maximum LocalDate to compare against
+   * @return predicate that evaluates to true if source date is between min and max dates (inclusive)
+   * @throws NullPointerException if source or min is null
    */
   public static <T> Predicate<T> localDateBetweenOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final LocalDate max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(min)))
-        .and(obj -> localDateBetweenOrEqual(source, min.apply(obj), max).test(obj));
+      .and(not(nullValue(min)))
+      .and(obj -> localDateBetweenOrEqual(source, min.apply(obj), max).test(obj));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is between min and max dates (inclusive).
+   * Source and max are functions that extract LocalDate values from the input object, min is a fixed LocalDate.
    *
-   * @param source
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param min fixed minimum LocalDate to compare against
+   * @param max function to extract maximum LocalDate from input object
+   * @return predicate that evaluates to true if source date is between min and max dates (inclusive)
+   * @throws NullPointerException if source or max is null
    */
   public static <T> Predicate<T> localDateBetweenOrEqual(final Function<T, LocalDate> source, final LocalDate min, final Function<T, LocalDate> max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(max)))
-        .and(obj -> localDateBetweenOrEqual(source, min, max.apply(obj)).test(obj));
+      .and(not(nullValue(max)))
+      .and(obj -> localDateBetweenOrEqual(source, min, max.apply(obj)).test(obj));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is between min and max dates (inclusive).
+   * Source is a function that extracts LocalDate from the input object, min and max are fixed LocalDate values.
    *
-   * @param source
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param min fixed minimum LocalDate to compare against
+   * @param max fixed maximum LocalDate to compare against
+   * @return predicate that evaluates to true if source date is between min and max dates (inclusive)
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateBetweenOrEqual(final Function<T, LocalDate> source, final LocalDate min, final LocalDate max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(source)))
-        .and(obj -> localDateBetweenOrEqual(min, max).test(source.apply(obj)));
+      .and(not(nullValue(source)))
+      .and(obj -> localDateBetweenOrEqual(min, max).test(source.apply(obj)));
   }
 
-
   /**
+   * Creates a predicate that checks if a LocalDate is between min and max dates (inclusive).
    *
-   * @param min
-   * @param max
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @param min fixed minimum LocalDate to compare against
+   * @param max fixed maximum LocalDate to compare against
+   * @return predicate that evaluates to true if input date is between min and max dates (inclusive)
+   * @throws NullPointerException if min or max is null
    */
   public static <T extends LocalDate> Predicate<T> localDateBetweenOrEqual(final LocalDate min, final LocalDate max) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(localDateAfterOrEqual(min).and(localDateBeforeOrEqual(max)));
+      .and(localDateAfterOrEqual(min).and(localDateBeforeOrEqual(max)));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is equal to a target LocalDate.
+   * Source is a function that extracts LocalDate from the input object, target is a fixed LocalDate.
    *
-   * @param source
-   * @param localDate
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @param localDate fixed LocalDate to compare against
+   * @return predicate that evaluates to true if source date is equal to target date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateEqualTo(final Function<T, LocalDate> source, final LocalDate localDate) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(source)))
-        .and(obj -> localDateEqualTo(localDate).test(source.apply(obj)));
+      .and(not(nullValue(source)))
+      .and(obj -> localDateEqualTo(localDate).test(source.apply(obj)));
   }
 
   /**
+   * Creates a predicate that checks if a LocalDate is equal to a target LocalDate.
    *
-   * @param localDate
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @param localDate fixed LocalDate to compare against
+   * @return predicate that evaluates to true if input date is equal to target date
+   * @throws NullPointerException if localDate is null
    */
   public static <T extends LocalDate> Predicate<T> localDateEqualTo(final LocalDate localDate) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> not(nullValue()).test(localDate))
-        .and(obj -> localDate.isEqual(obj));
+      .and(obj -> not(nullValue()).test(localDate))
+      .and(obj -> localDate.isEqual(obj));
   }
 
   /**
+   * Creates a predicate that checks if a LocalDate is equal to today's date.
    *
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object (must be LocalDate or subclass)
+   * @return predicate that evaluates to true if input date is equal to today's date
    */
   public static <T extends LocalDate> Predicate<T> localDateIsToday() {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(obj -> obj.isEqual(LocalDate.now()));
+      .and(obj -> obj.isEqual(LocalDate.now()));
   }
 
   /**
+   * Creates a predicate that checks if a source LocalDate is equal to today's date.
    *
-   * @param source
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source function to extract LocalDate from input object
+   * @return predicate that evaluates to true if source date is equal to today's date
+   * @throws NullPointerException if source is null
    */
   public static <T> Predicate<T> localDateIsToday(final Function<T, LocalDate> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
-        .and(not(nullValue(source)))
-        .and(obj -> localDateIsToday().test(source.apply(obj)));
+      .and(not(nullValue(source)))
+      .and(obj -> localDateIsToday().test(source.apply(obj)));
   }
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private LocalDatePredicate() {
     super();
   }

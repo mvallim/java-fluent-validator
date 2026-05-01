@@ -34,11 +34,21 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * Utility class containing predicates for validating and comparing string values.
+ * <p>
+ * This class provides static factory methods for creating {@link Predicate} instances
+ * that test various string properties such as alphabetic content, numeric content,
+ * date/time parsing, size comparisons, and containment checks.
+ * </p>
+ */
 public final class StringPredicate {
 
   /**
+   * Returns a predicate that checks if a string contains only alphabetic characters.
+   * The string must not be null or empty.
    *
-   * @return
+   * @return a predicate that tests if a string is composed exclusively of letters
    */
   public static Predicate<String> isAlpha() {
     return PredicateBuilder.<String>from(not(stringEmptyOrNull()))
@@ -46,18 +56,22 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it contains only alphabetic characters.
    *
-   * @param <T>
-   * @param source
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @return a predicate that tests if the extracted string is composed exclusively of letters
    */
   public static <T> Predicate<T> isAlpha(final Function<T, String> source) {
     return PredicateBuilder.<T>from(not(nullValue())).and(obj -> isAlpha().test(source.apply(obj)));
   }
 
   /**
+   * Returns a predicate that checks if a string contains only alphanumeric characters
+   * (letters and digits). The string must not be null or empty.
    *
-   * @return
+   * @return a predicate that tests if a string is composed exclusively of letters or digits
    */
   public static Predicate<String> isAlphaNumeric() {
     return PredicateBuilder.<String>from(not(stringEmptyOrNull()))
@@ -65,10 +79,12 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it contains only alphanumeric characters.
    *
-   * @param <T>
-   * @param source
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @return a predicate that tests if the extracted string is alphanumeric
    */
   public static <T> Predicate<T> isAlphaNumeric(final Function<T, String> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -76,20 +92,25 @@ public final class StringPredicate {
   }
 
   /**
-   * 
-   * @param <T>
-   * @param source
-   * @param pattern
-   * @return
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it represents a valid date according to the specified pattern.
+   * Uses strict resolver style for date parsing.
+   *
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param pattern the date pattern to validate against
+   * @return a predicate that tests if the extracted string is a valid date
    */
   public static <T> Predicate<T> isDate(final Function<T, String> source, final String pattern) {
     return PredicateBuilder.<T>from(not(nullValue())).and(obj -> isDate(pattern).test(source.apply(obj)));
   }
 
   /**
-   * 
-   * @param pattern
-   * @return
+   * Returns a predicate that checks if a string represents a valid date
+   * according to the specified pattern. Uses strict resolver style for date parsing.
+   *
+   * @param pattern the date pattern to validate against
+   * @return a predicate that tests if a string is a valid date
    */
   public static Predicate<String> isDate(final String pattern) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -105,20 +126,25 @@ public final class StringPredicate {
   }
 
   /**
-   * 
-   * @param <T>
-   * @param source
-   * @param pattern
-   * @return
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it represents a valid date-time according to the specified pattern.
+   * Uses strict resolver style for date-time parsing.
+   *
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param pattern the date-time pattern to validate against
+   * @return a predicate that tests if the extracted string is a valid date-time
    */
   public static <T> Predicate<T> isDateTime(final Function<T, String> source, final String pattern) {
     return PredicateBuilder.<T>from(not(nullValue())).and(obj -> isDateTime(pattern).test(source.apply(obj)));
   }
 
   /**
-   * 
-   * @param pattern
-   * @return
+   * Returns a predicate that checks if a string represents a valid date-time
+   * according to the specified pattern. Uses strict resolver style for date-time parsing.
+   *
+   * @param pattern the date-time pattern to validate against
+   * @return a predicate that tests if a string is a valid date-time
    */
   public static Predicate<String> isDateTime(final String pattern) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -134,8 +160,10 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string represents a valid number.
+   * The string must not be null or empty. Uses BigDecimal for parsing.
    *
-   * @return
+   * @return a predicate that tests if a string is a valid number
    */
   public static Predicate<String> isNumber() {
     return PredicateBuilder.<String>from(not(stringEmptyOrNull())).and(isNumber -> {
@@ -149,10 +177,12 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it represents a valid number.
    *
-   * @param <T>
-   * @param source
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @return a predicate that tests if the extracted string is a valid number
    */
   public static <T> Predicate<T> isNumber(final Function<T, String> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -160,8 +190,10 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string contains only numeric digits.
+   * The string must not be null or empty.
    *
-   * @return
+   * @return a predicate that tests if a string is composed exclusively of digits
    */
   public static Predicate<String> isNumeric() {
     return PredicateBuilder.<String>from(not(stringEmptyOrNull()))
@@ -169,10 +201,12 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it contains only numeric digits.
    *
-   * @param <T>
-   * @param source
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @return a predicate that tests if the extracted string is composed exclusively of digits
    */
   public static <T> Predicate<T> isNumeric(final Function<T, String> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -180,20 +214,25 @@ public final class StringPredicate {
   }
 
   /**
-   * 
-   * @param <T>
-   * @param source
-   * @param pattern
-   * @return
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it represents a valid time according to the specified pattern.
+   * Uses strict resolver style for time parsing.
+   *
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param pattern the time pattern to validate against
+   * @return a predicate that tests if the extracted string is a valid time
    */
   public static <T> Predicate<T> isTime(final Function<T, String> source, final String pattern) {
     return PredicateBuilder.<T>from(not(nullValue())).and(obj -> isTime(pattern).test(source.apply(obj)));
   }
 
   /**
-   * 
-   * @param pattern
-   * @return
+   * Returns a predicate that checks if a string represents a valid time
+   * according to the specified pattern. Uses strict resolver style for time parsing.
+   *
+   * @param pattern the time pattern to validate against
+   * @return a predicate that tests if a string is a valid time
    */
   public static Predicate<String> isTime(final String pattern) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -209,11 +248,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it contains the specified substring.
    *
-   * @param <T>
-   * @param source
-   * @param str
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param str the substring to search for
+   * @return a predicate that tests if the extracted string contains the specified substring
    */
   public static <T> Predicate<T> stringContains(final Function<T, String> source, final String str) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -221,9 +262,11 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string contains the specified substring.
+   * Both the string and the substring must not be null.
    *
-   * @param str
-   * @return
+   * @param str the substring to search for
+   * @return a predicate that tests if a string contains the specified substring
    */
   public static Predicate<String> stringContains(final String str) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -232,18 +275,21 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string is empty or null.
    *
-   * @return
+   * @return a predicate that tests if a string is null or empty
    */
   public static Predicate<String> stringEmptyOrNull() {
     return PredicateBuilder.<String>from(is(nullValue())).or(String::isEmpty);
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it is empty or null.
    *
-   * @param <T>
-   * @param source
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @return a predicate that tests if the extracted string is empty or null
    */
   public static <T> Predicate<T> stringEmptyOrNull(final Function<T, String> source) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -251,10 +297,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts two strings from the given source and target functions
+   * and checks if they are equal.
    *
-   * @param source
-   * @param target
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the source string
+   * @param target a function that extracts the target string to compare against
+   * @return a predicate that tests if the extracted strings are equal
    */
   public static <T> Predicate<T> stringEquals(final Function<T, String> source, final Function<T, String> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -262,10 +311,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it equals the specified value.
    *
-   * @param source
-   * @param value
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param value the expected string value
+   * @return a predicate that tests if the extracted string equals the specified value
    */
   public static <T> Predicate<T> stringEquals(final Function<T, String> source, final String value) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -274,19 +326,24 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string equals the specified value.
    *
-   * @param value
-   * @return
+   * @param <T> the type of the input object
+   * @param value the expected string value
+   * @return a predicate that tests if a string equals the specified value
    */
   public static <T> Predicate<T> stringEquals(final String value) {
     return PredicateBuilder.<T>from(not(nullValue())).and(obj -> obj.equals(value));
   }
 
   /**
+   * Returns a predicate that extracts two strings from the given source and target functions
+   * and checks if they are equal, ignoring case differences.
    *
-   * @param source
-   * @param target
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the source string
+   * @param target a function that extracts the target string to compare against
+   * @return a predicate that tests if the extracted strings are equal ignoring case
    */
   public static <T> Predicate<T> stringEqualsIgnoreCase(final Function<T, String> source, final Function<T, String> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -294,10 +351,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it equals the specified value, ignoring case differences.
    *
-   * @param source
-   * @param value
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param value the expected string value
+   * @return a predicate that tests if the extracted string equals the specified value ignoring case
    */
   public static <T> Predicate<T> stringEqualsIgnoreCase(final Function<T, String> source, final String value) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -306,9 +366,11 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string equals the specified value,
+   * ignoring case differences. Both the string and the value must not be null.
    *
-   * @param value
-   * @return
+   * @param value the expected string value
+   * @return a predicate that tests if a string equals the specified value ignoring case
    */
   public static Predicate<String> stringEqualsIgnoreCase(final String value) {
     return PredicateBuilder.<String>from(not(nullValue())).and(obj -> not(nullValue()).test(value))
@@ -316,11 +378,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it matches the specified regular expression.
    *
-   * @param <T>
-   * @param source
-   * @param regex
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param regex the regular expression to match against
+   * @return a predicate that tests if the extracted string matches the regex
    */
   public static <T> Predicate<T> stringMatches(final Function<T, String> source, final String regex) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -328,9 +392,11 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string matches the specified regular expression.
+   * Both the string and the regex must not be null.
    *
-   * @param regex
-   * @return
+   * @param regex the regular expression to match against
+   * @return a predicate that tests if a string matches the regex
    */
   public static Predicate<String> stringMatches(final String regex) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -339,11 +405,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts two strings from the given source and target functions
+   * and checks if they have the same length.
    *
-   * @param <T>
-   * @param source
-   * @param target
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the source string
+   * @param target a function that extracts the target string to compare length against
+   * @return a predicate that tests if the extracted strings have equal length
    */
   public static <T> Predicate<T> stringSize(final Function<T, String> source, final Function<T, String> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -352,11 +420,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if its length equals the specified size.
    *
-   * @param <T>
-   * @param source
-   * @param size
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param size the expected string length
+   * @return a predicate that tests if the extracted string has the specified length
    */
   public static <T> Predicate<T> stringSize(final Function<T, String> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -364,9 +434,11 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string has the specified length.
+   * Both the string and the size must not be null.
    *
-   * @param size
-   * @return
+   * @param size the expected string length
+   * @return a predicate that tests if a string has the specified length
    */
   public static Predicate<String> stringSize(final Integer size) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -375,12 +447,14 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if its length is between the specified minimum and maximum (inclusive).
    *
-   * @param <T>
-   * @param source
-   * @param minSize
-   * @param maxSize
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param minSize the minimum acceptable string length
+   * @param maxSize the maximum acceptable string length
+   * @return a predicate that tests if the extracted string length is within the specified range
    */
   public static <T> Predicate<T> stringSizeBetween(final Function<T, String> source, final Integer minSize, final Integer maxSize) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -388,10 +462,12 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string length is between the specified
+   * minimum and maximum (inclusive). The string must not be null.
    *
-   * @param minSize
-   * @param maxSize
-   * @return
+   * @param minSize the minimum acceptable string length
+   * @param maxSize the maximum acceptable string length
+   * @return a predicate that tests if a string length is within the specified range
    */
   public static Predicate<String> stringSizeBetween(final Integer minSize, final Integer maxSize) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -399,11 +475,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts two strings from the given source and target functions
+   * and checks if the source string length is greater than the target string length.
    *
-   * @param <T>
-   * @param source
-   * @param target
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the source string
+   * @param target a function that extracts the target string to compare length against
+   * @return a predicate that tests if the source string is longer than the target string
    */
   public static <T> Predicate<T> stringSizeGreaterThan(final Function<T, String> source, final Function<T, String> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -412,11 +490,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if its length is greater than the specified size.
    *
-   * @param <T>
-   * @param source
-   * @param size
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param size the minimum length threshold (exclusive)
+   * @return a predicate that tests if the extracted string length is greater than the specified size
    */
   public static <T> Predicate<T> stringSizeGreaterThan(final Function<T, String> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -424,9 +504,11 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string length is greater than the specified size.
+   * Both the string and the size must not be null.
    *
-   * @param size
-   * @return
+   * @param size the minimum length threshold (exclusive)
+   * @return a predicate that tests if a string length is greater than the specified size
    */
   public static Predicate<String> stringSizeGreaterThan(final Integer size) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -435,11 +517,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts two strings from the given source and target functions
+   * and checks if the source string length is greater than or equal to the target string length.
    *
-   * @param <T>
-   * @param source
-   * @param target
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the source string
+   * @param target a function that extracts the target string to compare length against
+   * @return a predicate that tests if the source string length is greater than or equal to the target
    */
   public static <T> Predicate<T> stringSizeGreaterThanOrEqual(final Function<T, String> source, final Function<T, String> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -447,11 +531,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if its length is greater than or equal to the specified size.
    *
-   * @param <T>
-   * @param source
-   * @param size
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param size the minimum length threshold (inclusive)
+   * @return a predicate that tests if the extracted string length is greater than or equal to the specified size
    */
   public static <T> Predicate<T> stringSizeGreaterThanOrEqual(final Function<T, String> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -459,9 +545,11 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string length is greater than or equal to the specified size.
+   * Both the string and the size must not be null.
    *
-   * @param size
-   * @return
+   * @param size the minimum length threshold (inclusive)
+   * @return a predicate that tests if a string length is greater than or equal to the specified size
    */
   public static Predicate<String> stringSizeGreaterThanOrEqual(final Integer size) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -469,11 +557,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts two strings from the given source and target functions
+   * and checks if the source string length is less than the target string length.
    *
-   * @param <T>
-   * @param source
-   * @param target
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the source string
+   * @param target a function that extracts the target string to compare length against
+   * @return a predicate that tests if the source string is shorter than the target string
    */
   public static <T> Predicate<T> stringSizeLessThan(final Function<T, String> source, final Function<T, String> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -482,11 +572,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if its length is less than the specified size.
    *
-   * @param <T>
-   * @param source
-   * @param size
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param size the maximum length threshold (exclusive)
+   * @return a predicate that tests if the extracted string length is less than the specified size
    */
   public static <T> Predicate<T> stringSizeLessThan(final Function<T, String> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -494,9 +586,11 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string length is less than the specified size.
+   * Both the string and the size must not be null.
    *
-   * @param size
-   * @return
+   * @param size the maximum length threshold (exclusive)
+   * @return a predicate that tests if a string length is less than the specified size
    */
   public static Predicate<String> stringSizeLessThan(final Integer size) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -505,11 +599,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts two strings from the given source and target functions
+   * and checks if the source string length is less than or equal to the target string length.
    *
-   * @param <T>
-   * @param source
-   * @param target
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the source string
+   * @param target a function that extracts the target string to compare length against
+   * @return a predicate that tests if the source string length is less than or equal to the target
    */
   public static <T> Predicate<T> stringSizeLessThanOrEqual(final Function<T, String> source, final Function<T, String> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -517,11 +613,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if its length is less than or equal to the specified size.
    *
-   * @param <T>
-   * @param source
-   * @param size
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param size the maximum length threshold (inclusive)
+   * @return a predicate that tests if the extracted string length is less than or equal to the specified size
    */
   public static <T> Predicate<T> stringSizeLessThanOrEqual(final Function<T, String> source, final Integer size) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -529,9 +627,11 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string length is less than or equal to the specified size.
+   * Both the string and the size must not be null.
    *
-   * @param size
-   * @return
+   * @param size the maximum length threshold (inclusive)
+   * @return a predicate that tests if a string length is less than or equal to the specified size
    */
   public static Predicate<String> stringSizeLessThanOrEqual(final Integer size) {
     return PredicateBuilder.<String>from(not(nullValue()))
@@ -539,10 +639,12 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if a string is contained in the specified collection.
+   * Both the string and the collection must not be null.
    *
-   * @param collection
-   * @param <T>
-   * @return
+   * @param <T> the type of elements in the collection, must extend String
+   * @param collection the collection to search in
+   * @return a predicate that tests if a string is present in the specified collection
    */
   public static <T extends String> Predicate<T> stringInCollection(final Collection<String> collection) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -551,11 +653,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string from the given source function
+   * and checks if it is contained in the specified collection.
    *
-   * @param source
-   * @param collection
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param collection the collection to search in
+   * @return a predicate that tests if the extracted string is present in the specified collection
    */
   public static <T> Predicate<T> stringInCollection(final Function<T, String> source, final Collection<String> collection) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -565,11 +669,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that checks if the specified string is contained
+   * in a collection extracted from the given target function.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source the string to search for
+   * @param target a function that extracts the collection to search in
+   * @return a predicate that tests if the string is present in the extracted collection
    */
   public static <T> Predicate<T> stringInCollection(final String source, final Function<T, Collection<String>> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -578,11 +684,13 @@ public final class StringPredicate {
   }
 
   /**
+   * Returns a predicate that extracts a string and a collection from the given
+   * source and target functions, and checks if the string is contained in the collection.
    *
-   * @param source
-   * @param target
-   * @param <T>
-   * @return
+   * @param <T> the type of the input object
+   * @param source a function that extracts the string to be validated
+   * @param target a function that extracts the collection to search in
+   * @return a predicate that tests if the extracted string is present in the extracted collection
    */
   public static <T> Predicate<T> stringInCollection(final Function<T, String> source, final Function<T, Collection<String>> target) {
     return PredicateBuilder.<T>from(not(nullValue()))
@@ -591,6 +699,9 @@ public final class StringPredicate {
         .and(obj -> stringInCollection(target.apply(obj)).test(source.apply(obj)));
   }
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   */
   private StringPredicate() {
     super();
   }

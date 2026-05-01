@@ -19,14 +19,27 @@ package br.com.fluentvalidator.function;
 import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ * A builder class that wraps a {@link java.util.function.Function} and provides a fluent interface
+ * for function operations. This class implements the {@link java.util.function.Function} interface
+ * and delegates the actual apply logic to the wrapped function.
+ *
+ * <p>This class is designed to be used as part of a fluent validation framework,
+ * allowing for more readable and maintainable function compositions.</p>
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * Function<String, Integer> strLength = FunctionBuilder.from(String::length);
+ * Integer result = strLength.apply("example");
+ * }</pre>
+ *
+ * @param <I> the type of the input to the function
+ * @param <O> the type of the output of the function
+ */
 public final class FunctionBuilder<I, O> implements Function<I, O> {
 
   private final Function<I, O> function;
 
-  /**
-   *
-   * @param function
-   */
   private FunctionBuilder(final Function<I, O> function) {
     this.function = function;
   }

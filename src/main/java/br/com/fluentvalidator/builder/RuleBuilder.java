@@ -18,19 +18,29 @@ package br.com.fluentvalidator.builder;
 
 import java.util.function.Predicate;
 
+/**
+ * Base interface for building validation rules in a fluent validation API.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of the property being validated
+ * @param <W> the type of the When condition builder
+ * @param <N> the type of the Whenever condition builder
+ */
 interface RuleBuilder<T, P, W extends When<T, P, W, N>, N extends Whenever<T, P, W, N>> {
 
   /**
+   * Specifies a predicate that, when true, triggers the validation rules.
    *
-   * @param predicate
-   * @return
+   * @param predicate the predicate to evaluate against the property value
+   * @return the Whenever builder for chaining additional validation configuration
    */
   N whenever(final Predicate<P> predicate);
 
   /**
+   * Specifies the predicate that must be satisfied for the validation to pass.
    *
-   * @param predicate
-   * @return
+   * @param predicate the predicate to validate against the property value
+   * @return the Must builder for chaining conditional validation rules
    */
   Must<T, P, W, N> must(final Predicate<P> predicate);
 

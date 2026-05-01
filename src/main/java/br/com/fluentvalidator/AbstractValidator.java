@@ -28,6 +28,7 @@ import br.com.fluentvalidator.builder.RuleBuilderCollection;
 import br.com.fluentvalidator.builder.RuleBuilderProperty;
 import br.com.fluentvalidator.context.ProcessorContext;
 import br.com.fluentvalidator.context.ValidationContext;
+import br.com.fluentvalidator.context.ValidationContext.Context;
 import br.com.fluentvalidator.context.ValidationResult;
 import br.com.fluentvalidator.rule.Rule;
 import br.com.fluentvalidator.rule.RuleBuilderCollectionImpl;
@@ -35,6 +36,12 @@ import br.com.fluentvalidator.rule.RuleBuilderPropertyImpl;
 import br.com.fluentvalidator.rule.RuleProcessorStrategy;
 import br.com.fluentvalidator.transform.ValidationResultTransform;
 
+/**
+ * Abstract base class for implementing validators.
+ * Provides the core validation logic and rule management.
+ *
+ * @param <T> the type of object this validator validates
+ */
 public abstract class AbstractValidator<T> implements Validator<T> {
 
   private final List<Rule<T>> rules = new LinkedList<>();
@@ -45,6 +52,12 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 
   private RuleProcessorStrategy ruleProcessor = RuleProcessorStrategy.getDefault();
 
+  /**
+   * Inner class responsible for lazily initializing the validation rules.
+   * Uses double-checked locking to ensure thread-safe initialization.
+   *
+   * @param <T> the type of object being validated
+   */
   private static class Initializer<T> {
 
     private final AtomicReference<Boolean> atomicReference = new AtomicReference<>(Boolean.FALSE);
@@ -56,10 +69,7 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     }
 
     /**
-     * This method cause Race Condition. We are using Compare And Swap (CAS)
-     * <p>
-     * {@link https://en.wikipedia.org/wiki/Race_condition}
-     * {@link https://en.wikipedia.org/wiki/Compare-and-swap}
+     * Initializes the validation rules by calling the rules() method exactly once.
      */
     public void init() {
       if (isNotInitialized()) {
@@ -80,20 +90,26 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 
   }
 
+  /**
+   * Constructs a new AbstractValidator and sets up the lazy initializer.
+   */
   protected AbstractValidator() {
-    this.initialize = new Initializer<>(this);
+    initialize = new Initializer<>(this);
   }
 
   /**
-   * {@link #failFastRule() AbstractValidator}
+   * Configures the validator to use fail-fast mode.
+   * In fail-fast mode, validation stops on the first failure.
    */
   @Override
   public void failFastRule() {
-    this.ruleProcessor = RuleProcessorStrategy.getFailFast();
+    ruleProcessor = RuleProcessorStrategy.getFailFast();
   }
 
   /**
-   * {@link #getCounter() AbstractValidator}
+   * Returns the number of validations performed in the current processor context.
+   *
+   * @return the number of validations performed
    */
   @Override
   public Integer getCounter() {
@@ -101,7 +117,9 @@ public abstract class AbstractValidator<T> implements Validator<T> {
   }
 
   /**
-   * {@link #setPropertyOnContext(String) AbstractValidator }
+   * Sets a property on the validation context for use during validation.
+   *
+   * @param property the name of the property to set
    */
   @Override
   public void setPropertyOnContext(final String property) {
@@ -109,7 +127,12 @@ public abstract class AbstractValidator<T> implements Validator<T> {
   }
 
   /**
-   * {@link #getPropertyOnContext(String, Class) AbstractValidator }
+   * Retrieves a property from the validation context.
+   *
+   * @param property the name of the property to retrieve
+   * @param clazz the expected class of the property value
+   * @param <P> the type of the property value
+   * @return the property value, or null if not found
    */
   @Override
   public <P> P getPropertyOnContext(final String property, final Class<P> clazz) {
@@ -117,16 +140,26 @@ public abstract class AbstractValidator<T> implements Validator<T> {
   }
 
   /**
-   * {@link #validate(Object) AbstractValidator }
+   * Validates a single instance and returns the validation result.
+   *
+   * @param instance the instance to validate
+   * @return the validation result containing any errors
    */
   @Override
   public ValidationResult validate(final T instance) {
-    ruleProcessor.process(instance, this);
-    return ValidationContext.get().getValidationResult();
+    try (final Context context = ValidationContext.get()) {
+      ruleProcessor.process(instance, this);
+      return context.getValidationResult();
+    }
   }
 
   /**
-   * {@link #validate(Object, ValidationResultTransform) AbstractValidator}
+   * Validates a single instance and transforms the result.
+   *
+   * @param instance the instance to validate
+   * @param resultTransform the transform to apply to the validation result
+   * @param <E> the type of the transformed result
+   * @return the transformed validation result
    */
   @Override
   public <E> E validate(final T instance, final ValidationResultTransform<E> resultTransform) {
@@ -134,7 +167,10 @@ public abstract class AbstractValidator<T> implements Validator<T> {
   }
 
   /**
-   * {@link #validate(Collection) AbstractValidator}
+   * Validates a collection of instances and returns a list of validation results.
+   *
+   * @param instances the collection of instances to validate
+   * @return an unmodifiable list of validation results, one per instance
    */
   @Override
   public List<ValidationResult> validate(final Collection<T> instances) {
@@ -142,7 +178,12 @@ public abstract class AbstractValidator<T> implements Validator<T> {
   }
 
   /**
-   * {@link #validate(Collection, ValidationResultTransform) AbstractValidator}
+   * Validates a collection of instances and transforms each result.
+   *
+   * @param instances the collection of instances to validate
+   * @param resultTransform the transform to apply to each validation result
+   * @param <E> the type of the transformed result
+   * @return an unmodifiable list of transformed validation results
    */
   @Override
   public <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> resultTransform) {
@@ -150,52 +191,74 @@ public abstract class AbstractValidator<T> implements Validator<T> {
   }
 
   /**
-   * {@link #apply(Object) AbstractValidator}
+   * Applies all validation rules to the given instance.
+   * This method initializes the rules if not already done and sets the context property.
+   *
+   * @param instance the instance to validate
+   * @return true if all validations pass, false otherwise
    */
   @Override
   public boolean apply(final T instance) {
-    this.initialize.init();
-    ValidationContext.get().setProperty(this.property, instance);
+    initialize.init();
+    ValidationContext.get().setProperty(property, instance);
     return ruleProcessor.process(instance, instance, rules);
   }
 
   /**
-   * {@link #ruleFor(Function) AbstractValidator}
+   * Creates a rule builder for validating a property of the object.
+   *
+   * @param function the function to extract the property value
+   * @param <P> the type of the property
+   * @return a rule builder for defining validation rules on the property
    */
   @Override
   public <P> RuleBuilderProperty<T, P> ruleFor(final Function<T, P> function) {
     final RuleBuilderPropertyImpl<T, P> rule = new RuleBuilderPropertyImpl<>(function);
-    this.rules.add(rule);
+    rules.add(rule);
     return rule;
   }
 
   /**
-   * {@link #ruleFor(String, Function) AbstractValidator}
+   * Creates a rule builder for validating a property with a custom field name.
+   *
+   * @param fieldName the name to use in validation error messages
+   * @param function the function to extract the property value
+   * @param <P> the type of the property
+   * @return a rule builder for defining validation rules on the property
    */
   @Override
   public <P> RuleBuilderProperty<T, P> ruleFor(final String fieldName, final Function<T, P> function) {
     final RuleBuilderPropertyImpl<T, P> rule = new RuleBuilderPropertyImpl<>(fieldName, function);
-    this.rules.add(rule);
+    rules.add(rule);
     return rule;
   }
 
   /**
-   * {@link #ruleForEach(String, Function) AbstractValidator}
+   * Creates a rule builder for validating each element in a collection property with a custom field name.
+   *
+   * @param fieldName the name to use in validation error messages
+   * @param function the function to extract the collection property
+   * @param <P> the type of elements in the collection
+   * @return a rule builder for defining validation rules on the collection
    */
   @Override
   public <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName, final Function<T, Collection<P>> function) {
     final RuleBuilderCollectionImpl<T, P> rule = new RuleBuilderCollectionImpl<>(fieldName, function);
-    this.rules.add(rule);
+    rules.add(rule);
     return rule;
   }
 
   /**
-   * {@link #ruleForEach(Function) AbstractValidator}
+   * Creates a rule builder for validating each element in a collection property.
+   *
+   * @param function the function to extract the collection property
+   * @param <P> the type of elements in the collection
+   * @return a rule builder for defining validation rules on the collection
    */
   @Override
   public <P> RuleBuilderCollection<T, P> ruleForEach(final Function<T, Collection<P>> function) {
     final RuleBuilderCollectionImpl<T, P> rule = new RuleBuilderCollectionImpl<>(function);
-    this.rules.add(rule);
+    rules.add(rule);
     return rule;
   }
 

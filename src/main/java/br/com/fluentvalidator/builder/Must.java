@@ -18,12 +18,21 @@ package br.com.fluentvalidator.builder;
 
 import java.util.function.Predicate;
 
+/**
+ * Builder interface for defining the predicate that must be satisfied for validation to pass.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of the property being validated
+ * @param <W> the type of the When condition builder
+ * @param <N> the type of the Whenever condition builder
+ */
 public interface Must<T, P, W extends When<T, P, W, N>, N extends Whenever<T, P, W, N>> extends When<T, P, W, N> {
 
   /**
+   * Adds an additional condition that must also be satisfied for the validation to be applied.
    *
-   * @param when
-   * @return
+   * @param when the predicate that must be true for the validation to proceed
+   * @return the When builder for chaining additional configuration
    */
   When<T, P, W, N> when(final Predicate<P> when);
 

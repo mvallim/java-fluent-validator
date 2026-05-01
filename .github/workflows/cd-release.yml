@@ -1,0 +1,25 @@
+name: Build and Publish Release
+
+on:
+  pull_request:
+    branches: 
+      - master
+    types:
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ci:
+    if: ${{ github.event.pull_request.merged == true }}
+    uses: ./.github/workflows/ci-maven.yml
+    secrets: inherit
+
+  release:
+    needs: ci
+    uses: ./.github/workflows/cd-deploy.yml
+    secrets: inherit
+    with:
+      environment: release

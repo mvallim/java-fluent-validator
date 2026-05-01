@@ -23,24 +23,24 @@ import static br.com.fluentvalidator.predicate.CollectionPredicate.hasItems;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSize;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSizeBetween;
 import static br.com.fluentvalidator.predicate.CollectionPredicate.hasSizeBetweenInclusive;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class CollectionPredicateTest {
+class CollectionPredicateTest {
 
   @Test
-  public void testNullCollectionEmpty() {
+  void testNullCollectionEmpty() {
     assertTrue(empty().test(null));
   }
 
   @Test
-  public void testNullCollectionHasItems() {
+  void testNullCollectionHasItems() {
     assertFalse(hasItems(new Integer[] { 1 }).test(null));
     assertFalse(hasItems((Integer[]) null).test(null));
     assertFalse(hasItems((Integer[]) null).test(Arrays.asList(1)));
@@ -49,14 +49,14 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testNullCollectionHasItem() {
+  void testNullCollectionHasItem() {
     assertFalse(hasItem(1).test(null));
     assertFalse(hasItem((Integer) null).test(null));
     assertFalse(hasItem((Integer) null).test(Arrays.asList(1)));
   }
 
   @Test
-  public void testNullCollectionHasAny() {
+  void testNullCollectionHasAny() {
     assertFalse(hasAny(new Integer[] { 1 }).test(null));
     assertFalse(hasAny((Integer[]) null).test(null));
     assertFalse(hasAny((Integer[]) null).test(Arrays.asList(1)));
@@ -65,62 +65,62 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testNullCollectionHasSize() {
+  void testNullCollectionHasSize() {
     assertFalse(hasSize(1).test(null));
     assertFalse(hasSize(null).test(null));
     assertFalse(hasSize(null).test(Arrays.asList(1)));
   }
 
   @Test
-  public void testCollectionEmty() {
+  void testCollectionEmty() {
     final String element = "1";
     assertTrue(empty().test(Arrays.asList()));
     assertFalse(empty().test(Arrays.asList(element)));
   }
 
   @Test
-  public void testCollectionHasItems() {
+  void testCollectionHasItems() {
     final String element = "1";
     assertTrue(hasItems(new String[] { element }).test(Arrays.asList(element)));
     assertFalse(hasItems(new String[] { "1" }).test(Arrays.asList()));
   }
 
   @Test
-  public void testCollectionHasItem() {
+  void testCollectionHasItem() {
     final String element = "1";
     assertTrue(hasItem(element).test(Arrays.asList(element)));
     assertFalse(hasItem("1").test(Arrays.asList()));
   }
 
   @Test
-  public void testCollectionHasAny() {
+  void testCollectionHasAny() {
     final String element = "1";
     assertTrue(hasAny(new String[] { element }).test(Arrays.asList(element)));
     assertFalse(hasAny(new String[] { "1" }).test(Arrays.asList()));
   }
 
   @Test
-  public void testCollectionHasSize() {
+  void testCollectionHasSize() {
     final String element = "1";
     assertTrue(hasSize(1).test(Arrays.asList(element)));
     assertFalse(hasSize(1).test(Arrays.asList()));
   }
 
   @Test
-  public void testCollectionHasSizeBetween() {
+  void testCollectionHasSizeBetween() {
     final List<Integer> asList = Arrays.asList(1, 2, 3, 4);
     assertTrue(hasSizeBetween(fn -> asList, 2, 5).test(asList));
     assertFalse(hasSizeBetween(fn -> asList, 1, 2).test(asList));
   }
 
   @Test
-  public void testCollectionHasSizeBetween01() {
+  void testCollectionHasSizeBetween01() {
     assertTrue(hasSizeBetween(2, 5).test(Arrays.asList(1, 2, 3, 4)));
     assertFalse(hasSizeBetween(1, 2).test(Arrays.asList(1, 2, 3, 4)));
   }
 
   @Test
-  public void testCollectionHasSizeBetweenInclusive() {
+  void testCollectionHasSizeBetweenInclusive() {
     final List<Integer> asList = Arrays.asList(1, 2, 3, 4);
     assertTrue(hasSizeBetweenInclusive(fn -> asList, 1, 4).test(asList));
     assertTrue(hasSizeBetweenInclusive(fn -> asList, 1, 10).test(asList));
@@ -130,7 +130,7 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testCollectionHasSizeBetweenInclusive01() {
+  void testCollectionHasSizeBetweenInclusive01() {
     assertTrue(hasSizeBetweenInclusive(1, 4).test(Arrays.asList(1, 2, 3, 4)));
     assertTrue(hasSizeBetweenInclusive(1, 10).test(Arrays.asList(1, 2, 3, 4)));
     assertTrue(hasSizeBetweenInclusive(4, 4).test(Arrays.asList(1, 2, 3, 4)));
@@ -139,7 +139,7 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testCollectionHasSizeBetweenNull() {
+  void testCollectionHasSizeBetweenNull() {
     assertFalse(hasSizeBetween(null, null).test(null));
     assertFalse(hasSizeBetween(1, null).test(Arrays.asList(1, 2, 3, 4)));
     assertFalse(hasSizeBetween(null, 2).test(null));
@@ -147,7 +147,7 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testCollectionHasSizeBetweenNull01() {
+  void testCollectionHasSizeBetweenNull01() {
     final List<Integer> asList = Arrays.asList(1, 2, 3, 4);
     assertFalse(hasSizeBetween(null, null, null).test(null));
     assertFalse(hasSizeBetween(fn -> asList, null, 2).test(asList));
@@ -156,7 +156,7 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testCollectionHasSizeBetweenInclusiveNull01() {
+  void testCollectionHasSizeBetweenInclusiveNull01() {
     final List<Integer> asList = Arrays.asList(1, 2, 3, 4);
     assertFalse(hasSizeBetweenInclusive(fn -> asList, null, null).test(null));
     assertFalse(hasSizeBetweenInclusive(fn -> asList, 1, null).test(asList));
@@ -165,7 +165,7 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testCollectionHasSizeBetweenInclusiveNull() {
+  void testCollectionHasSizeBetweenInclusiveNull() {
     assertFalse(hasSizeBetweenInclusive(null, null).test(Arrays.asList(1, 2, 3, 4)));
     assertFalse(hasSizeBetweenInclusive(1, null).test(Arrays.asList(1, 2, 3, 4)));
     assertFalse(hasSizeBetweenInclusive(null, 4).test(Arrays.asList(1, 2, 3, 4)));
@@ -173,12 +173,12 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testObjectNullCollectionEmpty() {
+  void testObjectNullCollectionEmpty() {
     assertTrue(empty(TestClass::getSource).test(new TestClass(null)));
   }
 
   @Test
-  public void testObjectNullCollectionHasItems() {
+  void testObjectNullCollectionHasItems() {
     assertFalse(hasItems(TestClass::getSource, new Integer[] { 1 }).test(null));
     assertFalse(hasItems(TestClass::getSource, (Integer[]) null).test(null));
     assertFalse(hasItems(TestClass::getSource, (Integer[]) null).test(new TestClass(Arrays.asList(1))));
@@ -187,14 +187,14 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testObjectNullCollectionHasItem() {
+  void testObjectNullCollectionHasItem() {
     assertFalse(hasItem(TestClass::getSource, 1).test(null));
     assertFalse(hasItem(TestClass::getSource, (Integer) null).test(null));
     assertFalse(hasItem(TestClass::getSource, (Integer) null).test(new TestClass(Arrays.asList(1))));
   }
 
   @Test
-  public void testObjectNullCollectionHasAny() {
+  void testObjectNullCollectionHasAny() {
     assertFalse(hasAny(TestClass::getSource, new Integer[] { 1 }).test(null));
     assertFalse(hasAny(TestClass::getSource, (Integer[]) null).test(null));
     assertFalse(hasAny(TestClass::getSource, (Integer[]) null).test(new TestClass(Arrays.asList(1))));
@@ -203,7 +203,7 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testObjectNullCollectionHasSize() {
+  void testObjectNullCollectionHasSize() {
     assertFalse(hasSize(TestClass::getSource, 1).test(null));
     assertFalse(hasSize(TestClass::getSource, (Integer) null).test(null));
     assertFalse(hasSize(TestClass::getSource, (Integer) null).test(new TestClass(Arrays.asList(1))));
@@ -211,7 +211,7 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testObjectNullCollectionHasSize2() {
+  void testObjectNullCollectionHasSize2() {
     assertFalse(hasSize(TestClass::getSource, fn -> 1).test(null));
     assertFalse(hasSize(TestClass::getSource, TestClass::getSize).test(null));
     assertFalse(hasSize(TestClass::getSource, TestClass::getSize).test(new TestClass(Arrays.asList(1))));
@@ -219,40 +219,40 @@ public class CollectionPredicateTest {
   }
 
   @Test
-  public void testObjectCollectionEmty() {
+  void testObjectCollectionEmty() {
     assertTrue(empty(TestClass::getSource).test(new TestClass(Arrays.asList())));
     assertFalse(empty(TestClass::getSource).test(new TestClass(Arrays.asList(1))));
   }
 
   @Test
-  public void testObjectCollectionHasItems() {
+  void testObjectCollectionHasItems() {
     final Integer element = 1;
     assertTrue(hasItems(TestClass::getSource, new Integer[] { element }).test(new TestClass(Arrays.asList(element))));
     assertFalse(hasItems(TestClass::getSource, new Integer[] { 1 }).test(new TestClass(Arrays.asList())));
   }
 
   @Test
-  public void testObjectCollectionHasItem() {
+  void testObjectCollectionHasItem() {
     final Integer element = 1;
     assertTrue(hasItem(TestClass::getSource, element).test(new TestClass(Arrays.asList(element))));
     assertFalse(hasItem(TestClass::getSource, 1).test(new TestClass(Arrays.asList())));
   }
 
   @Test
-  public void testObjectCollectionHasAny() {
+  void testObjectCollectionHasAny() {
     final Integer element = 1;
     assertTrue(hasAny(TestClass::getSource, new Integer[] { element }).test(new TestClass(Arrays.asList(element))));
     assertFalse(hasAny(TestClass::getSource, new Integer[] { 1 }).test(new TestClass(Arrays.asList())));
   }
 
   @Test
-  public void testObjectCollectionHasSize() {
+  void testObjectCollectionHasSize() {
     assertTrue(hasSize(TestClass::getSource, 1).test(new TestClass(Arrays.asList(1))));
     assertFalse(hasSize(TestClass::getSource, 1).test(new TestClass(Arrays.asList())));
   }
 
   @Test
-  public void testObjectCollectionHasSize2() {
+  void testObjectCollectionHasSize2() {
     assertTrue(hasSize(TestClass::getSource, TestClass::getSize).test(new TestClass(Arrays.asList(1), 1)));
     assertFalse(hasSize(TestClass::getSource, TestClass::getSize).test(new TestClass(Arrays.asList(), 1)));
   }

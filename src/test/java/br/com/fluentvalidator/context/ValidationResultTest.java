@@ -21,11 +21,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import br.com.fluentvalidator.exception.ValidationSampleException;
 
-public class ValidationResultTest {
+class ValidationResultTest {
 
     @Test
     public void testIsInvalidThrow() {

@@ -18,12 +18,19 @@ package br.com.fluentvalidator.transform;
 
 import br.com.fluentvalidator.context.ValidationResult;
 
+/**
+ * Interface for transforming a ValidationResult into a different type.
+ * Allows custom transformation of validation results.
+ *
+ * @param <E> the type of the transformed result
+ */
 public interface ValidationResultTransform<E> {
 
   /**
+   * Transforms a ValidationResult into the target type.
    *
-   * @param validationResult
-   * @return
+   * @param validationResult the validation result to transform
+   * @return the transformed result
    */
   E transform(final ValidationResult validationResult);
 

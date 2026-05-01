@@ -19,7 +19,7 @@ package br.com.fluentvalidator.transform;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
 
 import java.util.Arrays;
@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import br.com.fluentvalidator.Validator;
 import br.com.fluentvalidator.context.Error;
@@ -41,10 +41,10 @@ import br.com.fluentvalidator.model.Girl;
 import br.com.fluentvalidator.model.Parent;
 import br.com.fluentvalidator.validator.ValidatorParent;
 
-public class ValidationResultTransformTest {
+class ValidationResultTransformTest {
 
   @Test
-  public void validationTransformMustBeSuccess() {
+  void validationTransformMustBeSuccess() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -56,11 +56,11 @@ public class ValidationResultTransformTest {
 
     final String result = validatorParent.validate(parent, new ValidationResultTestTransform());
 
-    assertThat(result, isEmptyString());
+    assertThat(result, emptyString());
   }
 
   @Test
-  public void validationTransformMustBeFailWhenFieldOfParentAreInvalid() {
+  void validationTransformMustBeFailWhenFieldOfParentAreInvalid() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent = new Parent();
@@ -72,14 +72,14 @@ public class ValidationResultTransformTest {
 
     final String result = validatorParent.validate(parent, new ValidationResultTestTransform());
 
-    assertThat(result, not(isEmptyString()));
+    assertThat(result, not(emptyString()));
     assertThat(result, containsString("age must be less than or equal to 7"));
     assertThat(result, containsString("cities size must be 10"));
     assertThat(result, containsString("name must contains key John"));
   }
 
   @Test
-  public void validationTransformCollectionParentMustBeSuccess() {
+  void validationTransformCollectionParentMustBeSuccess() {
     final Validator<Parent> validatorParent = new ValidatorParent();
 
     final Parent parent1 = new Parent();
@@ -98,16 +98,16 @@ public class ValidationResultTransformTest {
 
     final List<String> result = validatorParent.validate(Arrays.asList(parent1, parent2), new ValidationResultTestTransform());
 
-    assertThat(result.get(0), isEmptyString());
+    assertThat(result.get(0), emptyString());
 
-    assertThat(result.get(1), not(isEmptyString()));
+    assertThat(result.get(1), not(emptyString()));
     assertThat(result.get(1), containsString("age must be less than or equal to 7"));
     assertThat(result.get(1), containsString("cities size must be 10"));
     assertThat(result.get(1), containsString("name must contains key John"));
   }
 
   @Test
-  public void validationTransformMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
+  void validationTransformMultiThreadMustBeTrue() throws ExecutionException, InterruptedException {
 
     final int CONCURRENT_RUNNABLE = 100000;
 
@@ -163,11 +163,11 @@ public class ValidationResultTransformTest {
     assertThat(resultsTwo, hasSize(CONCURRENT_RUNNABLE));
 
     for (final String result : resultsOne) {
-      assertThat(result, isEmptyString());
+      assertThat(result, emptyString());
     }
 
     for (final String result : resultsTwo) {
-      assertThat(result, not(isEmptyString()));
+      assertThat(result, not(emptyString()));
       assertThat(result, containsString("age must be less than or equal to 7"));
       assertThat(result, containsString("cities size must be 10"));
       assertThat(result, containsString("name must contains key John"));

@@ -24,12 +24,12 @@ import static org.hamcrest.Matchers.nullValue;
 
 import java.util.Collection;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class HandlerInvalidFieldTest {
+class HandlerInvalidFieldTest {
 
   @Test
-  public void testSuccessDefaultHandle() {
+  void testSuccessDefaultHandle() {
 
     final HandlerInvalidField<String> handlerInvalidField = new HandlerInvalidField<String>() {
     };
@@ -41,7 +41,7 @@ public class HandlerInvalidFieldTest {
   }
 
   @Test
-  public void testSuccessDefaultHandle2() {
+  void testSuccessDefaultHandle2() {
 
     final HandlerInvalidField<String> handlerInvalidField = new HandlerInvalidField<String>() {
     };

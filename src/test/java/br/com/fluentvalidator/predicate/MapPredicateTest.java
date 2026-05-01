@@ -29,14 +29,14 @@ import static org.hamcrest.Matchers.equalTo;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class MapPredicateTest {
+class MapPredicateTest {
 
   private final Map<String, String> map = new HashMap<>();
 
-  @Before
+  @BeforeEach
   public void before() {
     map.clear();
     map.put("a", "123456");
@@ -45,35 +45,35 @@ public class MapPredicateTest {
   }
 
   @Test
-  public void testMapGetKPredicateOfV() {
-    assertThat(mapGet(of(x -> "a"), stringSize(6)).test(map), equalTo(true));
-    assertThat(mapGet(of(x -> "a"), isNumber()).test(map), equalTo(true));
-    assertThat(mapGet(of(x -> "a"), not(stringEmptyOrNull())).test(map), equalTo(true));
-    assertThat(mapGet(of(x -> "b"), stringSize(5)).test(map), equalTo(true));
-    assertThat(mapGet(of(x -> "b"), isAlpha()).test(map), equalTo(true));
-    assertThat(mapGet(of(x -> "b"), not(stringEmptyOrNull())).test(map), equalTo(true));
-    assertThat(mapGet(of(x -> "c"), stringEmptyOrNull()).test(map), equalTo(true));
-    assertThat(mapGet(of(x -> "c"), not(stringEmptyOrNull())).test(map), equalTo(false));
+  void testMapGetKPredicateOfV() {
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "a"), stringSize(6)).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "a"), isNumber()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "a"), not(stringEmptyOrNull())).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "b"), stringSize(5)).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "b"), isAlpha()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "b"), not(stringEmptyOrNull())).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "c"), stringEmptyOrNull()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "c"), not(stringEmptyOrNull())).test(map), equalTo(false));
     assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(of(x -> "a"), null).test(map), equalTo(false));
     assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(null, not(stringEmptyOrNull())).test(map), equalTo(false));
   }
 
   @Test
-  public void testMapGetFunctionOfTKPredicateOfV() {
-    assertThat(mapGet("a", stringSize(6)).test(map), equalTo(true));
-    assertThat(mapGet("a", isNumber()).test(map), equalTo(true));
-    assertThat(mapGet("a", not(stringEmptyOrNull())).test(map), equalTo(true));
-    assertThat(mapGet("b", stringSize(5)).test(map), equalTo(true));
-    assertThat(mapGet("b", isAlpha()).test(map), equalTo(true));
-    assertThat(mapGet("b", not(stringEmptyOrNull())).test(map), equalTo(true));
-    assertThat(mapGet("c", stringEmptyOrNull()).test(map), equalTo(true));
-    assertThat(mapGet("c", not(stringEmptyOrNull())).test(map), equalTo(false));
+  void testMapGetFunctionOfTKPredicateOfV() {
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("a", stringSize(6)).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("a", isNumber()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("a", not(stringEmptyOrNull())).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("b", stringSize(5)).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("b", isAlpha()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("b", not(stringEmptyOrNull())).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("c", stringEmptyOrNull()).test(map), equalTo(true));
+    assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("c", not(stringEmptyOrNull())).test(map), equalTo(false));
     assertThat(MapPredicate.<String, String, Map<String, String>>mapGet("a", null).test(map), equalTo(false));
     assertThat(MapPredicate.<String, String, Map<String, String>>mapGet(null, not(stringEmptyOrNull())).test(map), equalTo(false));
   }
 
   @Test
-  public void testContainsKeyK() {
+  void testContainsKeyK() {
     assertThat(MapPredicate.<String, String, Map<String, String>>containsKey("a").test(map), equalTo(true));
     assertThat(MapPredicate.<String, String, Map<String, String>>containsKey("b").test(map), equalTo(true));
     assertThat(MapPredicate.<String, String, Map<String, String>>containsKey("c").test(map), equalTo(true));
@@ -82,7 +82,7 @@ public class MapPredicateTest {
   }
 
   @Test
-  public void testContainsKeyFunctionOfTK() {
+  void testContainsKeyFunctionOfTK() {
     assertThat(MapPredicate.<String, String, Map<String, String>>containsKey(of(x -> "a")).test(map), equalTo(true));
     assertThat(MapPredicate.<String, String, Map<String, String>>containsKey(of(x -> "b")).test(map), equalTo(true));
     assertThat(MapPredicate.<String, String, Map<String, String>>containsKey(of(x -> "c")).test(map), equalTo(true));
@@ -92,7 +92,7 @@ public class MapPredicateTest {
   }
 
   @Test
-  public void testContainsValueV() {
+  void testContainsValueV() {
     assertThat(MapPredicate.<String, String, Map<String, String>>containsValue("aeiou").test(map), equalTo(true));
     assertThat(MapPredicate.<String, String, Map<String, String>>containsValue("123456").test(map), equalTo(true));
     assertThat(MapPredicate.<String, String, Map<String, String>>containsValue("d").test(map), equalTo(false));
@@ -101,7 +101,7 @@ public class MapPredicateTest {
   }
 
   @Test
-  public void testContainsValueFunctionOfTV() {
+  void testContainsValueFunctionOfTV() {
     assertThat(MapPredicate.<String, String, Map<String, String>>containsValue(of(x -> "aeiou")).test(map), equalTo(true));
     assertThat(MapPredicate.<String, String, Map<String, String>>containsValue(of(x -> "123456")).test(map), equalTo(true));
     assertThat(MapPredicate.<String, String, Map<String, String>>containsValue(of(x -> "d")).test(map), equalTo(false));

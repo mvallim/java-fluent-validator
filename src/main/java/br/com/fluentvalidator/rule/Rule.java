@@ -16,26 +16,40 @@
 
 package br.com.fluentvalidator.rule;
 
+/**
+ * Base interface for validation rules.
+ * Rules can be applied to objects to determine if they are valid.
+ *
+ * @param <T> the type of object this rule can validate
+ */
 public interface Rule<T> {
 
+  /**
+   * Applies the validation rule to the given instance.
+   *
+   * @param instance the instance to validate
+   * @return true if the instance passes the validation, false otherwise
+   */
   default boolean apply(final T instance) {
     return true;
   }
 
   /**
+   * Applies the validation rule to a value associated with an object.
    *
-   * @param instance
-   * @param value
-   * @return
+   * @param instance the parent object (used for context)
+   * @param value the value to validate
+   * @return true if the value passes the validation, false otherwise
    */
   default boolean apply(final Object instance, final T value) {
     return apply(value);
   }
 
   /**
+   * Determines if this rule supports the given instance.
    *
-   * @param instance
-   * @return
+   * @param instance the instance to check
+   * @return true if this rule supports the instance, false otherwise
    */
   default boolean support(final T instance) {
     return true;

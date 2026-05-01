@@ -1,0 +1,72 @@
+name: Create Pull Request
+
+on:
+  workflow_call:
+    inputs:
+      source-branch:
+        description: Source branch
+        type: string
+        required: true
+      target-branch:
+        description: Target branch
+        type: string
+        required: true
+      labels:
+        description: Labels to PR
+        type: string
+        required: true
+      type:
+        description: PR Type
+        type: string
+        required: true
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Create branch
+      run: |
+        REPO="${{ github.repository }}"
+        BRANCH="${{ inputs.target-branch }}"
+        BASE="${{ inputs.source-branch }}"
+
+        echo "Checking if branch '$BRANCH' exists in repository '$REPO'..."
+
+        if gh api "repos/$REPO/branches/$BRANCH" --silent >/dev/null 2>&1; then
+            echo "Branch '$BRANCH' already exists."
+        else
+          echo "Branch '$BRANCH' does not exist. It will be created from '$BASE'."
+
+          BASE_SHA=$(gh api "repos/$REPO/git/ref/heads/$BASE" --jq .object.sha)
+
+          if [ -z "$BASE_SHA" ]; then
+            echo "Error: Could not retrieve the SHA of base branch '$BASE'"
+            exit 1
+          fi
+
+          gh api --method POST "repos/$REPO/git/refs" \
+            -f ref="refs/heads/$BRANCH" \
+            -f sha="$BASE_SHA"
+
+          echo "Branch '$BRANCH' successfully created!"
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Pull Request (${{ inputs.type }})
+      uses: peter-evans/create-pull-request@v7
+      with:
+        title: Auto-created pull request into `${{ inputs.target-branch }}` from `${{ github.ref_name }}`
+        token: ${{ secrets.GITHUB_TOKEN }}
+        committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+        author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+        commit-message: Auto Pull Request (${{ inputs.type }})
+        body: Auto-created Pull Request
+        branch: ${{ github.ref }}
+        base: ${{ inputs.target-branch }}
+        labels: ${{ inputs.labels }}
+        assignees: ${{ github.actor }}
+        reviewers: mvallim

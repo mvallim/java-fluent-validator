@@ -16,6 +16,10 @@
 
 package br.com.fluentvalidator.rule;
 
+/**
+ * Default implementation of RuleProcessorStrategy.
+ * This strategy processes all rules and collects all validation errors.
+ */
 class RuleProcessorDefault implements RuleProcessorStrategy {
 
 }
