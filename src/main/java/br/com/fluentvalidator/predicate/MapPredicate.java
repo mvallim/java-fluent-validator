@@ -25,9 +25,6 @@ import java.util.function.Predicate;
 
 /**
  * Utility class that provides predicates for testing {@link Map} objects.
- *
- * @param <K> the type of keys in the map
- * @param <V> the type of values in the map
  */
 public final class MapPredicate {
 
