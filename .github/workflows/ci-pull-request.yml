@@ -57,7 +57,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create Pull Request (${{ inputs.type }})
-      uses: peter-evans/create-pull-request@v7
+      uses: peter-evans/create-pull-request@v8
       with:
         title: Auto-created pull request into `${{ inputs.target-branch }}` from `${{ github.ref_name }}`
         token: ${{ secrets.GITHUB_TOKEN }}
