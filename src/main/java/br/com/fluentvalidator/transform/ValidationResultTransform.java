@@ -19,26 +19,18 @@ package br.com.fluentvalidator.transform;
 import br.com.fluentvalidator.context.ValidationResult;
 
 /**
- * A functional interface for transforming {@link ValidationResult} into another type.
- * <p>
- * This interface is typically used to convert validation results into custom
- * response objects, such as API error responses or domain-specific result types.
- * </p>
+ * Interface for transforming a ValidationResult into a different type.
+ * Allows custom transformation of validation results.
  *
  * @param <E> the type of the transformed result
  */
 public interface ValidationResultTransform<E> {
 
   /**
-   * Transforms a {@link ValidationResult} into an object of type {@code E}.
-   * <p>
-   * Implementations of this method should extract relevant information from
-   * the validation result (such as errors, messages, etc.) and convert it
-   * into the desired output type.
-   * </p>
+   * Transforms a ValidationResult into the target type.
    *
-   * @param validationResult the validation result to transform, must not be null
-   * @return the transformed result of type {@code E}
+   * @param validationResult the validation result to transform
+   * @return the transformed result
    */
   E transform(final ValidationResult validationResult);
 

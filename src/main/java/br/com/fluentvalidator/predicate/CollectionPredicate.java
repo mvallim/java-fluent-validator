@@ -28,6 +28,17 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * Utility class providing predicates for testing {@link Collection} objects.
+ * <p>
+ * This class contains static factory methods that create {@link Predicate} instances
+ * for various collection operations, including empty checks, containment checks,
+ * and size comparisons.
+ * </p>
+ *
+ * @param <K> the type of keys in the map (unused, kept for consistency)
+ * @param <V> the type of values in the map (unused, kept for consistency)
+ */
 public final class CollectionPredicate {
 
   /**

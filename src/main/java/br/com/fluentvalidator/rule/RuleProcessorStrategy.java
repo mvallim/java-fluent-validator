@@ -24,47 +24,44 @@ import br.com.fluentvalidator.context.ProcessorContext.Context;
 
 /**
  * Strategy interface for processing validation rules.
- * Implementations define how rules are applied, such as fail-fast (stop on first failure)
- * or default (process all rules).
+ * Different implementations can provide different processing behaviors (e.g., fail-fast vs. collect all errors).
  */
 public interface RuleProcessorStrategy {
 
   /**
-   * Processes a single rule against a value, using the provided object as context.
-   * The rule is only applied if it supports the value.
+   * Processes a single rule against a value, with an associated object for context.
    *
-   * @param <E> the type of the value
-   * @param obj the context object (typically the parent object being validated)
+   * @param obj the parent object (used for context)
    * @param value the value to validate
    * @param rule the rule to apply
-   * @return {@code true} if the rule passes or is not supported, {@code false} otherwise
+   * @param <E> the type of the value
+   * @return true if the rule passes or is not supported, false otherwise
    */
   default <E> boolean process(final Object obj, final E value, final Rule<E> rule) {
     return Boolean.FALSE.equals(rule.support(value)) || rule.apply(obj, value);
   }
 
   /**
-   * Processes a single rule against a value without a parent context object.
-   * The rule is only applied if it supports the value.
+   * Processes a single rule against a value.
    *
-   * @param <E> the type of the value
    * @param value the value to validate
    * @param rule the rule to apply
-   * @return {@code true} if the rule passes or is not supported, {@code false} otherwise
+   * @param <E> the type of the value
+   * @return true if the rule passes or is not supported, false otherwise
    */
   default <E> boolean process(final E value, final Rule<E> rule) {
     return Boolean.FALSE.equals(rule.support(value)) || rule.apply(value);
   }
 
   /**
-   * Processes a single rule against each element in a collection of values, using the provided object as context.
-   * Uses a {@link ProcessorContext} to track processing state across elements.
+   * Processes a rule against a collection of values, with an associated object for context.
+   * Uses processor context to track the number of validations.
    *
-   * @param <E> the type of elements in the collection
-   * @param obj the context object (typically the parent object being validated)
+   * @param obj the parent object (used for context)
    * @param values the collection of values to validate
-   * @param rule the rule to apply to each element
-   * @return {@code true} if all elements pass the rule, {@code false} otherwise
+   * @param rule the rule to apply to each value
+   * @param <E> the type of elements in the collection
+   * @return true if all validations pass, false otherwise
    */
   default <E> boolean process(final Object obj, final Collection<E> values, final Rule<E> rule) {
     try (final Context context = ProcessorContext.get()) {
@@ -76,13 +73,13 @@ public interface RuleProcessorStrategy {
   }
 
   /**
-   * Processes a single rule against each element in a collection of values without a parent context object.
-   * Uses a {@link ProcessorContext} to track processing state across elements.
+   * Processes a rule against a collection of values.
+   * Uses processor context to track the number of validations.
    *
-   * @param <E> the type of elements in the collection
    * @param values the collection of values to validate
-   * @param rule the rule to apply to each element
-   * @return {@code true} if all elements pass the rule, {@code false} otherwise
+   * @param rule the rule to apply to each value
+   * @param <E> the type of elements in the collection
+   * @return true if all validations pass, false otherwise
    */
   default <E> boolean process(final Collection<E> values, final Rule<E> rule) {
     try (final Context context = ProcessorContext.get()) {
@@ -94,34 +91,33 @@ public interface RuleProcessorStrategy {
   }
 
   /**
-   * Processes a collection of rules against a value, using the provided object as context.
+   * Processes a collection of rules against a value, with an associated object for context.
    *
-   * @param <E> the type of the value
-   * @param obj the context object (typically the parent object being validated)
+   * @param obj the parent object (used for context)
    * @param value the value to validate
    * @param rules the collection of rules to apply
-   * @return {@code true} if all rules pass, {@code false} otherwise
+   * @param <E> the type of the value
+   * @return true if all rules pass, false otherwise
    */
   default <E> boolean process(final Object obj, final E value, final Collection<Rule<E>> rules) {
-    return rules.stream().map(rule -> this.process(obj, value, rule)).collect(Collectors.toList()).stream()
-      .allMatch(result -> result);
+    return rules.stream().map(rule -> this.process(obj, value, rule)).collect(Collectors.toList()).stream().allMatch(result -> result);
   }
 
   /**
-   * Processes a collection of rules against a value without a parent context object.
+   * Processes a collection of rules against a value.
    *
-   * @param <E> the type of the value
    * @param value the value to validate
    * @param rules the collection of rules to apply
-   * @return {@code true} if all rules pass, {@code false} otherwise
+   * @param <E> the type of the value
+   * @return true if all rules pass, false otherwise
    */
   default <E> boolean process(final E value, final Collection<Rule<E>> rules) {
-    return rules.stream().map(rule -> this.process(value, rule)).collect(Collectors.toList()).stream()
-      .allMatch(result -> result);
+    return rules.stream().map(rule -> this.process(value, rule)).collect(Collectors.toList()).stream().allMatch(result -> result);
   }
 
   /**
-   * Returns a fail-fast rule processor strategy. Validation stops on the first failure.
+   * Returns a fail-fast rule processor strategy.
+   * In fail-fast mode, validation stops on the first failure.
    *
    * @return a fail-fast rule processor strategy
    */
@@ -130,9 +126,10 @@ public interface RuleProcessorStrategy {
   }
 
   /**
-   * Returns a default rule processor strategy. All rules are processed even if some fail.
+   * Returns the default rule processor strategy.
+   * The default strategy collects all validation errors.
    *
-   * @return a default rule processor strategy
+   * @return the default rule processor strategy
    */
   public static RuleProcessorStrategy getDefault() {
     return new RuleProcessorDefault();

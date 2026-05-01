@@ -25,6 +25,13 @@ import java.time.format.DateTimeParseException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * Utility class providing predicates for date-time string comparisons.
+ * <p>
+ * This class contains static factory methods that create {@link java.util.function.Predicate} instances
+ * for validating and comparing date-time strings using a specified pattern.
+ * </p>
+ */
 public final class DateTimePredicate {
 
   /**

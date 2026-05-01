@@ -22,39 +22,25 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Utility class for managing processor context using thread-local storage.
- * <p>
- * Provides access to a thread-local {@link Context} instance, which maintains a stack of counters
- * for tracking processing state during validation.
- * </p>
- *
- * <ul>
- *   <li>{@link #get()} - Retrieves the current thread's processor context, creating one if necessary.</li>
- *   <li>{@link #remove()} - Removes the processor context from the current thread.</li>
- * </ul>
- *
- * <p>
- * The nested {@link Context} class provides methods to manage a stack of counters for
- * tracking nested validation processing.
- * </p>
+ * Manages the thread-local processor context for tracking validation counters.
+ * Used to count the number of validations performed during the validation process.
  */
 public final class ProcessorContext {
 
   private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
 
   /**
-   * Private constructor to prevent instantiation of {@code ProcessorContext} from outside the class.
-   * Ensures that instances can only be created internally, typically for singleton or factory patterns.
+   * Private constructor to prevent instantiation.
    */
   private ProcessorContext() {
     super();
   }
 
   /**
-   * Retrieves the current {@link Context} instance associated with the calling thread.
-   * If no {@link Context} exists for the thread, a new instance is created and set.
+   * Returns the current processor context for this thread.
+   * Creates a new context if one does not exist.
    *
-   * @return the {@link Context} instance for the current thread
+   * @return the current processor context
    */
   public static Context get() {
     if (Objects.isNull(threadLocal.get())) {
@@ -64,42 +50,29 @@ public final class ProcessorContext {
   }
 
   /**
-   * Removes the current thread's value for the processor context from the ThreadLocal storage.
-   * This method should be called to clean up resources and avoid potential memory leaks
-   * when the context is no longer needed in the current thread.
+   * Removes the processor context for this thread.
    */
   public static void remove() {
     threadLocal.remove();
   }
 
   /**
-   * Context is a utility class that manages a stack of counters using {@link AtomicInteger}.
-   * It provides methods to create, remove, increment, and retrieve the current counter value.
-   * The stack is thread-safe, allowing concurrent access.
-   *
-   * <ul>
-   *   <li>{@link #create()} - Pushes a new counter onto the stack, initialized to zero.</li>
-   *   <li>{@link #remove()} - Removes the top counter from the stack if it exists.</li>
-   *   <li>{@link #inc()} - Increments the top counter if the stack is not empty.</li>
-   *   <li>{@link #get()} - Retrieves the value of the top counter, or zero if the stack is empty.</li>
-   * </ul>
+   * The processor context that maintains a stack of counters for tracking validations.
+   * Implements AutoCloseable for use with try-with-resources.
    */
   public static final class Context implements AutoCloseable {
 
     private final Deque<AtomicInteger> stackCounter = new ConcurrentLinkedDeque<>();
 
     /**
-     * Initializes a new processing context by pushing a fresh {@link AtomicInteger} with value 0 onto the stack counter.
-     * This method is typically used to start a new validation or processing scope.
+     * Creates a new counter and pushes it onto the stack.
      */
     public void create() {
       stackCounter.push(new AtomicInteger(0));
     }
 
     /**
-     * Removes the top element from the {@code stackCounter} if it is not empty.
-     * This method is typically used to manage the stack state within the processor context,
-     * ensuring that elements are only removed when available.
+     * Removes the current counter from the stack.
      */
     public void remove() {
       if (!stackCounter.isEmpty()) {
@@ -108,11 +81,7 @@ public final class ProcessorContext {
     }
 
     /**
-     * Increments the top value of the stack counter if the stack is not empty.
-     * <p>
-     * This method checks if the {@code stackCounter} is not empty and, if so,
-     * increments the value at the top of the stack using {@code incrementAndGet()}.
-     * </p>
+     * Increments the current counter in the stack.
      */
     public void inc() {
       if (!stackCounter.isEmpty()) {
@@ -121,20 +90,16 @@ public final class ProcessorContext {
     }
 
     /**
-     * Retrieves the current value from the stack counter.
-     * If the stack counter is empty, returns {@code 0}.
+     * Returns the current counter value.
      *
-     * @return the current value of the stack counter, or {@code 0} if empty
+     * @return the current counter value, or 0 if the stack is empty
      */
     public Integer get() {
       return stackCounter.isEmpty() ? 0 : stackCounter.peek().get();
     }
 
     /**
-     * Closes this context and removes the thread-local processor context.
-     * <p>
-     * This method is called automatically when using try-with-resources.
-     * </p>
+     * Closes the context and removes it from the thread-local storage.
      */
     @Override
     public void close() {

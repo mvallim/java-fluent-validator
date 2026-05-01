@@ -27,197 +27,121 @@ import br.com.fluentvalidator.rule.Rule;
 import br.com.fluentvalidator.transform.ValidationResultTransform;
 
 /**
- * Interface that defines the contract for fluent validators.
- * <p>
- * This interface extends {@link Rule} and provides methods for building and executing
- * validation rules in a fluent, chainable manner. It supports validation of single objects,
- * collections of objects, and provides flexible result transformation capabilities.
- * </p>
- * <p>
- * Implementations should define validation rules by implementing the {@link #rules()} method
- * and using the fluent API provided by {@link #ruleFor(Function)} and {@link #ruleForEach(Function)}
- * to build validation constraints.
- * </p>
- * <p>
- * This interface supports:
- * <ul>
- *   <li>Single object validation with {@link #validate(Object)}</li>
- *   <li>Collection validation with {@link #validate(Collection)}</li>
- *   <li>Result transformation for custom output formats</li>
- *   <li>Fail-fast validation mode</li>
- *   <li>Contextual property storage and retrieval</li>
- * </ul>
- * </p>
+ * Main interface for defining validators that can validate objects of type T.
+ * Validators are used to define validation rules and apply them to objects.
  *
- * @param <T> the type of object being validated
+ * @param <T> the type of object this validator can validate
  */
 public interface Validator<T> extends Rule<T> {
 
   /**
    * Defines the validation rules for this validator.
-   * <p>
-   * Subclasses should implement this method to define validation rules using
-   * the fluent API provided by {@link #ruleFor(Function)} and {@link #ruleForEach(Function)}.
-   * This method is called once during initialization in a thread-safe manner.
-   * </p>
+   * This method is called once to initialize the validation rules.
    */
   void rules();
 
   /**
-   * Configures this validator to use fail-fast rule processing.
-   * <p>
-   * When fail-fast mode is enabled, validation will stop at the first rule failure
-   * instead of continuing to evaluate all rules. This can improve performance when
-   * early validation failure is acceptable.
-   * </p>
+   * Configures the validator to use fail-fast mode.
+   * In fail-fast mode, validation stops on the first failure.
    */
   void failFastRule();
 
   /**
-   * Returns the current validation counter.
-   * <p>
-   * The counter tracks the number of validation operations or rules that have been
-   * processed. This can be useful for debugging, monitoring, or performance analysis.
-   * </p>
+   * Returns the number of validations performed in the current context.
    *
-   * @return the current counter value, or null if no counter is available
+   * @return the number of validations performed
    */
   Integer getCounter();
 
   /**
-   * Sets a property name to be used in the validation context.
-   * <p>
-   * This property name will be associated with the validated object in the validation
-   * context, allowing rules to access contextual information during validation.
-   * </p>
+   * Sets a property on the validation context for use during validation.
    *
-   * @param property the property name to set in the validation context
+   * @param property the name of the property to set
    */
   void setPropertyOnContext(final String property);
 
   /**
-   * Retrieves a property value from the validation context.
-   * <p>
-   * This method allows access to contextual information that was previously stored
-   * in the validation context, enabling rules to make decisions based on broader
-   * validation state.
-   * </p>
+   * Retrieves a property from the validation context.
    *
-   * @param <P> the type of the property value
    * @param property the name of the property to retrieve
-   * @param clazz the class type of the property value
-   * @return the property value cast to the specified type, or null if not found
+   * @param clazz the expected class of the property value
+   * @param <P> the type of the property value
+   * @return the property value, or null if not found
    */
   <P> P getPropertyOnContext(final String property, final Class<P> clazz);
 
   /**
    * Validates a single instance and returns the validation result.
-   * <p>
-   * This method processes the given instance through all configured validation rules
-   * and returns a comprehensive result containing any validation errors or success indicators.
-   * </p>
    *
-   * @param instance the object instance to validate
-   * @return a ValidationResult containing the outcome of validation
+   * @param instance the instance to validate
+   * @return the validation result containing any errors
    */
   ValidationResult validate(final T instance);
 
   /**
-   * Validates a single instance and transforms the result using the provided transformer.
-   * <p>
-   * This method combines validation with result transformation in a single operation,
-   * allowing for custom result formats or processing without intermediate objects.
-   * </p>
+   * Validates a single instance and transforms the result using the provided transform.
    *
+   * @param instance the instance to validate
+   * @param transform the transform to apply to the validation result
    * @param <E> the type of the transformed result
-   * @param instance the object instance to validate
-   * @param transform the transformer to apply to the validation result
    * @return the transformed validation result
    */
   <E> E validate(final T instance, final ValidationResultTransform<E> transform);
 
   /**
    * Validates a collection of instances and returns a list of validation results.
-   * <p>
-   * Each instance in the collection is validated independently, and the results are
-   * collected into a list. The order of results corresponds to the order of instances
-   * in the input collection.
-   * </p>
    *
    * @param instances the collection of instances to validate
-   * @return a list of ValidationResult objects, one for each input instance
+   * @return an unmodifiable list of validation results, one per instance
    */
   List<ValidationResult> validate(final Collection<T> instances);
 
   /**
-   * Validates a collection of instances and transforms each result using the provided transformer.
-   * <p>
-   * This method combines collection validation with result transformation, applying
-   * the transformer to each individual validation result.
-   * </p>
+   * Validates a collection of instances and transforms each result.
    *
-   * @param <E> the type of the transformed results
    * @param instances the collection of instances to validate
-   * @param transform the transformer to apply to each validation result
-   * @return a list of transformed validation results
+   * @param transform the transform to apply to each validation result
+   * @param <E> the type of the transformed result
+   * @return an unmodifiable list of transformed validation results
    */
   <E> List<E> validate(final Collection<T> instances, final ValidationResultTransform<E> transform);
 
   /**
-   * Creates a validation rule for a specific property of the validated object.
-   * <p>
-   * This method starts a fluent chain for defining validation rules that apply to a
-   * property extracted from the validated object using the provided function. The property
-   * name will be automatically derived from the function if possible.
-   * </p>
+   * Creates a rule builder for validating a property of the object.
    *
-   * @param <P> the type of the property being validated
-   * @param function a function that extracts the property value from the validated object
-   * @return a RuleBuilderProperty for chaining additional validation constraints
+   * @param function the function to extract the property value
+   * @param <P> the type of the property
+   * @return a rule builder for defining validation rules on the property
    */
   <P> RuleBuilderProperty<T, P> ruleFor(final Function<T, P> function);
 
   /**
-   * Creates a validation rule for a named property of the validated object.
-   * <p>
-   * This method starts a fluent chain for defining validation rules that apply to a
-   * property extracted from the validated object. The field name is explicitly provided
-   * and will be used in error messages and validation context.
-   * </p>
+   * Creates a rule builder for validating a property with a custom field name.
    *
-   * @param <P> the type of the property being validated
-   * @param fieldName the name of the field being validated (used in error messages)
-   * @param function a function that extracts the property value from the validated object
-   * @return a RuleBuilderProperty for chaining additional validation constraints
+   * @param fieldName the name to use in validation error messages
+   * @param function the function to extract the property value
+   * @param <P> the type of the property
+   * @return a rule builder for defining validation rules on the property
    */
   <P> RuleBuilderProperty<T, P> ruleFor(final String fieldName, final Function<T, P> function);
 
   /**
-   * Creates validation rules for each element in a collection property.
-   * <p>
-   * This method starts a fluent chain for defining validation rules that apply to each
-   * element of a collection extracted from the validated object. The field name will be
-   * automatically derived from the function if possible.
-   * </p>
+   * Creates a rule builder for validating each element in a collection property.
    *
-   * @param <P> the type of elements in the collection being validated
-   * @param function a function that extracts the collection from the validated object
-   * @return a RuleBuilderCollection for chaining additional validation constraints
+   * @param function the function to extract the collection property
+   * @param <P> the type of elements in the collection
+   * @return a rule builder for defining validation rules on the collection
    */
   <P> RuleBuilderCollection<T, P> ruleForEach(final Function<T, Collection<P>> function);
 
   /**
-   * Creates validation rules for each element in a collection property.
-   * <p>
-   * This method starts a fluent chain for defining validation rules that apply to each
-   * element of a collection extracted from the validated object. The field name is
-   * explicitly provided for error reporting.
-   * </p>
+   * Creates a rule builder for validating each element in a collection property with a custom field name.
    *
-   * @param <P> the type of elements in the collection being validated
-   * @param fieldName the name of the collection field being validated
-   * @param function a function that extracts the collection from the validated object
-   * @return a RuleBuilderCollection for chaining additional validation constraints
+   * @param fieldName the name to use in validation error messages
+   * @param function the function to extract the collection property
+   * @param <P> the type of elements in the collection
+   * @return a rule builder for defining validation rules on the collection
    */
   <P> RuleBuilderCollection<T, P> ruleForEach(final String fieldName, final Function<T, Collection<P>> function);
+
 }

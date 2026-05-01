@@ -17,39 +17,39 @@
 package br.com.fluentvalidator.rule;
 
 /**
- * Represents a validation rule that can be applied to an object of type {@code T}.
- * Rules can either be applied directly to an object, or to a specific value extracted from the object.
+ * Base interface for validation rules.
+ * Rules can be applied to objects to determine if they are valid.
  *
- * @param <T> the type of object the rule can be applied to
+ * @param <T> the type of object this rule can validate
  */
 public interface Rule<T> {
 
   /**
-   * Applies this rule to the given instance.
+   * Applies the validation rule to the given instance.
    *
-   * @param instance the object to apply the rule to
-   * @return {@code true} if the rule is satisfied, {@code false} otherwise
+   * @param instance the instance to validate
+   * @return true if the instance passes the validation, false otherwise
    */
   default boolean apply(final T instance) {
     return true;
   }
 
   /**
-   * Applies this rule to the given value, using the provided instance as context (e.g., for error message generation).
+   * Applies the validation rule to a value associated with an object.
    *
-   * @param instance the context object (typically the parent object being validated)
-   * @param value the value to apply the rule to
-   * @return {@code true} if the rule is satisfied, {@code false} otherwise
+   * @param instance the parent object (used for context)
+   * @param value the value to validate
+   * @return true if the value passes the validation, false otherwise
    */
   default boolean apply(final Object instance, final T value) {
     return apply(value);
   }
 
   /**
-   * Checks if this rule supports the given instance. Rules may only be applicable to certain objects.
+   * Determines if this rule supports the given instance.
    *
-   * @param instance the object to check support for
-   * @return {@code true} if this rule supports the instance, {@code false} otherwise
+   * @param instance the instance to check
+   * @return true if this rule supports the instance, false otherwise
    */
   default boolean support(final T instance) {
     return true;

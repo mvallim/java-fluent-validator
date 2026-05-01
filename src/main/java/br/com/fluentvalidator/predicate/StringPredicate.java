@@ -34,6 +34,14 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * Utility class containing predicates for validating and comparing string values.
+ * <p>
+ * This class provides static factory methods for creating {@link Predicate} instances
+ * that test various string properties such as alphabetic content, numeric content,
+ * date/time parsing, size comparisons, and containment checks.
+ * </p>
+ */
 public final class StringPredicate {
 
   /**

@@ -12,7 +12,7 @@ This skill enables the creation and maintenance of comprehensive Javadoc documen
 
 ### 🔧 **Core Competencies**
 - **Javadoc Generation**: Create comprehensive documentation using Javadoc comments
-- **Code Documentation**: Document methods, and interfaces with proper tags
+- **Code Documentation**: Document classes, methods, and interfaces with proper tags
 - **Standard Compliance**: Follow Javadoc conventions and best practices
 - **Tool Integration**: Generate documentation using javadoc tool and IDE integration
 
@@ -20,6 +20,9 @@ This skill enables the creation and maintenance of comprehensive Javadoc documen
 
 #### **Basic Javadoc Structure**
 ```java
+/**
+ * Class description
+ */
 public class MyClass {
     /**
      * Method description
@@ -44,10 +47,11 @@ public class MyClass {
 
 #### **Mastery Levels**
 - **Beginner**: Basic Javadoc comments for public methods
-- **Intermediate**: Complete method documentation with all required tags
+- **Intermediate**: Complete class and method documentation with all required tags
 - **Advanced**: Professional documentation with cross-references and examples
 
 #### **Quality Metrics**
+- 100% of public classes documented
 - 100% of public methods documented
 - Proper use of all required Javadoc tags
 - Consistent documentation style
@@ -55,7 +59,17 @@ public class MyClass {
 
 ### 🛠️ **Implementation Process**
 
-#### **Step 1: Method Documentation**
+#### **Step 1: Class Documentation**
+```java
+/**
+ * User management service
+ */
+public class UserService {
+    // class implementation
+}
+```
+
+#### **Step 2: Method Documentation**
 ```java
 /**
  * Creates a new user account
@@ -74,6 +88,7 @@ public User createUser(String username, String email)
 ### 📊 **Skill Validation**
 
 #### **Checklist**
+- [ ] All public classes have Javadoc
 - [ ] All public methods have Javadoc
 - [ ] Required tags are present
 - [ ] Documentation is clear and concise
@@ -89,12 +104,17 @@ public User createUser(String username, String email)
 
 ### 📈 **Skill Progression**
 
-#### **Level 1: Complete Documentation**
+#### **Level 1: Basic Documentation**
+- Document public classes
+- Add basic method documentation
+- Use essential tags
+
+#### **Level 2: Complete Documentation**
 - Document all public API
 - Include parameter and return descriptions
 - Add exception documentation
 
-#### **Level 2: Professional Documentation**
+#### **Level 3: Professional Documentation**
 - Advanced cross-references
 - Code examples
 - Comprehensive coverage
