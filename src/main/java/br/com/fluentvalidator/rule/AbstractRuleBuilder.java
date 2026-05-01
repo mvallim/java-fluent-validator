@@ -29,6 +29,15 @@ import br.com.fluentvalidator.builder.When;
 import br.com.fluentvalidator.builder.Whenever;
 import br.com.fluentvalidator.builder.WithValidator;
 
+/**
+ * Base abstract class for rule builders, providing common functionality for configuring validation rules.
+ * This class implements multiple builder interfaces to support fluent configuration of rules.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of the property being validated
+ * @param <W> the type of the {@link When} interface, for conditional rule application
+ * @param <N> the type of the {@link Whenever} interface, for rule activation scope
+ */
 abstract class AbstractRuleBuilder<T, P, W extends When<T, P, W, N>, N extends Whenever<T, P, W, N>>
     implements Must<T, P, W, N>, Message<T, P, W, N>, FieldName<T, P, W, N>, Code<T, P, W, N>, Critical<T, P, W, N>, WithValidator<T, P, W, N>, HandleInvalidField<T, P, W, N>, AttemptedValue<T, P, W, N>, Rule<T> {
 
@@ -36,15 +45,32 @@ abstract class AbstractRuleBuilder<T, P, W extends When<T, P, W, N>, N extends W
 
   protected final Function<T, P> function;
 
+  /**
+   * Constructs a new AbstractRuleBuilder with the given field name function and property extractor function.
+   *
+   * @param fieldName the function to generate the field name for error reporting
+   * @param function the function to extract the property value from the object being validated
+   */
   protected AbstractRuleBuilder(final Function<T, String> fieldName, final Function<T, P> function) {
     this.fieldName = fieldName;
     this.function = function;
   }
 
+  /**
+   * Constructs a new AbstractRuleBuilder with a static field name and property extractor function.
+   *
+   * @param fieldName the static field name for error reporting
+   * @param function the function to extract the property value from the object being validated
+   */
   protected AbstractRuleBuilder(final String fieldName, final Function<T, P> function) {
     this(obj -> fieldName, function);
   }
 
+  /**
+   * Constructs a new AbstractRuleBuilder with only a property extractor function (no field name).
+   *
+   * @param function the function to extract the property value from the object being validated
+   */
   protected AbstractRuleBuilder(final Function<T, P> function) {
     this(obj -> null, function);
   }

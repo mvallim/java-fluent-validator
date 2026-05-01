@@ -28,11 +28,6 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-/**
- * Utility class providing predicate methods for validating collections.
- * This class contains static methods that return predicates for common collection validation scenarios
- * such as checking if a collection is empty, contains specific items, or has a certain size.
- */
 public final class CollectionPredicate {
 
   /**

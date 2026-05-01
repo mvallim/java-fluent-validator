@@ -16,6 +16,15 @@
 
 package br.com.fluentvalidator.builder;
 
+/**
+ * Terminal builder interface that marks a validation rule as critical.
+ * When a critical validation rule fails, the validation process stops immediately.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of the property being validated
+ * @param <W> the type of the When condition builder
+ * @param <N> the type of the Whenever condition builder
+ */
 public interface Critical<T, P, W extends When<T, P, W, N>, N extends Whenever<T, P, W, N>> extends RuleBuilder<T, P, W, N> {
 
 }

@@ -16,26 +16,40 @@
 
 package br.com.fluentvalidator.rule;
 
+/**
+ * Represents a validation rule that can be applied to an object of type {@code T}.
+ * Rules can either be applied directly to an object, or to a specific value extracted from the object.
+ *
+ * @param <T> the type of object the rule can be applied to
+ */
 public interface Rule<T> {
 
+  /**
+   * Applies this rule to the given instance.
+   *
+   * @param instance the object to apply the rule to
+   * @return {@code true} if the rule is satisfied, {@code false} otherwise
+   */
   default boolean apply(final T instance) {
     return true;
   }
 
   /**
+   * Applies this rule to the given value, using the provided instance as context (e.g., for error message generation).
    *
-   * @param instance
-   * @param value
-   * @return
+   * @param instance the context object (typically the parent object being validated)
+   * @param value the value to apply the rule to
+   * @return {@code true} if the rule is satisfied, {@code false} otherwise
    */
   default boolean apply(final Object instance, final T value) {
     return apply(value);
   }
 
   /**
+   * Checks if this rule supports the given instance. Rules may only be applicable to certain objects.
    *
-   * @param instance
-   * @return
+   * @param instance the object to check support for
+   * @return {@code true} if this rule supports the instance, {@code false} otherwise
    */
   default boolean support(final T instance) {
     return true;

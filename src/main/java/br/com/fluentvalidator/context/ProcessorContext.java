@@ -21,6 +21,23 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Utility class for managing processor context using thread-local storage.
+ * <p>
+ * Provides access to a thread-local {@link Context} instance, which maintains a stack of counters
+ * for tracking processing state during validation.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link #get()} - Retrieves the current thread's processor context, creating one if necessary.</li>
+ *   <li>{@link #remove()} - Removes the processor context from the current thread.</li>
+ * </ul>
+ *
+ * <p>
+ * The nested {@link Context} class provides methods to manage a stack of counters for
+ * tracking nested validation processing.
+ * </p>
+ */
 public final class ProcessorContext {
 
   private static final ThreadLocal<Context> threadLocal = new ThreadLocal<>();
@@ -113,6 +130,12 @@ public final class ProcessorContext {
       return stackCounter.isEmpty() ? 0 : stackCounter.peek().get();
     }
 
+    /**
+     * Closes this context and removes the thread-local processor context.
+     * <p>
+     * This method is called automatically when using try-with-resources.
+     * </p>
+     */
     @Override
     public void close() {
       ProcessorContext.remove();

@@ -16,6 +16,12 @@
 
 package br.com.fluentvalidator.builder;
 
+/**
+ * Builder interface for defining validation rules on individual properties.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of the property being validated
+ */
 public interface RuleBuilderProperty<T, P> extends RuleBuilder<T, P, WhenProperty<T, P>, WheneverProperty<T, P>> {
 
 }

@@ -18,6 +18,12 @@ package br.com.fluentvalidator.builder;
 
 import java.util.Collection;
 
+/**
+ * Builder interface for defining validation rules on collection properties.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of elements in the collection being validated
+ */
 public interface RuleBuilderCollection<T, P> extends RuleBuilder<T, Collection<P>, WhenCollection<T, P>, WheneverCollection<T, P>> {
 
 }
