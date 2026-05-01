@@ -35,9 +35,6 @@ import java.util.function.Predicate;
  * for various collection operations, including empty checks, containment checks,
  * and size comparisons.
  * </p>
- *
- * @param <K> the type of keys in the map (unused, kept for consistency)
- * @param <V> the type of values in the map (unused, kept for consistency)
  */
 public final class CollectionPredicate {
 
