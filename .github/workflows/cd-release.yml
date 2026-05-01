@@ -17,8 +17,14 @@ jobs:
     uses: ./.github/workflows/ci-maven.yml
     secrets: inherit
 
-  release:
+  gates:
     needs: ci
+    if: success()
+    uses: ./.github/workflows/ci-gates.yml
+    secrets: inherit
+
+  release:
+    needs: gates
     uses: ./.github/workflows/cd-deploy.yml
     secrets: inherit
     with:
