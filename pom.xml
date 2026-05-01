@@ -1,12 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.mvallim</groupId>
 	<artifactId>java-fluent-validator</artifactId>
-	<version>1.10.1-SNAPSHOT</version>
+	<version>1.10.1</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -50,7 +48,7 @@
 		<url>scm:git:https://github.com/mvallim/java-fluent-validator.git</url>
 		<connection>scm:git:https://ithub.com/mvallim/java-fluent-validator.git</connection>
 		<developerConnection>scm:git:https://github.com/mvallim/java-fluent-validator.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v1.10.1</tag>
 	</scm>
 
 	<name>java-fluent-validator</name>
