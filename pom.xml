@@ -47,9 +47,9 @@
 	</properties>
 
 	<scm>
-		<url>scm:git:git@github.com:mvallim/java-fluent-validator</url>
-		<connection>scm:git:git@github.com:mvallim/java-fluent-validator</connection>
-		<developerConnection>scm:git:git@github.com:mvallim/java-fluent-validator</developerConnection>
+		<url>scm:git:https://github.com:mvallim/java-fluent-validator.git</url>
+		<connection>scm:git:https://ithub.com:mvallim/java-fluent-validator.git</connection>
+		<developerConnection>scm:git:https://github.com:mvallim/java-fluent-validator.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
