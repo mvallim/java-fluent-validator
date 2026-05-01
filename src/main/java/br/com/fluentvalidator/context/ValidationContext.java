@@ -146,6 +146,12 @@ public final class ValidationContext {
       return clazz.cast(properties.getOrDefault(property, null));
     }
 
+    /**
+     * Closes this context and removes the thread-local validation context.
+     * <p>
+     * This method is called automatically when using try-with-resources.
+     * </p>
+     */
     @Override
     public void close() {
       ValidationContext.remove();

@@ -16,6 +16,12 @@
 
 package br.com.fluentvalidator.builder;
 
+/**
+ * Builder interface for defining conditions on property validation rules.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of the property being validated
+ */
 public interface WhenProperty<T, P> extends When<T, P, WhenProperty<T, P>, WheneverProperty<T, P>> {
 
 }

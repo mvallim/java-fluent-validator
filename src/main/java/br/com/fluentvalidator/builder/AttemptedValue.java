@@ -20,60 +20,76 @@ import java.util.function.Function;
 
 import br.com.fluentvalidator.exception.ValidationException;
 
+/**
+ * Builder interface for setting the attempted value to be reported in validation errors.
+ *
+ * @param <T> the type of object being validated
+ * @param <P> the type of the property being validated
+ * @param <W> the type of the When condition builder
+ * @param <N> the type of the Whenever condition builder
+ */
 public interface AttemptedValue<T, P, W extends When<T, P, W, N>, N extends Whenever<T, P, W, N>> extends RuleBuilder<T, P, W, N> {
 
   /**
+   * Sets the error code for the validation rule using a static string.
    *
-   * @param code
-   * @return
+   * @param code the error code to be used in validation messages
+   * @return the Code builder for chaining additional configuration
    */
   Code<T, P, W, N> withCode(final String code);
 
   /**
+   * Sets the error code for the validation rule using a function that derives the code from the object.
    *
-   * @param code
-   * @return
+   * @param code the function to generate the error code from the validated object
+   * @return the Code builder for chaining additional configuration
    */
   Code<T, P, W, N> withCode(final Function<T, String> code);
 
   /**
+   * Sets the error message for the validation rule using a static string.
    *
-   * @param message
-   * @return
+   * @param message the error message to be used when validation fails
+   * @return the Message builder for chaining additional configuration
    */
   Message<T, P, W, N> withMessage(final String message);
 
   /**
+   * Sets the error message for the validation rule using a function that derives the message from the object.
    *
-   * @param message
-   * @return
+   * @param message the function to generate the error message from the validated object
+   * @return the Message builder for chaining additional configuration
    */
   Message<T, P, W, N> withMessage(final Function<T, String> message);
 
   /**
+   * Sets the field name for error reporting using a static string.
    *
-   * @param fieldName
-   * @return
+   * @param fieldName the name of the field to be reported in validation errors
+   * @return the FieldName builder for chaining additional configuration
    */
   FieldName<T, P, W, N> withFieldName(final String fieldName);
 
   /**
+   * Sets the field name for error reporting using a function that derives the name from the object.
    *
-   * @param fieldName
-   * @return
+   * @param fieldName the function to generate the field name from the validated object
+   * @return the FieldName builder for chaining additional configuration
    */
   FieldName<T, P, W, N> withFieldName(final Function<T, String> fieldName);
 
   /**
+   * Marks the validation rule as critical, causing validation to stop on failure.
    *
-   * @return
+   * @return the Critical builder for chaining additional configuration
    */
   Critical<T, P, W, N> critical();
 
   /**
+   * Marks the validation rule as critical with a custom exception class, causing validation to stop on failure.
    *
-   * @param clazz
-   * @return
+   * @param clazz the custom ValidationException class to be thrown on critical failure
+   * @return the Critical builder for chaining additional configuration
    */
   Critical<T, P, W, N> critical(final Class<? extends ValidationException> clazz);
 

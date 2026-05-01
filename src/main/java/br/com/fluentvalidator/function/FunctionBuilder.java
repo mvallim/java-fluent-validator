@@ -57,6 +57,21 @@ public final class FunctionBuilder<I, O> implements Function<I, O> {
     this.function = function;
   }
 
+  /**
+   * Creates a new FunctionBuilder that wraps the given function, providing
+   * null-safe execution.
+   * <p>
+   * This is the factory method for creating FunctionBuilder instances. The
+   * returned function will return null when applied with a null input, instead
+   * of throwing a NullPointerException.
+   * </p>
+   *
+   * @param <I> the type of the input to the function
+   * @param <O> the type of the result of the function
+   * @param function the function to wrap, must not be null
+   * @return a new FunctionBuilder instance wrapping the given function
+   * @throws NullPointerException if function is null
+   */
   public static <I, O> Function<I, O> of(final Function<I, O> function) {
     return new FunctionBuilder<>(function);
   }
