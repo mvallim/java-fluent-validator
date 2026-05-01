@@ -24,11 +24,8 @@ import java.util.Optional;
 import br.com.fluentvalidator.exception.ValidationException;
 
 /**
- * Represents the result of a validation operation, containing the validation status
- * and any associated error messages.
- *
- * <p>This class is immutable and thread-safe. It provides factory methods to create
- * instances representing successful or failed validation results.</p>
+ * Represents the result of a validation operation.
+ * Contains information about whether the validation passed and any errors that occurred.
  */
 public final class ValidationResult {
 
@@ -39,17 +36,17 @@ public final class ValidationResult {
   /**
    * Creates a successful validation result with no errors.
    *
-   * @return a ValidationResult instance representing a successful validation
+   * @return a ValidationResult indicating success
    */
   public static ValidationResult ok() {
     return new ValidationResult(true, new ArrayList<>());
   }
 
   /**
-   * Creates a failed validation result with the specified error messages.
+   * Creates a failed validation result with the specified errors.
    *
-   * @param messages the collection of error messages; if null, an empty collection is used
-   * @return a ValidationResult instance representing a failed validation
+   * @param messages the collection of validation errors
+   * @return a ValidationResult indicating failure with the given errors
    */
   public static ValidationResult fail(final Collection<Error> messages) {
     return new ValidationResult(false, Optional.ofNullable(messages).orElse(new ArrayList<>()));
@@ -58,8 +55,8 @@ public final class ValidationResult {
   /**
    * Private constructor to create a ValidationResult instance.
    *
-   * @param valid indicates whether the validation was successful
-   * @param messages the collection of error messages
+   * @param valid whether the validation passed
+   * @param messages the collection of validation errors
    */
   private ValidationResult(final boolean valid, final Collection<Error> messages) {
     this.valid = valid;
@@ -67,14 +64,11 @@ public final class ValidationResult {
   }
 
   /**
-   * Throws a validation exception if the validation result is invalid.
-   *
-   * <p>This method provides a convenient way to convert validation failures
-   * into exceptions for error handling purposes.</p>
+   * Throws a ValidationException if the validation result is invalid.
    *
    * @param <T> the type of ValidationException to throw
-   * @param clazz the class of the ValidationException to instantiate and throw
-   * @throws ValidationException if the validation result is invalid
+   * @param clazz the class of the exception to throw
+   * @throws T if the validation result is invalid
    */
   public <T extends ValidationException> void isInvalidThrow(final Class<T> clazz) {
     if (!isValid()) {
@@ -83,9 +77,9 @@ public final class ValidationResult {
   }
 
   /**
-   * Checks whether the validation was successful.
+   * Returns whether the validation passed.
    *
-   * @return {@code true} if the validation was successful, {@code false} otherwise
+   * @return true if the validation passed, false otherwise
    */
   public boolean isValid() {
     return valid;
@@ -94,23 +88,12 @@ public final class ValidationResult {
   /**
    * Returns the collection of validation errors.
    *
-   * <p>The returned collection is unmodifiable. If the validation was successful,
-   * this collection will be empty.</p>
-   *
    * @return an unmodifiable collection of validation errors
    */
   public Collection<Error> getErrors() {
     return errors;
   }
 
-  /**
-   * Returns a string representation of this ValidationResult.
-   *
-   * <p>The string representation includes the validation status and
-   * the collection of errors.</p>
-   *
-   * @return a string representation of this ValidationResult
-   */
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();

@@ -17,23 +17,7 @@
 package br.com.fluentvalidator.context;
 
 /**
- * Represents a validation error context, encapsulating details about a failed validation,
- * including the field name, error message, error code, and the attempted value.
- * <p>
- * Instances of {@code Error} are immutable and can be created using the static {@link #create(String, String, String, Object)} method.
- * </p>
- *
- * <ul>
- *   <li>{@code field}: The name of the field that failed validation.</li>
- *   <li>{@code message}: The error message describing the validation failure.</li>
- *   <li>{@code code}: The error code associated with the validation error.</li>
- *   <li>{@code attemptedValue}: The value that was attempted and caused the error.</li>
- * </ul>
- *
- * Example usage:
- * <pre>
- *   Error error = Error.create("username", "Username must not be empty", "USR_001", null);
- * </pre>
+ * Represents a validation error with details about the failed validation.
  */
 public class Error {
 
@@ -46,25 +30,25 @@ public class Error {
   private final String code;
 
   /**
-   * Creates a new Error instance with the specified field, message, code, and attempted value.
+   * Creates a new validation error.
    *
    * @param field the name of the field that failed validation
-   * @param message the validation error message
-   * @param code the error code associated with this validation error
-   * @param attemptedValue the value that was attempted and failed validation
-   * @return a new Error instance with the provided parameters
+   * @param message the error message describing the validation failure
+   * @param code the error code for the validation failure
+   * @param attemptedValue the value that failed validation
+   * @return a new Error instance
    */
   public static Error create(final String field, final String message, final String code, final Object attemptedValue) {
     return new Error(field, message, code, attemptedValue);
   }
 
   /**
-   * Constructs an {@code Error} instance with the specified field, message, code, and attempted value.
+   * Protected constructor to create an Error instance.
    *
-   * @param field the name of the field where the error occurred
-   * @param message the error message describing the validation failure
-   * @param code the error code associated with the validation error
-   * @param attemptedValue the value that was attempted and caused the error
+   * @param field the name of the field that failed validation
+   * @param message the error message
+   * @param code the error code
+   * @param attemptedValue the value that failed validation
    */
   protected Error(final String field, final String message, final String code, final Object attemptedValue) {
     this.field = field;
@@ -74,47 +58,41 @@ public class Error {
   }
 
   /**
-   * Returns the name of the field associated with this error.
+   * Returns the name of the field that failed validation.
    *
-   * @return the field name as a {@code String}
+   * @return the field name
    */
   public String getField() {
     return field;
   }
 
   /**
-   * Returns the error message associated with this error context.
+   * Returns the error message describing the validation failure.
    *
-   * @return the error message as a {@code String}
+   * @return the error message
    */
   public String getMessage() {
     return message;
   }
 
   /**
-   * Returns the error code associated with this error.
+   * Returns the error code for the validation failure.
    *
-   * @return the error code as a {@code String}
+   * @return the error code
    */
   public String getCode() {
     return code;
   }
 
   /**
-   * Returns the value that was attempted during validation.
+   * Returns the value that failed validation.
    *
-   * @return the attempted value, which may be null if not set
+   * @return the attempted value
    */
   public Object getAttemptedValue() {
     return attemptedValue;
   }
 
-  /**
-   * Returns a string representation of the Error object, including the message,
-   * field, attempted value, and code properties.
-   *
-   * @return a formatted string describing the Error instance
-   */
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();

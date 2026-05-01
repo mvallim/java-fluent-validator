@@ -24,6 +24,13 @@ import java.util.function.Predicate;
 
 import static br.com.fluentvalidator.function.FunctionBuilder.of;
 
+/**
+ * Utility class providing predicates for comparing {@link Comparable} objects.
+ * <p>
+ * This class contains static factory methods that create {@link java.util.function.Predicate} instances
+ * for various comparison operations, including greater than, less than, between, and equality checks.
+ * </p>
+ */
 public final class ComparablePredicate {
 
   private static final Integer ZERO = 0;

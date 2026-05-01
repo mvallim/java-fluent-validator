@@ -26,6 +26,13 @@ import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 import static br.com.fluentvalidator.predicate.StringPredicate.stringEmptyOrNull;
 
+/**
+ * Utility class providing predicates for date string comparisons.
+ * <p>
+ * This class contains static factory methods that create {@link java.util.function.Predicate} instances
+ * for validating and comparing date strings using a specified pattern.
+ * </p>
+ */
 public final class DatePredicate {
 
   /**
