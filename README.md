@@ -2,10 +2,10 @@
 
 # Java Fluent Validator
 
-[![Java CI with Maven](https://github.com/mvallim/java-fluent-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/mvallim/java-fluent-validator/actions/workflows/ci.yml)
+[![Build, Publish Snapshot and Pull Request](https://github.com/mvallim/java-fluent-validator/actions/workflows/cd-snapshot.yml/badge.svg)](https://github.com/mvallim/java-fluent-validator/actions/workflows/cd-snapshot.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=java-fluent-validator&metric=alert_status)](https://sonarcloud.io/dashboard?id=java-fluent-validator)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=java-fluent-validator&metric=coverage)](https://sonarcloud.io/dashboard?id=java-fluent-validator)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/java-fluent-validator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/java-fluent-validator)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.mvallim/java-fluent-validator)](https://img.shields.io/maven-central/v/com.github.mvallim/java-fluent-validator)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 Validating data is a common task that occurs throughout any application, especially the business logic layer. As for some quite complex scenarios, often the same or similar validations are scattered everywhere, thus it is hard to reuse code and break the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule.
