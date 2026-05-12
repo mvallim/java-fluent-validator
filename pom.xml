@@ -33,7 +33,7 @@
 		<maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
 		<maven-install-plugin.version>3.1.0</maven-install-plugin.version>
-		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+		<maven-release-plugin.version>3.3.1</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.4.0</maven-resources-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
